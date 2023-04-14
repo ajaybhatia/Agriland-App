@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import { Login } from '@/screens';
+import AddFarmScreen from '@/screens/farm/add-farm';
 import OtpVerifyScreen from '@/screens/login-auth/otp-verify-screen';
 
 export type AuthStackParamList = {
@@ -11,6 +12,7 @@ export type AuthStackParamList = {
     phoneNumber: string;
     confirmation: FirebaseAuthTypes.ConfirmationResult;
   };
+  AddFarmScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -18,6 +20,11 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 export const AuthNavigator = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="AddFarmScreen"
+        component={AddFarmScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Login"
         component={Login}

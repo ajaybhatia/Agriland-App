@@ -2,7 +2,7 @@ import auth from '@react-native-firebase/auth';
 import type { NativeModuleError } from '@react-native-google-signin/google-signin';
 import {
   GoogleSignin,
-  statusCodes,
+  statusCodes
 } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -14,7 +14,7 @@ import {
   ScrollView,
   Text,
   View,
-  VStack,
+  VStack
 } from 'native-base';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,14 +28,14 @@ import * as z from 'zod';
 const schema = z.object({
   email: z
     .string({
-      required_error: 'Email is required',
+      required_error: 'Email is required'
     })
     .email('Invalid email format'),
   password: z
     .string({
-      required_error: 'Password is required',
+      required_error: 'Password is required'
     })
-    .min(6, 'Password must be at least 6 characters'),
+    .min(6, 'Password must be at least 6 characters')
 });
 
 export type FormType = z.infer<typeof schema>;
@@ -69,7 +69,7 @@ export const LoginForm = () => {
           setOTPLoading(false);
           navigate('OtpVerifyScreen', {
             phoneNumber: formattedValue,
-            confirmation: confirmation,
+            confirmation: confirmation
           });
         })
         .catch((error) => {
@@ -77,7 +77,7 @@ export const LoginForm = () => {
           setOTPLoading(false);
           Toast.show({
             type: 'error',
-            text1: error.message?.split(']')?.[1] ?? error.message,
+            text1: error.message?.split(']')?.[1] ?? error.message
           });
         });
     } else {
@@ -98,8 +98,9 @@ export const LoginForm = () => {
         userInfo.idToken
       );
       // Sign-in the user with the credential
-      await auth().signInWithCredential(googleCredential);
+      let googleDetail = await auth().signInWithCredential(googleCredential);
       // await GoogleSignin.signOut();
+      console.log('googleDetail ==> ', googleDetail);
       setGoogleLoading(false);
     } catch (error) {
       setGoogleLoading(false);
@@ -135,7 +136,7 @@ export const LoginForm = () => {
           height={250}
           right={0}
           source={{
-            uri: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+            uri: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
           }}
         />
         <SafeAreaView style={styles.safeArea}>
@@ -147,7 +148,7 @@ export const LoginForm = () => {
               resizeMode={'contain'}
               alignSelf={'center'}
               source={{
-                uri: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+                uri: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
               }}
             />
             <Text
@@ -158,7 +159,6 @@ export const LoginForm = () => {
               mt={5}
               color={'black'}
             >
-              {`${t('terms_title')} `}
               <Text fontWeight="medium" fontSize={13}>
                 {t('Terms')}
               </Text>{' '}
@@ -189,7 +189,7 @@ export const LoginForm = () => {
                 textInputProps={{
                   keyboardType: 'phone-pad',
                   value: valuePhone,
-                  maxLength: 10,
+                  maxLength: 10
                 }}
                 onChangeText={(text) => {
                   if (text.match(/^\d*$/)) {
@@ -231,7 +231,7 @@ export const LoginForm = () => {
               alignSelf={'center'}
               bgColor={'green.600'}
               _text={{
-                textTransform: 'none',
+                textTransform: 'none'
               }}
             >
               {t('Get OTP')}
@@ -253,7 +253,7 @@ export const LoginForm = () => {
                 w={'60%'}
                 borderRadius={'lg'}
                 _text={{
-                  textTransform: 'none',
+                  textTransform: 'none'
                 }}
                 bgColor={'#EB4335'}
                 startIcon={
@@ -278,7 +278,7 @@ export const LoginForm = () => {
                 borderRadius={'lg'}
                 mt={5}
                 _text={{
-                  textTransform: 'none',
+                  textTransform: 'none'
                 }}
                 bgColor={'#1777F2'}
                 startIcon={
@@ -326,23 +326,23 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 40,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   inputTxtContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   input: {
     fontSize: 12,
     height: Platform.OS === 'ios' ? 30 : 40,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   codeTxt: {
     fontSize: 12,
     height: Platform.OS === 'ios' ? 16 : 18,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  safeArea: { flex: 1 },
+  safeArea: { flex: 1 }
 });
