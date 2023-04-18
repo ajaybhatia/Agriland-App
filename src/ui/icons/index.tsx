@@ -1,5 +1,4 @@
 export * from './arrow-right';
-export * from './feed';
 export * from './github';
 export * from './home';
 export * from './language';

@@ -5,7 +5,7 @@ const APP_ENV = process.env.APP_ENV ?? 'development';
 const envPath = path.resolve(__dirname, `.env.${APP_ENV}`);
 
 require('dotenv').config({
-  path: envPath,
+  path: envPath
 });
 
 const { Env, withEnvSuffix } = require('./env');
@@ -22,31 +22,31 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   splash: {
     image: './assets/splash.png',
     resizeMode: 'cover',
-    backgroundColor: '#F75469',
+    backgroundColor: '#F75469'
   },
   updates: {
-    fallbackToCacheTimeout: 0,
+    fallbackToCacheTimeout: 0
   },
   assetBundlePatterns: ['**/*'],
   ios: {
     supportsTablet: true,
-    bundleIdentifier: Env.BUNDLE_ID,
+    bundleIdentifier: Env.BUNDLE_ID
   },
   android: {
     adaptiveIcon: {
       foregroundImage: `${withEnvSuffix('./assets/icon')}.png`,
-      backgroundColor: '#FFFFFF',
+      backgroundColor: '#FFFFFF'
     },
-    package: Env.PACKAGE,
+    package: Env.PACKAGE
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: './assets/favicon.png'
   },
   plugins: [
-    ['@bacons/link-assets', ['./assets/fonts/Inter.ttf']],
-    'expo-localization',
+    ['@bacons/link-assets', ['./assets/fonts/Italianno-Regular.ttf']],
+    'expo-localization'
   ],
   extra: {
-    APP_ENV: Env.APP_ENV,
-  },
+    APP_ENV: Env.APP_ENV
+  }
 });

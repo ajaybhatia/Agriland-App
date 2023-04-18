@@ -1,6 +1,8 @@
 module.exports = {
   white: '#ffffff',
   black: '#000000',
+  button_color: '#4F7942',
+  BORDER_COLOR_DARK: '#4F7942',
   neutral: {
     50: '#FAFAFA',
     100: '#F5F5F5',

@@ -22,6 +22,8 @@ import {
 import OTPTextInput from 'react-native-otp-textinput';
 import Toast from 'react-native-toast-message';
 
+import Header from '@/ui/components/Header';
+
 import type { AuthStackParamList } from '../../navigation/auth-navigator';
 
 type OtpVerifyScreenProps = NativeStackScreenProps<
@@ -146,12 +148,20 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
                 {`${t('Privacy statement')}`}
               </Text>
             </Text>
-            <Text fontWeight="bold" fontSize={18} color={'green.500'} mt={8}>
-              {t('Verification')}
-            </Text>
-            <Text fontWeight="thin" fontSize={13} color={'black'} mt={2}>
-              {`${t('Enter the OTP you received to')} ${phoneNumber}`}
-            </Text>
+            <Header
+              title={t('Verification')}
+              fontWeight="bold"
+              fontSize={18}
+              color={'green.500'}
+              mt={8}
+            />
+            <Header
+              title={`${t('Enter the OTP you received to')} ${phoneNumber}`}
+              fontWeight="thin"
+              fontSize={13}
+              color={'black'}
+              mt={2}
+            />
           </VStack>
           <VStack mt={5}>
             <OTPTextInput

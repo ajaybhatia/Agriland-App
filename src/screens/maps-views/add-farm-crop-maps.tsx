@@ -1,18 +1,22 @@
-import { Alert, StyleSheet } from 'react-native';
-import type { MapPressEvent, MarkerDragStartEndEvent } from 'react-native-maps';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-
+import { isPointWithinRadius } from 'geolib';
+import React from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 import KeepAwake from 'react-native-keep-awake';
 import type { Location } from 'react-native-location';
+import RNLocation from 'react-native-location';
+import type { MapPressEvent, MarkerDragStartEndEvent } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { Polyline } from 'react-native-maps';
-import RNLocation from 'react-native-location';
-import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { isPointWithinRadius } from 'geolib';
 
-type Props = {};
+export enum MapType {
+  PinMap,
+  WalkMap
+}
+type Props = {
+  type: MapType;
+};
 
 const AddFramCropMaps = (props: Props) => {
   const locationSubscription = React.useRef(() => {});
@@ -134,7 +138,7 @@ const AddFramCropMaps = (props: Props) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.fullscreen}>
+    <View style={styles.fullscreen}>
       <MapView
         showsUserLocation
         followsUserLocation={false}
@@ -233,7 +237,7 @@ const AddFramCropMaps = (props: Props) => {
           );
         })}
       </MapView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -243,5 +247,5 @@ const styles = StyleSheet.create({
   fullscreen: {
     flex: 1
   },
-  map: { flex: 1 }
+  map: { flex: 1, backgroundColor: 'green' }
 });

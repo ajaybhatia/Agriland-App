@@ -23,7 +23,7 @@ const APP_ENV = process.env.APP_ENV ?? 'development';
  */
 
 const withEnvSuffix = (name) => {
-  return APP_ENV === 'production' ? name : `${name}.${APP_ENV}`;
+  return name; //APP_ENV === 'production' ? name : `${name}.${APP_ENV}`;
 };
 
 /**

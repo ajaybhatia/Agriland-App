@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "373177193117",
+    "project_id": "farmerapp-grimisr",
+    "storage_bucket": "farmerapp-grimisr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373177193117:android:1b9dc92ffb757e1cbdba74",
+        "android_client_info": {
+          "package_name": "ar.agrimisr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373177193117-55gufbtmt8nc2r940n08adlegoc5fcfm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.agrimisr",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "373177193117-6e1o2tfhl7slviapb2u7qt6l1djt4hcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwqqNI46FkADSWKPL9MV91rmjkU7iB85Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373177193117-6e1o2tfhl7slviapb2u7qt6l1djt4hcu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "373177193117-brffhfbv47mm3pamlun70jajhfveol8e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ar.agrimisr"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373177193117:android:4663cfb7cfd6240dbdba74",
+        "android_client_info": {
+          "package_name": "com.agrimisr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373177193117-6e1o2tfhl7slviapb2u7qt6l1djt4hcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwqqNI46FkADSWKPL9MV91rmjkU7iB85Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373177193117-6e1o2tfhl7slviapb2u7qt6l1djt4hcu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "373177193117-brffhfbv47mm3pamlun70jajhfveol8e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ar.agrimisr"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
