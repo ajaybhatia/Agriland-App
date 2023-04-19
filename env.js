@@ -11,8 +11,8 @@ const packageJSON = require('./package.json');
  *
  */
 
-const BUNDLE_ID = 'com.agrimisr'; // ios bundle id
-const PACKAGE = 'com.agrimisr'; // android package name
+const BUNDLE_ID = 'ar.agrimisr'; // ios bundle id
+const PACKAGE = 'ar.agrimisr'; // android package name
 const NAME = 'AgriMISR'; // app name
 const APP_ENV = process.env.APP_ENV ?? 'development';
 

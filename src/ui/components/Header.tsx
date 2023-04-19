@@ -3,7 +3,10 @@ import type {
   ResponsiveValue,
   ThemeComponentSizeType,
 } from 'native-base/lib/typescript/components/types';
-import type { IFontWeight } from 'native-base/lib/typescript/theme/base/typography';
+import type {
+  IFontSize,
+  IFontWeight,
+} from 'native-base/lib/typescript/theme/base/typography';
 import React from 'react';
 import { I18nManager } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,7 +19,7 @@ type Props = {
   mb?: number;
   ml?: number;
   mr?: number;
-  fontSize?: number | string;
+  fontSize?: ResponsiveValue<IFontSize | number | (string & {})>;
   color?: string;
   fontWeight?: ResponsiveValue<IFontWeight | number | (string & {})>;
 };
@@ -47,6 +50,7 @@ export default function Header({
         fontSize={fontSize}
         fontWeight={fontWeight}
         color={color}
+        fontFamily={'heading'}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ textAlign: I18nManager.isRTL ? 'left' : 'right' }}
       >

@@ -20,6 +20,7 @@ module.exports = function (api) {
           alias: {
             '@': './src',
             '@env': './env',
+            '@assets': './src/assets',
           },
           extensions: [
             '.ios.ts',

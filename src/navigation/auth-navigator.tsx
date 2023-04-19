@@ -24,7 +24,14 @@ export const AuthNavigator = () => {
       <Stack.Screen
         name="OtpVerifyScreen"
         component={OtpVerifyScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          header: () => {
+            return (
+              <AppHeader title="Verify OTP" iconName={'arrow-u-right-top'} />
+            );
+          },
+        }}
       />
       <Stack.Screen
         name="Login"

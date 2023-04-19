@@ -13,15 +13,11 @@ import {
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActivityIndicator,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-} from 'react-native';
+import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
 import Toast from 'react-native-toast-message';
 
+import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
 
 import type { AuthStackParamList } from '../../navigation/auth-navigator';
@@ -88,9 +84,11 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await confirmation?.confirm(otpValue);
+      let confirm = await confirmation?.confirm(otpValue);
+      console.log('otp success:  ', confirm);
       setLoading(false);
     } catch (error) {
+      console.log('otp error: ', error);
       setLoading(false);
       Toast.show({
         type: 'error',
@@ -106,108 +104,81 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
       keyboardShouldPersistTaps="handled"
     >
       <View flex={1}>
-        <Image
-          style={{
-            position: 'absolute',
-            top: -20,
-            left: 0,
-            height: 250,
-            right: 0,
-          }}
-          resizeMode={'cover'}
-          source={{
-            uri: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-          }}
-        />
         <SafeAreaView style={{ flex: 1 }}>
-          <VStack paddingX={'10'}>
+          <VStack>
             <ImageBase
-              alt="nice"
-              height={'16'}
-              marginTop={130}
+              alt=""
+              height={'40'}
+              marginTop={50}
               resizeMode={'contain'}
               alignSelf={'center'}
-              source={{
-                uri: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-              }}
+              source={require('@assets/app-logo.png')}
             />
-            <Text
-              alignSelf={'center'}
-              textAlign={'center'}
-              fontWeight="normal"
-              fontSize={13}
-              mt={5}
-              color={'black'}
-            >
-              {`${t('terms_title')} `}
-              <Text fontWeight="medium" fontSize={13}>
-                {t('Terms')}
-              </Text>{' '}
-              {`${t('and')} `}
-              <Text fontWeight="medium" fontSize={13}>
-                {`${t('Privacy statement')}`}
-              </Text>
-            </Text>
-            <Header
-              title={t('Verification')}
-              fontWeight="bold"
-              fontSize={18}
-              color={'green.500'}
-              mt={8}
-            />
-            <Header
-              title={`${t('Enter the OTP you received to')} ${phoneNumber}`}
-              fontWeight="thin"
-              fontSize={13}
-              color={'black'}
-              mt={2}
-            />
-          </VStack>
-          <VStack mt={5}>
-            <OTPTextInput
-              ref={ref}
-              handleTextChange={(text: string) => setOtpValue(text)}
-              textInputStyle={styles.roundedTextInput}
-              inputCount={6}
-              inputCellLength={1}
-              keyboardType="numeric"
-              //   defaultValue={'----'}
-            />
-          </VStack>
-          <VStack paddingX={'10'}>
-            <HStack alignItems={'center'} mt={8}>
-              <Text fontWeight="thin" fontSize={13} color={'black'}>
-                {`${t("i didn't receive a code !")} `}
-              </Text>
-              {isResendLoading ? (
-                <View px={2}>
-                  <ActivityIndicator size="small" color="#00ff00" />
-                </View>
-              ) : (
-                <Text
-                  color={'green.600'}
-                  fontWeight="medium"
+            <CardWithShadow mx={3}>
+              <VStack p={3}>
+                <Header
+                  title={t('Otp code')}
+                  fontWeight="bold"
+                  fontSize={18}
+                  color={'green.500'}
+                  mt={3}
+                />
+                <Header
+                  title={`${t('ENTER CODE WE SENT')} ${phoneNumber}`}
+                  fontWeight="thin"
                   fontSize={13}
-                  onPress={onResendOtp}
-                >
-                  {t('Please resend')}
-                </Text>
-              )}
-            </HStack>
+                  color={'black'}
+                />
+                <View my={5} w={'100%'} h={'0.4'} bgColor={'gray.300'} />
+              </VStack>
+              <VStack mt={2}>
+                <OTPTextInput
+                  ref={ref}
+                  handleTextChange={(text: string) => setOtpValue(text)}
+                  textInputStyle={styles.roundedTextInput}
+                  inputCount={6}
+                  inputCellLength={1}
+                  keyboardType="numeric"
+                  //   defaultValue={'----'}
+                />
+              </VStack>
+              <VStack paddingX={'10'}>
+                <HStack alignItems={'center'} mt={8}>
+                  <Text fontWeight="thin" fontSize={13} color={'black'}>
+                    {`${t("i didn't receive a code !")} `}
+                  </Text>
+                  {isResendLoading ? (
+                    <View px={2}>
+                      <ActivityIndicator size="small" color="#00ff00" />
+                    </View>
+                  ) : (
+                    <Text
+                      color={'green.600'}
+                      fontWeight="medium"
+                      fontSize={13}
+                      onPress={onResendOtp}
+                    >
+                      {t('Please resend')}
+                    </Text>
+                  )}
+                </HStack>
 
-            <Button
-              isLoading={isLoading}
-              overflow={'hidden'}
-              borderRadius={'lg'}
-              mt={8}
-              bgColor={'green.600'}
-              _text={{
-                textTransform: 'none',
-              }}
-              onPress={onConfirm}
-            >
-              {t('Verify')}
-            </Button>
+                <Button
+                  isLoading={isLoading}
+                  overflow={'hidden'}
+                  borderRadius={'lg'}
+                  mt={8}
+                  mb={5}
+                  bgColor={'green.600'}
+                  _text={{
+                    textTransform: 'none',
+                  }}
+                  onPress={onConfirm}
+                >
+                  {t('Verify')}
+                </Button>
+              </VStack>
+            </CardWithShadow>
           </VStack>
         </SafeAreaView>
       </View>
@@ -217,8 +188,8 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
 
 const styles = StyleSheet.create({
   roundedTextInput: {
-    borderRadius: 5,
-    borderWidth: 1,
+    //borderRadius: 5,
+    borderBottomWidth: 1,
   },
 });
 

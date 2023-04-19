@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import {
   Box,
   Button,
-  HStack,
   Icon,
   Image,
   ScrollView,
@@ -25,6 +24,7 @@ import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as z from 'zod';
 
+import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
 
 const schema = z.object({
@@ -129,31 +129,17 @@ export const LoginForm = () => {
       contentContainerStyle={styles.scrollContainer}
     >
       <View flex={1}>
-        <Image
-          alt=""
-          position={'absolute'}
-          top={-20}
-          resizeMode={'cover'}
-          left={0}
-          height={250}
-          right={0}
-          source={{
-            uri: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-          }}
-        />
         <SafeAreaView style={styles.safeArea}>
           <VStack flex={1} px={5}>
             <Image
               alt=""
-              height={'16'}
-              marginTop={130}
+              height={'40'}
+              marginTop={50}
               resizeMode={'contain'}
               alignSelf={'center'}
-              source={{
-                uri: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-              }}
+              source={require('@assets/app-logo.png')}
             />
-            <Text
+            {/* <Text
               alignSelf={'center'}
               textAlign={'center'}
               fontWeight="normal"
@@ -168,135 +154,143 @@ export const LoginForm = () => {
               <Text fontWeight="medium" fontSize={13}>
                 {`${t('Privacy statement')}`}
               </Text>
-            </Text>
-            <Header
-              title={t('Sign in')}
-              color={'green.500'}
-              mt={8}
-              fontWeight="bold"
-            />
-            <Header
-              title={t('Verify Your mobile number!')}
-              fontWeight="thin"
-              fontSize={13}
-              color={'black'}
-              mt={2}
-            />
+            </Text> */}
+            <CardWithShadow mx={2}>
+              <VStack p={3}>
+                <Header
+                  title={t('Welcome')}
+                  fontWeight="thin"
+                  fontSize={13}
+                  color={'black'}
+                  mt={3}
+                />
+                <Header
+                  title={t('Sign in')}
+                  color={'black'}
+                  fontSize={'2xl'}
+                  fontWeight="700"
+                />
+                <View my={5} w={'100%'} h={'0.4'} bgColor={'gray.300'} />
+                <VStack
+                  mt={2}
+                  borderRadius={'lg'}
+                  borderWidth={1}
+                  p={1}
+                  borderColor={'green.200'}
+                  overflow={'hidden'}
+                >
+                  <PhoneInput
+                    ref={phoneInput}
+                    defaultCode="EG"
+                    layout="first"
+                    textInputProps={{
+                      keyboardType: 'phone-pad',
+                      value: valuePhone,
+                      maxLength: 10,
+                    }}
+                    onChangeText={(text) => {
+                      if (text.match(/^\d*$/)) {
+                        setPhoneValue(text);
+                        setErrorMessage('');
+                      }
+                    }}
+                    onChangeFormattedText={(text) => {
+                      const callingCode = `+${phoneInput.current?.getCallingCode()}`;
+                      const phoneNumber = text.replace(callingCode, '');
+                      if (phoneNumber.match(/^\d*$/)) {
+                        setFormattedValue(text);
+                        setErrorMessage('');
+                      }
+                    }}
+                    withDarkTheme={false}
+                    withShadow={false}
+                    autoFocus
+                    placeholder="Enter Mobile Number"
+                    containerStyle={styles.inputContainer}
+                    textContainerStyle={styles.inputTxtContainer}
+                    textInputStyle={styles.input}
+                    codeTextStyle={styles.codeTxt}
+                  />
+                </VStack>
+                <Box h={10}>
+                  <Text color={'red.400'} fontSize={'xs'} ml={24}>
+                    {errorMessage}
+                  </Text>
+                </Box>
 
-            <VStack
-              mt={8}
-              borderRadius={'lg'}
-              borderWidth={1}
-              p={1}
-              borderColor={'green.200'}
-              overflow={'hidden'}
-            >
-              <PhoneInput
-                ref={phoneInput}
-                defaultCode="EG"
-                layout="first"
-                textInputProps={{
-                  keyboardType: 'phone-pad',
-                  value: valuePhone,
-                  maxLength: 10,
-                }}
-                onChangeText={(text) => {
-                  if (text.match(/^\d*$/)) {
-                    setPhoneValue(text);
-                    setErrorMessage('');
-                  }
-                }}
-                onChangeFormattedText={(text) => {
-                  const callingCode = `+${phoneInput.current?.getCallingCode()}`;
-                  const phoneNumber = text.replace(callingCode, '');
-                  if (phoneNumber.match(/^\d*$/)) {
-                    setFormattedValue(text);
-                    setErrorMessage('');
-                  }
-                }}
-                withDarkTheme={false}
-                withShadow={false}
-                autoFocus
-                placeholder="Enter Mobile Number"
-                containerStyle={styles.inputContainer}
-                textContainerStyle={styles.inputTxtContainer}
-                textInputStyle={styles.input}
-                codeTextStyle={styles.codeTxt}
-              />
-            </VStack>
-            <Box h={10}>
-              <Text color={'red.400'} fontSize={'xs'} ml={24}>
-                {errorMessage}
-              </Text>
-            </Box>
+                <Button
+                  isLoading={isOTPLoading}
+                  onPress={onOtpLogin}
+                  overflow={'hidden'}
+                  borderRadius={'lg'}
+                  mt={5}
+                  w={'80%'}
+                  // w={'100%'}
+                  alignSelf={'center'}
+                  bgColor={'green.600'}
+                  _text={{
+                    textTransform: 'none',
+                  }}
+                >
+                  {t('Get OTP')}
+                </Button>
 
-            <Button
-              isLoading={isOTPLoading}
-              onPress={onOtpLogin}
-              overflow={'hidden'}
-              borderRadius={'lg'}
-              mt={5}
-              w={'100%'}
-              alignSelf={'center'}
-              bgColor={'green.600'}
-              _text={{
-                textTransform: 'none',
-              }}
-            >
-              {t('Get OTP')}
-            </Button>
+                {/* <HStack justifyContent={'center'} alignItems={'center'} mt={8}>
+                  <View h={'0.4'} w={'1/3'} bgColor={'gray.300'} mr={5} />
+                  <Text fontWeight="medium" fontSize={13}>
+                    {t('Or sign in with')}
+                  </Text>
+                  <View ml={5} w={'1/3'} h={'0.4'} bgColor={'gray.300'} />
+                </HStack> */}
 
-            <HStack justifyContent={'center'} alignItems={'center'} mt={8}>
-              <View h={'0.4'} w={'1/3'} bgColor={'gray.300'} mr={5} />
-              <Text fontWeight="medium" fontSize={13}>
-                {t('Or sign in with')}
-              </Text>
-              <View ml={5} w={'1/3'} h={'0.4'} bgColor={'gray.300'} />
-            </HStack>
+                <VStack alignItems={'center'} justifyContent={'center'} mt={5}>
+                  <Button
+                    isLoading={isGoogleLoading}
+                    onPress={signIn}
+                    overflow={'hidden'}
+                    w={'80%'}
+                    borderRadius={'lg'}
+                    _text={{
+                      textTransform: 'none',
+                    }}
+                    bgColor={'#EB4335'}
+                    startIcon={
+                      <Icon
+                        as={FontAwesome}
+                        name="google-plus-square"
+                        size="lg"
+                      />
+                    }
+                  >
+                    {`${t('Sign in with Google')}     `}
+                  </Button>
 
-            <VStack alignItems={'center'} justifyContent={'center'} mt={8}>
-              <Button
-                isLoading={isGoogleLoading}
-                onPress={signIn}
-                overflow={'hidden'}
-                w={'60%'}
-                borderRadius={'lg'}
-                _text={{
-                  textTransform: 'none',
-                }}
-                bgColor={'#EB4335'}
-                startIcon={
-                  <Icon as={FontAwesome} name="google-plus-square" size="lg" />
-                }
-              >
-                {`${t('Sign in with Google')}     `}
-              </Button>
-
-              <Button
-                isDisabled={false}
-                w={'60%'}
-                isLoading={isFacebookLoading}
-                //onPress={() => faceBookSignin()}
-                onPress={() => {
-                  // onFacebookButtonPress().then(() => {
-                  //   console.log('Signed in with Facebook!');
-                  //   setFacebookLoading(false);
-                  // })
-                }}
-                overflow={'hidden'}
-                borderRadius={'lg'}
-                mt={5}
-                _text={{
-                  textTransform: 'none',
-                }}
-                bgColor={'#1777F2'}
-                startIcon={
-                  <Icon as={FontAwesome} name="facebook-square" size="lg" />
-                }
-              >
-                {t('Sign in with Facebook')}
-              </Button>
-              {/* <TouchableOpacity
+                  <Button
+                    isDisabled={false}
+                    w={'80%'}
+                    mb={3}
+                    isLoading={isFacebookLoading}
+                    //onPress={() => faceBookSignin()}
+                    onPress={() => {
+                      // onFacebookButtonPress().then(() => {
+                      //   console.log('Signed in with Facebook!');
+                      //   setFacebookLoading(false);
+                      // })
+                    }}
+                    overflow={'hidden'}
+                    borderRadius={'lg'}
+                    mt={5}
+                    _text={{
+                      textTransform: 'none',
+                    }}
+                    bgColor={'#1777F2'}
+                    startIcon={
+                      <Icon as={FontAwesome} name="facebook-square" size="lg" />
+                    }
+                  >
+                    {t('Sign in with Facebook')}
+                  </Button>
+                  {/* <TouchableOpacity
             style={{
               backgroundColor: '#4267B2',
               width: 230,
@@ -323,7 +317,9 @@ export const LoginForm = () => {
               </VStack>
             </HStack>
           </TouchableOpacity> */}
-            </VStack>
+                </VStack>
+              </VStack>
+            </CardWithShadow>
           </VStack>
         </SafeAreaView>
       </View>

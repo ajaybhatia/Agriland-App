@@ -1,4 +1,4 @@
-package com.agrimisr;
+package ar.agrimisr;
 
 import android.app.Application;
 import android.content.res.Configuration;
