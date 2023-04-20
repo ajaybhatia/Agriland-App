@@ -8,8 +8,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { QueryClientProvider } from '@tanstack/react-query';
 import * as SplashScreen from 'expo-splash-screen';
 import { NativeBaseProvider } from 'native-base';
-import React, { useEffect } from 'react';
-import { I18nManager } from 'react-native';
+import React from 'react';
 import FlashMessage from 'react-native-flash-message';
 import Toast from 'react-native-toast-message';
 
@@ -20,11 +19,11 @@ hydrateAuth();
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
-  useEffect(() => {
-    if (!I18nManager.isRTL) {
-      I18nManager.forceRTL(true);
-    }
-  }, []);
+  //   useEffect(() => {
+  //     if (!I18nManager.isRTL) {
+  //       I18nManager.forceRTL(true);
+  //     }
+  //   }, []);
   return (
     <QueryClientProvider client={client}>
       <NativeBaseProvider theme={theme} config={config}>

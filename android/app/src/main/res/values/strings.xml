@@ -3,6 +3,6 @@
   <string name="expo_splash_screen_resize_mode" translatable="false">cover</string>
   <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
   <string name="expo_system_ui_user_interface_style" translatable="false">light</string>
-        <string name="facebook_app_id">1324543241649029</string>
-    <string name="facebook_client_token">0b6d94f6b38402d094b0603273c795a8</string>
+  <string name="facebook_app_id">1324543241649029</string>
+  <string name="facebook_client_token">0b6d94f6b38402d094b0603273c795a8</string>
 </resources>

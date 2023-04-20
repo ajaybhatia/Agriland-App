@@ -122,6 +122,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
       <Header title={t('account-data')} mt={10} />
       <RoundInput
         mt={5}
+        onBlur={handleBlur('displayName')}
         placeholder={t('name')}
         onChangeText={handleChange('displayName')}
         value={values.displayName}
@@ -131,6 +132,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
       />
       <RoundInput
         mt={5}
+        onBlur={handleBlur('emailId')}
         onChangeText={handleChange('emailId')}
         placeholder={t('e-mail')}
         value={values.emailId}
@@ -140,6 +142,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
       />
       <RoundInput
         mt={5}
+        onBlur={handleBlur('mobileNumber')}
         placeholder={t('mobile')}
         onChangeText={handleChange('mobileNumber')}
         value={values.mobileNumber}
