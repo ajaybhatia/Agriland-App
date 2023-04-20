@@ -20,10 +20,10 @@ import { useTranslation } from 'react-i18next';
 import { Platform, SafeAreaView } from 'react-native';
 import { StyleSheet } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
-import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as z from 'zod';
 
+import { LoginType } from '@/navigation/auth-navigator';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
 
@@ -101,9 +101,12 @@ export const LoginForm = () => {
       );
       // Sign-in the user with the credential
       let googleDetail = await auth().signInWithCredential(googleCredential);
-      // await GoogleSignin.signOut();
-      console.log('googleDetail ==> ', googleDetail);
+      await GoogleSignin.signOut();
       setGoogleLoading(false);
+      navigate('AddFarmScreen', {
+        loginType: LoginType.GOOGLE,
+        google: googleDetail.user,
+      });
     } catch (error) {
       setGoogleLoading(false);
       const typedError = error as NativeModuleError;

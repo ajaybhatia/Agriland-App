@@ -1,7 +1,6 @@
 import { View } from 'native-base';
 import React, { useState } from 'react';
 import { Alert, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Stepper from 'react-native-stepper-ui';
 
 import { button_color } from '@/ui/theme/colors';
@@ -11,14 +10,24 @@ import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
   const [active, setActive] = useState(0);
-  const insets = useSafeAreaInsets();
+
+  const onUseInfoSubmit = () => {
+    setActive((p) => p + 1);
+  };
+  const MyComponent = () => {
+    return (
+      <View justifyContent={'center'} alignItems={'center'}>
+        <Text>{'map'}</Text>
+      </View>
+    );
+  };
 
   const content = [
     {
-      content: <AddUserInfo />,
+      content: <AddUserInfo onNextSubmit={onUseInfoSubmit} />,
       title: 'account data',
     },
-    { content: <AddFramCropMaps type={MapType.PinMap} />, title: 'form data' },
+    { content: <MyComponent />, title: 'form data' },
     { content: <AddFramCropMaps type={MapType.PinMap} />, title: 'enter crop' },
   ];
 

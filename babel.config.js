@@ -21,6 +21,7 @@ module.exports = function (api) {
             '@': './src',
             '@env': './env',
             '@assets': './src/assets',
+            '@config': './src/config',
           },
           extensions: [
             '.ios.ts',

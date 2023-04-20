@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-message';
 
 export enum MapType {
   PinMap,
-  WalkMap
+  WalkMap,
 }
 type Props = {
   type: MapType;
@@ -33,8 +33,8 @@ const AddFramCropMaps = (props: Props) => {
     RNLocation.requestPermission({
       ios: 'whenInUse',
       android: {
-        detail: 'fine'
-      }
+        detail: 'fine',
+      },
     })
       .then((granted) => {
         if (granted) {
@@ -58,11 +58,11 @@ const AddFramCropMaps = (props: Props) => {
             {
               center: {
                 latitude: locations[0].latitude,
-                longitude: locations[0].longitude
+                longitude: locations[0].longitude,
               },
               heading: locations[0].course,
               pitch: 1,
-              zoom: 18
+              zoom: 18,
             },
             { duration: 3000 }
           );
@@ -75,7 +75,7 @@ const AddFramCropMaps = (props: Props) => {
               { latitude: userL[0].latitude, longitude: userL[0].longitude },
               {
                 latitude: locations[0].latitude,
-                longitude: locations[0].longitude
+                longitude: locations[0].longitude,
               },
               50
             );
@@ -108,7 +108,7 @@ const AddFramCropMaps = (props: Props) => {
       distanceFilter: 3, // Meters
       desiredAccuracy: {
         ios: 'best',
-        android: 'highAccuracy'
+        android: 'highAccuracy',
       },
       // Android only
       androidProvider: 'auto',
@@ -121,7 +121,7 @@ const AddFramCropMaps = (props: Props) => {
       headingFilter: 1, // Degrees
       headingOrientation: 'portrait',
       pausesLocationUpdatesAutomatically: false,
-      showsBackgroundLocationIndicator: true
+      showsBackgroundLocationIndicator: true,
     });
 
     // setTimeout(() => {
@@ -157,9 +157,9 @@ const AddFramCropMaps = (props: Props) => {
                 ...[
                   {
                     latitude: lat,
-                    longitude: lng
-                  }
-                ]
+                    longitude: lng,
+                  },
+                ],
               ];
             });
           }
@@ -176,7 +176,7 @@ const AddFramCropMaps = (props: Props) => {
             '#B24112',
             '#E5845C',
             '#238C23',
-            '#7F0000'
+            '#7F0000',
           ]}
           strokeWidth={3}
         />
@@ -192,12 +192,12 @@ const AddFramCropMaps = (props: Props) => {
               nativeID={`${indexLoc}`}
               coordinate={{
                 latitude: loc.latitude,
-                longitude: loc.longitude
+                longitude: loc.longitude,
               }}
               onPress={() => {
                 Toast.show({
                   type: 'error',
-                  text1: 'view show'
+                  text1: 'view show',
                 });
               }}
               //   centerOffset={{x: -42, y: -60}}
@@ -224,7 +224,7 @@ const AddFramCropMaps = (props: Props) => {
                         courseAccuracy: location.courseAccuracy,
                         floor: location.floor,
                         fromMockProvider: location.fromMockProvider,
-                        speedAccuracy: location.speedAccuracy
+                        speedAccuracy: location.speedAccuracy,
                       };
                     } else {
                       return location;
@@ -245,7 +245,7 @@ export default AddFramCropMaps;
 
 const styles = StyleSheet.create({
   fullscreen: {
-    flex: 1
+    flex: 1,
   },
-  map: { flex: 1, backgroundColor: 'green' }
+  map: { flex: 1, backgroundColor: 'green' },
 });

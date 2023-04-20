@@ -8,7 +8,7 @@ import type {
   IFontWeight,
 } from 'native-base/lib/typescript/theme/base/typography';
 import React from 'react';
-import { I18nManager } from 'react-native';
+import { I18nManager, Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = {
@@ -22,6 +22,7 @@ type Props = {
   fontSize?: ResponsiveValue<IFontSize | number | (string & {})>;
   color?: string;
   fontWeight?: ResponsiveValue<IFontWeight | number | (string & {})>;
+  onBackPress?: () => void;
 };
 
 export default function AppHeader({
@@ -31,6 +32,7 @@ export default function AppHeader({
   fontSize = 'xl',
   fontWeight = 'extrabold',
   iconSize = 'xl',
+  onBackPress,
 }: Props) {
   return (
     <View
@@ -38,26 +40,29 @@ export default function AppHeader({
       alignItems={'center'}
       backgroundColor={'white'}
       py={3}
-      style={{
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+      shadow={2}
+      // style={{
+      //   shadowColor: '#000',
+      //   shadowOffset: {
+      //     width: 0,
+      //     height: 2,
+      //   },
+      //   shadowOpacity: 0.25,
+      //   shadowRadius: 3.84,
 
-        elevation: 5,
-      }}
+      //   elevation: 5,
+      // }}
     >
       {iconName && (
-        <Icon
-          as={MaterialCommunityIcons}
-          name={iconName ? iconName : 'arrow-u-right-top'}
-          size={iconSize}
-          color={'#000'}
-          marginLeft={4}
-        />
+        <Pressable onPress={() => onBackPress && onBackPress()}>
+          <Icon
+            as={MaterialCommunityIcons}
+            name={iconName ? iconName : 'arrow-u-right-top'}
+            size={iconSize}
+            color={'#000'}
+            marginLeft={4}
+          />
+        </Pressable>
       )}
       <Text
         marginLeft={4}

@@ -1,5 +1,6 @@
 import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 /* eslint-disable react-native/no-inline-styles */
 import {
@@ -21,6 +22,7 @@ import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
 
 import type { AuthStackParamList } from '../../navigation/auth-navigator';
+import { LoginType } from '../../navigation/auth-navigator';
 
 type OtpVerifyScreenProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -31,7 +33,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
   const [confirmation, setConfirmation] =
     useState<FirebaseAuthTypes.ConfirmationResult>();
   const [phoneNumber, setPhoneNumber] = useState<string>('');
-
+  const { navigate } = useNavigation();
   const { t } = useTranslation();
   const ref = React.useRef(null);
 
@@ -86,6 +88,10 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
       setLoading(true);
       let confirm = await confirmation?.confirm(otpValue);
       console.log('otp success:  ', confirm);
+      navigate('AddFarmScreen', {
+        loginType: LoginType.OTP,
+        phoneNumber: phoneNumber,
+      });
       setLoading(false);
     } catch (error) {
       console.log('otp error: ', error);

@@ -1,16 +1,108 @@
+import type { RouteProp } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import type { FormikValues } from 'formik';
+import { useFormik } from 'formik';
 import { Button, View } from 'native-base';
 import React from 'react';
 import { I18nManager } from 'react-native';
+import Toast from 'react-native-toast-message';
+import * as yup from 'yup';
 
-import { translate, useSelectedLanguage } from '@/core';
+import { usePostApiAccountCreateUserBasicDetails } from '@/apis/endpoints/api';
+import { useSelectedLanguage } from '@/core';
 import type { Language } from '@/core/i18n/resources';
+import type { AuthStackParamList } from '@/navigation/auth-navigator';
 import type { Option } from '@/ui';
 import Header from '@/ui/components/Header';
 import RoundInput from '@/ui/components/RoundInput';
 import colors from '@/ui/theme/colors';
 
-function AddUserInfo() {
+interface Props {
+  onNextSubmit?: () => void;
+}
+
+function AddUserInfo({ onNextSubmit }: Props) {
   const { language, setLanguage } = useSelectedLanguage();
+  const route = useRoute<RouteProp<AuthStackParamList, 'AddFarmScreen'>>();
+  const addUserInfo = usePostApiAccountCreateUserBasicDetails();
+  // const getUserInfo = useGetApiAccountFetchUserBasicDetails({})
+
+  // Formik
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    values,
+    resetForm,
+    errors,
+    touched,
+    setFieldValue,
+    setValues,
+  } = useFormik<FormikValues>({
+    initialValues: {
+      displayName: route.params.google?.displayName ?? '',
+      emailId: route.params.google?.email ?? '',
+      mobileNumber: route.params?.phoneNumber ?? '',
+    },
+    onSubmit: () => {
+      console.log('onSubmit ==> ', values);
+      apiSubmitInfo(values);
+    },
+    validationSchema: yup.object({
+      displayName: yup.string().trim().required('Name is required'),
+      emailId: yup
+        .string()
+        .trim()
+        .required('e-mail is required')
+        .test('email', 'Enter Valid e-mail', function (value) {
+          const emailRegex =
+            /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+          let isValidEmail = emailRegex.test(value);
+          if (!isValidEmail) {
+            return false;
+          }
+          return true;
+        }),
+      mobileNumber: yup
+        .string()
+        .trim()
+        .required('Mobile Number is required')
+        .test('phone', 'Enter Valid Mobile Number', function (value) {
+          // const emailRegex = /\\(?\\d{3}\\)?[-\\/\\.\\s]?\\d{3}[-\\/\\.\\s]?/;
+
+          const phoneRegex = /^(\+91-|\+91|0)?\d{10}$/; // Change this regex based on requirement
+          let isValidPhone = phoneRegex.test(value);
+          if (!isValidPhone) {
+            return false;
+          }
+          return true;
+        }),
+    }),
+  });
+
+  function apiSubmitInfo() {
+    addUserInfo.mutate(
+      {
+        data: values,
+      },
+      {
+        onSuccess(data) {
+          console.log('onSuccess ==> ', data);
+          if (data) {
+            onNextSubmit && onNextSubmit();
+          } else {
+            Toast.show({
+              type: 'error',
+              text1: 'Something went wrong!',
+            });
+          }
+        },
+        onError(error) {
+          console.log('onError ==> ', error);
+        },
+      }
+    );
+  }
 
   const onSelect = React.useCallback(
     (option: Option) => {
@@ -27,9 +119,35 @@ function AddUserInfo() {
   return (
     <View flex={1} mx={5}>
       <Header title="Account Data" mt={10} />
-      <RoundInput mt={5} placeholder="name" />
-      <RoundInput mt={5} placeholder="e-mail" />
-      <RoundInput mt={5} placeholder="mobile" />
+      <RoundInput
+        mt={5}
+        placeholder="name"
+        onChangeText={handleChange('displayName')}
+        value={values.displayName}
+        isDisabled={route.params.google?.displayName ? true : false}
+        isInvalid={!!errors.displayName}
+        errors={errors.displayName && touched.displayName && errors.displayName}
+      />
+      <RoundInput
+        mt={5}
+        onChangeText={handleChange('emailId')}
+        placeholder="e-mail"
+        value={values.emailId}
+        isDisabled={route.params.google?.email ? true : false}
+        isInvalid={!!errors.emailId}
+        errors={errors.emailId && touched.emailId && errors.emailId}
+      />
+      <RoundInput
+        mt={5}
+        placeholder="mobile"
+        onChangeText={handleChange('mobileNumber')}
+        value={values.mobileNumber}
+        isDisabled={route.params.phoneNumber ? true : false}
+        isInvalid={!!errors.mobileNumber}
+        errors={
+          errors.mobileNumber && touched.mobileNumber && errors.mobileNumber
+        }
+      />
       {/* <RoundInput mt={5} placeholder="password" />
       <Header
         title="Register as a company?"
@@ -66,16 +184,17 @@ function AddUserInfo() {
       </Radio.Group> */}
 
       <Button
-        position={'absolute'}
+        isLoading={addUserInfo.isLoading}
         backgroundColor={colors.button_color}
-        bottom={10}
-        onPress={() => {
-          if (I18nManager.isRTL) {
-            onSelect({ label: translate('settings.english'), value: 'en' });
-          } else {
-            onSelect({ label: translate('settings.arabic'), value: 'ar' });
-          }
-        }}
+        mt={10}
+        onPress={handleSubmit}
+        // onPress={() => {
+        //   if (I18nManager.isRTL) {
+        //     onSelect({ label: translate('settings.english'), value: 'en' });
+        //   } else {
+        //     onSelect({ label: translate('settings.arabic'), value: 'ar' });
+        //   }
+        // }}
         borderRadius={8}
         width={'80%'}
         fontWeight={'normal'}

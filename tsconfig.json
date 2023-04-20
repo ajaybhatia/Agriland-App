@@ -6,7 +6,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@env": ["./env.js"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@config/*": ["./src/config/*"]
     },
     "esModuleInterop": true,
     "checkJs": true
