@@ -17,13 +17,17 @@ import {
 } from 'native-base';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, SafeAreaView } from 'react-native';
+import { I18nManager, Platform, SafeAreaView } from 'react-native';
 import { StyleSheet } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
+import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as z from 'zod';
 
+import { translate, useSelectedLanguage } from '@/core';
+import type { Language } from '@/core/i18n/resources';
 import { LoginType } from '@/navigation/auth-navigator';
+import type { Option } from '@/ui';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
 
@@ -49,6 +53,7 @@ export type FormType = z.infer<typeof schema>;
 export const LoginForm = () => {
   const phoneInput = useRef<PhoneInput>(null);
   const { t } = useTranslation();
+  const { language, setLanguage } = useSelectedLanguage();
   const { navigate } = useNavigation();
 
   const [valuePhone, setPhoneValue] = useState<string>('');
@@ -123,6 +128,18 @@ export const LoginForm = () => {
     }
   };
 
+  const onSelect = React.useCallback(
+    (option: Option) => {
+      setLanguage(option.value as Language);
+      if ((option.value as Language) === 'en') {
+        I18nManager.forceRTL(false); // false for LTR direction
+      } else {
+        I18nManager.forceRTL(true);
+      }
+    },
+    [setLanguage]
+  );
+
   return (
     <ScrollView
       width={'100%'}
@@ -161,14 +178,14 @@ export const LoginForm = () => {
             <CardWithShadow mx={2}>
               <VStack p={3}>
                 <Header
-                  title={t('Welcome')}
+                  title={t('welcome')}
                   fontWeight="thin"
                   fontSize={13}
                   color={'black'}
                   mt={3}
                 />
                 <Header
-                  title={t('Sign in')}
+                  title={t('sign-in')}
                   color={'black'}
                   fontSize={'2xl'}
                   fontWeight="700"
@@ -208,7 +225,7 @@ export const LoginForm = () => {
                     withDarkTheme={false}
                     withShadow={false}
                     autoFocus
-                    placeholder="Enter Mobile Number"
+                    placeholder={t('enter-mobile')}
                     containerStyle={styles.inputContainer}
                     textContainerStyle={styles.inputTxtContainer}
                     textInputStyle={styles.input}
@@ -235,7 +252,7 @@ export const LoginForm = () => {
                     textTransform: 'none',
                   }}
                 >
-                  {t('Get OTP')}
+                  {t('get-otp')}
                 </Button>
 
                 {/* <HStack justifyContent={'center'} alignItems={'center'} mt={8}>
@@ -265,7 +282,7 @@ export const LoginForm = () => {
                       />
                     }
                   >
-                    {`${t('Sign in with Google')}     `}
+                    {`${t('signin-with-google')}     `}
                   </Button>
 
                   <Button
@@ -279,6 +296,17 @@ export const LoginForm = () => {
                       //   console.log('Signed in with Facebook!');
                       //   setFacebookLoading(false);
                       // })
+                      if (I18nManager.isRTL) {
+                        onSelect({
+                          label: translate('settings.english'),
+                          value: 'en',
+                        });
+                      } else {
+                        onSelect({
+                          label: translate('settings.arabic'),
+                          value: 'ar',
+                        });
+                      }
                     }}
                     overflow={'hidden'}
                     borderRadius={'lg'}
@@ -291,7 +319,7 @@ export const LoginForm = () => {
                       <Icon as={FontAwesome} name="facebook-square" size="lg" />
                     }
                   >
-                    {t('Sign in with Facebook')}
+                    {t('signin-with-facebook')}
                   </Button>
                   {/* <TouchableOpacity
             style={{

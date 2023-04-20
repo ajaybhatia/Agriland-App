@@ -2,6 +2,7 @@ import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import type { FormikValues } from 'formik';
 import { useFormik } from 'formik';
+import { t } from 'i18next';
 import { Button, View } from 'native-base';
 import React from 'react';
 import { I18nManager } from 'react-native';
@@ -49,12 +50,12 @@ function AddUserInfo({ onNextSubmit }: Props) {
       apiSubmitInfo(values);
     },
     validationSchema: yup.object({
-      displayName: yup.string().trim().required('Name is required'),
+      displayName: yup.string().trim().required(t('name-required')),
       emailId: yup
         .string()
         .trim()
-        .required('e-mail is required')
-        .test('email', 'Enter Valid e-mail', function (value) {
+        .required(t('e-mail-required'))
+        .test('email', t('enter-valid-email'), function (value) {
           const emailRegex =
             /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
           let isValidEmail = emailRegex.test(value);
@@ -66,8 +67,8 @@ function AddUserInfo({ onNextSubmit }: Props) {
       mobileNumber: yup
         .string()
         .trim()
-        .required('Mobile Number is required')
-        .test('phone', 'Enter Valid Mobile Number', function (value) {
+        .required(t('mobile-number-required'))
+        .test('phone', t('valid-mobile-number'), function (value) {
           // const emailRegex = /\\(?\\d{3}\\)?[-\\/\\.\\s]?\\d{3}[-\\/\\.\\s]?/;
 
           const phoneRegex = /^(\+91-|\+91|0)?\d{10}$/; // Change this regex based on requirement
@@ -118,10 +119,10 @@ function AddUserInfo({ onNextSubmit }: Props) {
 
   return (
     <View flex={1} mx={5}>
-      <Header title="Account Data" mt={10} />
+      <Header title={t('account-data')} mt={10} />
       <RoundInput
         mt={5}
-        placeholder="name"
+        placeholder={t('name')}
         onChangeText={handleChange('displayName')}
         value={values.displayName}
         isDisabled={route.params.google?.displayName ? true : false}
@@ -131,7 +132,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
       <RoundInput
         mt={5}
         onChangeText={handleChange('emailId')}
-        placeholder="e-mail"
+        placeholder={t('e-mail')}
         value={values.emailId}
         isDisabled={route.params.google?.email ? true : false}
         isInvalid={!!errors.emailId}
@@ -139,7 +140,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
       />
       <RoundInput
         mt={5}
-        placeholder="mobile"
+        placeholder={t('mobile')}
         onChangeText={handleChange('mobileNumber')}
         value={values.mobileNumber}
         isDisabled={route.params.phoneNumber ? true : false}
@@ -202,7 +203,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
         overflow={'hidden'}
         alignSelf={'center'}
       >
-        Continue
+        {t('continue')}
       </Button>
     </View>
   );

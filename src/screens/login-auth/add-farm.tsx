@@ -1,5 +1,6 @@
-import { View } from 'native-base';
+import { Text, View } from 'native-base';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet } from 'react-native';
 import Stepper from 'react-native-stepper-ui';
 
@@ -10,13 +11,14 @@ import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
   const [active, setActive] = useState(0);
-
+  const { t } = useTranslation();
   const onUseInfoSubmit = () => {
     setActive((p) => p + 1);
   };
+  // eslint-disable-next-line react/no-unstable-nested-components
   const MyComponent = () => {
     return (
-      <View justifyContent={'center'} alignItems={'center'}>
+      <View justifyContent={'center'} alignItems={'center'} flex={1}>
         <Text>{'map'}</Text>
       </View>
     );
@@ -25,10 +27,13 @@ const AddFarmScreen = () => {
   const content = [
     {
       content: <AddUserInfo onNextSubmit={onUseInfoSubmit} />,
-      title: 'account data',
+      title: t('account-data'),
     },
-    { content: <MyComponent />, title: 'form data' },
-    { content: <AddFramCropMaps type={MapType.PinMap} />, title: 'enter crop' },
+    { content: <MyComponent />, title: t('form-data') },
+    {
+      content: <AddFramCropMaps type={MapType.PinMap} />,
+      title: t('enter-crop'),
+    },
   ];
 
   return (

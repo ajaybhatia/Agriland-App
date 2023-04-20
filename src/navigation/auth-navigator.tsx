@@ -2,6 +2,7 @@ import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Login } from '@/screens';
 import AddFarmScreen from '@/screens/login-auth/add-farm';
@@ -31,6 +32,7 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export const AuthNavigator = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   function onBackPress() {
     navigation.goBack();
   }
@@ -53,7 +55,7 @@ export const AuthNavigator = () => {
             return (
               <AppHeader
                 onBackPress={onBackPress}
-                title="Verify OTP"
+                title={t('verify-otp')}
                 iconName={'arrow-u-right-top'}
               />
             );
@@ -71,7 +73,7 @@ export const AuthNavigator = () => {
           header: () => {
             return (
               <AppHeader
-                title="Create a new account"
+                title={t('create-new-account')}
                 iconName={'arrow-u-right-top'}
                 onBackPress={onBackPress}
               />

@@ -123,14 +123,14 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
             <CardWithShadow mx={3}>
               <VStack p={3}>
                 <Header
-                  title={t('Otp code')}
+                  title={t('otp-code')}
                   fontWeight="bold"
                   fontSize={18}
                   color={'green.500'}
                   mt={3}
                 />
                 <Header
-                  title={`${t('ENTER CODE WE SENT')} ${phoneNumber}`}
+                  title={`${t('enter-code')} ${phoneNumber}`}
                   fontWeight="thin"
                   fontSize={13}
                   color={'black'}
@@ -151,7 +151,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
               <VStack paddingX={'10'}>
                 <HStack alignItems={'center'} mt={8}>
                   <Text fontWeight="thin" fontSize={13} color={'black'}>
-                    {`${t("i didn't receive a code !")} `}
+                    {`${t('not-recieve-code')} `}
                   </Text>
                   {isResendLoading ? (
                     <View px={2}>
@@ -164,7 +164,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
                       fontSize={13}
                       onPress={onResendOtp}
                     >
-                      {t('Please resend')}
+                      {t('resend-code')}
                     </Text>
                   )}
                 </HStack>
@@ -181,7 +181,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
                   }}
                   onPress={onConfirm}
                 >
-                  {t('Verify')}
+                  {t('verify')}
                 </Button>
               </VStack>
             </CardWithShadow>

@@ -1,7 +1,4 @@
 {
-  "onboarding": {
-    "message": "مرحبا بكم في موقع تطبيق obytes"
-  },
   "settings": {
     "about": "حول التطبيق ",
     "app_name": "اسم التطبيق",
@@ -26,5 +23,29 @@
     "version": "إصدار",
     "website": "موقع الكتروني"
   },
-  "welcome": "test arabic"
+  "verify-otp":"تحقق من OTP",
+ "create-new-account":"انشاء حساب جديد",
+ "otp-code":"كود OTP",
+ "enter-code":"أدخل الرمز الذي أرسلناه",
+ "not-recieve-code":"لم أتلق رمز!",
+ "resend-code":"يرجى إعادة إرسال",
+ "verify":"يؤكد",
+ "welcome":"مرحباً",
+ "sign-in":"تسجيل الدخول",
+ "enter-mobile":"أدخل رقم الهاتف المتحرك",
+ "get-otp":"احصل على OTP",
+ "signin-with-google":"الدخول مع جوجل",
+ "signin-with-facebook":"قم بتسجيل الدخول باستخدام الفيسبوك",
+ "form-data":"بيانات النموذج",
+ "enter-crop":"أدخل المحاصيل",
+ "name-required":"مطلوب اسم",
+ "e-mail-required":"البريد الالكتروني مطلوب",
+ "enter-valid-email":"أدخل بريد إلكتروني صالح",
+ "mobile-number-required":"رقم الهاتف المحمول مطلوب",
+ "valid-mobile-number":"ادخل رقم هاتف خلوي ساري المفعول",
+ "name":"اسم",
+ "e-mail":"بريد إلكتروني",
+ "mobile":"متحرك",
+ "continue":"يكمل",
+ "account-data":"بيانات الحساب"
 }

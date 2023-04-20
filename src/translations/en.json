@@ -1,7 +1,4 @@
 {
-  "onboarding": {
-    "message": "Welcome to obytes app site"
-  },
   "settings": {
     "about": "About",
     "app_name": "App Name",
@@ -26,5 +23,29 @@
     "version": "Version",
     "website": "Website"
   },
-  "welcome": "Welcome to obytes app site"
+  "verify-otp":"Verify OTP",
+  "create-new-account":"Create a new account",
+  "otp-code":"Otp code",
+  "enter-code":"ENTER CODE WE SENT",
+  "not-recieve-code":"i didn't receive a code !",
+  "resend-code":"Please resend",
+  "verify":"Verify",
+  "welcome":"Welcome",
+  "sign-in":"Sign in",
+  "enter-mobile":"Enter Mobile Number",
+  "get-otp":"Get OTP",
+  "signin-with-google":"Sign in with Google",
+  "signin-with-facebook":"Sign in with Facebook",
+   "form-data":"form data",
+  "enter-crop":"enter crop",
+  "name-required":"Name is required",
+  "e-mail-required":"e-mail is required",
+  "enter-valid-email":"Enter Valid e-mail",
+  "mobile-number-required":"Mobile Number is required",
+  "valid-mobile-number":"Enter Valid Mobile Number",
+  "name":"name",
+  "e-mail":"e-mail",
+  "mobile":"mobile",
+  "continue":"Continue",
+  "account-data":"Account Data"
 }
