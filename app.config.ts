@@ -20,7 +20,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: `${withEnvSuffix('./assets/icon')}.png`,
   userInterfaceStyle: 'light',
   splash: {
-    image: './assets/splash.png',
+    image: './assets/splash2.png',
     resizeMode: 'cover',
     backgroundColor: '#F75469',
   },
