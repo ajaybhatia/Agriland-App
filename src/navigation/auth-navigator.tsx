@@ -1,13 +1,13 @@
-import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { useTranslation } from 'react-i18next';
 
-import { Login } from '@/screens';
 import AddFarmScreen from '@/screens/login-auth/add-farm';
-import OtpVerifyScreen from '@/screens/login-auth/otp-verify-screen';
 import AppHeader from '@/ui/components/AppHeader';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { Login } from '@/screens';
+import OtpVerifyScreen from '@/screens/login-auth/otp-verify-screen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export enum LoginType {
   FACEBOOK,
@@ -46,6 +46,23 @@ export const AuthNavigator = () => {
         }}
       />
       <Stack.Screen
+        name="OtpVerifyScreen"
+        component={OtpVerifyScreen}
+        options={{
+          headerShown: true,
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: () => {
+            return (
+              <AppHeader
+                onBackPress={onBackPress}
+                title={t('verify-otp')}
+                iconName={'arrow-u-right-top'}
+              />
+            );
+          },
+        }}
+      />
+      <Stack.Screen
         name="AddFarmScreen"
         component={AddFarmScreen}
         options={{
@@ -58,23 +75,6 @@ export const AuthNavigator = () => {
                 title={t('create-new-account')}
                 iconName={'arrow-u-right-top'}
                 onBackPress={onBackPress}
-              />
-            );
-          },
-        }}
-      />
-      <Stack.Screen
-        name="OtpVerifyScreen"
-        component={OtpVerifyScreen}
-        options={{
-          headerShown: true,
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: () => {
-            return (
-              <AppHeader
-                onBackPress={onBackPress}
-                title={t('verify-otp')}
-                iconName={'arrow-u-right-top'}
               />
             );
           },
