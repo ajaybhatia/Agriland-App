@@ -46,6 +46,24 @@ export const AuthNavigator = () => {
         }}
       />
       <Stack.Screen
+        name="AddFarmScreen"
+        component={AddFarmScreen}
+        options={{
+          headerShown: true,
+          headerTitle: t('create-new-account'),
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: () => {
+            return (
+              <AppHeader
+                title={t('create-new-account')}
+                iconName={'arrow-u-right-top'}
+                onBackPress={onBackPress}
+              />
+            );
+          },
+        }}
+      />
+      <Stack.Screen
         name="OtpVerifyScreen"
         component={OtpVerifyScreen}
         options={{
@@ -60,47 +78,6 @@ export const AuthNavigator = () => {
               />
             );
           },
-        }}
-      />
-
-      <Stack.Screen
-        name="AddFarmScreen"
-        component={AddFarmScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Create a new account',
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: () => {
-            return (
-              <AppHeader
-                title={t('create-new-account')}
-                iconName={'arrow-u-right-top'}
-                onBackPress={onBackPress}
-              />
-            );
-          },
-          // headerLeft: () => {
-          //   return (
-          //     <Button
-          //       variant="unstyled"
-          //       overflow={'hidden'}
-          //       borderRadius={'lg'}
-          //       _text={{
-          //         textTransform: 'none',
-          //       }}
-          //       startIcon={
-          //         <Icon
-          //           as={MaterialCommunityIcons}
-          //           name="arrow-u-right-top"
-          //           size="lg"
-          //           color={'green.800'}
-          //         />
-          //       }
-          //     >
-          //       {''}
-          //     </Button>
-          //   );
-          // },
         }}
       />
     </Stack.Navigator>

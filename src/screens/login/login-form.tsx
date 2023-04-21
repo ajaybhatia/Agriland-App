@@ -207,6 +207,7 @@ export const LoginForm = () => {
                       keyboardType: 'phone-pad',
                       value: valuePhone,
                       maxLength: 10,
+                      textAlign: I18nManager.isRTL ? 'right' : 'left',
                     }}
                     onChangeText={(text) => {
                       if (text.match(/^\d*$/)) {
@@ -224,7 +225,6 @@ export const LoginForm = () => {
                     }}
                     withDarkTheme={false}
                     withShadow={false}
-                    autoFocus
                     placeholder={t('enter-mobile')}
                     containerStyle={styles.inputContainer}
                     textContainerStyle={styles.inputTxtContainer}

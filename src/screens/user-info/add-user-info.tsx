@@ -136,6 +136,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
         onChangeText={handleChange('emailId')}
         placeholder={t('e-mail')}
         value={values.emailId}
+        keyboardType={'email-address'}
         isDisabled={route.params.google?.email ? true : false}
         isInvalid={!!errors.emailId}
         errors={errors.emailId && touched.emailId && errors.emailId}
@@ -144,6 +145,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
         mt={5}
         onBlur={handleBlur('mobileNumber')}
         placeholder={t('mobile')}
+        keyboardType={'phone-pad'}
         onChangeText={handleChange('mobileNumber')}
         value={values.mobileNumber}
         isDisabled={route.params.phoneNumber ? true : false}

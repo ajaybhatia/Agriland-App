@@ -1,7 +1,4 @@
-import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 /* eslint-disable react-native/no-inline-styles */
 import {
   Button,
@@ -9,20 +6,22 @@ import {
   Image as ImageBase,
   ScrollView,
   Text,
-  View,
   VStack,
+  View,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
-import OTPTextInput from 'react-native-otp-textinput';
-import Toast from 'react-native-toast-message';
-
-import CardWithShadow from '@/ui/components/CardWithShadow';
-import Header from '@/ui/components/Header';
 
 import type { AuthStackParamList } from '../../navigation/auth-navigator';
+import CardWithShadow from '@/ui/components/CardWithShadow';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import Header from '@/ui/components/Header';
 import { LoginType } from '../../navigation/auth-navigator';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import OTPTextInput from 'react-native-otp-textinput';
+import Toast from 'react-native-toast-message';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 type OtpVerifyScreenProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -137,12 +136,13 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
                 />
                 <View my={5} w={'100%'} h={'0.4'} bgColor={'gray.300'} />
               </VStack>
-              <VStack mt={2}>
+              <VStack mt={2} >
                 <OTPTextInput
                   ref={ref}
                   handleTextChange={(text: string) => setOtpValue(text)}
                   textInputStyle={styles.roundedTextInput}
                   inputCount={6}
+                  containerStyle={{flexDirection:"row-reverse"}}
                   inputCellLength={1}
                   keyboardType="numeric"
                   //   defaultValue={'----'}

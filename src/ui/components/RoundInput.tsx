@@ -1,6 +1,7 @@
 import { FormControl, Input, View } from 'native-base';
 import React from 'react';
 import type {
+  KeyboardTypeOptions,
   NativeSyntheticEvent,
   TextInputFocusEventData,
 } from 'react-native';
@@ -20,6 +21,7 @@ type Props = {
   onBlur?:
     | ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void)
     | undefined;
+  keyboardType?: KeyboardTypeOptions | undefined;
 };
 
 export default function RoundInput({
@@ -42,10 +44,12 @@ export default function RoundInput({
           editable={false}
           isDisabled={true}
           onBlur={onBlur}
+          dir={'rtl'}
           textAlign={I18nManager.isRTL ? 'right' : 'left'}
           placeholder={placeholder}
           borderWidth={2}
           value={value}
+          // keyboardType=""
           borderColor={BORDER_COLOR_DARK}
           color="#000"
           bgColor={'white'}
@@ -63,6 +67,7 @@ export default function RoundInput({
             mt={mt}
             py={3}
             onBlur={onBlur}
+            // keyboardType={'number-pad'}
             textAlign={I18nManager.isRTL ? 'right' : 'left'}
             placeholder={placeholder}
             borderWidth={2}
