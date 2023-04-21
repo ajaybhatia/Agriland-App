@@ -145,7 +145,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
         mt={5}
         onBlur={handleBlur('mobileNumber')}
         placeholder={t('mobile')}
-        keyboardType={'phone-pad'}
+        keyboardType={'number-pad'}
         onChangeText={handleChange('mobileNumber')}
         value={values.mobileNumber}
         isDisabled={route.params.phoneNumber ? true : false}

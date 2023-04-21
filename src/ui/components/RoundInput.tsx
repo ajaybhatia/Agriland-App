@@ -34,6 +34,7 @@ export default function RoundInput({
   isInvalid,
   maxLength,
   onBlur,
+  keyboardType,
 }: Props) {
   return (
     <View>
@@ -44,12 +45,11 @@ export default function RoundInput({
           editable={false}
           isDisabled={true}
           onBlur={onBlur}
-          dir={'rtl'}
           textAlign={I18nManager.isRTL ? 'right' : 'left'}
           placeholder={placeholder}
           borderWidth={2}
           value={value}
-          // keyboardType=""
+          keyboardType={keyboardType}
           borderColor={BORDER_COLOR_DARK}
           color="#000"
           bgColor={'white'}
@@ -67,7 +67,7 @@ export default function RoundInput({
             mt={mt}
             py={3}
             onBlur={onBlur}
-            // keyboardType={'number-pad'}
+            keyboardType={keyboardType}
             textAlign={I18nManager.isRTL ? 'right' : 'left'}
             placeholder={placeholder}
             borderWidth={2}

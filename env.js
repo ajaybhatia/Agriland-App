@@ -13,7 +13,7 @@ const packageJSON = require('./package.json');
 
 const BUNDLE_ID = 'ar.agrimisr'; // ios bundle id
 const PACKAGE = 'ar.agrimisr'; // android package name
-const NAME = 'AgriMISR'; // app name
+const NAME = 'AgriLand'; // app name
 const APP_ENV = process.env.APP_ENV ?? 'development';
 
 /**

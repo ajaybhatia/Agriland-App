@@ -24,7 +24,7 @@ import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as z from 'zod';
 
-import { translate, useSelectedLanguage } from '@/core';
+import { useSelectedLanguage } from '@/core';
 import type { Language } from '@/core/i18n/resources';
 import { LoginType } from '@/navigation/auth-navigator';
 import type { Option } from '@/ui';
@@ -296,17 +296,17 @@ export const LoginForm = () => {
                       //   console.log('Signed in with Facebook!');
                       //   setFacebookLoading(false);
                       // })
-                      if (I18nManager.isRTL) {
-                        onSelect({
-                          label: translate('settings.english'),
-                          value: 'en',
-                        });
-                      } else {
-                        onSelect({
-                          label: translate('settings.arabic'),
-                          value: 'ar',
-                        });
-                      }
+                      // if (I18nManager.isRTL) {
+                      //   onSelect({
+                      //     label: translate('settings.english'),
+                      //     value: 'en',
+                      //   });
+                      // } else {
+                      //   onSelect({
+                      //     label: translate('settings.arabic'),
+                      //     value: 'ar',
+                      //   });
+                      // }
                     }}
                     overflow={'hidden'}
                     borderRadius={'lg'}
