@@ -3,6 +3,7 @@ module.exports = {
   black: '#000000',
   button_color: '#4F7942',
   BORDER_COLOR_DARK: '#4F7942',
+  TITLE_COLOR: '#4F7942',
   BACKGROUND_COLOR: '#fbf9f3',
   BORDER_COLOR: '#f5e8ca',
   neutral: {

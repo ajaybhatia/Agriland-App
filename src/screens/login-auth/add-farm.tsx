@@ -6,11 +6,11 @@ import Stepper from 'react-native-stepper-ui';
 
 import { button_color } from '@/ui/theme/colors';
 
-import AddFramCropMaps, { MapType } from '../maps-views/add-farm-crop-maps';
+import AddFramCropMaps from '../maps-views/add-farm-crop-maps';
 import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(1);
   const { t } = useTranslation();
   const onUseInfoSubmit = () => {
     setActive((p) => p + 1);
@@ -29,9 +29,13 @@ const AddFarmScreen = () => {
       content: <AddUserInfo onNextSubmit={onUseInfoSubmit} />,
       title: t('account-data'),
     },
-    { content: <MyComponent />, title: t('form-data') },
+    // { content: <MyComponent />, title: t('form-data') },
     {
-      content: <AddFramCropMaps type={MapType.PinMap} />,
+      content: <AddFramCropMaps />,
+      title: t('form-data'),
+    },
+    {
+      content: <AddFramCropMaps />,
       title: t('enter-crop'),
     },
   ];

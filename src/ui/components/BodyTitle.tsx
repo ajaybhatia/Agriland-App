@@ -31,7 +31,7 @@ type Props = {
   onRightIconClick?: () => void;
 };
 
-export default function Header({
+export default function BodyTitle({
   iconName,
   title,
   ml = 0,
