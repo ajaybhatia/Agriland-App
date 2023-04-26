@@ -10,5 +10,4 @@ export interface ResetPasswordModel {
   password: string;
   confirmPassword?: string | null;
   code?: string | null;
-  userName?: string | null;
 }

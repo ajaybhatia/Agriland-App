@@ -3,6 +3,7 @@ import React from 'react';
 import type {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
+  NativeTouchEvent,
   TextInputFocusEventData,
 } from 'react-native';
 import { I18nManager } from 'react-native';
@@ -22,6 +23,7 @@ type Props = {
     | ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void)
     | undefined;
   keyboardType?: KeyboardTypeOptions | undefined;
+  onPressIn?: ((e: NativeSyntheticEvent<NativeTouchEvent>) => void) | undefined;
 };
 
 export default function RoundInput({
@@ -35,6 +37,7 @@ export default function RoundInput({
   maxLength,
   onBlur,
   keyboardType,
+  onPressIn,
 }: Props) {
   return (
     <View>
@@ -42,19 +45,20 @@ export default function RoundInput({
         <Input
           mt={mt}
           py={3}
+          onPressIn={onPressIn}
           editable={false}
           isDisabled={true}
           onBlur={onBlur}
           textAlign={I18nManager.isRTL ? 'right' : 'left'}
           placeholder={placeholder}
           borderWidth={2}
+          borderColor={BORDER_COLOR_DARK}
+          borderRadius={15}
           value={value}
           keyboardType={keyboardType}
-          borderColor={BORDER_COLOR_DARK}
           color="#000"
           bgColor={'white'}
           maxLength={maxLength}
-          borderRadius={15}
           focusOutlineColor={BORDER_COLOR_DARK}
           variant="outline"
           size="xl"
@@ -66,6 +70,7 @@ export default function RoundInput({
           <Input
             mt={mt}
             py={3}
+            onPressIn={onPressIn}
             onBlur={onBlur}
             keyboardType={keyboardType}
             textAlign={I18nManager.isRTL ? 'right' : 'left'}

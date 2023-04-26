@@ -8,6 +8,7 @@
 export interface CropCategoryResponse {
   id?: string;
   name?: string | null;
+  description?: string | null;
   createdOn?: string;
   updatedBy?: string | null;
   createdBy?: string | null;

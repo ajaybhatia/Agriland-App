@@ -1,9 +1,7 @@
-import {
-  ActivityIndicator,
-  I18nManager,
-  SafeAreaView,
-  StyleSheet,
-} from 'react-native';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 /* eslint-disable react-native/no-inline-styles */
 import {
   Button,
@@ -11,22 +9,25 @@ import {
   Image as ImageBase,
   ScrollView,
   Text,
-  VStack,
   View,
+  VStack,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
-
-import type { AuthStackParamList } from '../../navigation/auth-navigator';
-import CardWithShadow from '@/ui/components/CardWithShadow';
-import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import Header from '@/ui/components/Header';
-import { LoginType } from '../../navigation/auth-navigator';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
+import {
+  ActivityIndicator,
+  I18nManager,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
 import Toast from 'react-native-toast-message';
-import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
+
+import CardWithShadow from '@/ui/components/CardWithShadow';
+import Header from '@/ui/components/Header';
+
+import type { AuthStackParamList } from '../../navigation/auth-navigator';
+import { LoginType } from '../../navigation/auth-navigator';
 
 type OtpVerifyScreenProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -58,6 +59,8 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
       if (phoneNumber !== '') {
         try {
           setResendLoading(true);
+          setOtpValue('');
+          ref?.current?.clear();
           const _confirmation = await auth().signInWithPhoneNumber(
             phoneNumber,
             true

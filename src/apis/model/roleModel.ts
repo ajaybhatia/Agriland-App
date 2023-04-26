@@ -6,5 +6,5 @@
  */
 
 export interface RoleModel {
-  name: string;
+  name?: string | null;
 }

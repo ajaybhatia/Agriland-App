@@ -11,6 +11,7 @@ export interface ArEnTranslation {
   createdBy: string;
   updatedOn?: string | null;
   isActive?: boolean;
+  isDeleted?: boolean | null;
   english: string;
   arabic: string;
 }

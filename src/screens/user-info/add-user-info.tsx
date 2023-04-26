@@ -41,8 +41,8 @@ function AddUserInfo({ onNextSubmit }: Props) {
     setValues,
   } = useFormik<FormikValues>({
     initialValues: {
-      displayName: route.params.google?.displayName ?? '',
-      emailId: route.params.google?.email ?? '',
+      displayName: route.params?.google?.displayName ?? '',
+      emailId: route.params?.google?.email ?? '',
       mobileNumber: route.params?.phoneNumber ?? '',
     },
     onSubmit: () => {
@@ -100,6 +100,10 @@ function AddUserInfo({ onNextSubmit }: Props) {
         },
         onError(error) {
           console.log('onError ==> ', error);
+          Toast.show({
+            type: 'error',
+            text1: error.message,
+          });
         },
       }
     );
@@ -126,7 +130,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
         placeholder={t('name')}
         onChangeText={handleChange('displayName')}
         value={values.displayName}
-        isDisabled={route.params.google?.displayName ? true : false}
+        isDisabled={route.params?.google?.displayName ? true : false}
         isInvalid={!!errors.displayName}
         errors={errors.displayName && touched.displayName && errors.displayName}
       />
@@ -137,7 +141,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
         placeholder={t('e-mail')}
         value={values.emailId}
         keyboardType={'email-address'}
-        isDisabled={route.params.google?.email ? true : false}
+        isDisabled={route.params?.google?.email ? true : false}
         isInvalid={!!errors.emailId}
         errors={errors.emailId && touched.emailId && errors.emailId}
       />
@@ -148,7 +152,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
         keyboardType={'number-pad'}
         onChangeText={handleChange('mobileNumber')}
         value={values.mobileNumber}
-        isDisabled={route.params.phoneNumber ? true : false}
+        isDisabled={route.params?.phoneNumber ? true : false}
         isInvalid={!!errors.mobileNumber}
         errors={
           errors.mobileNumber && touched.mobileNumber && errors.mobileNumber
@@ -194,13 +198,6 @@ function AddUserInfo({ onNextSubmit }: Props) {
         backgroundColor={colors.button_color}
         mt={10}
         onPress={handleSubmit}
-        // onPress={() => {
-        //   if (I18nManager.isRTL) {
-        //     onSelect({ label: translate('settings.english'), value: 'en' });
-        //   } else {
-        //     onSelect({ label: translate('settings.arabic'), value: 'ar' });
-        //   }
-        // }}
         borderRadius={8}
         width={'80%'}
         fontWeight={'normal'}

@@ -7,6 +7,7 @@
 
 export interface CropCategoryRequest {
   name?: string | null;
+  description?: string | null;
   id?: string | null;
   isActive?: boolean | null;
 }

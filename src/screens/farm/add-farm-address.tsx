@@ -1,14 +1,19 @@
 import type { FormikValues } from 'formik';
 import { useFormik } from 'formik';
-import { Button, View, VStack } from 'native-base';
-import React from 'react';
+import { Button, Icon, Pressable, Text, View, VStack } from 'native-base';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as yup from 'yup';
 
+import type { GovernorateResponse } from '@/apis/model';
 import Header from '@/ui/components/Header';
 import RoundInput from '@/ui/components/RoundInput';
-import colors from '@/ui/theme/colors';
+import colors, { BORDER_COLOR_DARK } from '@/ui/theme/colors';
+
+import GetGovernerate from './get-governerate';
 
 type Props = {
   onNextStep?: () => void;
@@ -16,6 +21,7 @@ type Props = {
 
 const AddFarmAddress = ({ onNextStep }: Props) => {
   const { t } = useTranslation();
+  const [isGovernerateOpen, setGovernerateOpen] = useState<Boolean>(false);
 
   // Formik
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
@@ -51,6 +57,46 @@ const AddFarmAddress = ({ onNextStep }: Props) => {
           value={values.address}
           isInvalid={!!errors.address}
           errors={errors.address && touched.address && errors.address}
+        />
+        <Pressable
+          onPress={() => setGovernerateOpen(true)}
+          mt={5}
+          borderWidth={2}
+          borderColor={BORDER_COLOR_DARK}
+          borderRadius={15}
+        >
+          <View
+            flexDirection={'row'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+          >
+            <Text color={'#a9a9a9'} fontSize={'xs'} ml={3} py={4}>
+              Governerate
+            </Text>
+            <Icon
+              mr={3}
+              as={MaterialIcons}
+              name={'arrow-drop-down'}
+              size={'2xl'}
+              color={'amber.600'}
+            />
+          </View>
+        </Pressable>
+
+        <RoundInput
+          mt={5}
+          onBlur={handleBlur('city')}
+          placeholder={'city'}
+          onPressIn={() => {
+            Toast.show({
+              type: 'error',
+              text1: 'RoundInput',
+            });
+          }}
+          onChangeText={handleChange('city')}
+          value={values.city}
+          isInvalid={!!errors.city}
+          errors={errors.city && touched.city && errors.city}
         />
         <RoundInput
           mt={5}
@@ -102,6 +148,14 @@ const AddFarmAddress = ({ onNextStep }: Props) => {
           {t('continue')}
         </Button>
       </VStack>
+      {isGovernerateOpen && (
+        <GetGovernerate
+          onGovernerateSelect={(governorate: GovernorateResponse[]) => {
+            console.log('Selected governorate ===> ', governorate);
+            setGovernerateOpen(false);
+          }}
+        />
+      )}
     </View>
   );
 };

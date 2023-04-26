@@ -8,14 +8,12 @@ import type { RoleModel } from './roleModel';
 
 export interface UpdateUserModel {
   id?: string | null;
-  email: string;
-  firstName: string;
-  lastName: string;
+  email?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  displayName?: string | null;
   phoneNumber: string;
   roles?: RoleModel[] | null;
   isActive?: boolean;
-  createdOn?: string;
-  updatedOn?: string | null;
   isLocked?: boolean;
-  message?: string | null;
 }

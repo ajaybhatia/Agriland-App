@@ -11,6 +11,7 @@ export interface MobileAppUserBasicDetails {
   createdBy: string;
   updatedOn?: string | null;
   isActive?: boolean;
+  isDeleted?: boolean | null;
   displayName: string;
   emailId?: string | null;
   mobileNumber?: string | null;

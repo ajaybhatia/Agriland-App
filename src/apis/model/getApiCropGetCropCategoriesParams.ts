@@ -10,4 +10,6 @@ skip?: number;
 take?: number;
 onlyActive?: boolean;
 q?: string;
+sortColumn?: string;
+sortOrder?: string;
 };

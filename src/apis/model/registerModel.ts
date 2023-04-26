@@ -8,12 +8,9 @@ import type { RoleModel } from './roleModel';
 
 export interface RegisterModel {
   email?: string | null;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  password?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  phoneNumber?: string | null;
   isActive?: boolean;
-  isMemberAccount?: boolean | null;
-  message?: string | null;
   roles?: RoleModel[] | null;
 }

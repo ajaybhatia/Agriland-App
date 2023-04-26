@@ -7,5 +7,5 @@
 
 export interface RoleUpdateModel {
   id?: string | null;
-  name: string;
+  name?: string | null;
 }

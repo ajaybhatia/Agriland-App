@@ -11,6 +11,7 @@ export interface CropResponse {
   imageUrl?: string | null;
   cropCategoryId?: string;
   cropCategoryName?: string | null;
+  description?: string | null;
   createdOn?: string;
   updatedBy?: string | null;
   createdBy?: string | null;

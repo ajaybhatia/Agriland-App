@@ -8,6 +8,7 @@
 export interface CropRequest {
   id?: string | null;
   name?: string | null;
+  description?: string | null;
   imageUrl?: string | null;
   cropCategoryId?: string | null;
   isActive?: boolean | null;
