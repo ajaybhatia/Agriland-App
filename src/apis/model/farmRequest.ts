@@ -13,4 +13,8 @@ export interface FarmRequest {
   landHoldingNumber?: string | null;
   governorateFieldId?: string | null;
   irrigationTypeId?: string | null;
+  cityId?: string | null;
+  villageId?: string | null;
+  address?: string | null;
+  organization?: string | null;
 }

@@ -29,6 +29,7 @@ type Props = {
   fontWeight?: ResponsiveValue<IFontWeight | number | (string & {})>;
   btnTitle?: string;
   onRightIconClick?: () => void;
+  numberOfLines?: number | undefined;
 };
 
 export default function BodyTitle({
@@ -46,6 +47,7 @@ export default function BodyTitle({
   btnTitle,
   onRightIconClick,
   iconColor = colors.TITLE_COLOR,
+  numberOfLines,
 }: Props) {
   return (
     <View
@@ -58,10 +60,12 @@ export default function BodyTitle({
       justifyContent={'space-between'}
     >
       <Text
+        numberOfLines={numberOfLines}
         fontSize={fontSize}
         fontWeight={fontWeight}
         color={color}
         fontFamily={'heading'}
+        flexWrap={'wrap'}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ textAlign: I18nManager.isRTL ? 'left' : 'right' }}
       >

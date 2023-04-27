@@ -11,7 +11,15 @@ export interface FarmResponse {
   name?: string | null;
   landHoldingNumber?: string | null;
   governorateFieldId?: string;
+  governorate?: string | null;
   irrigationTypeId?: string;
+  irrigationType?: string | null;
+  cityId?: string | null;
+  city?: string | null;
+  villageId?: string | null;
+  village?: string | null;
+  address?: string | null;
+  organization?: string | null;
   coordinates?: CoOrdinates[] | null;
   createdOn?: string;
   updatedBy?: string | null;

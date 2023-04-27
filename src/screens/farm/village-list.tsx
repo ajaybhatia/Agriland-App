@@ -3,22 +3,24 @@ import { Button, View } from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { useGetApiCommonFetchGovernates } from '@/apis/endpoints/api';
-import type { Governorate } from '@/apis/model';
-import { EmptyList } from '@/ui';
+import { useGetApiCommonFetchVillageByCityId } from '@/apis/endpoints/api';
+import type { Village } from '@/apis/model';
 import AppLoader from '@/ui/components/AppLoader';
+import EmptyList from '@/ui/components/EmptyList';
 import Header from '@/ui/components/Header';
 import ItemList from '@/ui/components/ItemList';
 import colors from '@/ui/theme/colors';
 
 type Props = {
-  onGovernerateSelect?: (governorate: Governorate[]) => void;
+  cityId: string;
+  onVillageSelect?: (village: Village[]) => void;
   onClose?: () => void;
 };
 
-const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
+const VillageList = ({ onVillageSelect, onClose, cityId }: Props) => {
   const { t } = useTranslation();
   const [selections, setSelection] = useState<number[]>([]);
   const [moreInfo, setMoreInfo] = useState<{
@@ -28,41 +30,38 @@ const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
     take: 20,
     skip: 0,
   });
-  const [governateResponse, setGovernateResponse] = useState<Governorate[]>([]);
+  const [villageResponse, setVillageResponse] = useState<Village[]>([]);
 
   // Api
-
-  // const governateApi = useGetApiGovernorateGetGovernorates(
-  //   {
-  //     skip: moreInfo.skip,
-  //     take: moreInfo.take,
-  //   },
-  //   {
-  //     query: {
-  //       onSuccess: (data: Governorate[]) => {
-  //         if (data.length > 0) {
-  //           setGovernateResponse([...governateResponse, ...data]);
-  //         }
-  //       },
-  //     },
-  //   }
-  // );
-  const governateApi = useGetApiCommonFetchGovernates({
-    query: {
-      onSuccess: (data: Governorate[]) => {
-        if (data.length > 0) {
-          setGovernateResponse([...governateResponse, ...data]);
-        }
-      },
+  console.log('cityId ==> ', cityId);
+  const villageApi = useGetApiCommonFetchVillageByCityId(
+    {
+      cityId: cityId,
     },
-  });
+    {
+      query: {
+        onSuccess: (data: Village[]) => {
+          console.log('data ==> ', data);
+          if (data.length > 0) {
+            setVillageResponse([...villageResponse, ...data]);
+          }
+        },
+        onError(err) {
+          Toast.show({
+            type: 'error',
+            text1: err.message,
+          });
+        },
+      },
+    }
+  );
 
   function handleSubmit() {
-    if (onGovernerateSelect && selections.length > 0) {
+    if (onVillageSelect && selections.length > 0) {
       var selectedGovernorate = selections.map((v) => {
-        return governateResponse.filter((x, index) => index === v)[0];
+        return villageResponse.filter((x, index) => index === v)[0];
       });
-      onGovernerateSelect(selectedGovernorate);
+      onVillageSelect(selectedGovernorate);
     }
   }
 
@@ -70,7 +69,7 @@ const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
     <View style={styles.fullscreen}>
       <View mx={8} flex={1}>
         <Header
-          title={'Select Governerate'}
+          title={'Select Village'}
           iconName={'close'}
           mt={3}
           mb={3}
@@ -82,22 +81,8 @@ const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
           extraData={selections}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={governateResponse}
-          // eslint-disable-next-line react/no-unstable-nested-components
-          ListEmptyComponent={() =>
-            governateResponse.length <= 0 &&
-            !governateApi.isLoading &&
-            !governateApi.isFetching && (
-              <EmptyList value={'Governate not found'} />
-            )
-          }
-          renderItem={({
-            item,
-            index,
-          }: {
-            item: Governorate;
-            index: number;
-          }) => {
+          data={villageResponse}
+          renderItem={({ item, index }: { item: Village; index: number }) => {
             console.log('selections ==> ', selections);
             return (
               <ItemList
@@ -126,12 +111,18 @@ const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
               />
             );
           }}
+          // eslint-disable-next-line react/no-unstable-nested-components
+          ListEmptyComponent={() =>
+            villageResponse.length <= 0 &&
+            !villageApi.isLoading &&
+            !villageApi.isFetching && <EmptyList value={'Villages not found'} />
+          }
           estimatedItemSize={40}
-          onEndReachedThreshold={0.5}
+          //onEndReachedThreshold={0.5}
           contentContainerStyle={{ paddingBottom: 100 }}
-          onEndReached={() => {
-            console.log('onEndReached');
-          }}
+          // onEndReached={() => {
+          //   console.log('onEndReached');
+          // }}
         />
       </View>
       {selections.length > 0 && (
@@ -150,13 +141,13 @@ const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
           {t('continue')}
         </Button>
       )}
-      {governateResponse.length <= 0 &&
-        (governateApi.isLoading || governateApi.isFetching) && <AppLoader />}
+      {villageResponse.length <= 0 &&
+        (villageApi.isLoading || villageApi.isFetching) && <AppLoader />}
     </View>
   );
 };
 
-export default GetGovernerate;
+export default VillageList;
 
 const styles = StyleSheet.create({
   fullscreen: {

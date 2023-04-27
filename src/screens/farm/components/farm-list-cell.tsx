@@ -1,31 +1,42 @@
-import { HStack, VStack, View } from 'native-base';
-import MapView, { Marker, PROVIDER_GOOGLE, Polygon } from 'react-native-maps';
+import * as geolib from 'geolib';
+import { HStack, View, VStack } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
+import type { CoOrdinates, FarmRequest } from '@/apis/model';
+import type { FarmInfoModal } from '@/screens/maps-views/add-farm-crop-maps';
 import BodyTitle from '@/ui/components/BodyTitle';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
-import type { Location } from 'react-native-location';
-import React from 'react';
-import { StyleSheet } from 'react-native';
 import colors from '@/ui/theme/colors';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   onNextStep?: () => void;
+  farmInfo: FarmRequest & FarmInfoModal;
 };
 
-const FarmListCell = ({ onNextStep }: Props) => {
+const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
   const mapRef = React.useRef<MapView>(null);
-  const [userLocation, setUserLocation] = React.useState<Location[]>([
-    { latitude: 31.47121730777592, longitude: 76.02227490395308 },
-    { latitude: 31.47123789673949, longitude: 76.02287337183952 },
-    { latitude: 31.471197862639507, longitude: 76.02355867624283 },
-    { latitude: 31.470742902486244, longitude: 76.02373033761978 },
-    { latitude: 31.470302524116125, longitude: 76.02319557219744 },
-    { latitude: 31.47053186427911, longitude: 76.02243214845657 },
-    { latitude: 31.47121730777592, longitude: 76.02227490395308 },
-  ]);
+
   const { t } = useTranslation();
+  const center = geolib.getCenter(
+    farmInfo?.coordinates
+      ? farmInfo?.coordinates.map((x) => {
+          return {
+            latitude: x.lat ?? 0.0,
+            longitude: x.lng ?? 0.0,
+            altitude: x.altitude ?? 0.0,
+          };
+        })
+      : [
+          {
+            latitude: 0.0,
+            longitude: 0.0,
+          },
+        ]
+  );
 
   return (
     <View my={5}>
@@ -37,79 +48,98 @@ const FarmListCell = ({ onNextStep }: Props) => {
           borderTopLeftRadius={10}
           borderTopRightRadius={10}
         >
-          <MapView
-            mapType={'satellite'}
-            scrollEnabled={false}
-            zoomEnabled={false}
-            zoomTapEnabled={false}
-            showsUserLocation={false}
-            showsMyLocationButton={false}
-            showsCompass={false}
-            followsUserLocation={false}
-            loadingEnabled
-            zoomControlEnabled={false}
-            ref={mapRef}
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-            initialCamera={{
-              center: {
-                latitude:
-                  userLocation.length > 1
-                    ? userLocation[userLocation.length - 2].latitude
-                    : 0.0,
-                longitude:
-                  userLocation.length > 1
-                    ? userLocation[userLocation.length - 2].longitude
-                    : 0.0,
-              },
-              heading: 0,
-              pitch: 1,
-              zoom: 17,
-            }}
-          >
-            {userLocation.length > 0 && (
-              <Polygon
-                fillColor={'rgba(256,256,256,0.5)'}
-                geodesic={true}
-                coordinates={userLocation.map((value: Location) => {
-                  return {
-                    latitude: value.latitude,
-                    longitude: value.longitude,
-                  };
-                })}
-                strokeColor="white" // fallback for when `strokeColors` is not supported by the map-provider
-                // strokeColors={[
-                //   '#7F0000',
-                //   '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
-                //   '#B24112',
-                //   '#E5845C',
-                //   '#238C23',
-                //   '#7F0000',
-                // ]}
-                strokeWidth={3}
-                zIndex={10}
-              />
-            )}
-            {userLocation.map((loc: Location, indexLoc: number) => {
-              return (
-                <Marker
-                  icon={require('@assets/location.png')}
-                  key={`${indexLoc}`}
-                  id={`${indexLoc}`}
-                  identifier={`${indexLoc}`}
-                  //draggable
-                  s
-                  // title={'Hello Test'}
-                  // description={'Test Description'}
-                  nativeID={`${indexLoc}`}
-                  coordinate={{
-                    latitude: loc.latitude,
-                    longitude: loc.longitude,
-                  }}
+          {farmInfo?.coordinates ? (
+            <MapView
+              mapType={'satellite'}
+              scrollEnabled={false}
+              zoomEnabled={false}
+              zoomTapEnabled={false}
+              showsUserLocation={false}
+              showsMyLocationButton={false}
+              showsCompass={false}
+              followsUserLocation={false}
+              loadingEnabled
+              //zoomControlEnabled={false}
+              ref={mapRef}
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              initialCamera={{
+                center:
+                  typeof center === 'boolean'
+                    ? { latitude: 0.0, longitude: 0.0 }
+                    : center,
+                heading: 0,
+                pitch: 0,
+                zoom: 17,
+              }}
+            >
+              {farmInfo?.coordinates && farmInfo?.coordinates?.length > 0 && (
+                <Polygon
+                  fillColor={'rgba(256,256,256,0.5)'}
+                  geodesic={true}
+                  coordinates={
+                    farmInfo?.coordinates &&
+                    farmInfo?.coordinates?.map((value: CoOrdinates) => {
+                      return {
+                        latitude: value?.lat ?? 0.0,
+                        longitude: value?.lng ?? 0.0,
+                      };
+                    })
+                  }
+                  strokeColor="white" // fallback for when `strokeColors` is not supported by the map-provider
+                  // strokeColors={[
+                  //   '#7F0000',
+                  //   '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+                  //   '#B24112',
+                  //   '#E5845C',
+                  //   '#238C23',
+                  //   '#7F0000',
+                  // ]}
+                  strokeWidth={3}
+                  zIndex={10}
                 />
-              );
-            })}
-          </MapView>
+              )}
+              {farmInfo?.coordinates &&
+                farmInfo?.coordinates?.length > 0 &&
+                farmInfo?.coordinates?.map(
+                  (loc: CoOrdinates, indexLoc: number) => {
+                    return (
+                      <Marker
+                        icon={require('@assets/location.png')}
+                        key={`${indexLoc}`}
+                        id={`${indexLoc}`}
+                        identifier={`${indexLoc}`}
+                        //draggable
+                        s
+                        // title={'Hello Test'}
+                        // description={'Test Description'}
+                        nativeID={`${indexLoc}`}
+                        coordinate={{
+                          latitude: loc?.lat ?? 0.0,
+                          longitude: loc?.lng ?? 0.0,
+                        }}
+                      />
+                    );
+                  }
+                )}
+            </MapView>
+          ) : (
+            <MapView
+              mapType={'satellite'}
+              scrollEnabled={false}
+              zoomEnabled={false}
+              zoomTapEnabled={false}
+              showsUserLocation={false}
+              showsMyLocationButton={false}
+              showsCompass={false}
+              followsUserLocation={false}
+              loadingEnabled
+              //zoomControlEnabled={false}
+              ref={mapRef}
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+            />
+          )}
         </View>
         <VStack px={5} py={3}>
           <Header
@@ -123,74 +153,104 @@ const FarmListCell = ({ onNextStep }: Props) => {
             <HStack
               alignItems={'center'}
               justifyContent={'space-between'}
-              w={'100%'}
+              flex={1}
             >
-              <HStack alignItems={'center'} w={'48%'} bgColor={'amber.300'}>
-                <Header
-                  title={'City'}
-                  color={colors.TITLE_COLOR}
-                  fontSize={12}
-                  fontWeight={'500'}
-                />
-                <BodyTitle
-                  ml={2}
-                  title={'Hoshiarpur'}
-                  color={colors.black}
-                  fontSize={12}
-                  fontWeight={'500'}
-                />
-              </HStack>
-              <HStack alignItems={'center'} w={'48%'} bgColor={'blue.100'}>
-                <Header
-                  title={'Governate'}
-                  color={colors.TITLE_COLOR}
-                  fontSize={12}
-                  fontWeight={'500'}
-                />
-                <BodyTitle
-                  ml={2}
-                  title={'Hoshiarpur'}
-                  color={colors.black}
-                  fontSize={12}
-                  fontWeight={'500'}
-                />
-              </HStack>
+              <View alignItems={'center'} flex={0.5} flexDirection={'row'}>
+                <View flex={0.2} alignItems={'flex-start'} overflow={'hidden'}>
+                  <Header
+                    title={'City'}
+                    color={colors.TITLE_COLOR}
+                    fontSize={12}
+                    fontWeight={'500'}
+                  />
+                </View>
+                <View flex={0.8} alignItems={'flex-end'}>
+                  <BodyTitle
+                    numberOfLines={1}
+                    title={farmInfo.city ?? ''}
+                    color={colors.black}
+                    fontSize={12}
+                    fontWeight={'500'}
+                  />
+                </View>
+              </View>
+              <View alignItems={'center'} flex={0.5} flexDirection={'row'}>
+                <View flex={0.4} alignItems={'flex-start'} overflow={'hidden'}>
+                  <Header
+                    title={'Governate'}
+                    color={colors.TITLE_COLOR}
+                    fontSize={12}
+                    fontWeight={'500'}
+                  />
+                </View>
+                <View flex={0.6} alignItems={'flex-end'}>
+                  <BodyTitle
+                    numberOfLines={1}
+                    title={farmInfo.governorate ?? ''}
+                    color={colors.black}
+                    fontSize={12}
+                    fontWeight={'500'}
+                  />
+                </View>
+              </View>
             </HStack>
 
-            <HStack alignItems={'center'} justifyContent={'space-between'}>
-              <HStack alignItems={'center'} w={'48%'}>
-                <Header
-                  title={'Orgnization'}
-                  color={colors.TITLE_COLOR}
-                  fontSize={12}
-                  fontWeight={'500'}
-                />
-                <BodyTitle
-                  ml={2}
-                  title={'Hoshiarpur Hoshiarpur Hoshiarpur Hoshiarpur'}
-                  color={colors.black}
-                  fontSize={12}
-                  fontWeight={'500'}
-                />
-              </HStack>
-              <HStack alignItems={'center'} w={'48%'}>
-                <Header
-                  title={'Village'}
-                  color={colors.TITLE_COLOR}
-                  fontSize={12}
-                  fontWeight={'500'}
-                />
-                <BodyTitle
-                  ml={2}
-                  title={'Hoshiarpur'}
-                  color={colors.black}
-                  fontSize={12}
-                  fontWeight={'500'}
-                />
-              </HStack>
+            <HStack
+              alignItems={'center'}
+              justifyContent={'space-between'}
+              flex={1}
+            >
+              <View
+                alignItems={'center'}
+                flex={0.5}
+                mr={1}
+                flexDirection={'row'}
+              >
+                <View flex={0.5} alignItems={'flex-start'}>
+                  <Header
+                    title={'Orgnization'}
+                    color={colors.TITLE_COLOR}
+                    fontSize={12}
+                    fontWeight={'500'}
+                  />
+                </View>
+                <View flex={0.5} alignItems={'flex-end'}>
+                  <BodyTitle
+                    numberOfLines={1}
+                    title={farmInfo.organization ?? ''}
+                    color={colors.black}
+                    fontSize={12}
+                    fontWeight={'500'}
+                  />
+                </View>
+              </View>
+              <View
+                alignItems={'center'}
+                ml={1}
+                flex={0.5}
+                flexDirection={'row'}
+              >
+                <View flex={0.3} alignItems={'flex-start'}>
+                  <Header
+                    title={'Village'}
+                    color={colors.TITLE_COLOR}
+                    fontSize={12}
+                    fontWeight={'500'}
+                  />
+                </View>
+                <View flex={0.7} alignItems={'flex-end'}>
+                  <BodyTitle
+                    numberOfLines={1}
+                    title={farmInfo.village ?? ''}
+                    color={colors.black}
+                    fontSize={12}
+                    fontWeight={'500'}
+                  />
+                </View>
+              </View>
             </HStack>
           </VStack>
-          <HStack alignItems={'center'} justifyContent={'space-between'}>
+          {/* <HStack alignItems={'center'} justifyContent={'space-between'}>
             <Header
               title={'Area'}
               color={colors.TITLE_COLOR}
@@ -198,8 +258,25 @@ const FarmListCell = ({ onNextStep }: Props) => {
               fontWeight={'500'}
             />
             <BodyTitle
+              numberOfLines={1}
               ml={2}
-              title={'Hoshiarpur'}
+              title={farmInfo.a ?? ""}
+              color={colors.black}
+              fontSize={12}
+              fontWeight={'500'}
+            />
+          </HStack> */}
+          <HStack alignItems={'center'} justifyContent={'space-between'}>
+            <Header
+              title={'Address'}
+              color={colors.TITLE_COLOR}
+              fontSize={12}
+              fontWeight={'500'}
+            />
+            <BodyTitle
+              numberOfLines={1}
+              ml={2}
+              title={farmInfo.address ?? ''}
               color={colors.black}
               fontSize={12}
               fontWeight={'500'}

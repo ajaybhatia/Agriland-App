@@ -6,27 +6,33 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import * as yup from 'yup';
 
+import type { FarmRequest } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
 import RoundInput from '@/ui/components/RoundInput';
 import colors from '@/ui/theme/colors';
 
 type Props = {
-  onNextStep?: () => void;
+  onNextStep?: (farmRequest: FarmRequest) => void;
+  farmRequest?: FarmRequest;
 };
 
-const AddFarmName = ({ onNextStep }: Props) => {
+const AddFarmName = ({ onNextStep, farmRequest }: Props) => {
   const { t } = useTranslation();
 
   // Formik
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
     useFormik<FormikValues>({
       initialValues: {
-        farmName: '',
+        farmName: farmRequest?.name ?? '',
       },
       onSubmit: () => {
         console.log('onSubmit ==> ', values);
-        onNextStep && onNextStep();
+        onNextStep &&
+          onNextStep({
+            ...farmRequest,
+            name: values.farmName,
+          });
       },
       validationSchema: yup.object({
         farmName: yup.string().trim().required(t('name-required')),

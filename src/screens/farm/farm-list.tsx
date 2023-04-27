@@ -1,25 +1,83 @@
 import { FlashList } from '@shopify/flash-list';
 import { Button, HStack, Icon, Pressable, Text, View } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import { usePostApiFarmCreateUpdateFarm } from '@/apis/endpoints/api';
+import type { FarmRequest } from '@/apis/model';
 import Header from '@/ui/components/Header';
 import colors from '@/ui/theme/colors';
 
+import type { FarmInfoModal } from '../maps-views/add-farm-crop-maps';
 import FarmListCell from './components/farm-list-cell';
 
 type Props = {
   addMoreFarm?: () => void;
-  editFarm?: () => void;
+  onNextStep?: () => void;
+  onEditStep?: (farmInfo: FarmRequest & FarmInfoModal) => void;
+  farmRequest?: FarmRequest & FarmInfoModal;
 };
-const FarmList = ({ addMoreFarm, editFarm }: Props) => {
+const FarmList = ({
+  addMoreFarm,
+  onEditStep,
+  onNextStep,
+  farmRequest,
+}: Props) => {
   const { t } = useTranslation();
+  const [farmInfo, setFarmInfo] = useState<FarmRequest & FarmInfoModal[]>(
+    farmRequest ? [farmRequest] : []
+  );
+  // add farm APi
+
+  const addFarmApi = usePostApiFarmCreateUpdateFarm();
+
+  function apiSubmitAddFarm(isAddNew: boolean) {
+    addFarmApi.mutate(
+      {
+        data: {
+          name: farmRequest?.name,
+          coordinates: farmRequest?.coordinates,
+          governorateFieldId: farmRequest?.governorateFieldId,
+          cityId: farmRequest?.cityId,
+          villageId: farmRequest?.villageId,
+          address: farmRequest?.address,
+          organization: farmRequest?.organization,
+        },
+      },
+      {
+        onSuccess(data) {
+          console.log('onSuccess ==> ', data);
+          if (data) {
+            if (isAddNew) {
+              onFarmAddMore && onFarmAddMore();
+            } else {
+              onNextStep && onNextStep();
+            }
+          } else {
+            Toast.show({
+              type: 'error',
+              text1: 'Something went wrong!',
+            });
+          }
+        },
+        onError(error) {
+          console.log('onError ==> ', error);
+          Toast.show({
+            type: 'error',
+            text1: error.message,
+          });
+        },
+      }
+    );
+  }
 
   function onFarmEdit() {
-    editFarm && editFarm();
+    console.log('farmRequest start ====> ', farmRequest);
+    onEditStep && onEditStep(farmRequest!);
   }
 
   function onFarmAddMore() {
@@ -40,15 +98,21 @@ const FarmList = ({ addMoreFarm, editFarm }: Props) => {
       <FlashList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]}
-        renderItem={({ item }) => <FarmListCell />}
+        data={farmInfo}
+        renderItem={({
+          item,
+          index,
+        }: {
+          item: FarmRequest & FarmInfoModal;
+          index: number;
+        }) => <FarmListCell farmInfo={item} />}
         estimatedItemSize={300}
       />
 
       <Button
         backgroundColor={colors.button_color}
         mt={10}
-        onPress={() => {}}
+        onPress={() => apiSubmitAddFarm(false)}
         borderRadius={8}
         width={'80%'}
         fontWeight={'normal'}
@@ -59,6 +123,7 @@ const FarmList = ({ addMoreFarm, editFarm }: Props) => {
         {'Save'}
       </Button>
       <Pressable
+        onPress={() => apiSubmitAddFarm(true)}
         mt={10}
         width={'80%'}
         alignSelf={'center'}

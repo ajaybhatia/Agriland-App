@@ -1,6 +1,6 @@
 import { isPointWithinRadius } from 'geolib';
 import { Button, Icon, IconButton, VStack } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import KeepAwake from 'react-native-keep-awake';
 import type { Location } from 'react-native-location';
@@ -14,6 +14,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import type { FarmRequest } from '@/apis/model';
 import colors from '@/ui/theme/colors';
 
 import AddFarmAddress from '../farm/add-farm-address';
@@ -26,7 +27,17 @@ export enum MapType {
   WalkMap,
 }
 
-const AddFramCropMaps = () => {
+export interface FarmInfoModal {
+  governorate?: string | null;
+  city?: string | null;
+  village?: string | null;
+}
+
+type Props = {
+  onNextStep?: () => void;
+};
+
+const AddFramCropMaps = ({ onNextStep }: Props) => {
   enum AddFarmState {
     MAP,
     ENTER_NAME,
@@ -42,6 +53,9 @@ const AddFramCropMaps = () => {
   const [farmState, setFarmState] = React.useState<AddFarmState>(
     AddFarmState.ENTER_NAME
   );
+  const [farmInfo, setFarmInfo] = useState<
+    (FarmRequest & FarmInfoModal) | undefined
+  >();
 
   console.log('userLocation ===> ', userLocation);
   const [isMapPinType, setMapType] = React.useState<MapType | undefined>();
@@ -75,7 +89,25 @@ const AddFramCropMaps = () => {
   }
 
   function requestCurrentLocation() {
-    RNLocation.configure({ distanceFilter: undefined });
+    RNLocation.configure({
+      distanceFilter: undefined, // Meters
+      desiredAccuracy: {
+        ios: 'best',
+        android: 'highAccuracy',
+      },
+      // Android only
+      androidProvider: 'auto',
+      interval: 5000, // Milliseconds
+      fastestInterval: 10000, // Milliseconds
+      maxWaitTime: 5000, // Milliseconds
+      // iOS Only
+      activityType: 'other',
+
+      headingFilter: 1, // Degrees
+      headingOrientation: 'portrait',
+      pausesLocationUpdatesAutomatically: false,
+      showsBackgroundLocationIndicator: true,
+    });
     RNLocation.getLatestLocation({ timeout: 60000 }).then(
       (latestLocation: Location | null) => {
         if (latestLocation && latestLocation != null) {
@@ -92,7 +124,7 @@ const AddFramCropMaps = () => {
                 pitch: 1,
                 zoom: 18,
               },
-              { duration: 3000 }
+              { duration: 1000 }
             );
           }
         } else {
@@ -201,15 +233,22 @@ const AddFramCropMaps = () => {
 
   //  add farm steps function
 
-  function onNextFarmName() {
+  function onNextFarmName(farmRequest: FarmRequest & FarmInfoModal) {
+    setFarmInfo(farmRequest);
     setFarmState(AddFarmState.ENTER_FARM_ADDRESS);
   }
 
-  function onNextFarmLatLngType() {
+  function onNextFarmLatLngType(farmRequest: FarmRequest & FarmInfoModal) {
+    setFarmInfo(farmRequest);
     setFarmState(AddFarmState.GET_FARM_LAT_LNG_BY);
   }
 
-  function onNextFarmDrawMap(type: MapType) {
+  function onNextFarmDrawMap(
+    type: MapType,
+    farmRequest: FarmRequest & FarmInfoModal
+  ) {
+    console.log('onNextFarmDrawMap ==> ', farmRequest.city);
+    setFarmInfo(farmRequest);
     setFarmState(AddFarmState.MAP);
     setMapType(type);
     if (type === MapType.WalkMap) {
@@ -217,7 +256,28 @@ const AddFramCropMaps = () => {
     }
   }
 
-  function onNextFarmListShow() {
+  function onAddCoordinates() {
+    if (userLocation.length > 0) {
+      var loc: FarmRequest & FarmInfoModal = {
+        ...farmInfo,
+        coordinates: userLocation.map((x) => {
+          return {
+            lat: x.latitude,
+            lng: x.longitude,
+            accuracy: x.accuracy,
+            altitude: x.altitude,
+            altitudeAccuracy: x.altitudeAccuracy,
+            course: x.course,
+            speed: x.speed,
+          };
+        }),
+      };
+      onNextFarmListShow(loc);
+    }
+  }
+
+  function onNextFarmListShow(farmRequest: FarmRequest & FarmInfoModal) {
+    setFarmInfo(farmRequest);
     setFarmState(AddFarmState.FARM_LIST);
   }
 
@@ -275,7 +335,27 @@ const AddFramCropMaps = () => {
   }
 
   // farm operations
-  function onEditFarm() {
+  function onEditFarm(farmRequest: FarmRequest & FarmInfoModal) {
+    let loc: Location[] =
+      farmRequest?.coordinates?.map((x) => {
+        return {
+          latitude: x.lat ?? 0.0,
+          longitude: x.lng ?? 0.0,
+          accuracy: x.accuracy ?? 0.0,
+          altitude: 0,
+          altitudeAccuracy: 0,
+          course: 0,
+          speed: 0,
+        };
+      }) ?? [];
+    setUserLocation(loc);
+    setFarmInfo(farmRequest);
+    setFarmState(AddFarmState.ENTER_NAME);
+  }
+
+  function onAddMoreFarm() {
+    setUserLocation([]);
+    setFarmInfo(undefined);
     setFarmState(AddFarmState.ENTER_NAME);
   }
 
@@ -501,12 +581,12 @@ const AddFramCropMaps = () => {
           />
         </VStack>
       )}
-      {farmState === AddFarmState.MAP && (
+      {farmState === AddFarmState.MAP && userLocation.length > 0 && (
         <Button
           backgroundColor={colors.button_color}
           position={'absolute'}
           bottom={10}
-          onPress={onNextFarmListShow}
+          onPress={onAddCoordinates}
           borderRadius={8}
           width={'70%'}
           fontWeight={'normal'}
@@ -518,16 +598,28 @@ const AddFramCropMaps = () => {
         </Button>
       )}
       {farmState === AddFarmState.ENTER_NAME && (
-        <AddFarmName onNextStep={onNextFarmName} />
+        <AddFarmName farmRequest={farmInfo} onNextStep={onNextFarmName} />
       )}
       {farmState === AddFarmState.ENTER_FARM_ADDRESS && (
-        <AddFarmAddress onNextStep={onNextFarmLatLngType} />
+        <AddFarmAddress
+          farmRequest={farmInfo}
+          onNextStep={onNextFarmLatLngType}
+        />
       )}
       {farmState === AddFarmState.GET_FARM_LAT_LNG_BY && (
-        <LocationType onNextStep={onNextFarmDrawMap} />
+        <LocationType
+          farmRequest={farmInfo}
+          onNextStep={onNextFarmDrawMap}
+          onSkipStep={onNextFarmListShow}
+        />
       )}
       {farmState === AddFarmState.FARM_LIST && (
-        <FarmList editFarm={onEditFarm} />
+        <FarmList
+          farmRequest={farmInfo}
+          onEditStep={onEditFarm}
+          addMoreFarm={onAddMoreFarm}
+          onNextStep={onNextStep}
+        />
       )}
     </View>
   );

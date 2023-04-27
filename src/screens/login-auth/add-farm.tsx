@@ -11,37 +11,38 @@ import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
   const [active, setActive] = useState(1);
+
   const { t } = useTranslation();
-  const onUseInfoSubmit = () => {
+  const onNextSubmit = () => {
     setActive((p) => p + 1);
   };
   // eslint-disable-next-line react/no-unstable-nested-components
   const MyComponent = () => {
     return (
       <View justifyContent={'center'} alignItems={'center'} flex={1}>
-        <Text>{'map'}</Text>
+        <Text>{'Crop here'}</Text>
       </View>
     );
   };
 
   const content = [
     {
-      content: <AddUserInfo onNextSubmit={onUseInfoSubmit} />,
+      content: <AddUserInfo onNextSubmit={onNextSubmit} />,
       title: t('account-data'),
     },
     // { content: <MyComponent />, title: t('form-data') },
     {
-      content: <AddFramCropMaps />,
+      content: <AddFramCropMaps onNextStep={onNextSubmit} />,
       title: t('form-data'),
     },
     {
-      content: <AddFramCropMaps />,
+      content: <MyComponent />,
       title: t('enter-crop'),
     },
   ];
 
   return (
-    <View style={styles.fullscreen} marginTop={5}>
+    <View style={styles.fullscreen} pt={5}>
       <View flex={1}>
         {/* <AppHeader
           title="Create a new account"
@@ -73,6 +74,7 @@ export default AddFarmScreen;
 const styles = StyleSheet.create({
   fullscreen: {
     flex: 1,
+    backgroundColor: 'white',
   },
   stepStyle: {
     backgroundColor: 'white',

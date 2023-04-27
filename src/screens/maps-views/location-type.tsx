@@ -3,16 +3,23 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
+import type { FarmRequest } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
 import colors from '@/ui/theme/colors';
 
+import type { FarmInfoModal } from './add-farm-crop-maps';
 import { MapType } from './add-farm-crop-maps';
 
 type Props = {
-  onNextStep: (mapType: MapType) => void;
+  onNextStep?: (
+    mapType: MapType,
+    farmRequest: FarmRequest & FarmInfoModal
+  ) => void;
+  farmRequest?: FarmRequest & FarmInfoModal;
+  onSkipStep?: (farmRequest: FarmRequest & FarmInfoModal) => void;
 };
-const LocationType = ({ onNextStep }: Props) => {
+const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -23,7 +30,9 @@ const LocationType = ({ onNextStep }: Props) => {
           <Header title={'through two ways'} fontSize={'xs'} />
           <VStack>
             <Button
-              onPress={() => onNextStep(MapType.PinMap)}
+              onPress={() =>
+                onNextStep && onNextStep(MapType.PinMap, farmRequest!)
+              }
               backgroundColor={colors.button_color}
               mt={10}
               borderRadius={8}
@@ -36,7 +45,9 @@ const LocationType = ({ onNextStep }: Props) => {
               {'Draw Pin'}
             </Button>
             <Button
-              onPress={() => onNextStep(MapType.WalkMap)}
+              onPress={() =>
+                onNextStep && onNextStep(MapType.WalkMap, farmRequest!)
+              }
               backgroundColor={colors.button_color}
               mt={5}
               borderRadius={8}
@@ -48,7 +59,14 @@ const LocationType = ({ onNextStep }: Props) => {
             >
               {'Walk through'}
             </Button>
-            <Pressable mt={5} mb={5} alignSelf={'center'}>
+            <Pressable
+              mt={5}
+              mb={5}
+              alignSelf={'center'}
+              onPress={() =>
+                onSkipStep && onSkipStep({ ...farmRequest, coordinates: null })
+              }
+            >
               <Text
                 fontFamily={'heading'}
                 fontWeight={'bold'}

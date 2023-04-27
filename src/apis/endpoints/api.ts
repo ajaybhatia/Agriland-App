@@ -46,6 +46,11 @@ import type {
   ArEnTranslation,
   GetApiArEnTranslationGetarentranslationbyidParams,
   DeleteApiArEnTranslationDeleteParams,
+  Governorate,
+  City,
+  GetApiCommonFetchCityByGovernateByIdParams,
+  Village,
+  GetApiCommonFetchVillageByCityIdParams,
   CropCategoryRequest,
   CropRequest,
   CultivationDetailRequest,
@@ -1475,6 +1480,149 @@ export const getDeleteApiArEnTranslationDeleteMutationOptions = <TError = ErrorT
       return useMutation(mutationOptions);
     }
     
+export const getApiCommonFetchGovernates = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<Governorate[]>(
+      {url: `/api/Common/fetchGovernates`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiCommonFetchGovernatesQueryKey = () => [`/api/Common/fetchGovernates`] as const;
+  
+
+    
+export const getGetApiCommonFetchGovernatesQueryOptions = <TData = Awaited<ReturnType<typeof getApiCommonFetchGovernates>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchGovernates>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchGovernates>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiCommonFetchGovernatesQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCommonFetchGovernates>>> = ({ signal }) => getApiCommonFetchGovernates(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiCommonFetchGovernatesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCommonFetchGovernates>>>
+export type GetApiCommonFetchGovernatesQueryError = ErrorType<unknown>
+
+export const useGetApiCommonFetchGovernates = <TData = Awaited<ReturnType<typeof getApiCommonFetchGovernates>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchGovernates>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiCommonFetchGovernatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const getApiCommonFetchCityByGovernateById = (
+    params?: GetApiCommonFetchCityByGovernateByIdParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<City[]>(
+      {url: `/api/Common/fetchCityByGovernateById`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiCommonFetchCityByGovernateByIdQueryKey = (params?: GetApiCommonFetchCityByGovernateByIdParams,) => [`/api/Common/fetchCityByGovernateById`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiCommonFetchCityByGovernateByIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiCommonFetchCityByGovernateById>>, TError = ErrorType<unknown>>(params?: GetApiCommonFetchCityByGovernateByIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchCityByGovernateById>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchCityByGovernateById>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiCommonFetchCityByGovernateByIdQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCommonFetchCityByGovernateById>>> = ({ signal }) => getApiCommonFetchCityByGovernateById(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiCommonFetchCityByGovernateByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCommonFetchCityByGovernateById>>>
+export type GetApiCommonFetchCityByGovernateByIdQueryError = ErrorType<unknown>
+
+export const useGetApiCommonFetchCityByGovernateById = <TData = Awaited<ReturnType<typeof getApiCommonFetchCityByGovernateById>>, TError = ErrorType<unknown>>(
+ params?: GetApiCommonFetchCityByGovernateByIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchCityByGovernateById>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiCommonFetchCityByGovernateByIdQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const getApiCommonFetchVillageByCityId = (
+    params?: GetApiCommonFetchVillageByCityIdParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<Village[]>(
+      {url: `/api/Common/fetchVillageByCityId`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiCommonFetchVillageByCityIdQueryKey = (params?: GetApiCommonFetchVillageByCityIdParams,) => [`/api/Common/fetchVillageByCityId`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiCommonFetchVillageByCityIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiCommonFetchVillageByCityId>>, TError = ErrorType<unknown>>(params?: GetApiCommonFetchVillageByCityIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchVillageByCityId>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchVillageByCityId>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiCommonFetchVillageByCityIdQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCommonFetchVillageByCityId>>> = ({ signal }) => getApiCommonFetchVillageByCityId(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiCommonFetchVillageByCityIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCommonFetchVillageByCityId>>>
+export type GetApiCommonFetchVillageByCityIdQueryError = ErrorType<unknown>
+
+export const useGetApiCommonFetchVillageByCityId = <TData = Awaited<ReturnType<typeof getApiCommonFetchVillageByCityId>>, TError = ErrorType<unknown>>(
+ params?: GetApiCommonFetchVillageByCityIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonFetchVillageByCityId>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiCommonFetchVillageByCityIdQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
 /**
  * @summary This API is used to create or update crop category.
  */

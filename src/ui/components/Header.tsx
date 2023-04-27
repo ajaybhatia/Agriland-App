@@ -55,7 +55,7 @@ export default function Header({
       mt={mt}
       flexDirection={'row'}
       alignItems={'center'}
-      justifyContent={'space-between'}
+      justifyContent={btnTitle || iconName ? 'space-between' : undefined}
     >
       <Text
         fontSize={fontSize}
@@ -68,32 +68,34 @@ export default function Header({
         {title}
       </Text>
 
-      <Pressable
-        alignItems={'center'}
-        onPress={() => onRightIconClick && onRightIconClick()}
-      >
-        <HStack alignItems={'center'}>
-          {btnTitle && (
-            <Text px={2} color={colors.TITLE_COLOR}>
-              {btnTitle}
-            </Text>
-          )}
-          {iconName && (
-            <Icon
-              color={iconColor}
-              as={as}
-              name={
-                iconName
-                  ? iconName
-                  : !I18nManager.isRTL
-                  ? 'arrow-right-thin'
-                  : 'arrow-left-thin'
-              }
-              size={iconSize}
-            />
-          )}
-        </HStack>
-      </Pressable>
+      {(btnTitle || iconName) && (
+        <Pressable
+          alignItems={'center'}
+          onPress={() => onRightIconClick && onRightIconClick()}
+        >
+          <HStack alignItems={'center'}>
+            {btnTitle && (
+              <Text px={2} color={colors.TITLE_COLOR}>
+                {btnTitle}
+              </Text>
+            )}
+            {iconName && (
+              <Icon
+                color={iconColor}
+                as={as}
+                name={
+                  iconName
+                    ? iconName
+                    : !I18nManager.isRTL
+                    ? 'arrow-right-thin'
+                    : 'arrow-left-thin'
+                }
+                size={iconSize}
+              />
+            )}
+          </HStack>
+        </Pressable>
+      )}
     </View>
   );
 }
