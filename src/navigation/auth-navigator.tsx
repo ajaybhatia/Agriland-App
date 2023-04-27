@@ -39,6 +39,13 @@ export const AuthNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="AddFarmScreen"
         component={AddFarmScreen}
         options={{
@@ -54,13 +61,6 @@ export const AuthNavigator = () => {
               />
             );
           },
-        }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{
-          headerShown: false,
         }}
       />
       <Stack.Screen

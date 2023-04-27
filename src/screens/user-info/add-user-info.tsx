@@ -1,23 +1,23 @@
+import auth from '@react-native-firebase/auth';
+import type { RouteProp } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import type { FormikValues } from 'formik';
+import { useFormik } from 'formik';
+import { t } from 'i18next';
+import { Button, View } from 'native-base';
+import React from 'react';
+import { I18nManager } from 'react-native';
+import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 
-import { Button, View } from 'native-base';
-
-import type { AuthStackParamList } from '@/navigation/auth-navigator';
-import type { FormikValues } from 'formik';
-import Header from '@/ui/components/Header';
-import { I18nManager } from 'react-native';
-import type { Language } from '@/core/i18n/resources';
-import type { Option } from '@/ui';
-import React from 'react';
-import RoundInput from '@/ui/components/RoundInput';
-import type { RouteProp } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
-import colors from '@/ui/theme/colors';
-import { t } from 'i18next';
-import { useFormik } from 'formik';
 import { usePostApiAccountCreateUserBasicDetails } from '@/apis/endpoints/api';
-import { useRoute } from '@react-navigation/native';
 import { useSelectedLanguage } from '@/core';
+import type { Language } from '@/core/i18n/resources';
+import type { AuthStackParamList } from '@/navigation/auth-navigator';
+import type { Option } from '@/ui';
+import Header from '@/ui/components/Header';
+import RoundInput from '@/ui/components/RoundInput';
+import colors from '@/ui/theme/colors';
 
 interface Props {
   onNextSubmit?: () => void;
@@ -47,7 +47,6 @@ function AddUserInfo({ onNextSubmit }: Props) {
       mobileNumber: route.params?.phoneNumber ?? '',
     },
     onSubmit: () => {
-      console.log('onSubmit ==> ', values);
       apiSubmitInfo(values);
     },
     validationSchema: yup.object({
@@ -83,13 +82,13 @@ function AddUserInfo({ onNextSubmit }: Props) {
   });
 
   function apiSubmitInfo() {
+    const currentUser = auth().currentUser;
     addUserInfo.mutate(
       {
-        data: values,
+        data: { ...values, firebaseUserId: currentUser?.uid ?? '' },
       },
       {
         onSuccess(data) {
-          console.log('onSuccess ==> ', data);
           if (data) {
             onNextSubmit && onNextSubmit();
           } else {
@@ -100,7 +99,6 @@ function AddUserInfo({ onNextSubmit }: Props) {
           }
         },
         onError(error) {
-          console.log('onError ==> ', error);
           Toast.show({
             type: 'error',
             text1: error.message,

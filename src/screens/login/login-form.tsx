@@ -80,7 +80,6 @@ export const LoginForm = () => {
           });
         })
         .catch((error) => {
-          console.log(error.message?.split(']')?.[1] ?? error.message);
           setOTPLoading(false);
           Toast.show({
             type: 'error',
@@ -97,6 +96,7 @@ export const LoginForm = () => {
   const signIn = async () => {
     try {
       setGoogleLoading(true);
+      await GoogleSignin.signOut();
       await GoogleSignin.hasPlayServices();
       // Get the users ID token
       const userInfo = await GoogleSignin.signIn();
@@ -106,7 +106,7 @@ export const LoginForm = () => {
       );
       // Sign-in the user with the credential
       let googleDetail = await auth().signInWithCredential(googleCredential);
-      await GoogleSignin.signOut();
+
       setGoogleLoading(false);
       navigate('AddFarmScreen', {
         loginType: LoginType.GOOGLE,
@@ -115,7 +115,6 @@ export const LoginForm = () => {
     } catch (error) {
       setGoogleLoading(false);
       const typedError = error as NativeModuleError;
-      console.log('typedError======> ', typedError);
       if (typedError?.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (typedError?.code === statusCodes.IN_PROGRESS) {

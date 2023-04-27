@@ -26,8 +26,8 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
     <View style={styles.fullscreen} marginTop={5}>
       <CardWithShadow>
         <VStack p={5}>
-          <Header title={'Enter the area of the farm'} />
-          <Header title={'through two ways'} fontSize={'xs'} />
+          <Header title={t('enter-the-area-of-farm')} />
+          <Header title={t('through-two-ways')} fontSize={'xs'} />
           <VStack>
             <Button
               onPress={() =>
@@ -42,7 +42,7 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
               overflow={'hidden'}
               alignSelf={'center'}
             >
-              {'Draw Pin'}
+              {t('draw-pin')}
             </Button>
             <Button
               onPress={() =>
@@ -57,7 +57,7 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
               overflow={'hidden'}
               alignSelf={'center'}
             >
-              {'Walk through'}
+              {t('walk-through')}
             </Button>
             <Pressable
               mt={5}
@@ -72,7 +72,7 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
                 fontWeight={'bold'}
                 color={colors.button_color}
               >
-                {'Skip'}
+                {t('skip')}
               </Text>
             </Pressable>
           </VStack>

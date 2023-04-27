@@ -24,7 +24,6 @@ function DummyInput({
   errors,
   isInvalid,
 }: Props) {
-  console.log(errors, ' === ', isInvalid);
   return (
     <VStack>
       <Pressable

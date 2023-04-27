@@ -2,7 +2,7 @@ import { FlashList } from '@shopify/flash-list';
 import { Button, HStack, Icon, Pressable, Text, View } from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import Toast from 'react-native-toast-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -50,7 +50,6 @@ const FarmList = ({
       },
       {
         onSuccess(data) {
-          console.log('onSuccess ==> ', data);
           if (data) {
             if (isAddNew) {
               onFarmAddMore && onFarmAddMore();
@@ -65,7 +64,6 @@ const FarmList = ({
           }
         },
         onError(error) {
-          console.log('onError ==> ', error);
           Toast.show({
             type: 'error',
             text1: error.message,
@@ -76,7 +74,6 @@ const FarmList = ({
   }
 
   function onFarmEdit() {
-    console.log('farmRequest start ====> ', farmRequest);
     onEditStep && onEditStep(farmRequest!);
   }
 
@@ -87,9 +84,9 @@ const FarmList = ({
   return (
     <View style={styles.fullscreen} p={5}>
       <Header
-        title={'Farm Data Review'}
+        title={t('farm-data-review')}
         mt={1}
-        btnTitle="Edit"
+        btnTitle={t('edit')}
         iconName="edit"
         as={MaterialIcons}
         iconSize={'md'}
@@ -110,6 +107,7 @@ const FarmList = ({
       />
 
       <Button
+        isLoading={addFarmApi.isLoading}
         backgroundColor={colors.button_color}
         mt={10}
         onPress={() => apiSubmitAddFarm(false)}
@@ -120,10 +118,10 @@ const FarmList = ({
         overflow={'hidden'}
         alignSelf={'center'}
       >
-        {'Save'}
+        {t('save')}
       </Button>
       <Pressable
-        onPress={() => apiSubmitAddFarm(true)}
+        onPress={() => !addFarmApi.isLoading && apiSubmitAddFarm(true)}
         mt={10}
         width={'80%'}
         alignSelf={'center'}
@@ -135,16 +133,22 @@ const FarmList = ({
         alignItems={'center'}
       >
         <HStack alignItems={'center'} py={2}>
-          <Text color={'amber.600'} fontWeight={'normal'} fontSize={16}>
-            {'Save and add new farm'}
-          </Text>
-          <Icon
-            ml={2}
-            as={MaterialCommunityIcons}
-            name={'plus-circle'}
-            size={'lg'}
-            color={'amber.600'}
-          />
+          {!addFarmApi.isLoading ? (
+            <>
+              <Text color={'amber.600'} fontWeight={'normal'} fontSize={16}>
+                {t('save-and-add-new-farm')}
+              </Text>
+              <Icon
+                ml={2}
+                as={MaterialCommunityIcons}
+                name={'plus-circle'}
+                size={'lg'}
+                color={'amber.600'}
+              />
+            </>
+          ) : (
+            <ActivityIndicator size="small" color="#00ff00" />
+          )}
         </HStack>
       </Pressable>
     </View>

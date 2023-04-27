@@ -143,7 +143,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
         </View>
         <VStack px={5} py={3}>
           <Header
-            title={'Ai AIM Farm'}
+            title={farmInfo?.name ?? ''}
             mt={1}
             color={colors.TITLE_COLOR}
             fontSize={13}
@@ -158,7 +158,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
               <View alignItems={'center'} flex={0.5} flexDirection={'row'}>
                 <View flex={0.2} alignItems={'flex-start'} overflow={'hidden'}>
                   <Header
-                    title={'City'}
+                    title={t('city')}
                     color={colors.TITLE_COLOR}
                     fontSize={12}
                     fontWeight={'500'}
@@ -175,15 +175,15 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
                 </View>
               </View>
               <View alignItems={'center'} flex={0.5} flexDirection={'row'}>
-                <View flex={0.4} alignItems={'flex-start'} overflow={'hidden'}>
+                <View flex={0.5} alignItems={'flex-start'} overflow={'hidden'}>
                   <Header
-                    title={'Governate'}
+                    title={t('governerate')}
                     color={colors.TITLE_COLOR}
                     fontSize={12}
                     fontWeight={'500'}
                   />
                 </View>
-                <View flex={0.6} alignItems={'flex-end'}>
+                <View flex={0.5} alignItems={'flex-end'}>
                   <BodyTitle
                     numberOfLines={1}
                     title={farmInfo.governorate ?? ''}
@@ -208,7 +208,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
               >
                 <View flex={0.5} alignItems={'flex-start'}>
                   <Header
-                    title={'Orgnization'}
+                    title={t('organization')}
                     color={colors.TITLE_COLOR}
                     fontSize={12}
                     fontWeight={'500'}
@@ -232,7 +232,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
               >
                 <View flex={0.3} alignItems={'flex-start'}>
                   <Header
-                    title={'Village'}
+                    title={t('village')}
                     color={colors.TITLE_COLOR}
                     fontSize={12}
                     fontWeight={'500'}
@@ -268,7 +268,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
           </HStack> */}
           <HStack alignItems={'center'} justifyContent={'space-between'}>
             <Header
-              title={'Address'}
+              title={t('address')}
               color={colors.TITLE_COLOR}
               fontSize={12}
               fontWeight={'500'}

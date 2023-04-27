@@ -33,7 +33,6 @@ const CityList = ({ onCitySelect, onClose, governateId }: Props) => {
   const [cityResponse, setCityResponse] = useState<City[]>([]);
 
   // Api
-  console.log('governateId ==> ', governateId);
   const cityApi = useGetApiCommonFetchCityByGovernateById(
     {
       governateId: governateId,
@@ -41,7 +40,6 @@ const CityList = ({ onCitySelect, onClose, governateId }: Props) => {
     {
       query: {
         onSuccess: (data: City[]) => {
-          console.log('data ==> ', data);
           if (data.length > 0) {
             setCityResponse([...cityResponse, ...data]);
           }
@@ -69,7 +67,7 @@ const CityList = ({ onCitySelect, onClose, governateId }: Props) => {
     <View style={styles.fullscreen}>
       <View mx={8} flex={1}>
         <Header
-          title={'Select City'}
+          title={t('select-city')}
           iconName={'close'}
           mt={3}
           mb={3}
@@ -83,7 +81,6 @@ const CityList = ({ onCitySelect, onClose, governateId }: Props) => {
           showsVerticalScrollIndicator={false}
           data={cityResponse}
           renderItem={({ item, index }: { item: City; index: number }) => {
-            console.log('selections ==> ', selections);
             return (
               <ItemList
                 title={`${item.name}`}
@@ -154,8 +151,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 0,
+    height: '80%',
     bottom: 0,
     backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
 });

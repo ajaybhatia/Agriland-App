@@ -10,11 +10,11 @@ import { locale } from 'expo-localization';
 import * as SplashScreen from 'expo-splash-screen';
 import { NativeBaseProvider } from 'native-base';
 import React, { useEffect } from 'react';
-import { I18nManager, NativeModules } from 'react-native';
+import { I18nManager } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import Toast from 'react-native-toast-message';
 
-import { getLanguage, hydrateAuth, isRTL, useSelectedLanguage } from '@/core';
+import { hydrateAuth, useSelectedLanguage } from '@/core';
 import { RootNavigator } from '@/navigation';
 
 hydrateAuth();
@@ -23,17 +23,6 @@ SplashScreen.preventAutoHideAsync();
 const App = () => {
   const { language, setLanguage } = useSelectedLanguage();
   useEffect(() => {
-    console.log(
-      'Current Language==> ',
-      getLanguage(),
-      ' === ',
-      locale,
-      ' === ',
-      NativeModules.I18nManager.localeIdentifier,
-      '  ==== ',
-      isRTL
-    );
-
     if (
       locale === 'ur-IN' ||
       locale === 'ur_IN' ||

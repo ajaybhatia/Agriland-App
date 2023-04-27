@@ -1,6 +1,7 @@
 import { isPointWithinRadius } from 'geolib';
 import { Button, Icon, IconButton, VStack } from 'native-base';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, View } from 'react-native';
 import KeepAwake from 'react-native-keep-awake';
 import type { Location } from 'react-native-location';
@@ -45,11 +46,14 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
     GET_FARM_LAT_LNG_BY,
     FARM_LIST,
   }
+  const { t } = useTranslation();
   const locationSubscription = React.useRef(() => {});
   let zoomLevel = 18;
   const mapRef = React.useRef<MapView>(null);
   const [userLocation, setUserLocation] = React.useState<Location[]>([]);
   const [isLocationFinish, setLocationFinish] = React.useState<boolean>(false);
+  const [isLocationWalkStart, setLocationWalkStart] =
+    React.useState<boolean>(false);
   const [farmState, setFarmState] = React.useState<AddFarmState>(
     AddFarmState.ENTER_NAME
   );
@@ -57,14 +61,12 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
     (FarmRequest & FarmInfoModal) | undefined
   >();
 
-  console.log('userLocation ===> ', userLocation);
   const [isMapPinType, setMapType] = React.useState<MapType | undefined>();
-  const [isLocationRunning, setLocationRunning] =
-    React.useState<boolean>(false);
 
   // request location permission
   function reQuestPermission(isCurrentLocation: boolean) {
     console.log('START REQUEST');
+    setUserLocation([]);
     RNLocation.requestPermission({
       ios: 'whenInUse',
       android: {
@@ -162,8 +164,7 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
   }
 
   function startLocation() {
-    setLocationRunning(true);
-
+    setLocationWalkStart(true);
     locationSubscription.current = RNLocation.subscribeToLocationUpdates(
       (locations: Location[]) => {
         if (mapRef && mapRef.current) {
@@ -208,8 +209,13 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
   function stopLocationAlert() {
     Alert.alert('Warning', 'Finish location');
     locationSubscription.current();
-    setLocationRunning(false);
+    setLocationWalkStart(false);
     setLocationFinish(true);
+  }
+
+  // pause Location
+  function pauseLocation() {
+    setLocationWalkStart(false);
   }
 
   //configure location and start rendering
@@ -254,6 +260,13 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
     if (type === MapType.WalkMap) {
       reQuestPermission(false);
     }
+  }
+
+  function saveAndContuneWalkLocation() {
+    locationSubscription.current();
+    setLocationWalkStart(false);
+    setLocationFinish(true);
+    onAddCoordinates();
   }
 
   function onAddCoordinates() {
@@ -503,37 +516,41 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       </MapView>
       {farmState === AddFarmState.MAP && (
         <VStack position={'absolute'} right={5} bottom={10}>
-          <IconButton
-            borderRadius={3}
-            size={8}
-            bgColor={'white'}
-            disabled={userLocation.length <= 0}
-            onPress={onMapMarkerClear}
-            icon={
-              <Icon
-                as={MaterialIcons}
-                name={'clear'}
-                size={'md'}
-                color={'black'}
-              />
-            }
-          />
-          <IconButton
-            mt={5}
-            disabled={userLocation.length <= 0}
-            borderRadius={3}
-            size={8}
-            bgColor={'white'}
-            onPress={onMapMarkerUndo}
-            icon={
-              <Icon
-                as={MaterialCommunityIcons}
-                name={'undo'}
-                size={'md'}
-                color={'black'}
-              />
-            }
-          />
+          {isMapPinType === MapType.PinMap && (
+            <IconButton
+              borderRadius={3}
+              size={8}
+              bgColor={'white'}
+              disabled={userLocation.length <= 0}
+              onPress={onMapMarkerClear}
+              icon={
+                <Icon
+                  as={MaterialIcons}
+                  name={'clear'}
+                  size={'md'}
+                  color={'black'}
+                />
+              }
+            />
+          )}
+          {isMapPinType === MapType.PinMap && (
+            <IconButton
+              mt={5}
+              disabled={userLocation.length <= 0}
+              borderRadius={3}
+              size={8}
+              bgColor={'white'}
+              onPress={onMapMarkerUndo}
+              icon={
+                <Icon
+                  as={MaterialCommunityIcons}
+                  name={'undo'}
+                  size={'md'}
+                  color={'black'}
+                />
+              }
+            />
+          )}
           <IconButton
             mt={5}
             borderRadius={3}
@@ -564,38 +581,115 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
               />
             }
           />
-          <IconButton
-            mt={5}
-            borderRadius={3}
-            size={8}
-            bgColor={'white'}
-            onPress={onMapCurrentLocation}
-            icon={
-              <Icon
-                as={FontAwesome5}
-                name={'location-arrow'}
-                size={'md'}
-                color={'black'}
-              />
-            }
-          />
+          {isMapPinType === MapType.PinMap && (
+            <IconButton
+              mt={5}
+              borderRadius={3}
+              size={8}
+              bgColor={'white'}
+              onPress={onMapCurrentLocation}
+              icon={
+                <Icon
+                  as={FontAwesome5}
+                  name={'location-arrow'}
+                  size={'md'}
+                  color={'black'}
+                />
+              }
+            />
+          )}
         </VStack>
       )}
-      {farmState === AddFarmState.MAP && userLocation.length > 0 && (
-        <Button
-          backgroundColor={colors.button_color}
+      {farmState === AddFarmState.MAP &&
+        userLocation.length > 0 &&
+        isMapPinType === MapType.PinMap && (
+          <Button
+            backgroundColor={colors.button_color}
+            position={'absolute'}
+            bottom={10}
+            onPress={onAddCoordinates}
+            borderRadius={8}
+            width={'70%'}
+            fontWeight={'normal'}
+            fontSize={20}
+            overflow={'hidden'}
+            alignSelf={'center'}
+          >
+            {t('save-continue')}
+          </Button>
+        )}
+      {isMapPinType === MapType.WalkMap && farmState === AddFarmState.MAP && (
+        <VStack
           position={'absolute'}
           bottom={10}
-          onPress={onAddCoordinates}
-          borderRadius={8}
           width={'70%'}
-          fontWeight={'normal'}
-          fontSize={20}
-          overflow={'hidden'}
+          alignItems={'center'}
+          justifyContent={'center'}
           alignSelf={'center'}
         >
-          {'Continue'}
-        </Button>
+          {isLocationWalkStart && (
+            <>
+              <Button
+                mt={5}
+                backgroundColor={colors.button_color}
+                onPress={stopLocationAlert}
+                borderRadius={8}
+                width={'70%'}
+                fontWeight={'normal'}
+                fontSize={20}
+                overflow={'hidden'}
+              >
+                {t('stop')}
+              </Button>
+              {userLocation.length > 0 && (
+                <Button
+                  mt={5}
+                  backgroundColor={colors.button_color}
+                  onPress={saveAndContuneWalkLocation}
+                  borderRadius={8}
+                  width={'70%'}
+                  fontWeight={'normal'}
+                  fontSize={20}
+                  overflow={'hidden'}
+                  alignSelf={'center'}
+                >
+                  {t('save-continue')}
+                </Button>
+              )}
+            </>
+          )}
+
+          {!isLocationWalkStart && (
+            <>
+              <Button
+                backgroundColor={colors.button_color}
+                onPress={() => reQuestPermission(false)}
+                borderRadius={8}
+                width={'70%'}
+                fontWeight={'normal'}
+                fontSize={20}
+                overflow={'hidden'}
+              >
+                {userLocation.length > 0 ? t('restart') : t('start')}
+              </Button>
+              {userLocation.length > 0 && (
+                <Button
+                  mt={5}
+                  backgroundColor={colors.button_color}
+                  onPress={saveAndContuneWalkLocation}
+                  borderRadius={8}
+                  width={'70%'}
+                  fontWeight={'normal'}
+                  fontSize={20}
+                  overflow={'hidden'}
+                  alignSelf={'center'}
+                >
+                  {t('save-continue')}
+                </Button>
+              )}
+            </>
+          )}
+        </VStack>
       )}
       {farmState === AddFarmState.ENTER_NAME && (
         <AddFarmName farmRequest={farmInfo} onNextStep={onNextFarmName} />

@@ -3,7 +3,8 @@ import { useFormik } from 'formik';
 import { Button, ScrollView, View, VStack } from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 import Modal from 'react-native-modal';
 import * as yup from 'yup';
 
@@ -22,7 +23,11 @@ type Props = {
   onNextStep?: (farmRequest: FarmRequest & FarmInfoModal) => void;
   farmRequest?: FarmRequest & FarmInfoModal;
 };
-
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight =
+  Platform.OS === 'ios'
+    ? Dimensions.get('window').height
+    : Dimensions.get('screen').height;
 const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
   const { t } = useTranslation();
   const [isGovernerateOpen, setGovernerateOpen] = useState<boolean>(false);
@@ -51,7 +56,6 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
       organization: farmRequest?.organization ?? '',
     },
     onSubmit: () => {
-      console.log('onSubmit ==> ', values);
       onNextStep &&
         onNextStep({
           ...farmRequest,
@@ -77,7 +81,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
   return (
     <View style={styles.fullscreen}>
       <VStack p={5}>
-        <Header title={'Enter farm address'} />
+        <Header title={t('enter-farm-address')} />
         <ScrollView>
           <DummyInput
             value={
@@ -85,7 +89,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
                 ? values.governorate
                 : ''
             }
-            defaultValue={'governerate'}
+            defaultValue={t('governerate')}
             mt={5}
             onOpen={() => setGovernerateOpen(true)}
             isInvalid={!!errors.governorate}
@@ -101,7 +105,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
                   ? values.city
                   : ''
               }
-              defaultValue={'City'}
+              defaultValue={t('city')}
               mt={5}
               onOpen={() => setCityOpen(true)}
               isInvalid={!!errors.city}
@@ -116,7 +120,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
                   ? values.village
                   : ''
               }
-              defaultValue={'village'}
+              defaultValue={t('village')}
               mt={5}
               onOpen={() => setVillageOpen(true)}
               isInvalid={!!errors.village}
@@ -127,7 +131,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
           <RoundInput
             mt={5}
             onBlur={handleBlur('address')}
-            placeholder={'address'}
+            placeholder={t('address')}
             onChangeText={handleChange('address')}
             value={values.address}
             isInvalid={!!errors.address}
@@ -137,7 +141,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
           <RoundInput
             mt={5}
             onBlur={handleBlur('organization')}
-            placeholder={'organization'}
+            placeholder={t('organization')}
             onChangeText={handleChange('organization')}
             value={values.organization}
             isInvalid={!!errors.organization}
@@ -168,13 +172,15 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
         </ScrollView>
       </VStack>
       <Modal
+        coverScreen={true}
+        deviceWidth={-(deviceWidth / 6)}
+        deviceHeight={deviceHeight}
         isVisible={isGovernerateOpen}
         onDismiss={() => setGovernerateOpen(false)}
         onModalHide={() => setGovernerateOpen(false)}
       >
         <GetGovernerate
           onGovernerateSelect={(governorate: Governorate[]) => {
-            console.log('Selected governorate ===> ', governorate);
             if (governorate.length > 0) {
               setValues({
                 ...values,
@@ -192,6 +198,9 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
         />
       </Modal>
       <Modal
+        coverScreen={true}
+        deviceWidth={-(deviceWidth / 6)}
+        deviceHeight={deviceHeight}
         isVisible={
           isCityOpen &&
           values.governorateFieldId !== '' &&
@@ -203,7 +212,6 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
         <CityList
           governateId={values.governorateFieldId}
           onCitySelect={(city: City[]) => {
-            console.log('Selected governorate ===> ', city);
             setValues({
               ...values,
               city: city[0].name,
@@ -217,6 +225,9 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
         />
       </Modal>
       <Modal
+        coverScreen={true}
+        deviceWidth={-(deviceWidth / 6)}
+        deviceHeight={deviceHeight}
         isVisible={
           isVillageOpen &&
           values.governorateFieldId !== '' &&
@@ -228,7 +239,6 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
         <VillageList
           cityId={values.cityId}
           onVillageSelect={(village: Village[]) => {
-            console.log('Selected governorate ===> ', village);
             setValues({
               ...values,
               village: village[0].name,

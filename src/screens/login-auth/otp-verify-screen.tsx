@@ -73,7 +73,6 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
           });
         } catch (error) {
           setResendLoading(false);
-          console.log(error);
           Toast.show({
             type: 'error',
             text1: 'Resend fail',
@@ -81,7 +80,6 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
         }
       }
     } catch (error) {
-      console.log(error);
       setResendLoading(false);
       Toast.show({
         type: 'error',
@@ -94,14 +92,12 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
     try {
       setLoading(true);
       let confirm = await confirmation?.confirm(otpValue);
-      console.log('otp success:  ', confirm);
       navigate('AddFarmScreen', {
         loginType: LoginType.OTP,
         phoneNumber: phoneNumber,
       });
       setLoading(false);
     } catch (error) {
-      console.log('otp error: ', error);
       setLoading(false);
       Toast.show({
         type: 'error',

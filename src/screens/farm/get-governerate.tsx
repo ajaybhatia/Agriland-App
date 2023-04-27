@@ -68,9 +68,9 @@ const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
 
   return (
     <View style={styles.fullscreen}>
-      <View mx={8} flex={1}>
+      <View mx={10} flex={1}>
         <Header
-          title={'Select Governerate'}
+          title={t('select-governerate')}
           iconName={'close'}
           mt={3}
           mb={3}
@@ -98,7 +98,6 @@ const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
             item: Governorate;
             index: number;
           }) => {
-            console.log('selections ==> ', selections);
             return (
               <ItemList
                 title={`${item.name}`}
@@ -163,8 +162,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 0,
+    height: '80%',
     bottom: 0,
     backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
 });

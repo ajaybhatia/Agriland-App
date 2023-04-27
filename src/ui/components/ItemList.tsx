@@ -30,7 +30,19 @@ const ItemList = ({
   const { t } = useTranslation();
   console.log();
   return (
-    <Pressable>
+    <Pressable
+      onPress={() => {
+        if (isMultiSelection) {
+          if (selections.filter((x) => x === index).length > 0) {
+            setSelection && setSelection(index, false, true);
+          } else {
+            setSelection && setSelection(index, true, true);
+          }
+        } else {
+          setSelection && setSelection(index, true, false);
+        }
+      }}
+    >
       <View
         justifyContent={'space-between'}
         flexDirection={'row'}
@@ -49,34 +61,32 @@ const ItemList = ({
           />
         )}
         {selection && (
-          <Pressable
-            onPress={() => {
-              if (isMultiSelection) {
-                if (selections.filter((x) => x === index).length > 0) {
-                  setSelection && setSelection(index, false, true);
-                } else {
-                  setSelection && setSelection(index, true, true);
+          <>
+            {!isMultiSelection &&
+            selections.filter((x) => x === index).length > 0 ? (
+              <Icon
+                as={MaterialIcons}
+                name={'check'}
+                size={6}
+                color={colors.button_color}
+              />
+            ) : isMultiSelection ? (
+              <Icon
+                as={MaterialIcons}
+                name={
+                  !isMultiSelection
+                    ? selections.filter((x) => x === index).length > 0
+                      ? 'radio-button-on'
+                      : 'radio-button-off'
+                    : selections.filter((x) => x === index).length > 0
+                    ? 'check-box'
+                    : 'check-box-outline-blank'
                 }
-              } else {
-                setSelection && setSelection(index, true, false);
-              }
-            }}
-          >
-            <Icon
-              as={MaterialIcons}
-              name={
-                !isMultiSelection
-                  ? selections.filter((x) => x === index).length > 0
-                    ? 'radio-button-on'
-                    : 'radio-button-off'
-                  : selections.filter((x) => x === index).length > 0
-                  ? 'check-box'
-                  : 'check-box-outline-blank'
-              }
-              size={6}
-              color={colors.button_color}
-            />
-          </Pressable>
+                size={6}
+                color={colors.button_color}
+              />
+            ) : undefined}
+          </>
         )}
       </View>
     </Pressable>

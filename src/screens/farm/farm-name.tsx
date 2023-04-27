@@ -27,7 +27,6 @@ const AddFarmName = ({ onNextStep, farmRequest }: Props) => {
         farmName: farmRequest?.name ?? '',
       },
       onSubmit: () => {
-        console.log('onSubmit ==> ', values);
         onNextStep &&
           onNextStep({
             ...farmRequest,
@@ -43,11 +42,11 @@ const AddFarmName = ({ onNextStep, farmRequest }: Props) => {
     <View style={styles.fullscreen} marginTop={5}>
       <CardWithShadow>
         <VStack p={5}>
-          <Header title={'Choose farm name'} />
+          <Header title={t('choose-farm-name')} />
           <RoundInput
             mt={5}
             onBlur={handleBlur('farmName')}
-            placeholder={t('name')}
+            placeholder={t('farm-name')}
             onChangeText={handleChange('farmName')}
             value={values.farmName}
             isInvalid={!!errors.farmName}
