@@ -3,8 +3,7 @@ import { useFormik } from 'formik';
 import { Button, ScrollView, View, VStack } from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, StyleSheet } from 'react-native';
-import { Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import * as yup from 'yup';
 
@@ -23,11 +22,7 @@ type Props = {
   onNextStep?: (farmRequest: FarmRequest & FarmInfoModal) => void;
   farmRequest?: FarmRequest & FarmInfoModal;
 };
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight =
-  Platform.OS === 'ios'
-    ? Dimensions.get('window').height
-    : Dimensions.get('screen').height;
+
 const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
   const { t } = useTranslation();
   const [isGovernerateOpen, setGovernerateOpen] = useState<boolean>(false);
@@ -173,8 +168,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
       </VStack>
       <Modal
         coverScreen={true}
-        deviceWidth={-(deviceWidth / 6)}
-        deviceHeight={deviceHeight}
+        style={{ margin: 0 }}
         isVisible={isGovernerateOpen}
         onDismiss={() => setGovernerateOpen(false)}
         onModalHide={() => setGovernerateOpen(false)}
@@ -199,8 +193,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
       </Modal>
       <Modal
         coverScreen={true}
-        deviceWidth={-(deviceWidth / 6)}
-        deviceHeight={deviceHeight}
+        style={{ margin: 0 }}
         isVisible={
           isCityOpen &&
           values.governorateFieldId !== '' &&
@@ -226,8 +219,7 @@ const AddFarmAddress = ({ onNextStep, farmRequest }: Props) => {
       </Modal>
       <Modal
         coverScreen={true}
-        deviceWidth={-(deviceWidth / 6)}
-        deviceHeight={deviceHeight}
+        style={{ margin: 0 }}
         isVisible={
           isVillageOpen &&
           values.governorateFieldId !== '' &&
