@@ -29,6 +29,7 @@ type Props = {
   fontWeight?: ResponsiveValue<IFontWeight | number | (string & {})>;
   btnTitle?: string;
   onRightIconClick?: () => void;
+  numberOfLines?: number | undefined;
 };
 
 export default function Header({
@@ -46,6 +47,7 @@ export default function Header({
   btnTitle,
   onRightIconClick,
   iconColor = colors.TITLE_COLOR,
+  numberOfLines,
 }: Props) {
   return (
     <View
@@ -55,9 +57,10 @@ export default function Header({
       mt={mt}
       flexDirection={'row'}
       alignItems={'center'}
-      justifyContent={btnTitle || iconName ? 'space-between' : undefined}
+      justifyContent={btnTitle || iconName ? 'space-between' : 'flex-start'}
     >
       <Text
+        numberOfLines={numberOfLines}
         fontSize={fontSize}
         fontWeight={fontWeight}
         color={color}
@@ -67,7 +70,6 @@ export default function Header({
       >
         {title}
       </Text>
-
       {(btnTitle || iconName) && (
         <Pressable
           alignItems={'center'}

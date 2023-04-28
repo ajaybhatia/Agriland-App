@@ -46,6 +46,23 @@ export const AuthNavigator = () => {
         }}
       />
       <Stack.Screen
+        name="OtpVerifyScreen"
+        component={OtpVerifyScreen}
+        options={{
+          headerShown: true,
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: () => {
+            return (
+              <AppHeader
+                onBackPress={onBackPress}
+                title={t('verify-otp')}
+                iconName={'arrow-u-right-top'}
+              />
+            );
+          },
+        }}
+      />
+      <Stack.Screen
         name="AddFarmScreen"
         component={AddFarmScreen}
         options={{
@@ -58,23 +75,6 @@ export const AuthNavigator = () => {
                 title={t('create-new-account')}
                 iconName={'arrow-u-right-top'}
                 onBackPress={onBackPress}
-              />
-            );
-          },
-        }}
-      />
-      <Stack.Screen
-        name="OtpVerifyScreen"
-        component={OtpVerifyScreen}
-        options={{
-          headerShown: true,
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: () => {
-            return (
-              <AppHeader
-                onBackPress={onBackPress}
-                title={t('verify-otp')}
-                iconName={'arrow-u-right-top'}
               />
             );
           },

@@ -13,7 +13,7 @@ export const customInstance = async <T>(
   const source = Axios.CancelToken.source();
   const currentUser = auth().currentUser;
   const idToken = await currentUser?.getIdToken();
-  //console.log(currentUser?.uid, ' \n\n', idToken);
+  console.log(currentUser?.uid, ' \n\n', idToken);
   if (currentUser) {
     config.headers = { Authorization: `Bearer ${idToken}` };
   }

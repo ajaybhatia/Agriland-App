@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
+  Dimensions,
   I18nManager,
   SafeAreaView,
   StyleSheet,
@@ -148,6 +149,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
                   inputCount={6}
                   containerStyle={{
                     flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
+                    flex: 1,
                   }}
                   inputCellLength={1}
                   keyboardType="numeric"
@@ -202,6 +204,7 @@ const styles = StyleSheet.create({
   roundedTextInput: {
     //borderRadius: 5,
     borderBottomWidth: 1,
+    width: Dimensions.get('screen').width / 9,
   },
 });
 

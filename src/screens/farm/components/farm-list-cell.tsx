@@ -158,6 +158,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
               <View alignItems={'center'} flex={0.5} flexDirection={'row'}>
                 <View flex={0.2} alignItems={'flex-start'} overflow={'hidden'}>
                   <Header
+                    numberOfLines={1}
                     title={t('city')}
                     color={colors.TITLE_COLOR}
                     fontSize={12}
@@ -177,6 +178,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
               <View alignItems={'center'} flex={0.5} flexDirection={'row'}>
                 <View flex={0.5} alignItems={'flex-start'} overflow={'hidden'}>
                   <Header
+                    numberOfLines={1}
                     title={t('governerate')}
                     color={colors.TITLE_COLOR}
                     fontSize={12}
@@ -200,14 +202,10 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
               justifyContent={'space-between'}
               flex={1}
             >
-              <View
-                alignItems={'center'}
-                flex={0.5}
-                mr={1}
-                flexDirection={'row'}
-              >
-                <View flex={0.5} alignItems={'flex-start'}>
+              <View alignItems={'center'} flex={0.5} flexDirection={'row'}>
+                <View flex={0.5} alignItems={'flex-start'} overflow={'hidden'}>
                   <Header
+                    numberOfLines={1}
                     title={t('organization')}
                     color={colors.TITLE_COLOR}
                     fontSize={12}
@@ -224,14 +222,11 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
                   />
                 </View>
               </View>
-              <View
-                alignItems={'center'}
-                ml={1}
-                flex={0.5}
-                flexDirection={'row'}
-              >
+
+              <View alignItems={'center'} flex={0.5} flexDirection={'row'}>
                 <View flex={0.3} alignItems={'flex-start'}>
                   <Header
+                    numberOfLines={1}
                     title={t('village')}
                     color={colors.TITLE_COLOR}
                     fontSize={12}

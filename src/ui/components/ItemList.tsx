@@ -51,7 +51,7 @@ const ItemList = ({
         borderBottomWidth={1}
         py={3}
       >
-        <Text>{title}</Text>
+        <Text numberOfLines={1}>{title}</Text>
         {isIconShow && !selection && (
           <Icon
             as={MaterialIcons}
