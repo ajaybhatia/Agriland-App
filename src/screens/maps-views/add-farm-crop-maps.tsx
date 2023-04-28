@@ -21,9 +21,11 @@ import colors from '@/ui/theme/colors';
 import AddFarmAddress from '../farm/add-farm-address';
 import FarmList from '../farm/farm-list';
 import AddFarmName from '../farm/farm-name';
+import AddressFarmType from './address-farm-type';
 import LocationType from './location-type';
 
 export enum MapType {
+  DropSinglePin,
   PinMap,
   WalkMap,
 }
@@ -32,6 +34,10 @@ export interface FarmInfoModal {
   governorate?: string | null;
   city?: string | null;
   village?: string | null;
+  currentLocation?: {
+    lat: number;
+    lng: number;
+  };
 }
 
 type Props = {
@@ -41,7 +47,9 @@ type Props = {
 const AddFramCropMaps = ({ onNextStep }: Props) => {
   enum AddFarmState {
     MAP,
+    CURRENT_LOCATION_MAP,
     ENTER_NAME,
+    ADDRESS_TYPE,
     ENTER_FARM_ADDRESS,
     GET_FARM_LAT_LNG_BY,
     FARM_LIST,
@@ -52,6 +60,8 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
   const mapRef = React.useRef<MapView>(null);
   const [userLocation, setUserLocation] = React.useState<Location[]>([]);
   const [isLocationFinish, setLocationFinish] = React.useState<boolean>(false);
+  const [isCurrentLocationLoading, setCurrentLocationLoading] =
+    React.useState<boolean>(false);
   const [isLocationWalkStart, setLocationWalkStart] =
     React.useState<boolean>(false);
   const [farmState, setFarmState] = React.useState<AddFarmState>(
@@ -66,7 +76,9 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
   // request location permission
   function reQuestPermission(isCurrentLocation: boolean) {
     console.log('START REQUEST');
-    setUserLocation([]);
+    if (!isCurrentLocation) {
+      setUserLocation([]);
+    }
     RNLocation.requestPermission({
       ios: 'whenInUse',
       android: {
@@ -81,12 +93,14 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
             configLocation();
           }
         } else {
+          setCurrentLocationLoading(false);
           Alert.alert('Warning', 'Permission not granted.');
         }
       })
       // eslint-disable-next-line handle-callback-err
       .catch((err) => {
         Alert.alert('Warning', 'Permission request fail.');
+        setCurrentLocationLoading(false);
       });
   }
 
@@ -101,7 +115,7 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       androidProvider: 'auto',
       interval: 5000, // Milliseconds
       fastestInterval: 10000, // Milliseconds
-      maxWaitTime: 5000, // Milliseconds
+      maxWaitTime: 10000, // Milliseconds
       // iOS Only
       activityType: 'other',
 
@@ -110,8 +124,10 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       pausesLocationUpdatesAutomatically: false,
       showsBackgroundLocationIndicator: true,
     });
-    RNLocation.getLatestLocation({ timeout: 60000 }).then(
+    RNLocation.getLatestLocation({ timeout: 10000 }).then(
       (latestLocation: Location | null) => {
+        setCurrentLocationLoading(false);
+
         if (latestLocation && latestLocation != null) {
           console.log('Location found');
           if (mapRef && mapRef.current) {
@@ -129,7 +145,24 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
               { duration: 1000 }
             );
           }
+          setMapType((type) => {
+            if (type === MapType.DropSinglePin) {
+              setFarmInfo((info) => {
+                return {
+                  ...info,
+                  currentLocation: {
+                    lat: latestLocation.latitude,
+                    lng: latestLocation.longitude,
+                  },
+                };
+              });
+              setFarmState(AddFarmState.CURRENT_LOCATION_MAP);
+            }
+            return type;
+          });
         } else {
+          console.log('Location not found');
+
           Toast.show({
             type: 'error',
             text1: 'Current location not found ',
@@ -224,9 +257,9 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
     KeepAwake.activate();
     console.log('START');
 
-    setTimeout(() => {
-      reQuestPermission(true);
-    }, 300);
+    // setTimeout(() => {
+    //   reQuestPermission(true);
+    // }, 300);
 
     return () => {
       console.log('END');
@@ -241,11 +274,22 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
 
   function onNextFarmName(farmRequest: FarmRequest & FarmInfoModal) {
     setFarmInfo(farmRequest);
-    setFarmState(AddFarmState.ENTER_FARM_ADDRESS);
+    setFarmState(AddFarmState.ADDRESS_TYPE);
   }
 
-  function onNextFarmLatLngType(farmRequest: FarmRequest & FarmInfoModal) {
+  function onCurrentLocationMap(farmRequest: FarmRequest & FarmInfoModal) {
     setFarmInfo(farmRequest);
+    setMapType(MapType.DropSinglePin);
+    setCurrentLocationLoading(true);
+    reQuestPermission(true);
+  }
+
+  function onNextFarmLatLngType(farmRequest?: FarmRequest & FarmInfoModal) {
+    setFarmInfo(farmRequest);
+    setFarmState(AddFarmState.GET_FARM_LAT_LNG_BY);
+  }
+
+  function onNextFarmMapType() {
     setFarmState(AddFarmState.GET_FARM_LAT_LNG_BY);
   }
 
@@ -376,7 +420,9 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
     <View style={styles.fullscreen}>
       <MapView
         mapType={'satellite'}
-        showsUserLocation
+        showsUserLocation={
+          isMapPinType === MapType.DropSinglePin ? false : true
+        }
         showsMyLocationButton={false}
         showsCompass={false}
         followsUserLocation={false}
@@ -513,6 +559,16 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
             />
           );
         })}
+        {isMapPinType === MapType.DropSinglePin &&
+          farmInfo?.currentLocation && (
+            <Marker
+              key={`${'map_current'}`}
+              coordinate={{
+                latitude: farmInfo?.currentLocation.lat ?? 0.0,
+                longitude: farmInfo?.currentLocation.lng ?? 0.0,
+              }}
+            />
+          )}
       </MapView>
       {farmState === AddFarmState.MAP && (
         <VStack position={'absolute'} right={5} bottom={10}>
@@ -691,13 +747,30 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
           )}
         </VStack>
       )}
+      {farmState === AddFarmState.CURRENT_LOCATION_MAP && (
+        <Button
+          position={'absolute'}
+          bottom={10}
+          backgroundColor={colors.button_color}
+          onPress={onNextFarmMapType}
+          borderRadius={8}
+          width={'70%'}
+          fontWeight={'normal'}
+          fontSize={20}
+          overflow={'hidden'}
+          alignSelf={'center'}
+        >
+          {t('continue')}
+        </Button>
+      )}
       {farmState === AddFarmState.ENTER_NAME && (
         <AddFarmName farmRequest={farmInfo} onNextStep={onNextFarmName} />
       )}
-      {farmState === AddFarmState.ENTER_FARM_ADDRESS && (
-        <AddFarmAddress
+      {farmState === AddFarmState.ADDRESS_TYPE && (
+        <AddressFarmType
+          isCurrentLocationLoading={isCurrentLocationLoading}
           farmRequest={farmInfo}
-          onNextStep={onNextFarmLatLngType}
+          onCurrentLocation={onCurrentLocationMap}
         />
       )}
       {farmState === AddFarmState.GET_FARM_LAT_LNG_BY && (
@@ -707,6 +780,13 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
           onSkipStep={onNextFarmListShow}
         />
       )}
+      {farmState === AddFarmState.ENTER_FARM_ADDRESS && (
+        <AddFarmAddress
+          farmRequest={farmInfo}
+          onNextStep={onNextFarmLatLngType}
+        />
+      )}
+
       {farmState === AddFarmState.FARM_LIST && (
         <FarmList
           farmRequest={farmInfo}

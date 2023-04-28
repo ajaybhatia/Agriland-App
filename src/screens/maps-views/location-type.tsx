@@ -1,4 +1,4 @@
-import { Button, Pressable, Text, View, VStack } from 'native-base';
+import { Button, View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
@@ -50,6 +50,7 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
               }
               backgroundColor={colors.button_color}
               mt={5}
+              mb={5}
               borderRadius={8}
               width={'80%'}
               fontWeight={'normal'}
@@ -59,7 +60,7 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
             >
               {t('walk-through')}
             </Button>
-            <Pressable
+            {/* <Pressable
               mt={5}
               mb={5}
               alignSelf={'center'}
@@ -74,7 +75,7 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
               >
                 {t('skip')}
               </Text>
-            </Pressable>
+            </Pressable> */}
           </VStack>
         </VStack>
       </CardWithShadow>
@@ -89,6 +90,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 100,
+    top: 40,
   },
 });

@@ -10,7 +10,7 @@ import AddFramCropMaps from '../maps-views/add-farm-crop-maps';
 import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(1);
 
   const { t } = useTranslation();
   const onNextSubmit = () => {
@@ -42,7 +42,7 @@ const AddFarmScreen = () => {
   ];
 
   return (
-    <View style={styles.fullscreen} pt={5}>
+    <View style={styles.fullscreen} pt={5} scrollEnabled={false}>
       <View flex={1}>
         {/* <AppHeader
           title="Create a new account"

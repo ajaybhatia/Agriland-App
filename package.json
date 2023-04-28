@@ -69,6 +69,7 @@
     "react-native": "0.71.7",
     "react-native-flash-message": "^0.4.0",
     "react-native-gesture-handler": "~2.9.0",
+    "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-keep-awake": "^4.0.0",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-location": "https://github.com/huy-lv/react-native-location.git",

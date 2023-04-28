@@ -76,12 +76,12 @@ export default function RoundInput({
             textAlign={I18nManager.isRTL ? 'right' : 'left'}
             placeholder={placeholder}
             borderWidth={2}
-            value={value}
             borderColor={BORDER_COLOR_DARK}
+            borderRadius={15}
+            value={value}
             color="#000"
             bgColor={'white'}
             maxLength={maxLength}
-            borderRadius={15}
             focusOutlineColor={BORDER_COLOR_DARK}
             variant="outline"
             size="xl"

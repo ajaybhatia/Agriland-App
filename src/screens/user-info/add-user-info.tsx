@@ -1,23 +1,24 @@
-import auth from '@react-native-firebase/auth';
-import type { RouteProp } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
-import type { FormikValues } from 'formik';
-import { useFormik } from 'formik';
-import { t } from 'i18next';
-import { Button, View } from 'native-base';
-import React from 'react';
-import { I18nManager } from 'react-native';
-import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 
-import { usePostApiAccountCreateUserBasicDetails } from '@/apis/endpoints/api';
-import { useSelectedLanguage } from '@/core';
-import type { Language } from '@/core/i18n/resources';
+import { Button, ScrollView, View } from 'native-base';
+
 import type { AuthStackParamList } from '@/navigation/auth-navigator';
-import type { Option } from '@/ui';
+import type { FormikValues } from 'formik';
 import Header from '@/ui/components/Header';
+import { I18nManager } from 'react-native';
+import type { Language } from '@/core/i18n/resources';
+import type { Option } from '@/ui';
+import React from 'react';
 import RoundInput from '@/ui/components/RoundInput';
+import type { RouteProp } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import auth from '@react-native-firebase/auth';
 import colors from '@/ui/theme/colors';
+import { t } from 'i18next';
+import { useFormik } from 'formik';
+import { usePostApiAccountCreateUserBasicDetails } from '@/apis/endpoints/api';
+import { useRoute } from '@react-navigation/native';
+import { useSelectedLanguage } from '@/core';
 
 interface Props {
   onNextSubmit?: () => void;
@@ -121,7 +122,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
   );
 
   return (
-    <View flex={1} mx={5}>
+    <ScrollView flex={1} mx={5}>
       <Header title={t('account-data')} mt={10} />
       <RoundInput
         mt={5}
@@ -206,7 +207,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
       >
         {t('continue')}
       </Button>
-    </View>
+    </ScrollView>
   );
 }
 export default AddUserInfo;

@@ -9,6 +9,7 @@ import type {
 } from 'native-base/lib/typescript/theme/base/typography';
 import React from 'react';
 import { I18nManager, Pressable } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = {
@@ -34,47 +35,49 @@ export default function AppHeader({
   iconSize = 'xl',
   onBackPress,
 }: Props) {
+  const insets = useSafeAreaInsets();
   return (
-    <View
-      flexDirection={'row'}
-      alignItems={'center'}
-      backgroundColor={'white'}
-      py={3}
-      shadow={2}
-      // style={{
-      //   shadowColor: '#000',
-      //   shadowOffset: {
-      //     width: 0,
-      //     height: 2,
-      //   },
-      //   shadowOpacity: 0.25,
-      //   shadowRadius: 3.84,
+    <View shadow={2} backgroundColor={'white'}>
+      <View
+        flexDirection={'row'}
+        alignItems={'center'}
+        py={3}
+        mt={insets.top}
+        // style={{
+        //   shadowColor: '#000',
+        //   shadowOffset: {
+        //     width: 0,
+        //     height: 2,
+        //   },
+        //   shadowOpacity: 0.25,
+        //   shadowRadius: 3.84,
 
-      //   elevation: 5,
-      // }}
-    >
-      {iconName && (
-        <Pressable onPress={() => onBackPress && onBackPress()}>
-          <Icon
-            as={MaterialCommunityIcons}
-            name={iconName ? iconName : 'arrow-u-right-top'}
-            size={iconSize}
-            color={'#000'}
-            marginLeft={4}
-          />
-        </Pressable>
-      )}
-      <Text
-        marginLeft={4}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-        color={color}
-        alignSelf={'center'}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{ textAlign: I18nManager.isRTL ? 'left' : 'right' }}
+        //   elevation: 5,
+        // }}
       >
-        {title}
-      </Text>
+        {iconName && (
+          <Pressable onPress={() => onBackPress && onBackPress()}>
+            <Icon
+              as={MaterialCommunityIcons}
+              name={iconName ? iconName : 'arrow-u-right-top'}
+              size={iconSize}
+              color={'#000'}
+              marginLeft={4}
+            />
+          </Pressable>
+        )}
+        <Text
+          marginLeft={4}
+          fontSize={fontSize}
+          fontWeight={fontWeight}
+          color={color}
+          alignSelf={'center'}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{ textAlign: I18nManager.isRTL ? 'left' : 'right' }}
+        >
+          {title}
+        </Text>
+      </View>
     </View>
   );
 }
