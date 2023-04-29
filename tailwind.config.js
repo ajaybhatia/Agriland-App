@@ -7,6 +7,14 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ['Inter'],
+        Poppins: [
+          'Poppins-Bold',
+          'Poppins-Black',
+          'Poppins-ExtraBold',
+          'Poppins-Thin',
+          'Poppins-Medium',
+          'Poppins-Regular',
+        ],
       },
       colors,
     },

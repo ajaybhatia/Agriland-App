@@ -104,6 +104,24 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       });
   }
 
+  function cameraMoveToSelectedCurrentLocation() {
+    if (mapRef && mapRef.current && farmInfo?.currentLocation) {
+      console.log('Map ref found');
+      mapRef.current.animateCamera(
+        {
+          center: {
+            latitude: farmInfo?.currentLocation.lat,
+            longitude: farmInfo?.currentLocation.lng,
+          },
+          heading: 1,
+          pitch: 1,
+          zoom: 18,
+        },
+        { duration: 1000 }
+      );
+    }
+  }
+
   function requestCurrentLocation() {
     RNLocation.configure({
       distanceFilter: undefined, // Meters
@@ -124,7 +142,7 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       pausesLocationUpdatesAutomatically: false,
       showsBackgroundLocationIndicator: true,
     });
-    RNLocation.getLatestLocation({ timeout: 10000 }).then(
+    RNLocation.getLatestLocation({ timeout: 20000 }).then(
       (latestLocation: Location | null) => {
         setCurrentLocationLoading(false);
 
@@ -162,10 +180,20 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
           });
         } else {
           console.log('Location not found');
-
-          Toast.show({
-            type: 'error',
-            text1: 'Current location not found ',
+          setMapType((type) => {
+            if (type === MapType.DropSinglePin) {
+              Toast.show({
+                type: 'error',
+                text1: 'Tap on map to drop a pin ',
+              });
+              setFarmState(AddFarmState.CURRENT_LOCATION_MAP);
+            } else {
+              Toast.show({
+                type: 'error',
+                text1: 'Current location not found ',
+              });
+            }
+            return type;
           });
         }
       }
@@ -432,7 +460,21 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         onPress={(event: MapPressEvent) => {
-          if (isMapPinType === MapType.PinMap) {
+          if (isMapPinType === MapType.DropSinglePin) {
+            if (event.nativeEvent.coordinate != null) {
+              let lat = event.nativeEvent.coordinate.latitude;
+              let lng = event.nativeEvent.coordinate.longitude;
+              setFarmInfo((info) => {
+                return {
+                  ...info,
+                  currentLocation: {
+                    lat: lat,
+                    lng: lng,
+                  },
+                };
+              });
+            }
+          } else if (isMapPinType === MapType.PinMap) {
             if (event.nativeEvent.coordinate != null) {
               let lat = event.nativeEvent.coordinate.latitude;
               let lng = event.nativeEvent.coordinate.longitude;
@@ -559,16 +601,16 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
             />
           );
         })}
-        {isMapPinType === MapType.DropSinglePin &&
-          farmInfo?.currentLocation && (
-            <Marker
-              key={`${'map_current'}`}
-              coordinate={{
-                latitude: farmInfo?.currentLocation.lat ?? 0.0,
-                longitude: farmInfo?.currentLocation.lng ?? 0.0,
-              }}
-            />
-          )}
+        {/* isMapPinType === MapType.DropSinglePin && */}
+        {farmInfo?.currentLocation && (
+          <Marker
+            key={`${'map_current'}`}
+            coordinate={{
+              latitude: farmInfo?.currentLocation.lat ?? 0.0,
+              longitude: farmInfo?.currentLocation.lng ?? 0.0,
+            }}
+          />
+        )}
       </MapView>
       {farmState === AddFarmState.MAP && (
         <VStack position={'absolute'} right={5} bottom={10}>

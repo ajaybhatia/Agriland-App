@@ -5,6 +5,7 @@ module.exports = {
   BORDER_COLOR_DARK: '#4F7942',
   TITLE_COLOR: '#4F7942',
   BACKGROUND_COLOR: '#fbf9f3',
+  BACKGROUND_CELL_COLOR: '#4F7942',
   BORDER_COLOR: '#f5e8ca',
   neutral: {
     50: '#FAFAFA',

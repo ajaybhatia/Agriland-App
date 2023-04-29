@@ -68,13 +68,14 @@ const AddressFarmType = ({
                   autoFillOnNotFound={true}
                   currentLocation={true}
                   debounce={0.3}
+                  fetchDetails={true}
                   placeholder="Search Address"
                   onPress={(data, details = null) => {
                     // 'details' is provided when fetchDetails = true
                     console.log(data, details);
                   }}
                   query={{
-                    key: 'YOUR API KEY',
+                    key: 'AIzaSyBVWF2g8JcrsHflOL7OfSF4f1dsgwLDuXw',
                     language: 'en',
                   }}
                 />

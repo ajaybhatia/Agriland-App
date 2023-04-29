@@ -56,7 +56,7 @@ export const AuthNavigator = () => {
               <AppHeader
                 onBackPress={onBackPress}
                 title={t('verify-otp')}
-                iconName={'arrow-u-right-top'}
+                // iconName={'arrow-u-right-top'}
               />
             );
           },

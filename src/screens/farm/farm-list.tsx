@@ -1,5 +1,13 @@
 import { FlashList } from '@shopify/flash-list';
-import { Button, HStack, Icon, Pressable, Text, View } from 'native-base';
+import {
+  Button,
+  HStack,
+  Icon,
+  Pressable,
+  Text,
+  View,
+  VStack,
+} from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet } from 'react-native';
@@ -82,10 +90,11 @@ const FarmList = ({
   }
 
   return (
-    <View style={styles.fullscreen} p={5}>
+    <View style={styles.fullscreen} px={5}>
       <Header
         title={t('farm-data-review')}
-        mt={1}
+        mt={2}
+        mb={2}
         btnTitle={t('edit')}
         iconName="edit"
         as={MaterialIcons}
@@ -95,6 +104,7 @@ const FarmList = ({
       <FlashList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 120 }}
         data={farmInfo}
         renderItem={({
           item,
@@ -105,52 +115,54 @@ const FarmList = ({
         }) => <FarmListCell farmInfo={item} />}
         estimatedItemSize={300}
       />
-
-      <Button
-        isLoading={addFarmApi.isLoading}
-        backgroundColor={colors.button_color}
-        mt={10}
-        onPress={() => apiSubmitAddFarm(false)}
-        borderRadius={8}
-        width={'80%'}
-        fontWeight={'normal'}
-        fontSize={20}
-        overflow={'hidden'}
-        alignSelf={'center'}
-      >
-        {t('save')}
-      </Button>
-      <Pressable
-        onPress={() => !addFarmApi.isLoading && apiSubmitAddFarm(true)}
-        mt={10}
-        width={'80%'}
-        alignSelf={'center'}
-        borderColor={'amber.600'}
-        borderWidth={1}
-        borderRadius={10}
-        overflow={'hidden'}
-        justifyContent={'center'}
-        alignItems={'center'}
-      >
-        <HStack alignItems={'center'} py={2}>
-          {!addFarmApi.isLoading ? (
-            <>
-              <Text color={'amber.600'} fontWeight={'normal'} fontSize={16}>
-                {t('save-and-add-new-farm')}
-              </Text>
-              <Icon
-                ml={2}
-                as={MaterialCommunityIcons}
-                name={'plus-circle'}
-                size={'lg'}
-                color={'amber.600'}
-              />
-            </>
-          ) : (
-            <ActivityIndicator size="small" color="#00ff00" />
-          )}
-        </HStack>
-      </Pressable>
+      <VStack position={'absolute'} bottom={10} left={0} right={0}>
+        <Button
+          isLoading={addFarmApi.isLoading}
+          backgroundColor={colors.button_color}
+          mt={2}
+          onPress={() => apiSubmitAddFarm(false)}
+          borderRadius={8}
+          width={'80%'}
+          fontWeight={'normal'}
+          fontSize={20}
+          overflow={'hidden'}
+          alignSelf={'center'}
+        >
+          {t('save')}
+        </Button>
+        <Pressable
+          onPress={() => !addFarmApi.isLoading && apiSubmitAddFarm(true)}
+          mt={5}
+          backgroundColor={'#FFF'}
+          width={'80%'}
+          alignSelf={'center'}
+          borderColor={'amber.600'}
+          borderWidth={1}
+          borderRadius={10}
+          overflow={'hidden'}
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
+          <HStack alignItems={'center'} py={2}>
+            {!addFarmApi.isLoading ? (
+              <>
+                <Text color={'amber.600'} fontWeight={'normal'} fontSize={16}>
+                  {t('save-and-add-new-farm')}
+                </Text>
+                <Icon
+                  ml={2}
+                  as={MaterialCommunityIcons}
+                  name={'plus-circle'}
+                  size={'lg'}
+                  color={'amber.600'}
+                />
+              </>
+            ) : (
+              <ActivityIndicator size="small" color="#00ff00" />
+            )}
+          </HStack>
+        </Pressable>
+      </VStack>
     </View>
   );
 };
