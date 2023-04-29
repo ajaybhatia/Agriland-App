@@ -63,8 +63,9 @@ export default function Header({
         numberOfLines={numberOfLines}
         fontSize={fontSize}
         fontWeight={fontWeight}
+        // fontFamily={'heading'}
         color={color}
-        fontFamily={'heading'}
+        fontStyle={'normal'}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ textAlign: I18nManager.isRTL ? 'left' : 'right' }}
       >
@@ -77,7 +78,7 @@ export default function Header({
         >
           <HStack alignItems={'center'}>
             {btnTitle && (
-              <Text px={2} color={colors.TITLE_COLOR}>
+              <Text px={2} color={colors.TITLE_COLOR} fontStyle={'italic'}>
                 {btnTitle}
               </Text>
             )}

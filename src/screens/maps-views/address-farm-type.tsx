@@ -1,4 +1,4 @@
-import { Button, HStack, ScrollView, Text, View, VStack } from 'native-base';
+import { HStack, ScrollView, Text, View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
@@ -6,8 +6,9 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import type { FarmRequest } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
+import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
-import colors, { BORDER_COLOR_DARK } from '@/ui/theme/colors';
+import { BORDER_COLOR_DARK } from '@/ui/theme/colors';
 
 import type { FarmInfoModal } from './add-farm-crop-maps';
 
@@ -34,22 +35,15 @@ const AddressFarmType = ({
           <VStack p={5}>
             <Header title={'Your Location'} />
             <VStack>
-              <Button
+              <CustomButton
+                mt={5}
                 isLoading={isCurrentLocationLoading}
                 onPress={() =>
                   onCurrentLocation && onCurrentLocation(farmRequest!)
                 }
-                backgroundColor={colors.button_color}
-                mt={5}
-                borderRadius={8}
                 width={'100%'}
-                fontWeight={'normal'}
-                fontSize={20}
-                overflow={'hidden'}
-                alignSelf={'center'}
-              >
-                {'Current location'}
-              </Button>
+                title={'Current location'}
+              />
               <HStack justifyContent={'center'} alignItems={'center'} my={8}>
                 <View h={'0.4'} w={'1/3'} bgColor={'gray.300'} mr={5} />
                 <Text fontWeight="medium" fontSize={13}>
@@ -64,6 +58,9 @@ const AddressFarmType = ({
                     borderWidth: 2,
                     borderColor: BORDER_COLOR_DARK,
                     borderRadius: 15,
+                    fontWeight: '400',
+                    fontFamily: 'Poppins-Regular',
+                    fontStyle: 'normal',
                   }}
                   autoFillOnNotFound={true}
                   currentLocation={true}

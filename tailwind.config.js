@@ -6,7 +6,6 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        inter: ['Inter'],
         Poppins: [
           'Poppins-Bold',
           'Poppins-Black',

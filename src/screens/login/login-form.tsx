@@ -178,7 +178,7 @@ export const LoginForm = () => {
               <VStack p={3}>
                 <Header
                   title={t('welcome')}
-                  fontWeight="thin"
+                  fontWeight="100"
                   fontSize={13}
                   color={'black'}
                   mt={3}
@@ -207,6 +207,18 @@ export const LoginForm = () => {
                       value: valuePhone,
                       maxLength: 10,
                       textAlign: I18nManager.isRTL ? 'right' : 'left',
+
+                      style: {
+                        fontWeight: '200',
+                        fontFamily: 'Poppins-Regular',
+                        fontStyle: 'normal',
+                        height: 40,
+                        flex: 1,
+                        padding: 0,
+
+                        alignSelf: 'center',
+                        textAlignVertical: 'center',
+                      },
                     }}
                     onChangeText={(text) => {
                       if (text.match(/^\d*$/)) {
@@ -372,12 +384,22 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 30 : 40,
     justifyContent: 'center',
     alignItems: 'center',
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+    textAlignVertical: 'center',
+    fontStyle: 'normal',
   },
   codeTxt: {
-    fontSize: 12,
+    fontSize: 13,
     height: Platform.OS === 'ios' ? 16 : 18,
     justifyContent: 'center',
     alignItems: 'center',
+    fontWeight: '700',
+    marginTop: -5,
+    marginLeft: -5,
+    textAlignVertical: 'center',
+    fontFamily: 'Poppins-Regular',
+    fontStyle: 'normal',
   },
   safeArea: { flex: 1 },
 });

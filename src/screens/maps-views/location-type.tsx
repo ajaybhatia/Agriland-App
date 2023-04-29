@@ -1,12 +1,12 @@
-import { Button, View, VStack } from 'native-base';
+import { View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
 import type { FarmRequest } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
+import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
-import colors from '@/ui/theme/colors';
 
 import type { FarmInfoModal } from './add-farm-crop-maps';
 import { MapType } from './add-farm-crop-maps';
@@ -29,37 +29,25 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
           <Header title={t('enter-the-area-of-farm')} />
           <Header title={t('through-two-ways')} fontSize={'xs'} />
           <VStack>
-            <Button
+            <CustomButton
+              mt={10}
               onPress={() =>
                 onNextStep && onNextStep(MapType.PinMap, farmRequest!)
               }
-              backgroundColor={colors.button_color}
-              mt={10}
-              borderRadius={8}
               width={'80%'}
-              fontWeight={'normal'}
-              fontSize={20}
-              overflow={'hidden'}
-              alignSelf={'center'}
-            >
-              {t('draw-pin')}
-            </Button>
-            <Button
+              title={t('draw-pin')}
+            />
+
+            <CustomButton
+              mt={5}
+              mb={5}
               onPress={() =>
                 onNextStep && onNextStep(MapType.WalkMap, farmRequest!)
               }
-              backgroundColor={colors.button_color}
-              mt={5}
-              mb={5}
-              borderRadius={8}
               width={'80%'}
-              fontWeight={'normal'}
-              fontSize={20}
-              overflow={'hidden'}
-              alignSelf={'center'}
-            >
-              {t('walk-through')}
-            </Button>
+              title={t('walk-through')}
+            />
+
             {/* <Pressable
               mt={5}
               mb={5}

@@ -1,13 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
-import {
-  Button,
-  HStack,
-  Icon,
-  Pressable,
-  Text,
-  View,
-  VStack,
-} from 'native-base';
+import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet } from 'react-native';
@@ -17,8 +9,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { usePostApiFarmCreateUpdateFarm } from '@/apis/endpoints/api';
 import type { FarmRequest } from '@/apis/model';
+import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
-import colors from '@/ui/theme/colors';
 
 import type { FarmInfoModal } from '../maps-views/add-farm-crop-maps';
 import FarmListCell from './components/farm-list-cell';
@@ -116,20 +108,14 @@ const FarmList = ({
         estimatedItemSize={300}
       />
       <VStack position={'absolute'} bottom={10} left={0} right={0}>
-        <Button
+        <CustomButton
           isLoading={addFarmApi.isLoading}
-          backgroundColor={colors.button_color}
           mt={2}
           onPress={() => apiSubmitAddFarm(false)}
-          borderRadius={8}
           width={'80%'}
-          fontWeight={'normal'}
-          fontSize={20}
-          overflow={'hidden'}
-          alignSelf={'center'}
-        >
-          {t('save')}
-        </Button>
+          title={t('save')}
+        />
+
         <Pressable
           onPress={() => !addFarmApi.isLoading && apiSubmitAddFarm(true)}
           mt={5}

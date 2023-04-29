@@ -62,7 +62,10 @@ export default function RoundInput({
           focusOutlineColor={BORDER_COLOR_DARK}
           variant="outline"
           size="xl"
-          _input={{ color: '#000', fontSize: 12 }}
+          _input={{
+            color: '#000',
+            fontSize: 12,
+          }}
           onChangeText={onChangeText}
         />
       ) : (

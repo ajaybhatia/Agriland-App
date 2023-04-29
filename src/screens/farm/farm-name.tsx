@@ -1,6 +1,6 @@
 import type { FormikValues } from 'formik';
 import { useFormik } from 'formik';
-import { Button, ScrollView, View, VStack } from 'native-base';
+import { ScrollView, View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
@@ -8,9 +8,9 @@ import * as yup from 'yup';
 
 import type { FarmRequest } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
+import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
 import RoundInput from '@/ui/components/RoundInput';
-import colors from '@/ui/theme/colors';
 
 type Props = {
   onNextStep?: (farmRequest: FarmRequest) => void;
@@ -53,19 +53,12 @@ const AddFarmName = ({ onNextStep, farmRequest }: Props) => {
               isInvalid={!!errors.farmName}
               errors={errors.farmName && touched.farmName && errors.farmName}
             />
-            <Button
-              backgroundColor={colors.button_color}
-              mt={10}
-              onPress={handleSubmit}
-              borderRadius={8}
+
+            <CustomButton
               width={'80%'}
-              fontWeight={'normal'}
-              fontSize={20}
-              overflow={'hidden'}
-              alignSelf={'center'}
-            >
-              {t('continue')}
-            </Button>
+              onPress={handleSubmit}
+              title={t('continue')}
+            />
           </VStack>
         </CardWithShadow>
       </View>

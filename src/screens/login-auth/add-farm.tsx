@@ -11,7 +11,7 @@ import AddFramCropMaps from '../maps-views/add-farm-crop-maps';
 import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(1);
 
   const { t } = useTranslation();
   const onNextSubmit = () => {
