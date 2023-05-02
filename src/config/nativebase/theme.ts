@@ -5,38 +5,31 @@ const theme = extendTheme({
   fontConfig: {
     Poppins: {
       100: {
-        normal: '../../assets/fonts/Poppins-Thin.ttf',
+        normal: 'Poppins-Thin',
+        italic: 'Poppins-ThinItalic',
       },
       200: {
-        normal: '../../assets/fonts/Poppins-Black.ttf',
+        normal: 'Poppins-Light',
       },
+
       300: {
-        normal: '../../assets/fonts/Poppins-Regular.ttf',
+        normal: '.Poppins-Black',
       },
       400: {
-        normal: '../../assets/fonts/Poppins-Medium.ttf',
+        normal: 'Poppins-Regular',
       },
       500: {
-        normal: '../../assets/fonts/Poppins-Bold.ttf',
+        normal: 'Poppins-Medium',
       },
       600: {
-        normal: '../../assets/fonts/Poppins-SemiBold.ttf',
+        normal: 'Poppins-Bold',
       },
       700: {
-        normal: '../../assets/fonts/Poppins-ExtraBold.ttf',
+        normal: 'Poppins-SemiBold',
       },
-      // Add more variants
-      //   700: {
-      //     normal: 'Roboto-Bold',
-      //   },
-      //   800: {
-      //     normal: 'Roboto-Bold',
-      //     italic: 'Roboto-BoldItalic',
-      //   },
-      //   900: {
-      //     normal: 'Roboto-Bold',
-      //     italic: 'Roboto-BoldItalic',
-      //   },
+      800: {
+        normal: 'Poppins-ExtraBold',
+      },
     },
   },
 

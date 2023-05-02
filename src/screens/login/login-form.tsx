@@ -178,7 +178,7 @@ export const LoginForm = () => {
               <VStack p={3}>
                 <Header
                   title={t('welcome')}
-                  fontWeight="100"
+                  fontWeight="200"
                   fontSize={13}
                   color={'black'}
                   mt={3}

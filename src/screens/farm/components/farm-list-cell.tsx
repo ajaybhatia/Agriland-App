@@ -1,16 +1,17 @@
 import * as geolib from 'geolib';
-import { HStack, View, VStack } from 'native-base';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
-import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import type { CoOrdinates, FarmRequest } from '@/apis/model';
-import type { FarmInfoModal } from '@/screens/maps-views/add-farm-crop-maps';
+import { HStack, VStack, View } from 'native-base';
+import MapView, { Marker, PROVIDER_GOOGLE, Polygon } from 'react-native-maps';
+
 import BodyTitle from '@/ui/components/BodyTitle';
 import CardWithShadow from '@/ui/components/CardWithShadow';
+import type { FarmInfoModal } from '@/screens/farm/add-farm-maps';
 import Header from '@/ui/components/Header';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import colors from '@/ui/theme/colors';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   onNextStep?: () => void;

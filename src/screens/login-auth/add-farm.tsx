@@ -6,16 +6,19 @@ import Stepper from 'react-native-stepper-ui';
 
 import { button_color } from '@/ui/theme/colors';
 
-import ChooseFarmCropCategory from '../crop/choose-farm-crop-category';
-import AddFramCropMaps from '../maps-views/add-farm-crop-maps';
+import AddCropMaps from '../crop/add-crop-maps';
+import AddFramCropMaps from '../farm/add-farm-maps';
 import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(2);
 
   const { t } = useTranslation();
   const onNextSubmit = () => {
     setActive((p) => p + 1);
+  };
+  const onPreviousSubmit = () => {
+    setActive((p) => p - 1);
   };
   // eslint-disable-next-line react/no-unstable-nested-components
   const MyComponent = () => {
@@ -37,7 +40,7 @@ const AddFarmScreen = () => {
       title: t('form-data'),
     },
     {
-      content: <ChooseFarmCropCategory />,
+      content: <AddCropMaps onPreviousSubmit={onPreviousSubmit} />,
       title: t('enter-crop'),
     },
   ];

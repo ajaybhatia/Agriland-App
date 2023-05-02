@@ -10,7 +10,7 @@ import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
 import { BORDER_COLOR_DARK } from '@/ui/theme/colors';
 
-import type { FarmInfoModal } from './add-farm-crop-maps';
+import type { FarmInfoModal } from '../farm/add-farm-maps';
 
 type Props = {
   onCurrentLocation?: (farmRequest: FarmRequest & FarmInfoModal) => void;

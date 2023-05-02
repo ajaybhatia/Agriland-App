@@ -2,13 +2,16 @@ import { HStack, Pressable, VStack } from 'native-base';
 import React from 'react';
 import { Dimensions } from 'react-native';
 
+import type { FarmResponse } from '@/apis/model';
 import BodyTitle from '@/ui/components/BodyTitle';
 import Header from '@/ui/components/Header';
 import colors from '@/ui/theme/colors';
 
-type Props = {};
+type Props = {
+  item: FarmResponse;
+};
 const width = Dimensions.get('window').width;
-export default function FarmMapSelectionCell({}: Props) {
+export default function FarmMapSelectionCell({ item }: Props) {
   return (
     <Pressable
       bgColor={colors.BACKGROUND_CELL_COLOR}
@@ -22,7 +25,7 @@ export default function FarmMapSelectionCell({}: Props) {
     >
       <VStack>
         <Header
-          title="Al Aml Farm"
+          title={item?.name ?? 'Title'}
           fontSize={13}
           fontWeight={'semibold'}
           color="#FFF"
@@ -31,27 +34,27 @@ export default function FarmMapSelectionCell({}: Props) {
           <BodyTitle
             title="area"
             fontSize={11}
-            fontWeight={'normal'}
+            fontWeight={'100'}
             color="#FFF"
           />
           <Header
             ml={2}
-            title="50 tons"
+            title={item?.address ?? ' Area here...'}
             fontSize={12}
-            fontWeight={'extrabold'}
+            fontWeight={'400'}
             color="#FFF"
           />
         </HStack>
         <BodyTitle
           title="farm crops"
           fontSize={11}
-          fontWeight={'700'}
+          fontWeight={'100'}
           color="#FFF"
         />
         <Header
-          title="Orange,Pomegranate"
+          title={item?.village ?? 'crops here'}
           fontSize={12}
-          fontWeight={'700'}
+          fontWeight={'400'}
           color="#FFF"
         />
       </VStack>

@@ -7,8 +7,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { useGetApiCommonFetchGovernates } from '@/apis/endpoints/api';
 import type { Governorate } from '@/apis/model';
-import { EmptyList } from '@/ui';
 import AppLoader from '@/ui/components/AppLoader';
+import EmptyList from '@/ui/components/EmptyList';
 import Header from '@/ui/components/Header';
 import ItemList from '@/ui/components/ItemList';
 import colors from '@/ui/theme/colors';

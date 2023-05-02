@@ -5,11 +5,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import colors from '@/ui/theme/colors';
 
-type Props = {};
+type Props = {
+  onPreviousSubmit?: () => void;
+};
 const width = Dimensions.get('window').width;
-export default function FarmAddCell({}: Props) {
+export default function FarmAddCell({ onPreviousSubmit }: Props) {
   return (
     <Pressable
+      onPress={onPreviousSubmit}
       bgColor={colors.BACKGROUND_CELL_COLOR}
       justifyContent={'center'}
       alignItems={'center'}

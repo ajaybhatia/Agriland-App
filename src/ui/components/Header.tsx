@@ -63,7 +63,7 @@ export default function Header({
         numberOfLines={numberOfLines}
         fontSize={fontSize}
         fontWeight={fontWeight}
-        // fontFamily={'heading'}
+        fontFamily={'heading'}
         color={color}
         fontStyle={'normal'}
         // eslint-disable-next-line react-native/no-inline-styles

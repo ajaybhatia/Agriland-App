@@ -3,49 +3,35 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
-import type { FarmRequest } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
 
-import type { FarmInfoModal } from '../farm/add-farm-maps';
-import { MapType } from '../farm/add-farm-maps';
-
 type Props = {
-  onNextStep?: (
-    mapType: MapType,
-    farmRequest: FarmRequest & FarmInfoModal
-  ) => void;
-  farmRequest?: FarmRequest & FarmInfoModal;
-  onSkipStep?: (farmRequest: FarmRequest & FarmInfoModal) => void;
+  onNextStep?: () => void;
+  onSkipStep?: () => void;
 };
-const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
+const CropDragPointArea = ({ onNextStep, onSkipStep }: Props) => {
   const { t } = useTranslation();
 
   return (
     <View style={styles.fullscreen} marginTop={5}>
       <CardWithShadow>
         <VStack p={5}>
-          <Header title={t('enter-the-area-of-farm')} />
-          <Header title={t('through-two-ways')} fontSize={'xs'} />
+          <View justifyContent={'center'} alignItems={'center'}>
+            <Header title={'Set The Area Of Your Crop'} />
+            <Header
+              title={'Drag The Point To Select The Area Of Your Crop'}
+              fontSize={'xs'}
+            />
+          </View>
+
           <VStack>
             <CustomButton
               mt={10}
-              onPress={() =>
-                onNextStep && onNextStep(MapType.PinMap, farmRequest!)
-              }
+              onPress={onNextStep}
               width={'80%'}
-              title={t('draw-pin')}
-            />
-
-            <CustomButton
-              mt={5}
-              mb={5}
-              onPress={() =>
-                onNextStep && onNextStep(MapType.WalkMap, farmRequest!)
-              }
-              width={'80%'}
-              title={t('walk-through')}
+              title={t('continue')}
             />
 
             {/* <Pressable
@@ -71,7 +57,7 @@ const LocationType = ({ onNextStep, onSkipStep, farmRequest }: Props) => {
   );
 };
 
-export default LocationType;
+export default CropDragPointArea;
 
 const styles = StyleSheet.create({
   fullscreen: {

@@ -18,11 +18,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import type { FarmRequest } from '@/apis/model';
 import CustomButton from '@/ui/components/CustomButton';
 
-import AddFarmAddress from '../farm/add-farm-address';
-import FarmList from '../farm/farm-list';
-import AddFarmName from '../farm/farm-name';
-import AddressFarmType from './address-farm-type';
-import LocationType from './location-type';
+import AddressFarmType from '../maps-views/address-farm-type';
+import LocationType from '../maps-views/location-type';
+import AddFarmAddress from './add-farm-address';
+import FarmList from './farm-list';
+import AddFarmName from './farm-name';
 
 export enum MapType {
   DropSinglePin,

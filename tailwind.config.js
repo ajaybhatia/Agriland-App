@@ -11,6 +11,8 @@ module.exports = {
           'Poppins-Black',
           'Poppins-ExtraBold',
           'Poppins-Thin',
+          'Poppins-ThinItalic.ttf',
+          'Poppins-Light',
           'Poppins-Medium',
           'Poppins-Regular',
         ],

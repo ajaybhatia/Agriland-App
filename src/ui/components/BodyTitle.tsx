@@ -64,9 +64,9 @@ export default function BodyTitle({
         fontSize={fontSize}
         fontWeight={fontWeight}
         color={color}
-        fontFamily={'heading'}
+        backgroundColor={'amber.300'}
         flexWrap={'wrap'}
-        fontStyle={'normal'}
+        fontFamily={'heading'}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ textAlign: I18nManager.isRTL ? 'left' : 'right' }}
       >
