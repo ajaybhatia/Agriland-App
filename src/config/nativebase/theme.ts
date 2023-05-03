@@ -24,10 +24,10 @@ const theme = extendTheme({
       600: {
         normal: 'Poppins-Bold',
       },
+      // 700: {
+      //   normal: 'Poppins-SemiBold',
+      // },
       700: {
-        normal: 'Poppins-SemiBold',
-      },
-      800: {
         normal: 'Poppins-ExtraBold',
       },
     },

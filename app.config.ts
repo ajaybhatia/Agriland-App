@@ -47,6 +47,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       '@bacons/link-assets',
       [
         './assets/fonts/Poppins-Bold.ttf',
+        './assets/fonts/Poppins-SemiBold.ttf',
         './assets/fonts/Poppins-Black.ttf',
         './assets/fonts/Poppins-ExtraBold.ttf',
         './assets/fonts/Poppins-ThinItalic.ttf',

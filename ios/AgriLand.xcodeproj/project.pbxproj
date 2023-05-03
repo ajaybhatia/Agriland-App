@@ -7,64 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04E2CCF429E4EFC600C5E24D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04E2CCF329E4EFC600C5E24D /* GoogleService-Info.plist */; };
+		0417329F2A02037400F18599 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0417329E2A02037400F18599 /* GoogleService-Info.plist */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		19BAC04E8AF4448FA53D5DD5 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D0276EEF0554B3A92EB959F /* Poppins-Black.ttf */; };
+		2A98F33690544E9ABA58047A /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9F1E075478A4D6F81257944 /* Poppins-Light.ttf */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		8E104F98C44C4C0186D5BBCE /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6D7F07718164447891C701E /* Poppins-Bold.ttf */; };
-		96905EF65AED1B983A6B3ABC /* libPods-AgriMISR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-AgriMISR.a */; };
-		97B5E834B39D47D1B5AD35F5 /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F1DEA50508E47A6BD080232 /* Poppins-ExtraBold.ttf */; };
+		6C17D647608C424C97C24C86 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 040AFF5D3EBE49C4BFC966BB /* Poppins-Black.ttf */; };
+		786E3EDC8812488F914C1789 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10DECE908AAA4AFF9603A402 /* Poppins-Medium.ttf */; };
+		8EAFD22C4EE04C27BD1279FA /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E016E785F2DA4C7C83301F05 /* Poppins-Bold.ttf */; };
+		96905EF65AED1B983A6B3ABC /* libPods-AgriLand.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-AgriLand.a */; };
+		98BFD06832934C4AA5B4302F /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA13573104F3484CAD37DD31 /* Poppins-ThinItalic.ttf */; };
+		9B56E4585B6645E5A851163A /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32E7B69E9842448A8230E35A /* Poppins-Regular.ttf */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
-		B3D4C2BB8FA9434B864DB3CB /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B57EACCD0024F9DA3FC7754 /* Poppins-Medium.ttf */; };
+		B43F0F523BB241AC9F405DB6 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 78BB40EF510F40FFAABEC587 /* Poppins-Thin.ttf */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		CB76C2EA95C84629AA6B99DF /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FF39C4C88ED48B189955CED /* Poppins-Regular.ttf */; };
-		DB4CE67BBF7C457DB635E928 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B84C3DBAC24B0FAB853CB3 /* noop-file.swift */; };
-		F5FD110F6B19433D8EF7ACCB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8096336E4FC4981B23E9604 /* Inter.ttf */; };
-		F6C81C210BDC44D4BC319222 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8285054EECD4E31994074E8 /* Poppins-Thin.ttf */; };
-		90C841B986CE409A926B143A /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3F8C038C007403EA406F765 /* Poppins-Bold.ttf */; };
-		765D3282A6064736AB9BFFBE /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A38FD9F220E74A7CB83757B3 /* Poppins-Black.ttf */; };
-		774A99E5300947E8922C2387 /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 283F5210794845D3BEE5B1CD /* Poppins-ExtraBold.ttf */; };
-		4A98055E9D7C4A3EA6CEE84E /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5D154432386478A934986CE /* Poppins-Thin.ttf */; };
-		F18FEA0875584CB8882AFC19 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C952BB29217944ECB604E383 /* Poppins-Medium.ttf */; };
-		3D7D13FE5C064EE1B93ACD28 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B361A49E73E4925A748374D /* Poppins-Regular.ttf */; };
-		7C05EC26876C46359C9025DB /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BAD43DF6B59046B38236EF94 /* Poppins-Light.ttf */; };
-		729CE6B1EB594DABB884752F /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5336D2B010154A23ADA31EA1 /* Poppins-ThinItalic.ttf */; };
+		CAB374B84F654D228452D6AC /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 245EE491A071429CBEDD4B15 /* Poppins-ExtraBold.ttf */; };
+		F1FED1A60E004F7E8881D979 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7ABEFAF8BB454A82315A2B /* noop-file.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		04E2CCF329E4EFC600C5E24D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* AgriMISR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = AgriMISR.app; path = AgriLand.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AgriMISR/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = AgriMISR/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AgriMISR/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AgriMISR/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AgriMISR/main.m; sourceTree = "<group>"; };
-		22B84C3DBAC24B0FAB853CB3 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "AgriMISR/noop-file.swift"; sourceTree = "<group>"; };
-		3FF39C4C88ED48B189955CED /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
-		4D0276EEF0554B3A92EB959F /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
-		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-AgriMISR.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AgriMISR.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C2E3173556A471DD304B334 /* Pods-AgriMISR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriMISR.debug.xcconfig"; path = "Target Support Files/Pods-AgriMISR/Pods-AgriMISR.debug.xcconfig"; sourceTree = "<group>"; };
-		7A4D352CD337FB3A3BF06240 /* Pods-AgriMISR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriMISR.release.xcconfig"; path = "Target Support Files/Pods-AgriMISR/Pods-AgriMISR.release.xcconfig"; sourceTree = "<group>"; };
-		7B57EACCD0024F9DA3FC7754 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
-		8F1DEA50508E47A6BD080232 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
-		A8096336E4FC4981B23E9604 /* Inter.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Inter.ttf; path = ../assets/fonts/Inter.ttf; sourceTree = "<group>"; };
-		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = AgriMISR/SplashScreen.storyboard; sourceTree = "<group>"; };
+		040AFF5D3EBE49C4BFC966BB /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
+		0417329E2A02037400F18599 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		10DECE908AAA4AFF9603A402 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* AgriLand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgriLand.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AgriLand/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = AgriLand/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AgriLand/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AgriLand/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AgriLand/main.m; sourceTree = "<group>"; };
+		245EE491A071429CBEDD4B15 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
+		2E7ABEFAF8BB454A82315A2B /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "AgriLand/noop-file.swift"; sourceTree = "<group>"; };
+		32E7B69E9842448A8230E35A /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-AgriLand.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AgriLand.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C2E3173556A471DD304B334 /* Pods-AgriLand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriLand.debug.xcconfig"; path = "Target Support Files/Pods-AgriLand/Pods-AgriLand.debug.xcconfig"; sourceTree = "<group>"; };
+		78BB40EF510F40FFAABEC587 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
+		7A4D352CD337FB3A3BF06240 /* Pods-AgriLand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriLand.release.xcconfig"; path = "Target Support Files/Pods-AgriLand/Pods-AgriLand.release.xcconfig"; sourceTree = "<group>"; };
+		A9F1E075478A4D6F81257944 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
+		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = AgriLand/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		D6D7F07718164447891C701E /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
-		D8285054EECD4E31994074E8 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
+		DA13573104F3484CAD37DD31 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
+		E016E785F2DA4C7C83301F05 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-AgriMISR/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		C3F8C038C007403EA406F765 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A38FD9F220E74A7CB83757B3 /* Poppins-Black.ttf */ = {isa = PBXFileReference; name = "Poppins-Black.ttf"; path = "../assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		283F5210794845D3BEE5B1CD /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; name = "Poppins-ExtraBold.ttf"; path = "../assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F5D154432386478A934986CE /* Poppins-Thin.ttf */ = {isa = PBXFileReference; name = "Poppins-Thin.ttf"; path = "../assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C952BB29217944ECB604E383 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; name = "Poppins-Medium.ttf"; path = "../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2B361A49E73E4925A748374D /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BAD43DF6B59046B38236EF94 /* Poppins-Light.ttf */ = {isa = PBXFileReference; name = "Poppins-Light.ttf"; path = "../assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5336D2B010154A23ADA31EA1 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-ThinItalic.ttf"; path = "../assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-AgriLand/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,14 +58,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96905EF65AED1B983A6B3ABC /* libPods-AgriMISR.a in Frameworks */,
+				96905EF65AED1B983A6B3ABC /* libPods-AgriLand.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* AgriMISR */ = {
+		13B07FAE1A68108700A75B9A /* AgriLand */ = {
 			isa = PBXGroup;
 			children = (
 				BB2F792B24A3F905000567C9 /* Supporting */,
@@ -88,43 +74,21 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				0417329E2A02037400F18599 /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				04E2CCF329E4EFC600C5E24D /* GoogleService-Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				22B84C3DBAC24B0FAB853CB3 /* noop-file.swift */,
+				2E7ABEFAF8BB454A82315A2B /* noop-file.swift */,
 			);
-			name = AgriMISR;
+			name = AgriLand;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-AgriMISR.a */,
+				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-AgriLand.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5E1A02C8F7F24D66871C7764 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				A8096336E4FC4981B23E9604 /* Inter.ttf */,
-				D6D7F07718164447891C701E /* Poppins-Bold.ttf */,
-				4D0276EEF0554B3A92EB959F /* Poppins-Black.ttf */,
-				8F1DEA50508E47A6BD080232 /* Poppins-ExtraBold.ttf */,
-				D8285054EECD4E31994074E8 /* Poppins-Thin.ttf */,
-				7B57EACCD0024F9DA3FC7754 /* Poppins-Medium.ttf */,
-				3FF39C4C88ED48B189955CED /* Poppins-Regular.ttf */,
-				C3F8C038C007403EA406F765 /* Poppins-Bold.ttf */,
-				A38FD9F220E74A7CB83757B3 /* Poppins-Black.ttf */,
-				283F5210794845D3BEE5B1CD /* Poppins-ExtraBold.ttf */,
-				F5D154432386478A934986CE /* Poppins-Thin.ttf */,
-				C952BB29217944ECB604E383 /* Poppins-Medium.ttf */,
-				2B361A49E73E4925A748374D /* Poppins-Regular.ttf */,
-				BAD43DF6B59046B38236EF94 /* Poppins-Light.ttf */,
-				5336D2B010154A23ADA31EA1 /* Poppins-ThinItalic.ttf */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -137,13 +101,13 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* AgriMISR */,
+				13B07FAE1A68108700A75B9A /* AgriLand */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D65327D7A22EEC0BE12398D9 /* Pods */,
 				D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */,
-				5E1A02C8F7F24D66871C7764 /* Resources */,
+				F9C08CE5B88C4234A34F7C53 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -153,17 +117,17 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* AgriMISR.app */,
+				13B07F961A680F5B00A75B9A /* AgriLand.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		92DBD88DE9BF7D494EA9DA96 /* AgriMISR */ = {
+		92DBD88DE9BF7D494EA9DA96 /* AgriLand */ = {
 			isa = PBXGroup;
 			children = (
 				FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */,
 			);
-			name = AgriMISR;
+			name = AgriLand;
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -172,14 +136,14 @@
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
 			);
 			name = Supporting;
-			path = AgriMISR/Supporting;
+			path = AgriLand/Supporting;
 			sourceTree = "<group>";
 		};
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6C2E3173556A471DD304B334 /* Pods-AgriMISR.debug.xcconfig */,
-				7A4D352CD337FB3A3BF06240 /* Pods-AgriMISR.release.xcconfig */,
+				6C2E3173556A471DD304B334 /* Pods-AgriLand.debug.xcconfig */,
+				7A4D352CD337FB3A3BF06240 /* Pods-AgriLand.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -187,17 +151,32 @@
 		D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				92DBD88DE9BF7D494EA9DA96 /* AgriMISR */,
+				92DBD88DE9BF7D494EA9DA96 /* AgriLand */,
 			);
 			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		F9C08CE5B88C4234A34F7C53 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E016E785F2DA4C7C83301F05 /* Poppins-Bold.ttf */,
+				040AFF5D3EBE49C4BFC966BB /* Poppins-Black.ttf */,
+				245EE491A071429CBEDD4B15 /* Poppins-ExtraBold.ttf */,
+				DA13573104F3484CAD37DD31 /* Poppins-ThinItalic.ttf */,
+				78BB40EF510F40FFAABEC587 /* Poppins-Thin.ttf */,
+				A9F1E075478A4D6F81257944 /* Poppins-Light.ttf */,
+				10DECE908AAA4AFF9603A402 /* Poppins-Medium.ttf */,
+				32E7B69E9842448A8230E35A /* Poppins-Regular.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* AgriMISR */ = {
+		13B07F861A680F5B00A75B9A /* AgriLand */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AgriMISR" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AgriLand" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -206,16 +185,16 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				69B578E71ACE280451207387 /* [CP] Embed Pods Frameworks */,
-				7B4868B7353F3FD7DD3413B1 /* [CP-User] [RNFB] Core Configuration */,
+				1D9F7039CFBED529B9631DB6 /* [CP] Embed Pods Frameworks */,
+				5F7E38E2DFE5BBE13ABE5A2D /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = AgriMISR;
-			productName = AgriMISR;
-			productReference = 13B07F961A680F5B00A75B9A /* AgriMISR.app */;
+			name = AgriLand;
+			productName = AgriLand;
+			productReference = 13B07F961A680F5B00A75B9A /* AgriLand.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -231,7 +210,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "AgriMISR" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "AgriLand" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -244,7 +223,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* AgriMISR */,
+				13B07F861A680F5B00A75B9A /* AgriLand */,
 			);
 		};
 /* End PBXProject section */
@@ -256,23 +235,16 @@
 			files = (
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				04E2CCF429E4EFC600C5E24D /* GoogleService-Info.plist in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				F5FD110F6B19433D8EF7ACCB /* Inter.ttf in Resources */,
-				8E104F98C44C4C0186D5BBCE /* Poppins-Bold.ttf in Resources */,
-				19BAC04E8AF4448FA53D5DD5 /* Poppins-Black.ttf in Resources */,
-				97B5E834B39D47D1B5AD35F5 /* Poppins-ExtraBold.ttf in Resources */,
-				F6C81C210BDC44D4BC319222 /* Poppins-Thin.ttf in Resources */,
-				B3D4C2BB8FA9434B864DB3CB /* Poppins-Medium.ttf in Resources */,
-				CB76C2EA95C84629AA6B99DF /* Poppins-Regular.ttf in Resources */,
-				90C841B986CE409A926B143A /* Poppins-Bold.ttf in Resources */,
-				765D3282A6064736AB9BFFBE /* Poppins-Black.ttf in Resources */,
-				774A99E5300947E8922C2387 /* Poppins-ExtraBold.ttf in Resources */,
-				4A98055E9D7C4A3EA6CEE84E /* Poppins-Thin.ttf in Resources */,
-				F18FEA0875584CB8882AFC19 /* Poppins-Medium.ttf in Resources */,
-				3D7D13FE5C064EE1B93ACD28 /* Poppins-Regular.ttf in Resources */,
-				7C05EC26876C46359C9025DB /* Poppins-Light.ttf in Resources */,
-				729CE6B1EB594DABB884752F /* Poppins-ThinItalic.ttf in Resources */,
+				8EAFD22C4EE04C27BD1279FA /* Poppins-Bold.ttf in Resources */,
+				6C17D647608C424C97C24C86 /* Poppins-Black.ttf in Resources */,
+				0417329F2A02037400F18599 /* GoogleService-Info.plist in Resources */,
+				CAB374B84F654D228452D6AC /* Poppins-ExtraBold.ttf in Resources */,
+				98BFD06832934C4AA5B4302F /* Poppins-ThinItalic.ttf in Resources */,
+				B43F0F523BB241AC9F405DB6 /* Poppins-Thin.ttf in Resources */,
+				2A98F33690544E9ABA58047A /* Poppins-Light.ttf in Resources */,
+				786E3EDC8812488F914C1789 /* Poppins-Medium.ttf in Resources */,
+				9B56E4585B6645E5A851163A /* Poppins-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,20 +280,20 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AgriMISR-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-AgriLand-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		69B578E71ACE280451207387 /* [CP] Embed Pods Frameworks */ = {
+		1D9F7039CFBED529B9631DB6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriMISR/Pods-AgriMISR-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-AgriLand/Pods-AgriLand-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -330,10 +302,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgriMISR/Pods-AgriMISR-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgriLand/Pods-AgriLand-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7B4868B7353F3FD7DD3413B1 /* [CP-User] [RNFB] Core Configuration */ = {
+		5F7E38E2DFE5BBE13ABE5A2D /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -352,7 +324,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriMISR/Pods-AgriMISR-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-AgriLand/Pods-AgriLand-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXUpdates/EXUpdates.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
@@ -373,7 +345,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgriMISR/Pods-AgriMISR-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgriLand/Pods-AgriLand-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -405,7 +377,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				DB4CE67BBF7C457DB635E928 /* noop-file.swift in Sources */,
+				F1FED1A60E004F7E8881D979 /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,18 +386,18 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-AgriMISR.debug.xcconfig */;
+			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-AgriLand.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = AgriMISR/AgriMISR.entitlements;
+				CODE_SIGN_ENTITLEMENTS = AgriLand/AgriLand.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = AgriMISR/Info.plist;
+				INFOPLIST_FILE = AgriLand/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
@@ -436,7 +408,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = ar.agrimisr;
-				PRODUCT_NAME = "AgriLand";
+				PRODUCT_NAME = AgriLand;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -446,13 +418,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-AgriMISR.release.xcconfig */;
+			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-AgriLand.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = AgriMISR/AgriMISR.entitlements;
+				CODE_SIGN_ENTITLEMENTS = AgriLand/AgriLand.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = AgriMISR/Info.plist;
+				INFOPLIST_FILE = AgriLand/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
@@ -463,7 +435,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = ar.agrimisr;
-				PRODUCT_NAME = "AgriLand";
+				PRODUCT_NAME = AgriLand;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -582,7 +554,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AgriMISR" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AgriLand" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -591,7 +563,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "AgriMISR" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "AgriLand" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

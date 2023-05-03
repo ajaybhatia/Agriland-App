@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                BuildableName = "AgriLand.app"
-               BlueprintName = "AgriMISR"
-               ReferencedContainer = "container:AgriMISR.xcodeproj">
+               BlueprintName = "AgriLand"
+               ReferencedContainer = "container:AgriLand.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "AgriMISRTests.xctest"
-               BlueprintName = "AgriMISRTests"
-               ReferencedContainer = "container:AgriMISR.xcodeproj">
+               BuildableName = "AgriLandTests.xctest"
+               BlueprintName = "AgriLandTests"
+               ReferencedContainer = "container:AgriLand.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -56,8 +56,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "AgriLand.app"
-            BlueprintName = "AgriMISR"
-            ReferencedContainer = "container:AgriMISR.xcodeproj">
+            BlueprintName = "AgriLand"
+            ReferencedContainer = "container:AgriLand.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -73,8 +73,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "AgriLand.app"
-            BlueprintName = "AgriMISR"
-            ReferencedContainer = "container:AgriMISR.xcodeproj">
+            BlueprintName = "AgriLand"
+            ReferencedContainer = "container:AgriLand.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
