@@ -1,6 +1,9 @@
 import { FlashList } from '@shopify/flash-list';
-import { Image, Pressable, View } from 'native-base';
+import { Image } from 'expo-image';
+import { Image as ImageBase, Pressable, View, VStack } from 'native-base';
 import React, { useState } from 'react';
+import { Animated, StyleSheet } from 'react-native';
+import { ExpandingDot } from 'react-native-animated-pagination-dots';
 import Modal from 'react-native-modal';
 
 import {
@@ -15,6 +18,7 @@ import type {
 import AppLoader from '@/ui/components/AppLoader';
 import EmptyList from '@/ui/components/EmptyList';
 import Header from '@/ui/components/Header';
+import colors from '@/ui/theme/colors';
 
 import ChooseCropScreen from './choose-crop-screen';
 import FarmAddCell from './components/farm-add-cell';
@@ -25,6 +29,7 @@ type Props = {
 };
 
 function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
+  const scrollX = React.useRef(new Animated.Value(0)).current;
   const [isCropScreeenOpen, setCropScreenOpen] = useState<boolean>(false);
   const [farms, setFarms] = useState<FarmResponse[]>([]);
   const [cropCategories, setCropCategories] = useState<CropCategoryResponse[]>(
@@ -70,7 +75,6 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
     {
       query: {
         onSuccess: (data: CropCategoryPaginatedResponse) => {
-          console.log('data ===> ', data);
           if (
             data.cropCategoryResponses &&
             data.cropCategoryResponses.length > 0
@@ -104,26 +108,45 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
       top={0}
       backgroundColor={'white'}
     >
-      <Header title={'Choose a farm'} mt={5} mb={2} ml={5} mr={5} />
-      <FlashList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 20 }}
-        data={farms}
-        ListHeaderComponent={
-          <FarmAddCell onPreviousSubmit={onPreviousSubmit} />
-        }
-        renderItem={({
-          item,
-          index,
-        }: {
-          item: FarmResponse;
-          index: number;
-        }) => <FarmMapSelectionCell item={item} />}
-        estimatedItemSize={300}
-      />
-      <Header title={'Choose Crop Category'} mt={10} mb={2} ml={5} mr={5} />
+      <VStack pb={5}>
+        <Header title={'Choose A Farm'} mt={5} mb={2} ml={5} mr={5} />
+        <FlashList
+          horizontal
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            {
+              useNativeDriver: false,
+            }
+          )}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
+          data={farms}
+          ListHeaderComponent={
+            <FarmAddCell onPreviousSubmit={onPreviousSubmit} />
+          }
+          renderItem={({
+            item,
+            index,
+          }: {
+            item: FarmResponse;
+            index: number;
+          }) => <FarmMapSelectionCell item={item} />}
+          estimatedItemSize={300}
+        />
+        <ExpandingDot
+          data={farms}
+          expandingDotWidth={8}
+          scrollX={scrollX}
+          inActiveDotOpacity={0.3}
+          dotStyle={styles.dotStyle}
+          activeDotColor={colors.button_color}
+          containerStyle={{
+            bottom: 0,
+          }}
+        />
+      </VStack>
+      <Header title={'Choose Crop Category'} mt={5} mb={2} ml={5} mr={5} />
       <View flex={1} mx={5}>
         <FlashList
           horizontal={false}
@@ -131,6 +154,9 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={cropCategories}
+          extraData={
+            getCropCategories.isLoading || getCropCategories.isFetching
+          }
           // eslint-disable-next-line react/no-unstable-nested-components
           ListEmptyComponent={() =>
             cropCategories.length <= 0 &&
@@ -150,18 +176,28 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
               borderRadius={10}
               overflow={'hidden'}
               flex={1}
+              h={150}
+              bgColor={'amber.400'}
               flexDirection={'column'}
               margin={2}
               onPress={() => setCropScreenOpen(true)}
             >
-              <Image
-                alignItems={'center'}
-                h={150}
-                justifyContent={'center'}
-                alt=""
-                source={require('@assets/app-logo.png')}
-                bgColor={'amber.200'}
-              />
+              {item.imageUrl && item.imageUrl !== null ? (
+                <Image
+                  style={{ height: 150 }}
+                  source={item.imageUrl}
+                  placeholder={require('@assets/app-logo.png')}
+                  contentFit="cover"
+                  transition={1000}
+                />
+              ) : (
+                <ImageBase
+                  alt=""
+                  h={150}
+                  resizeMode={'cover'}
+                  source={require('@assets/app-logo.png')}
+                />
+              )}
             </Pressable>
           )}
           estimatedItemSize={300}
@@ -191,3 +227,13 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
 }
 
 export default ChooseFarmCropCategory;
+
+const styles = StyleSheet.create({
+  dotStyle: {
+    width: 8,
+    height: 8,
+    backgroundColor: colors.button_color,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+});

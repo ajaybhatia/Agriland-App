@@ -5,13 +5,9 @@
  * OpenAPI spec version: v1
  */
 
-export interface CropRequest {
+export interface AdBannerRequest {
   id?: string | null;
   name?: string | null;
-  description?: string | null;
   imageUrl?: string | null;
-  colorCode?: string | null;
-  cropCategoryId?: string | null;
-  isActive?: boolean | null;
-  file?: Blob | null;
+  isActive?: boolean;
 }

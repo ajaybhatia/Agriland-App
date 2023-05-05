@@ -689,9 +689,12 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
         <VStack position={'absolute'} right={5} bottom={10}>
           {isMapPinType === MapType.PinMap && (
             <IconButton
-              borderRadius={3}
               size={8}
-              bgColor={'white'}
+              borderColor={'white'}
+              borderWidth={2}
+              borderRadius={10}
+              tintColor={'rgba(127,134,124,0.5)'}
+              backgroundColor={'rgba(127,134,124,0.5)'}
               disabled={userLocation.length <= 0}
               onPress={onMapMarkerClear}
               icon={
@@ -699,7 +702,7 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
                   as={MaterialIcons}
                   name={'clear'}
                   size={'md'}
-                  color={'black'}
+                  color={'white'}
                 />
               }
             />
@@ -708,63 +711,75 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
             <IconButton
               mt={5}
               disabled={userLocation.length <= 0}
-              borderRadius={3}
               size={8}
-              bgColor={'white'}
+              borderColor={'white'}
+              borderWidth={2}
+              borderRadius={10}
+              tintColor={'rgba(127,134,124,0.5)'}
+              backgroundColor={'rgba(127,134,124,0.5)'}
               onPress={onMapMarkerUndo}
               icon={
                 <Icon
                   as={MaterialCommunityIcons}
                   name={'undo'}
                   size={'md'}
-                  color={'black'}
+                  color={'white'}
                 />
               }
             />
           )}
           <IconButton
             mt={5}
-            borderRadius={3}
+            borderColor={'white'}
+            borderWidth={2}
+            borderRadius={10}
+            tintColor={'rgba(127,134,124,0.5)'}
+            backgroundColor={'rgba(127,134,124,0.5)'}
             size={8}
-            bgColor={'white'}
             onPress={onMapZoomOut}
             icon={
               <Icon
                 as={MaterialCommunityIcons}
                 name={'minus'}
                 size={'md'}
-                color={'black'}
+                color={'white'}
               />
             }
           />
           <IconButton
             mt={5}
-            borderRadius={3}
+            borderColor={'white'}
+            borderWidth={2}
+            borderRadius={10}
+            tintColor={'rgba(127,134,124,0.5)'}
+            backgroundColor={'rgba(127,134,124,0.5)'}
             size={8}
-            bgColor={'white'}
             onPress={onMapZoomIN}
             icon={
               <Icon
                 as={MaterialCommunityIcons}
                 name={'plus'}
                 size={'md'}
-                color={'black'}
+                color={'white'}
               />
             }
           />
           {isMapPinType === MapType.PinMap && (
             <IconButton
               mt={5}
-              borderRadius={3}
+              borderColor={'white'}
+              borderWidth={2}
+              borderRadius={10}
+              tintColor={'rgba(127,134,124,0.5)'}
+              backgroundColor={'rgba(127,134,124,0.5)'}
               size={8}
-              bgColor={'white'}
               onPress={onMapCurrentLocation}
               icon={
                 <Icon
                   as={FontAwesome5}
                   name={'location-arrow'}
-                  size={'md'}
-                  color={'black'}
+                  size={'sm'}
+                  color={'white'}
                 />
               }
             />

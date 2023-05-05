@@ -43,6 +43,12 @@ import type {
   PutApiAccountDeleteCostCalculationParams,
   UserBasicDetails,
   MobileAppUserBasicDetails,
+  AdBannerRequest,
+  AdBannerResponse,
+  GetApiAdBannerGetByAdBannerIdParams,
+  AdBannerPaginatedResponse,
+  GetApiAdBannerGetAdBannersParams,
+  PutApiAdBannerDeleteAdBannerParams,
   ArEnTranslation,
   GetApiArEnTranslationGetarentranslationbyidParams,
   DeleteApiArEnTranslationDeleteParams,
@@ -95,6 +101,8 @@ import type {
   PostApiSoilTypeGetSoilTypeByIdParams,
   SoilTypeResponse,
   GetApiSoilTypeGetSoilTypesParams,
+  PostApiUploadUploadImageBody,
+  DeleteApiUploadDeleteImageParams,
   RoleModel,
   RoleUpdateModel,
   IdentityRole,
@@ -1183,6 +1191,195 @@ export const useGetApiAccountFetchUserBasicDetails = <TData = Awaited<ReturnType
 }
 
 
+export const postApiAdBannerCreateUpdateAdBanner = (
+    adBannerRequest: AdBannerRequest,
+ ) => {
+      return customInstance<boolean>(
+      {url: `/api/AdBanner/createUpdateAdBanner`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: adBannerRequest
+    },
+      );
+    }
+  
+
+
+export const getPostApiAdBannerCreateUpdateAdBannerMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: AdBannerRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: AdBannerRequest}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, {data: AdBannerRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiAdBannerCreateUpdateAdBanner(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAdBannerCreateUpdateAdBannerMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>>
+    export type PostApiAdBannerCreateUpdateAdBannerMutationBody = AdBannerRequest
+    export type PostApiAdBannerCreateUpdateAdBannerMutationError = ErrorType<unknown>
+
+    export const usePostApiAdBannerCreateUpdateAdBanner = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: AdBannerRequest}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiAdBannerCreateUpdateAdBannerMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+export const getApiAdBannerGetByAdBannerId = (
+    params?: GetApiAdBannerGetByAdBannerIdParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<AdBannerResponse>(
+      {url: `/api/AdBanner/getByAdBannerId`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiAdBannerGetByAdBannerIdQueryKey = (params?: GetApiAdBannerGetByAdBannerIdParams,) => [`/api/AdBanner/getByAdBannerId`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiAdBannerGetByAdBannerIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiAdBannerGetByAdBannerId>>, TError = ErrorType<unknown>>(params?: GetApiAdBannerGetByAdBannerIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdBannerGetByAdBannerId>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiAdBannerGetByAdBannerId>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAdBannerGetByAdBannerIdQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAdBannerGetByAdBannerId>>> = ({ signal }) => getApiAdBannerGetByAdBannerId(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiAdBannerGetByAdBannerIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAdBannerGetByAdBannerId>>>
+export type GetApiAdBannerGetByAdBannerIdQueryError = ErrorType<unknown>
+
+export const useGetApiAdBannerGetByAdBannerId = <TData = Awaited<ReturnType<typeof getApiAdBannerGetByAdBannerId>>, TError = ErrorType<unknown>>(
+ params?: GetApiAdBannerGetByAdBannerIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdBannerGetByAdBannerId>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiAdBannerGetByAdBannerIdQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const getApiAdBannerGetAdBanners = (
+    params?: GetApiAdBannerGetAdBannersParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<AdBannerPaginatedResponse>(
+      {url: `/api/AdBanner/getAdBanners`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiAdBannerGetAdBannersQueryKey = (params?: GetApiAdBannerGetAdBannersParams,) => [`/api/AdBanner/getAdBanners`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiAdBannerGetAdBannersQueryOptions = <TData = Awaited<ReturnType<typeof getApiAdBannerGetAdBanners>>, TError = ErrorType<unknown>>(params?: GetApiAdBannerGetAdBannersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdBannerGetAdBanners>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiAdBannerGetAdBanners>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAdBannerGetAdBannersQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAdBannerGetAdBanners>>> = ({ signal }) => getApiAdBannerGetAdBanners(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiAdBannerGetAdBannersQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAdBannerGetAdBanners>>>
+export type GetApiAdBannerGetAdBannersQueryError = ErrorType<unknown>
+
+export const useGetApiAdBannerGetAdBanners = <TData = Awaited<ReturnType<typeof getApiAdBannerGetAdBanners>>, TError = ErrorType<unknown>>(
+ params?: GetApiAdBannerGetAdBannersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdBannerGetAdBanners>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiAdBannerGetAdBannersQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const putApiAdBannerDeleteAdBanner = (
+    params?: PutApiAdBannerDeleteAdBannerParams,
+ ) => {
+      return customInstance<string>(
+      {url: `/api/AdBanner/deleteAdBanner`, method: 'put',
+        params
+    },
+      );
+    }
+  
+
+
+export const getPutApiAdBannerDeleteAdBannerMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAdBannerDeleteAdBanner>>, TError,{params?: PutApiAdBannerDeleteAdBannerParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiAdBannerDeleteAdBanner>>, TError,{params?: PutApiAdBannerDeleteAdBannerParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAdBannerDeleteAdBanner>>, {params?: PutApiAdBannerDeleteAdBannerParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  putApiAdBannerDeleteAdBanner(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiAdBannerDeleteAdBannerMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAdBannerDeleteAdBanner>>>
+    
+    export type PutApiAdBannerDeleteAdBannerMutationError = ErrorType<unknown>
+
+    export const usePutApiAdBannerDeleteAdBanner = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAdBannerDeleteAdBanner>>, TError,{params?: PutApiAdBannerDeleteAdBannerParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getPutApiAdBannerDeleteAdBannerMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary GetAllApiKeys
  */
@@ -2299,7 +2496,7 @@ export const useGetApiCropFetchCropCalendarActivities = <TData = Awaited<ReturnT
 
 
 /**
- * @summary This will be used by mobile app
+ * @summary Used by admin portal
  */
 export const putApiCropDeleteCropCalendarActivity = (
     params?: PutApiCropDeleteCropCalendarActivityParams,
@@ -3347,6 +3544,103 @@ export const useGetApiSoilTypeGetSoilTypes = <TData = Awaited<ReturnType<typeof 
 }
 
 
+export const postApiUploadUploadImage = (
+    postApiUploadUploadImageBody: PostApiUploadUploadImageBody,
+ ) => {const formData = new FormData();
+if(postApiUploadUploadImageBody.file !== undefined) {
+ formData.append('file', postApiUploadUploadImageBody.file)
+ }
+
+      return customInstance<string>(
+      {url: `/api/Upload/uploadImage`, method: 'post',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData
+    },
+      );
+    }
+  
+
+
+export const getPostApiUploadUploadImageMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUploadUploadImage>>, TError,{data: PostApiUploadUploadImageBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiUploadUploadImage>>, TError,{data: PostApiUploadUploadImageBody}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUploadUploadImage>>, {data: PostApiUploadUploadImageBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiUploadUploadImage(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiUploadUploadImageMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUploadUploadImage>>>
+    export type PostApiUploadUploadImageMutationBody = PostApiUploadUploadImageBody
+    export type PostApiUploadUploadImageMutationError = ErrorType<unknown>
+
+    export const usePostApiUploadUploadImage = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUploadUploadImage>>, TError,{data: PostApiUploadUploadImageBody}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiUploadUploadImageMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+export const deleteApiUploadDeleteImage = (
+    params?: DeleteApiUploadDeleteImageParams,
+ ) => {
+      return customInstance<string>(
+      {url: `/api/Upload/deleteImage`, method: 'delete',
+        params
+    },
+      );
+    }
+  
+
+
+export const getDeleteApiUploadDeleteImageMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>, TError,{params?: DeleteApiUploadDeleteImageParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>, TError,{params?: DeleteApiUploadDeleteImageParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>, {params?: DeleteApiUploadDeleteImageParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  deleteApiUploadDeleteImage(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiUploadDeleteImageMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>>
+    
+    export type DeleteApiUploadDeleteImageMutationError = ErrorType<unknown>
+
+    export const useDeleteApiUploadDeleteImage = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>, TError,{params?: DeleteApiUploadDeleteImageParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getDeleteApiUploadDeleteImageMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary CreateRole
  */

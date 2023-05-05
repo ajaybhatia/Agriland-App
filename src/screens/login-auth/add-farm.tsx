@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import { Text, View } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet } from 'react-native';
-import Stepper from 'react-native-stepper-ui';
 
+import Stepper from '@/ui/components/Stepper';
 import { button_color } from '@/ui/theme/colors';
 
 import AddCropMaps from '../crop/add-crop-maps';
@@ -11,15 +12,33 @@ import AddFramCropMaps from '../farm/add-farm-maps';
 import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
-  const [active, setActive] = useState(2);
-
+  const [active, setActive] = useState(0);
+  const navigation = useNavigation();
   const { t } = useTranslation();
   const onNextSubmit = () => {
-    setActive((p) => p + 1);
+    setActive((p) => {
+      headerTitle(p + 1);
+      return p + 1;
+    });
   };
   const onPreviousSubmit = () => {
-    setActive((p) => p - 1);
+    setActive((p) => {
+      headerTitle(p - 1);
+      return p - 1;
+    });
   };
+  const headerTitle = (v: Number) => {
+    if (v === 0) {
+      navigation.setOptions({ title: t('create-new-account') });
+    } else if (v === 1) {
+      navigation.setOptions({ title: t('form-data') });
+    } else if (v === 2) {
+      navigation.setOptions({ title: t('register-crop') });
+    }
+  };
+  useEffect(() => {
+    headerTitle(active);
+  }, []);
   // eslint-disable-next-line react/no-unstable-nested-components
   const MyComponent = () => {
     return (
@@ -46,19 +65,15 @@ const AddFarmScreen = () => {
   ];
 
   return (
-    <View style={styles.fullscreen} pt={5} scrollEnabled={false}>
+    <View style={styles.fullscreen} pt={5}>
       <View flex={1}>
-        {/* <AppHeader
-          title="Create a new account"
-          iconName={'arrow-u-right-top'}
-        /> */}
         <Stepper
           stepStyle={styles.stepStyle}
           stepTextStyle={styles.stepTxtStyle}
           selectedBackgroundColor={button_color}
           selectedBorderColor={button_color}
           selectedTextColor={'white'}
-          xSpace={10}
+          xSpace={22}
           active={active}
           showButton={false}
           content={content}
@@ -82,11 +97,13 @@ const styles = StyleSheet.create({
   },
   stepStyle: {
     backgroundColor: 'white',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: button_color,
     opacity: 1,
   },
   stepTxtStyle: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
     color: button_color,
   },
 });

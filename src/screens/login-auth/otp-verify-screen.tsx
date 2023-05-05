@@ -128,9 +128,9 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
               <VStack p={3}>
                 <Header
                   title={t('otp-code')}
-                  fontWeight="bold"
-                  fontSize={18}
-                  color={'green.500'}
+                  fontWeight="600"
+                  fontSize={19}
+                  color={'black'}
                   mt={3}
                 />
                 <Header
@@ -139,8 +139,8 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
                   fontSize={13}
                   color={'black'}
                 />
-                <View my={5} w={'100%'} h={'0.4'} bgColor={'gray.300'} />
               </VStack>
+              <View mt={2} mb={5} w={'100%'} h={'0.4'} bgColor={'gray.300'} />
               <VStack mt={2}>
                 <OTPTextInput
                   ref={ref}
@@ -159,7 +159,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
               <VStack paddingX={'10'}>
                 <HStack alignItems={'center'} mt={8}>
                   <Text fontWeight="thin" fontSize={13} color={'black'}>
-                    {`${t('not-recieve-code')} `}
+                    {`${t('not-receive-code')} `}
                   </Text>
                   {isResendLoading ? (
                     <View px={2}>
@@ -168,7 +168,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
                   ) : (
                     <Text
                       color={'green.600'}
-                      fontWeight="medium"
+                      fontWeight={'medium'}
                       fontSize={13}
                       onPress={onResendOtp}
                     >
@@ -189,7 +189,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
                   }}
                   onPress={onConfirm}
                 >
-                  {t('verify')}
+                  {t('continue')}
                 </Button>
               </VStack>
             </CardWithShadow>

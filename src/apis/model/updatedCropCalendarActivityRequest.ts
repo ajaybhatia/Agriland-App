@@ -12,4 +12,5 @@ export interface UpdatedCropCalendarActivityRequest {
   intervalInDays?: number | null;
   precedingActivityGap?: number | null;
   precedingActivityId?: string | null;
+  activityOrder?: number | null;
 }

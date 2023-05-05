@@ -1,17 +1,15 @@
 import * as geolib from 'geolib';
+import { View, VStack } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import type { CoOrdinates, FarmRequest } from '@/apis/model';
-import { HStack, VStack, View } from 'native-base';
-import MapView, { Marker, PROVIDER_GOOGLE, Polygon } from 'react-native-maps';
-
-import BodyTitle from '@/ui/components/BodyTitle';
-import CardWithShadow from '@/ui/components/CardWithShadow';
 import type { FarmInfoModal } from '@/screens/farm/add-farm-maps';
+import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
-import React from 'react';
-import { StyleSheet } from 'react-native';
 import colors from '@/ui/theme/colors';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   onNextStep?: () => void;
@@ -148,9 +146,9 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
             mt={1}
             color={colors.TITLE_COLOR}
             fontSize={13}
-            fontWeight={'700'}
+            fontWeight={'800'}
           />
-          <VStack>
+          {/* <VStack>
             <HStack
               alignItems={'center'}
               justifyContent={'space-between'}
@@ -245,7 +243,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
                 </View>
               </View>
             </HStack>
-          </VStack>
+          </VStack> */}
           {/* <HStack alignItems={'center'} justifyContent={'space-between'}>
             <Header
               title={'Area'}
@@ -262,7 +260,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
               fontWeight={'500'}
             />
           </HStack> */}
-          <HStack alignItems={'center'} justifyContent={'space-between'}>
+          {/* <HStack alignItems={'center'} justifyContent={'space-between'}>
             <Header
               title={t('address')}
               color={colors.TITLE_COLOR}
@@ -277,7 +275,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
               fontSize={12}
               fontWeight={'500'}
             />
-          </HStack>
+          </HStack> */}
         </VStack>
       </CardWithShadow>
     </View>

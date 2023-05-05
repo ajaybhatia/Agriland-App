@@ -22,7 +22,7 @@ export default function FarmAddCell({ onPreviousSubmit }: Props) {
       borderRadius={20}
     >
       <HStack alignItems={'center'} px={5}>
-        <Text color={'#FFF'}>Add another farm</Text>
+        <Text color={'#FFF'}>Add Another Farm</Text>
         <Icon
           ml={1}
           as={MaterialCommunityIcons}

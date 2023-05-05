@@ -37,7 +37,24 @@ export const AuthNavigator = () => {
     navigation.goBack();
   }
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen
+        name="OtpVerifyScreen"
+        component={OtpVerifyScreen}
+        options={{
+          headerShown: false,
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: ({ options }) => {
+            return (
+              <AppHeader
+                onBackPress={onBackPress}
+                title={'Test'}
+                // iconName={'arrow-u-right-top'}
+              />
+            );
+          },
+        }}
+      />
       <Stack.Screen
         name="Login"
         component={Login}
@@ -46,35 +63,18 @@ export const AuthNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="OtpVerifyScreen"
-        component={OtpVerifyScreen}
-        options={{
-          headerShown: true,
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: () => {
-            return (
-              <AppHeader
-                onBackPress={onBackPress}
-                title={t('verify-otp')}
-                // iconName={'arrow-u-right-top'}
-              />
-            );
-          },
-        }}
-      />
-      <Stack.Screen
         name="AddFarmScreen"
         component={AddFarmScreen}
         options={{
           headerShown: true,
-          headerTitle: t('create-new-account'),
+          //headerTitle: t('create-new-account'),
           // eslint-disable-next-line react/no-unstable-nested-components
-          header: () => {
+          header: ({ options }) => {
             return (
               <AppHeader
-                title={t('create-new-account')}
-                iconName={'arrow-u-right-top'}
-                onBackPress={onBackPress}
+                title={options?.title ?? 'Test'}
+                // iconName={'arrow-u-right-top'}
+                //  onBackPress={onBackPress}
               />
             );
           },

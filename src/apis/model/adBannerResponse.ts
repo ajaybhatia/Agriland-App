@@ -5,10 +5,9 @@
  * OpenAPI spec version: v1
  */
 
-export interface CropCategoryRequest {
+export interface AdBannerResponse {
+  id?: string;
   name?: string | null;
-  description?: string | null;
-  id?: string | null;
-  isActive?: boolean | null;
   imageUrl?: string | null;
+  isActive?: boolean;
 }

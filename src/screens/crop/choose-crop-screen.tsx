@@ -3,7 +3,7 @@ import { Image } from 'expo-image';
 import { Pressable, View, VStack } from 'native-base';
 import React, { useState } from 'react';
 
-import { useGetApiCropGetCropsByFarmId } from '@/apis/endpoints/api';
+import { useGetApiCropGetCropById } from '@/apis/endpoints/api';
 import type { CropBasicResponse, FarmCropsResponse } from '@/apis/model';
 import AppLoader from '@/ui/components/AppLoader';
 import BodyTitle from '@/ui/components/BodyTitle';
@@ -13,18 +13,14 @@ import Header from '@/ui/components/Header';
 type Props = {
   onCropSelected?: () => void;
   onCropSelectionClose?: () => void;
-  farmId: string;
+  Id: string;
 };
 
-function ChooseCropScreen({
-  onCropSelected,
-  onCropSelectionClose,
-  farmId,
-}: Props) {
+function ChooseCropScreen({ onCropSelected, onCropSelectionClose, Id }: Props) {
   const [crops, setCrops] = useState<CropBasicResponse[]>([]);
-  const getCrops = useGetApiCropGetCropsByFarmId(
+  const getCrops = useGetApiCropGetCropById(
     {
-      farmId: farmId,
+      id: Id,
     },
     {
       query: {

@@ -1,18 +1,19 @@
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { HStack, Icon, Pressable, Text, VStack, View } from 'native-base';
-import React, { useState } from 'react';
-
-import CustomButton from '@/ui/components/CustomButton';
-import type { FarmInfoModal } from './add-farm-maps';
-import FarmListCell from './components/farm-list-cell';
-import type { FarmRequest } from '@/apis/model';
 import { FlashList } from '@shopify/flash-list';
-import Header from '@/ui/components/Header';
+import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Toast from 'react-native-toast-message';
+
 import { usePostApiFarmCreateUpdateFarm } from '@/apis/endpoints/api';
-import { useTranslation } from 'react-i18next';
+import type { FarmRequest } from '@/apis/model';
+import CustomButton from '@/ui/components/CustomButton';
+import Header from '@/ui/components/Header';
+
+import type { FarmInfoModal } from './add-farm-maps';
+import FarmListCell from './components/farm-list-cell';
 
 type Props = {
   addMoreFarm?: () => void;
@@ -95,7 +96,9 @@ const FarmList = ({
       <FlashList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{
+          paddingBottom: 120,
+        }}
         data={farmInfo}
         renderItem={({
           item,

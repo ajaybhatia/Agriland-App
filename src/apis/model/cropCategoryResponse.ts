@@ -14,4 +14,5 @@ export interface CropCategoryResponse {
   createdBy?: string | null;
   updatedOn?: string | null;
   isActive?: boolean;
+  imageUrl?: string | null;
 }

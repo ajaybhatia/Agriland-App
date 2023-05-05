@@ -78,7 +78,7 @@ export default function Header({
         >
           <HStack alignItems={'center'}>
             {btnTitle && (
-              <Text px={2} color={colors.TITLE_COLOR} fontStyle={'italic'}>
+              <Text px={2} color={colors.TITLE_COLOR} fontStyle={'normal'}>
                 {btnTitle}
               </Text>
             )}

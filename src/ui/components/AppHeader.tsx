@@ -12,6 +12,8 @@ import { I18nManager, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import colors from '../theme/colors';
+
 type Props = {
   iconSize?: ThemeComponentSizeType<'Icon'>;
   iconName?: string;
@@ -31,8 +33,8 @@ export default function AppHeader({
   title,
   color = '#000',
   fontSize = 'xl',
-  fontWeight = 'extrabold',
-  iconSize = 'xl',
+  fontWeight = '700',
+  iconSize = 'lg',
   onBackPress,
 }: Props) {
   const insets = useSafeAreaInsets();
@@ -61,19 +63,26 @@ export default function AppHeader({
               as={MaterialCommunityIcons}
               name={iconName ? iconName : 'arrow-u-right-top'}
               size={iconSize}
-              color={'#000'}
+              color={colors.button_color}
               marginLeft={4}
             />
           </Pressable>
         )}
         <Text
-          marginLeft={4}
+          marginLeft={iconName ? 4 : 0}
           fontSize={fontSize}
           fontWeight={fontWeight}
           color={color}
+          width={iconName ? undefined : '100%'}
           alignSelf={'center'}
           // eslint-disable-next-line react-native/no-inline-styles
-          style={{ textAlign: I18nManager.isRTL ? 'left' : 'right' }}
+          style={{
+            textAlign: iconName
+              ? I18nManager.isRTL
+                ? 'left'
+                : 'right'
+              : 'center',
+          }} //}}
         >
           {title}
         </Text>

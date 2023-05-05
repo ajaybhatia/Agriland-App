@@ -17,4 +17,5 @@ export interface UpdatedCropCalendarActivityResponse {
   precedingActivityGap?: number | null;
   precedingActivityId?: string | null;
   precedingActivityName?: string | null;
+  activityOrder?: number | null;
 }

@@ -10,7 +10,9 @@ import type { CoOrdinates } from './coOrdinates';
 export interface CultivationDetailResponse {
   cropDetails?: CropBasicResponse;
   area?: number | null;
-  cultivationTime?: string | null;
-  soilTypeId?: string | null;
+  harvestDate?: string | null;
+  sowingDate?: string | null;
+  quantity?: number | null;
+  typeOfIrrigation?: number | null;
   coordinates?: CoOrdinates[] | null;
 }

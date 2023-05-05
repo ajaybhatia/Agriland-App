@@ -179,17 +179,20 @@ export const LoginForm = () => {
                 <Header
                   title={t('welcome')}
                   fontWeight="200"
-                  fontSize={13}
+                  fontSize={12}
                   color={'black'}
                   mt={3}
                 />
                 <Header
                   title={t('sign-in')}
                   color={'black'}
-                  fontSize={'2xl'}
-                  fontWeight="700"
+                  mt={-1}
+                  fontSize={'xl'}
+                  fontWeight="600"
                 />
-                <View my={5} w={'100%'} h={'0.4'} bgColor={'gray.300'} />
+              </VStack>
+              <View my={2} w={'100%'} h={'0.4'} bgColor={'gray.300'} />
+              <VStack p={3}>
                 <VStack
                   mt={2}
                   borderRadius={'lg'}
@@ -275,6 +278,45 @@ export const LoginForm = () => {
                 </HStack> */}
 
                 <VStack alignItems={'center'} justifyContent={'center'} mt={5}>
+                  {/* <Pressable
+                    onPress={signIn}
+                    overflow={'hidden'}
+                    w={'80%'}
+                    py={'3'}
+                    mb={4}
+                    px={3}
+                    bgColor={'#EB4335'}
+                    flexDirection={'row'}
+                    alignItems={'center'}
+                    borderRadius={'lg'}
+                  >
+                    {!isGoogleLoading ? (
+                      <ActivityIndicator style={{ alignItems: 'center' }} />
+                    ) : (
+                      <>
+                        <Icon
+                          as={FontAwesome}
+                          name="google-plus-square"
+                          size="lg"
+                          color={'white'}
+                          justifyContent={'flex-start'}
+                          //style={{ alignSelf: 'flex-start' }}
+                        />
+                        <Text
+                          position={'absolute'}
+                          left={10}
+                          right={10}
+                          fontSize={14}
+                          color={'white'}
+                          textAlign={'center'}
+                          alignSelf={'center'}
+                          fontWeight={'medium'}
+                          fontStyle={'normal'}
+                          numberOfLines={1}
+                        >{`${t('signin-with-google')} google sign`}</Text>
+                      </>
+                    )}
+                  </Pressable> */}
                   <Button
                     isLoading={isGoogleLoading}
                     onPress={signIn}
@@ -285,11 +327,13 @@ export const LoginForm = () => {
                       textTransform: 'none',
                     }}
                     bgColor={'#EB4335'}
-                    startIcon={
+                    leftIcon={
                       <Icon
                         as={FontAwesome}
                         name="google-plus-square"
                         size="lg"
+                        justifyContent={'flex-start'}
+                        //style={{ alignSelf: 'flex-start' }}
                       />
                     }
                   >
@@ -326,7 +370,7 @@ export const LoginForm = () => {
                       textTransform: 'none',
                     }}
                     bgColor={'#1777F2'}
-                    startIcon={
+                    leftIcon={
                       <Icon as={FontAwesome} name="facebook-square" size="lg" />
                     }
                   >

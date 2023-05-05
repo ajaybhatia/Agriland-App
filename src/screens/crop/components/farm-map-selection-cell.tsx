@@ -32,7 +32,7 @@ export default function FarmMapSelectionCell({ item }: Props) {
         />
         <HStack alignItems={'center'}>
           <BodyTitle
-            title="area"
+            title="Area"
             fontSize={11}
             fontWeight={'100'}
             color="#FFF"
@@ -46,13 +46,13 @@ export default function FarmMapSelectionCell({ item }: Props) {
           />
         </HStack>
         <BodyTitle
-          title="farm crops"
+          title="Farm Crops"
           fontSize={11}
           fontWeight={'100'}
           color="#FFF"
         />
         <Header
-          title={item?.village ?? 'crops here'}
+          title={item?.city ?? 'crops here'}
           fontSize={12}
           fontWeight={'400'}
           color="#FFF"

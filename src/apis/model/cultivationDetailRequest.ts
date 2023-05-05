@@ -11,7 +11,9 @@ export interface CultivationDetailRequest {
   cropId?: string | null;
   farmId?: string | null;
   area?: number | null;
-  cultivationTime?: string | null;
-  soilTypeId?: string | null;
   coordinates?: CoOrdinates[] | null;
+  harvestDate?: string | null;
+  sowingDate?: string | null;
+  quantity?: number | null;
+  typeOfIrrigation?: number | null;
 }
