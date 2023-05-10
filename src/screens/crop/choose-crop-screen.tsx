@@ -1,6 +1,5 @@
-import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
-import { Icon, Pressable, View, VStack } from 'native-base';
+import { FlatList, Icon, Pressable, View, VStack } from 'native-base';
 import React, { useState } from 'react';
 import { Dimensions } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -36,6 +35,7 @@ function ChooseCropScreen({
     {
       query: {
         onSuccess: (data: CropBasicResponse[]) => {
+          console.log(data);
           if (data && data.length > 0) {
             setCrops(data);
           }
@@ -54,10 +54,10 @@ function ChooseCropScreen({
         iconName={'close'}
         onRightIconClick={onCropSelectionClose}
       />
-      <View flex={1} mx={5}>
-        <FlashList
-          horizontal={false}
+      <View flex={1} mx={5} justifyContent={'flex-start'}>
+        <FlatList
           numColumns={3}
+          // style={{ flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row' }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={crops}
@@ -78,7 +78,6 @@ function ChooseCropScreen({
             return (
               <Pressable
                 overflow={'hidden'}
-                flex={1}
                 margin={2}
                 onPress={() =>
                   onCropSelected &&
@@ -134,7 +133,7 @@ function ChooseCropScreen({
               </Pressable>
             );
           }}
-          estimatedItemSize={300}
+          // estimatedItemSize={300}
         />
       </View>
 

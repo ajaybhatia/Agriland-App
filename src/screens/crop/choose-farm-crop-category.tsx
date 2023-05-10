@@ -1,8 +1,20 @@
-import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
-import { Icon, Image as ImageBase, Pressable, View, VStack } from 'native-base';
-import React, { useState } from 'react';
-import { ActivityIndicator, Animated, StyleSheet } from 'react-native';
+import {
+  FlatList,
+  Icon,
+  Image as ImageBase,
+  Pressable,
+  View,
+  VStack,
+} from 'native-base';
+import React, { useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  Animated,
+  Dimensions,
+  StyleSheet,
+} from 'react-native';
+import { I18nManager } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -42,6 +54,15 @@ function ChooseFarmCropCategory({
   onNextSubmit,
   cropInfo,
 }: Props) {
+  const ref = useRef();
+
+  const scrollToIndex = (index: number) => {
+    console.log('Scroll To ==> ', index);
+    ref?.current?.scrollToIndex({
+      index: index,
+      animated: false,
+    });
+  };
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const [isCropScreeenOpen, setCropScreenOpen] = useState<boolean>(false);
   const [farms, setFarms] = useState<FarmResponse[]>([]);
@@ -79,7 +100,11 @@ function ChooseFarmCropCategory({
       query: {
         onSuccess: (data: FarmResponse[]) => {
           if (data.length > 0) {
+            let isScroll = farms.length > 0 ? false : true;
             setFarms(moreInfo.skip <= 0 ? data : [...farms, ...data]);
+            if (isScroll && I18nManager.isRTL) {
+              setTimeout(() => scrollToIndex(0), 10);
+            }
             if (selectedFarm === undefined && data.length > 0) {
               setSelectedFarm(data[0]);
             }
@@ -141,8 +166,14 @@ function ChooseFarmCropCategory({
     >
       <VStack pb={5}>
         <Header title={'Choose A Farm'} mt={5} mb={2} ml={5} mr={5} />
-        <FlashList
+
+        <FlatList
+          ref={ref}
           horizontal
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
+          }}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
             {
@@ -153,7 +184,6 @@ function ChooseFarmCropCategory({
           keyExtractor={(item, index) => `${index}`}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 20 }}
           data={farms}
           ListHeaderComponent={
             <FarmAddCell onPreviousSubmit={onPreviousSubmit} />
@@ -199,7 +229,7 @@ function ChooseFarmCropCategory({
               </View>
             )
           }
-          estimatedItemSize={300}
+          //estimatedItemSize={300}
         />
         <ExpandingDot
           data={farms}
@@ -210,12 +240,13 @@ function ChooseFarmCropCategory({
           activeDotColor={colors.button_color}
           containerStyle={{
             bottom: 0,
+            flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
           }}
         />
       </VStack>
       <Header title={'Choose Crop Category'} mt={5} mb={2} ml={5} mr={5} />
       <View flex={1} mx={5}>
-        <FlashList
+        <FlatList
           horizontal={false}
           numColumns={2}
           keyExtractor={(item, index) => `${index}`}
@@ -245,7 +276,8 @@ function ChooseFarmCropCategory({
             <Pressable
               borderRadius={10}
               overflow={'hidden'}
-              flex={1}
+              //flex={1}
+              w={Dimensions.get('screen').width / 2.5}
               h={150}
               bgColor={'amber.400'}
               flexDirection={'column'}
@@ -318,7 +350,7 @@ function ChooseFarmCropCategory({
               });
             }
           }}
-          estimatedItemSize={300}
+          //estimatedItemSize={300}
         />
       </View>
       {((farms.length <= 0 && (getFarms.isLoading || getFarms.isFetching)) ||

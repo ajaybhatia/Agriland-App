@@ -425,18 +425,6 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
       {/* \right left buttons */}
       {cropState === AddCropState.MAP && (
         <>
-          {cropInfo && (
-            <VStack position={'absolute'} left={5} bottom={10}>
-              <WidthAnimation
-                animationSide={AnimationSide.RIGHT}
-                crop={cropInfo}
-              />
-              <WidthAnimation
-                animationSide={AnimationSide.LEFT}
-                crop={cropInfo}
-              />
-            </VStack>
-          )}
           <VStack position={'absolute'} right={5} bottom={10}>
             <IconButton
               borderColor={'white'}
@@ -543,6 +531,19 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
                 title={t('save-continue')}
               />
             </View>
+          )}
+
+          {cropInfo && (
+            <VStack position={'absolute'} left={5} bottom={10}>
+              <WidthAnimation
+                animationSide={AnimationSide.RIGHT}
+                crop={cropInfo}
+              />
+              <WidthAnimation
+                animationSide={AnimationSide.LEFT}
+                crop={cropInfo}
+              />
+            </VStack>
           )}
         </>
       )}

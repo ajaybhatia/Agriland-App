@@ -3,6 +3,7 @@ import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -32,56 +33,73 @@ const CropsReviewList = ({
   const addCropApi = usePostApiCropCreateCultivationDetails();
 
   function apiSubmitAddFarm(isAddNew: boolean) {
-    onCropAddMore && onCropAddMore();
-    // addCropApi.mutate(
-    //   {
-    //     data: [
-    //       {
-    //         cropId: cropRequest?.crop?.id,
-    //         farmId: cropRequest?.farm?.id,
-    //         area: cropRequest?.cropArea?.area ?? null,
-    //         coordinates: cropRequest?.userLocation?.map((v) => {
-    //           return {
-    //             lat: v.latitude,
-    //             lng: v.longitude,
-    //           };
-    //         }),
-    //         harvestDate: cropRequest?.cropArea?.harvestDate,
-    //         sowingDate: cropRequest?.cropArea?.sowingDate,
-    //         quantity: cropRequest?.cropArea?.quantity,
-    //         typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     onSuccess(data) {
-    //       console.log('onSuccess ==> ', data);
-    //       if (data) {
-    //         if (isAddNew) {
-    //           onCropAddMore && onCropAddMore();
-    //         } else {
-    //           onNextStep && onNextStep();
-    //           Toast.show({
-    //             type: 'error',
-    //             text1: 'successfully added',
-    //           });
-    //         }
-    //       } else {
-    //         Toast.show({
-    //           type: 'error',
-    //           text1: 'Something went wrong!',
-    //         });
-    //       }
-    //     },
-    //     onError(error) {
-    //       console.log('onError ==> ', error);
-    //       Toast.show({
-    //         type: 'error',
-    //         text1: error.message,
-    //       });
-    //     },
-    //   }
-    // );
+    console.log(
+      'cropRequest ===> ',
+      JSON.stringify({
+        cropId: cropRequest?.crop?.id,
+        farmId: cropRequest?.farm?.id,
+        area: cropRequest?.cropArea?.area ?? null,
+        coordinates: cropRequest?.userLocation?.map((v) => {
+          return {
+            lat: v.latitude,
+            lng: v.longitude,
+          };
+        }),
+        harvestDate: cropRequest?.cropArea?.harvestDate,
+        sowingDate: cropRequest?.cropArea?.sowingDate,
+        quantity: cropRequest?.cropArea?.quantity,
+        typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
+      })
+    );
+    addCropApi.mutate(
+      {
+        data: [
+          {
+            cropId: cropRequest?.crop?.id,
+            farmId: cropRequest?.farm?.id,
+            area: cropRequest?.cropArea?.area ?? null,
+            coordinates: cropRequest?.userLocation?.map((v) => {
+              return {
+                lat: v.latitude,
+                lng: v.longitude,
+              };
+            }),
+            harvestDate: cropRequest?.cropArea?.harvestDate,
+            sowingDate: cropRequest?.cropArea?.sowingDate,
+            quantity: cropRequest?.cropArea?.quantity,
+            typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
+          },
+        ],
+      },
+      {
+        onSuccess(data) {
+          console.log('onSuccess ==> ', data);
+          if (data) {
+            Toast.show({
+              type: 'error',
+              text1: 'successfully added',
+            });
+            if (isAddNew) {
+              onCropAddMore && onCropAddMore();
+            } else {
+              // onNextStep && onNextStep();
+            }
+          } else {
+            Toast.show({
+              type: 'error',
+              text1: 'Something went wrong!',
+            });
+          }
+        },
+        onError(error) {
+          console.log('onError ==> ', error);
+          Toast.show({
+            type: 'error',
+            text1: error.message,
+          });
+        },
+      }
+    );
   }
 
   function onFarmEdit() {

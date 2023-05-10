@@ -24,6 +24,7 @@
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		CAB374B84F654D228452D6AC /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 245EE491A071429CBEDD4B15 /* Poppins-ExtraBold.ttf */; };
 		F1FED1A60E004F7E8881D979 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7ABEFAF8BB454A82315A2B /* noop-file.swift */; };
+		63611EB89182419197523C98 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2B57CD9F96443E1A9F8A041 /* Poppins-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		E016E785F2DA4C7C83301F05 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-AgriLand/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		F2B57CD9F96443E1A9F8A041 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; name = "Poppins-SemiBold.ttf"; path = "../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 				A9F1E075478A4D6F81257944 /* Poppins-Light.ttf */,
 				10DECE908AAA4AFF9603A402 /* Poppins-Medium.ttf */,
 				32E7B69E9842448A8230E35A /* Poppins-Regular.ttf */,
+				F2B57CD9F96443E1A9F8A041 /* Poppins-SemiBold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 				2A98F33690544E9ABA58047A /* Poppins-Light.ttf in Resources */,
 				786E3EDC8812488F914C1789 /* Poppins-Medium.ttf in Resources */,
 				9B56E4585B6645E5A851163A /* Poppins-Regular.ttf in Resources */,
+				63611EB89182419197523C98 /* Poppins-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,7 +412,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = ar.agrimisr;
-				PRODUCT_NAME = AgriLand;
+				PRODUCT_NAME = "AgriLand";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -435,7 +439,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = ar.agrimisr;
-				PRODUCT_NAME = AgriLand;
+				PRODUCT_NAME = "AgriLand";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

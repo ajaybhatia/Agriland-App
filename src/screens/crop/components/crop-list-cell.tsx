@@ -201,7 +201,7 @@ const CropListCell = ({ onNextStep, cropInfo }: Props) => {
         </View>
         <VStack px={5} py={3}>
           <Header
-            title={cropInfo?.farm?.name ?? ''}
+            title={cropInfo?.crop?.name ?? ''}
             mt={1}
             color={colors.TITLE_COLOR}
             fontSize={13}
