@@ -43,7 +43,7 @@ import type {
   PutApiAccountDeleteCostCalculationParams,
   UserBasicDetails,
   MobileAppUserBasicDetails,
-  AdBannerRequest,
+  PostApiAdBannerCreateUpdateAdBannerBody,
   AdBannerResponse,
   GetApiAdBannerGetByAdBannerIdParams,
   AdBannerPaginatedResponse,
@@ -57,12 +57,14 @@ import type {
   GetApiCommonFetchCityByGovernateByIdParams,
   Village,
   GetApiCommonFetchVillageByCityIdParams,
-  CropCategoryRequest,
-  CropRequest,
+  PostApiCropCreateUpdateCropCategoryBody,
+  PostApiCropCreateUpdateCropBody,
   CultivationDetailRequest,
   FarmCropsRequest,
   CropCategoryResponse,
   GetApiCropGetCropCategoryByIdParams,
+  CropBasicResponse,
+  GetApiCropGetCropsByCategoryIdParams,
   CropCategoryPaginatedResponse,
   GetApiCropGetCropCategoriesParams,
   CropResponse,
@@ -101,8 +103,6 @@ import type {
   PostApiSoilTypeGetSoilTypeByIdParams,
   SoilTypeResponse,
   GetApiSoilTypeGetSoilTypesParams,
-  PostApiUploadUploadImageBody,
-  DeleteApiUploadDeleteImageParams,
   RoleModel,
   RoleUpdateModel,
   IdentityRole,
@@ -1192,12 +1192,28 @@ export const useGetApiAccountFetchUserBasicDetails = <TData = Awaited<ReturnType
 
 
 export const postApiAdBannerCreateUpdateAdBanner = (
-    adBannerRequest: AdBannerRequest,
- ) => {
+    postApiAdBannerCreateUpdateAdBannerBody: PostApiAdBannerCreateUpdateAdBannerBody,
+ ) => {const formData = new FormData();
+if(postApiAdBannerCreateUpdateAdBannerBody.Id !== undefined) {
+ formData.append('Id', postApiAdBannerCreateUpdateAdBannerBody.Id)
+ }
+if(postApiAdBannerCreateUpdateAdBannerBody.Name !== undefined) {
+ formData.append('Name', postApiAdBannerCreateUpdateAdBannerBody.Name)
+ }
+if(postApiAdBannerCreateUpdateAdBannerBody.ImageUrl !== undefined) {
+ formData.append('ImageUrl', postApiAdBannerCreateUpdateAdBannerBody.ImageUrl)
+ }
+if(postApiAdBannerCreateUpdateAdBannerBody.IsActive !== undefined) {
+ formData.append('IsActive', postApiAdBannerCreateUpdateAdBannerBody.IsActive.toString())
+ }
+if(postApiAdBannerCreateUpdateAdBannerBody.File !== undefined) {
+ formData.append('File', postApiAdBannerCreateUpdateAdBannerBody.File)
+ }
+
       return customInstance<boolean>(
       {url: `/api/AdBanner/createUpdateAdBanner`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: adBannerRequest
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData
     },
       );
     }
@@ -1206,14 +1222,14 @@ export const postApiAdBannerCreateUpdateAdBanner = (
 
 export const getPostApiAdBannerCreateUpdateAdBannerMutationOptions = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: AdBannerRequest}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: AdBannerRequest}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: PostApiAdBannerCreateUpdateAdBannerBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: PostApiAdBannerCreateUpdateAdBannerBody}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, {data: AdBannerRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, {data: PostApiAdBannerCreateUpdateAdBannerBody}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiAdBannerCreateUpdateAdBanner(data,)
@@ -1225,12 +1241,12 @@ export const getPostApiAdBannerCreateUpdateAdBannerMutationOptions = <TError = E
    return  { mutationFn, ...mutationOptions }}
 
     export type PostApiAdBannerCreateUpdateAdBannerMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>>
-    export type PostApiAdBannerCreateUpdateAdBannerMutationBody = AdBannerRequest
+    export type PostApiAdBannerCreateUpdateAdBannerMutationBody = PostApiAdBannerCreateUpdateAdBannerBody
     export type PostApiAdBannerCreateUpdateAdBannerMutationError = ErrorType<unknown>
 
     export const usePostApiAdBannerCreateUpdateAdBanner = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: AdBannerRequest}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdBannerCreateUpdateAdBanner>>, TError,{data: PostApiAdBannerCreateUpdateAdBannerBody}, TContext>, }
 ) => {
     
       const mutationOptions = getPostApiAdBannerCreateUpdateAdBannerMutationOptions(options);
@@ -1824,12 +1840,31 @@ export const useGetApiCommonFetchVillageByCityId = <TData = Awaited<ReturnType<t
  * @summary This API is used to create or update crop category.
  */
 export const postApiCropCreateUpdateCropCategory = (
-    cropCategoryRequest: CropCategoryRequest,
- ) => {
+    postApiCropCreateUpdateCropCategoryBody: PostApiCropCreateUpdateCropCategoryBody,
+ ) => {const formData = new FormData();
+if(postApiCropCreateUpdateCropCategoryBody.Name !== undefined) {
+ formData.append('Name', postApiCropCreateUpdateCropCategoryBody.Name)
+ }
+if(postApiCropCreateUpdateCropCategoryBody.Description !== undefined) {
+ formData.append('Description', postApiCropCreateUpdateCropCategoryBody.Description)
+ }
+if(postApiCropCreateUpdateCropCategoryBody.Id !== undefined) {
+ formData.append('Id', postApiCropCreateUpdateCropCategoryBody.Id)
+ }
+if(postApiCropCreateUpdateCropCategoryBody.IsActive !== undefined) {
+ formData.append('IsActive', postApiCropCreateUpdateCropCategoryBody.IsActive.toString())
+ }
+if(postApiCropCreateUpdateCropCategoryBody.ImageUrl !== undefined) {
+ formData.append('ImageUrl', postApiCropCreateUpdateCropCategoryBody.ImageUrl)
+ }
+if(postApiCropCreateUpdateCropCategoryBody.File !== undefined) {
+ formData.append('File', postApiCropCreateUpdateCropCategoryBody.File)
+ }
+
       return customInstance<string>(
       {url: `/api/Crop/createUpdateCropCategory`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: cropCategoryRequest
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData
     },
       );
     }
@@ -1838,14 +1873,14 @@ export const postApiCropCreateUpdateCropCategory = (
 
 export const getPostApiCropCreateUpdateCropCategoryMutationOptions = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>, TError,{data: CropCategoryRequest}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>, TError,{data: CropCategoryRequest}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>, TError,{data: PostApiCropCreateUpdateCropCategoryBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>, TError,{data: PostApiCropCreateUpdateCropCategoryBody}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>, {data: CropCategoryRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>, {data: PostApiCropCreateUpdateCropCategoryBody}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiCropCreateUpdateCropCategory(data,)
@@ -1857,12 +1892,12 @@ export const getPostApiCropCreateUpdateCropCategoryMutationOptions = <TError = E
    return  { mutationFn, ...mutationOptions }}
 
     export type PostApiCropCreateUpdateCropCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>>
-    export type PostApiCropCreateUpdateCropCategoryMutationBody = CropCategoryRequest
+    export type PostApiCropCreateUpdateCropCategoryMutationBody = PostApiCropCreateUpdateCropCategoryBody
     export type PostApiCropCreateUpdateCropCategoryMutationError = ErrorType<unknown>
 
     export const usePostApiCropCreateUpdateCropCategory = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>, TError,{data: CropCategoryRequest}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCropCategory>>, TError,{data: PostApiCropCreateUpdateCropCategoryBody}, TContext>, }
 ) => {
     
       const mutationOptions = getPostApiCropCreateUpdateCropCategoryMutationOptions(options);
@@ -1871,12 +1906,37 @@ export const getPostApiCropCreateUpdateCropCategoryMutationOptions = <TError = E
     }
     
 export const postApiCropCreateUpdateCrop = (
-    cropRequest: CropRequest,
- ) => {
+    postApiCropCreateUpdateCropBody: PostApiCropCreateUpdateCropBody,
+ ) => {const formData = new FormData();
+if(postApiCropCreateUpdateCropBody.Id !== undefined) {
+ formData.append('Id', postApiCropCreateUpdateCropBody.Id)
+ }
+if(postApiCropCreateUpdateCropBody.Name !== undefined) {
+ formData.append('Name', postApiCropCreateUpdateCropBody.Name)
+ }
+if(postApiCropCreateUpdateCropBody.Description !== undefined) {
+ formData.append('Description', postApiCropCreateUpdateCropBody.Description)
+ }
+if(postApiCropCreateUpdateCropBody.ImageUrl !== undefined) {
+ formData.append('ImageUrl', postApiCropCreateUpdateCropBody.ImageUrl)
+ }
+if(postApiCropCreateUpdateCropBody.ColorCode !== undefined) {
+ formData.append('ColorCode', postApiCropCreateUpdateCropBody.ColorCode)
+ }
+if(postApiCropCreateUpdateCropBody.CropCategoryId !== undefined) {
+ formData.append('CropCategoryId', postApiCropCreateUpdateCropBody.CropCategoryId)
+ }
+if(postApiCropCreateUpdateCropBody.IsActive !== undefined) {
+ formData.append('IsActive', postApiCropCreateUpdateCropBody.IsActive.toString())
+ }
+if(postApiCropCreateUpdateCropBody.File !== undefined) {
+ formData.append('File', postApiCropCreateUpdateCropBody.File)
+ }
+
       return customInstance<string>(
       {url: `/api/Crop/createUpdateCrop`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: cropRequest
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData
     },
       );
     }
@@ -1885,14 +1945,14 @@ export const postApiCropCreateUpdateCrop = (
 
 export const getPostApiCropCreateUpdateCropMutationOptions = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>, TError,{data: CropRequest}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>, TError,{data: CropRequest}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>, TError,{data: PostApiCropCreateUpdateCropBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>, TError,{data: PostApiCropCreateUpdateCropBody}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>, {data: CropRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>, {data: PostApiCropCreateUpdateCropBody}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiCropCreateUpdateCrop(data,)
@@ -1904,12 +1964,12 @@ export const getPostApiCropCreateUpdateCropMutationOptions = <TError = ErrorType
    return  { mutationFn, ...mutationOptions }}
 
     export type PostApiCropCreateUpdateCropMutationResult = NonNullable<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>>
-    export type PostApiCropCreateUpdateCropMutationBody = CropRequest
+    export type PostApiCropCreateUpdateCropMutationBody = PostApiCropCreateUpdateCropBody
     export type PostApiCropCreateUpdateCropMutationError = ErrorType<unknown>
 
     export const usePostApiCropCreateUpdateCrop = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>, TError,{data: CropRequest}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiCropCreateUpdateCrop>>, TError,{data: PostApiCropCreateUpdateCropBody}, TContext>, }
 ) => {
     
       const mutationOptions = getPostApiCropCreateUpdateCropMutationOptions(options);
@@ -2050,6 +2110,54 @@ export const useGetApiCropGetCropCategoryById = <TData = Awaited<ReturnType<type
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const queryOptions = getGetApiCropGetCropCategoryByIdQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const getApiCropGetCropsByCategoryId = (
+    params?: GetApiCropGetCropsByCategoryIdParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<CropBasicResponse[]>(
+      {url: `/api/Crop/getCropsByCategoryId`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiCropGetCropsByCategoryIdQueryKey = (params?: GetApiCropGetCropsByCategoryIdParams,) => [`/api/Crop/getCropsByCategoryId`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiCropGetCropsByCategoryIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiCropGetCropsByCategoryId>>, TError = ErrorType<unknown>>(params?: GetApiCropGetCropsByCategoryIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCropsByCategoryId>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCropsByCategoryId>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiCropGetCropsByCategoryIdQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCropGetCropsByCategoryId>>> = ({ signal }) => getApiCropGetCropsByCategoryId(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiCropGetCropsByCategoryIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCropGetCropsByCategoryId>>>
+export type GetApiCropGetCropsByCategoryIdQueryError = ErrorType<unknown>
+
+export const useGetApiCropGetCropsByCategoryId = <TData = Awaited<ReturnType<typeof getApiCropGetCropsByCategoryId>>, TError = ErrorType<unknown>>(
+ params?: GetApiCropGetCropsByCategoryIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCropsByCategoryId>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiCropGetCropsByCategoryIdQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -3544,103 +3652,6 @@ export const useGetApiSoilTypeGetSoilTypes = <TData = Awaited<ReturnType<typeof 
 }
 
 
-export const postApiUploadUploadImage = (
-    postApiUploadUploadImageBody: PostApiUploadUploadImageBody,
- ) => {const formData = new FormData();
-if(postApiUploadUploadImageBody.file !== undefined) {
- formData.append('file', postApiUploadUploadImageBody.file)
- }
-
-      return customInstance<string>(
-      {url: `/api/Upload/uploadImage`, method: 'post',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData
-    },
-      );
-    }
-  
-
-
-export const getPostApiUploadUploadImageMutationOptions = <TError = ErrorType<unknown>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUploadUploadImage>>, TError,{data: PostApiUploadUploadImageBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiUploadUploadImage>>, TError,{data: PostApiUploadUploadImageBody}, TContext> => {
- const {mutation: mutationOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUploadUploadImage>>, {data: PostApiUploadUploadImageBody}> = (props) => {
-          const {data} = props ?? {};
-
-          return  postApiUploadUploadImage(data,)
-        }
-
-        
-
- 
-   return  { mutationFn, ...mutationOptions }}
-
-    export type PostApiUploadUploadImageMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUploadUploadImage>>>
-    export type PostApiUploadUploadImageMutationBody = PostApiUploadUploadImageBody
-    export type PostApiUploadUploadImageMutationError = ErrorType<unknown>
-
-    export const usePostApiUploadUploadImage = <TError = ErrorType<unknown>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUploadUploadImage>>, TError,{data: PostApiUploadUploadImageBody}, TContext>, }
-) => {
-    
-      const mutationOptions = getPostApiUploadUploadImageMutationOptions(options);
-     
-      return useMutation(mutationOptions);
-    }
-    
-export const deleteApiUploadDeleteImage = (
-    params?: DeleteApiUploadDeleteImageParams,
- ) => {
-      return customInstance<string>(
-      {url: `/api/Upload/deleteImage`, method: 'delete',
-        params
-    },
-      );
-    }
-  
-
-
-export const getDeleteApiUploadDeleteImageMutationOptions = <TError = ErrorType<unknown>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>, TError,{params?: DeleteApiUploadDeleteImageParams}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>, TError,{params?: DeleteApiUploadDeleteImageParams}, TContext> => {
- const {mutation: mutationOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>, {params?: DeleteApiUploadDeleteImageParams}> = (props) => {
-          const {params} = props ?? {};
-
-          return  deleteApiUploadDeleteImage(params,)
-        }
-
-        
-
- 
-   return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteApiUploadDeleteImageMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>>
-    
-    export type DeleteApiUploadDeleteImageMutationError = ErrorType<unknown>
-
-    export const useDeleteApiUploadDeleteImage = <TError = ErrorType<unknown>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiUploadDeleteImage>>, TError,{params?: DeleteApiUploadDeleteImageParams}, TContext>, }
-) => {
-    
-      const mutationOptions = getDeleteApiUploadDeleteImageMutationOptions(options);
-     
-      return useMutation(mutationOptions);
-    }
-    
 /**
  * @summary CreateRole
  */

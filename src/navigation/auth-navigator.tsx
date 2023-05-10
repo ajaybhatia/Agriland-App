@@ -26,6 +26,10 @@ export type AuthStackParamList = {
     google?: FirebaseAuthTypes.User | undefined;
     phoneNumber?: string | undefined;
   };
+  BottomTabs: undefined;
+  AccountDetailScreen: undefined;
+  FarmDetailScreen: undefined;
+  WeatherDetailScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -39,12 +43,19 @@ export const AuthNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="OtpVerifyScreen"
         component={OtpVerifyScreen}
         options={{
           headerShown: false,
           // eslint-disable-next-line react/no-unstable-nested-components
-          header: ({ options }) => {
+          header: () => {
             return (
               <AppHeader
                 onBackPress={onBackPress}
@@ -56,18 +67,10 @@ export const AuthNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="AddFarmScreen"
         component={AddFarmScreen}
         options={{
           headerShown: true,
-          //headerTitle: t('create-new-account'),
           // eslint-disable-next-line react/no-unstable-nested-components
           header: ({ options }) => {
             return (

@@ -1,107 +1,601 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import type { RouteProp } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { ComponentType } from 'react';
-import * as React from 'react';
-import type { SvgProps } from 'react-native-svg';
-
-import { Settings, Style } from '@/screens';
+import type {
+  DrawerContentComponentProps,
+  DrawerHeaderProps,
+} from '@react-navigation/drawer';
 import {
-  Feed as FeedIcon,
-  Settings as SettingsIcon,
-  Style as StyleIcon,
-} from '@/ui';
+  createDrawerNavigator,
+  useDrawerStatus,
+} from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import {
+  Box,
+  HStack,
+  Icon,
+  IconButton,
+  Image,
+  Pressable,
+  SectionList,
+  Text,
+  View,
+  VStack,
+} from 'native-base';
+import * as React from 'react';
+import { Animated, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import AccountDetailScreen from '@/screens/account/account-detail-screen';
+import ChooseFarmCropCategory from '@/screens/crop/choose-farm-crop-category';
+import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
+import HomeScreen from '@/screens/home/home-screen';
+import WeatherDetailScreen from '@/screens/weather/weather-detail-screen';
+import AppHeader from '@/ui/components/AppHeader';
+import DrawerOptions from '@/ui/components/DrawerOptions';
 import colors from '@/ui/theme/colors';
 
-type TabParamList = {
-  Style: undefined;
-  FeedNavigator: undefined;
-  Settings: undefined;
+import type { AuthStackParamList } from './auth-navigator';
+
+const Screen1 = () => {
+  return <View style={styles.screen1} />;
 };
 
-type TabType = {
-  name: keyof TabParamList;
-  component: ComponentType<any>;
+const Screen2 = () => {
+  return <View style={styles.screen2} />;
+};
+
+// MyDrawer
+export interface DrawerOptionObj {
+  title: string;
+  data: DrawerSubOptionObj[];
+}
+export type DrawerSubOptionObj = {
+  navigation: string;
   label: string;
+  icon?: number;
+  as?: unknown;
 };
 
-type TabIconsType = {
-  [key in keyof TabParamList]: (props: SvgProps) => JSX.Element;
+function CustomDrawerContent({ navigation }: DrawerContentComponentProps) {
+  const options: DrawerOptionObj[] = [
+    {
+      title: 'Account Management',
+      data: [
+        {
+          label: 'Account Details',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Company Data',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Documents',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+      ],
+    },
+    {
+      title: 'Payment and billing',
+      data: [
+        {
+          label: 'Payment and billing',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Purchases',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Coding request',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Test',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Station reservation',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Subscriptions',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+      ],
+    },
+    {
+      title: '',
+      data: [
+        {
+          label: 'Setting',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Sign Out',
+          as: MaterialIcons,
+          navigation: 'MyFarmsTab',
+          icon: require('@assets/app-logo.png'),
+        },
+      ],
+    },
+  ];
+
+  const isDrawerOpen = useDrawerStatus() === 'open';
+
+  return (
+    <SafeAreaView style={[styles.container]}>
+      <VStack flex={1}>
+        <HStack width={'100%'} alignItems={'center'} mt={10}>
+          <Box
+            alignSelf={'center'}
+            borderRadius={40}
+            overflow={'hidden'}
+            ml={2}
+          >
+            <Image
+              alt=""
+              resizeMode="contain"
+              style={styles.userImg}
+              source={require('@assets/app-logo.png')}
+            />
+          </Box>
+          <VStack>
+            <Text fontWeight="700" fontSize={16}>
+              Username
+            </Text>
+          </VStack>
+        </HStack>
+        <SectionList
+          sections={options}
+          keyExtractor={(item, index) => `${index}`}
+          renderItem={({
+            item,
+            index,
+          }: {
+            item: DrawerSubOptionObj;
+            index: number;
+          }) => (
+            <DrawerOptions
+              index={index}
+              item={item}
+              onPress={(item2: DrawerSubOptionObj) => {
+                navigation.closeDrawer();
+                navigation.navigate(item2.navigation);
+              }}
+            />
+          )}
+          renderSectionHeader={({ section: { title } }) => {
+            return (
+              <VStack>
+                {title !== 'Account Management' && (
+                  <View
+                    mt={title !== '' ? 3 : 2}
+                    mb={title !== '' ? 5 : 0}
+                    borderTopColor={'rgba(0,0,0,0.4)'}
+                    borderTopWidth={1}
+                  />
+                )}
+                <Text
+                  fontSize={17}
+                  mx={5}
+                  fontStyle={'normal'}
+                  fontWeight={'700'}
+                >
+                  {title}
+                </Text>
+              </VStack>
+            );
+          }}
+        />
+        <Pressable
+          onPress={() => {
+            if (isDrawerOpen) {
+              navigation.closeDrawer();
+            } else {
+              navigation.openDrawer();
+            }
+          }}
+          position={'absolute'}
+          top={5}
+          right={5}
+        >
+          <Icon as={MaterialIcons} name={'clear'} size={'lg'} color={'black'} />
+        </Pressable>
+      </VStack>
+    </SafeAreaView>
+  );
+}
+
+const Drawer = createDrawerNavigator<AuthStackParamList>();
+
+// Tabs
+
+const _renderIcon = (routeName: string, selectedTab: string) => {
+  let icon = '';
+  let title = '';
+
+  switch (routeName) {
+    case 'title1':
+      icon = 'ios-home-outline';
+      title = 'HOME';
+      break;
+    case 'title2':
+      icon = 'settings-outline';
+      title = 'DASHBOARD';
+      break;
+    case 'title4':
+      icon = 'settings';
+      title = 'CROPS';
+      break;
+    case 'title5':
+      icon = 'outline';
+      title = 'FARMS';
+      break;
+  }
+
+  return (
+    <VStack alignItems={'center'}>
+      <Icon
+        as={MaterialCommunityIcons}
+        name={'plus-circle'}
+        size={'lg'}
+        color={routeName !== selectedTab ? 'black' : 'rgba(256,45,45,1)'}
+      />
+      <Text
+        fontSize={11}
+        mt={2}
+        numberOfLines={1}
+        color={routeName !== selectedTab ? 'black' : 'rgba(256,45,45,1)'}
+        fontFamily={'body'}
+        fontWeight={'400'}
+        fontStyle={'normal'}
+      >
+        {title}
+      </Text>
+    </VStack>
+  );
+};
+const renderTabBar = ({ routeName, selectedTab, navigate }) => {
+  return (
+    <TouchableOpacity
+      onPress={() => navigate(routeName)}
+      style={styles.tabbarItem}
+    >
+      {_renderIcon(routeName, selectedTab)}
+    </TouchableOpacity>
+  );
 };
 
-const Tab = createBottomTabNavigator<TabParamList>();
-
-const tabsIcons: TabIconsType = {
-  Style: (props: SvgProps) => <StyleIcon {...props} />,
-  FeedNavigator: (props: SvgProps) => <FeedIcon {...props} />,
-  Settings: (props: SvgProps) => <SettingsIcon {...props} />,
+const BottomTabs = () => {
+  return (
+    <CurvedBottomBar.Navigator
+      type="UP"
+      style={styles.bottomBar}
+      shadowStyle={styles.shawdow}
+      height={80}
+      circleWidth={60}
+      bgColor="white"
+      initialRouteName="title1"
+      borderTopLeftRight
+      screenOptions={{
+        headerShown: false,
+      }}
+      renderCircle={({ selectedTab, navigate }) => (
+        <Animated.View style={styles.btnCircleUp}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate('title3')}
+          >
+            <Icon
+              as={MaterialCommunityIcons}
+              name={'plus'}
+              size={'2xl'}
+              color={'white'}
+            />
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+      tabBar={renderTabBar}
+    >
+      <CurvedBottomBar.Screen
+        name="title1"
+        position="LEFT"
+        component={HomeScreen}
+      />
+      <CurvedBottomBar.Screen
+        name="title2"
+        position="LEFT"
+        component={() => <Screen2 />}
+      />
+      <CurvedBottomBar.Screen
+        name="title4"
+        component={() => <Screen1 />}
+        position="RIGHT"
+      />
+      <CurvedBottomBar.Screen
+        name="title5"
+        component={() => <Screen2 />}
+        position="RIGHT"
+      />
+      <CurvedBottomBar.Screen
+        name="title3"
+        component={() => <ChooseFarmCropCategory />}
+        position="CENTER"
+      />
+    </CurvedBottomBar.Navigator>
+  );
+};
+type HeaderType = {
+  left?: boolean;
 };
 
-export type TabList<T extends keyof TabParamList> = {
-  navigation: NativeStackNavigationProp<TabParamList, T>;
-  route: RouteProp<TabParamList, T>;
-};
+const AppBarHeader = ({
+  navigation,
+  left = false,
+  options,
+}: DrawerHeaderProps & HeaderType) => {
+  const isDrawerOpen = useDrawerStatus() === 'open';
 
-const tabs: TabType[] = [
-  {
-    name: 'Style',
-    component: Style,
-    label: 'Style',
-  },
-  {
-    name: 'FeedNavigator',
-    component: Settings,
-    label: 'Feed',
-  },
-  {
-    name: 'Settings',
-    component: Settings,
-    label: 'Settings',
-  },
-];
-
-type BarIconType = {
-  name: keyof TabParamList;
-  color: string;
-};
-
-const BarIcon = ({ color, name, ...reset }: BarIconType) => {
-  const Icon = tabsIcons[name];
-  return <Icon color={color} {...reset} />;
+  return (
+    <SafeAreaView style={styles.headerContainer}>
+      <View style={styles.headerSubContainer}>
+        <HStack
+          my={Platform.OS === 'ios' ? 1 : 2}
+          mx={5}
+          justifyContent={left ? 'flex-start' : 'space-between'}
+          alignItems="center"
+        >
+          <HStack alignItems="center">
+            <IconButton
+              ml={-1}
+              onPress={() => {
+                if (isDrawerOpen) {
+                  //navigationRef?.current?.setVisible(true);
+                  navigation.closeDrawer();
+                } else {
+                  // navigationRef?.current?.setVisible(false);
+                  navigation.openDrawer();
+                }
+              }}
+              icon={
+                <Icon
+                  as={MaterialIcons}
+                  name={'sort'}
+                  size={29}
+                  color={'#000'}
+                />
+              }
+            />
+          </HStack>
+          <Text fontWeight="700" fontSize={16}>
+            {options?.title ?? 'Hello'}
+          </Text>
+          {/* <HStack>
+            <View borderRadius={30 / 2} overflow={'hidden'} w={35} h={35}>
+              <Image
+                alt=""
+                // resizeMode="cover"
+                style={styles.userHeaderImg}
+                source={AllImages.DEFAULT_IMAGE}
+              />
+            </View>
+          </HStack> */}
+        </HStack>
+      </View>
+    </SafeAreaView>
+  );
 };
 
 export const TabNavigator = () => {
+  const nav = useNavigation();
+  const onBackPress = () => {
+    nav.goBack();
+  };
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        // eslint-disable-next-line react/no-unstable-nested-components
-        tabBarIcon: ({ color }) => <BarIcon name={route.name} color={color} />,
-        tabBarActiveTintColor: colors.primary[400],
-        tabBarInactiveTintColor: colors.neutral[600],
-        tabBarStyle: [
-          { backgroundColor: colors.white },
-          { borderTopWidth: 1, borderTopColor: colors.neutral[200] },
-        ],
-      })}
+    <Drawer.Navigator
+      // eslint-disable-next-line react/no-unstable-nested-components
+      drawerContent={(props: DrawerContentComponentProps) => (
+        <CustomDrawerContent {...props} />
+      )}
     >
-      <Tab.Group
-        screenOptions={{
-          headerShown: false,
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Hello, Harminder',
+          headerTitle: 'Hello, Harminder',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: DrawerHeaderProps) => (
+            <AppBarHeader {...props} left={false} />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
         }}
-      >
-        {tabs.map(({ name, component, label }) => {
-          return (
-            <Tab.Screen
-              key={name}
-              name={name}
-              component={component}
-              options={{
-                title: label,
-              }}
-            />
-          );
-        })}
-      </Tab.Group>
-    </Tab.Navigator>
+        name="BottomTabs"
+        component={BottomTabs}
+      />
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Account Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: DrawerHeaderProps) => (
+            <AppBarHeader {...props} left={true} />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="AccountDetailScreen"
+        component={AccountDetailScreen}
+      />
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Farm Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: ({ options }) => {
+            return (
+              <AppHeader
+                title={options?.title ?? 'Test'}
+                iconName={'arrow-u-right-top'}
+                onBackPress={onBackPress}
+              />
+            );
+          },
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="FarmDetailScreen"
+        component={FarmDetailScreen}
+      />
+      <Drawer.Screen
+        options={{
+          headerShown: false,
+          title: 'Weather Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: ({ options }) => {
+            return (
+              <AppHeader
+                title={options?.title ?? 'Test'}
+                iconName={'arrow-u-right-top'}
+                onBackPress={onBackPress}
+              />
+            );
+          },
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="WeatherDetailScreen"
+        component={WeatherDetailScreen}
+      />
+    </Drawer.Navigator>
   );
 };
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    overflow: 'hidden',
+  },
+  shawdow: {
+    borderColor: 'rgba(256,256,256,0)',
+    borderWidth: 0,
+    //backgroundColor: 'rgba(256,256,256,1)',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+  },
+  button: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomBar: {},
+  btnCircleUp: {
+    width: 55,
+    height: 55,
+    borderRadius: 55 / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'orange',
+    bottom: 20,
+  },
+  imgCircle: {
+    width: 30,
+    height: 30,
+    tintColor: 'gray',
+  },
+  tabbarItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  img: {
+    width: 30,
+    height: 30,
+  },
+  screen1: {
+    flex: 1,
+    backgroundColor: '#BFEFFF',
+  },
+  screen2: {
+    flex: 1,
+    backgroundColor: '#FFEBCD',
+  },
+  flatList: { flex: 1 },
+  contentList: {
+    paddingTop: 30,
+  },
+  userImg: { width: 65, height: 65 },
+  headerSubContainer: {
+    backgroundColor: colors.BACKGROUND_COLOR,
+  },
+  headerContainer: {
+    justifyContent: 'center',
+    backgroundColor: colors.BACKGROUND_COLOR,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+});

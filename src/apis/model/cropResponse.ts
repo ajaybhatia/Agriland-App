@@ -8,6 +8,8 @@
 export interface CropResponse {
   id?: string | null;
   name?: string | null;
+  colorCode?: string | null;
+  imageUrl?: string | null;
   cropCategoryId?: string;
   cropCategoryName?: string | null;
   description?: string | null;
@@ -16,6 +18,4 @@ export interface CropResponse {
   createdBy?: string | null;
   updatedOn?: string | null;
   isActive?: boolean;
-  colorCode?: string | null;
-  imageUrl?: string | null;
 }

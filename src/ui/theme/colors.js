@@ -1,11 +1,16 @@
 module.exports = {
   white: '#ffffff',
   black: '#000000',
+  PRIMARY_COLOR: '#e2d3ab',
   button_color: '#4F7942',
   BORDER_COLOR_DARK: '#4F7942',
   TITLE_COLOR: '#4F7942',
   BACKGROUND_COLOR: '#fbf9f3',
   BACKGROUND_CELL_COLOR: '#4F7942',
+  COMPLETED_COLOR: '#b68a22',
+  INPROGRESS_COLOR: '#528900',
+  UPCOMING_COLOR: '#0e7ab2',
+  SELECTEDTAB_COLOR: '#528900',
   BORDER_COLOR: '#f5e8ca',
   neutral: {
     50: '#FAFAFA',

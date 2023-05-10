@@ -5,6 +5,7 @@
  * OpenAPI spec version: v1
  */
 import type { CoOrdinates } from './coOrdinates';
+import type { FarmCropsDetailResponse } from './farmCropsDetailResponse';
 
 export interface FarmResponse {
   id?: string;
@@ -26,4 +27,5 @@ export interface FarmResponse {
   createdBy?: string | null;
   updatedOn?: string | null;
   isActive?: boolean;
+  crops?: FarmCropsDetailResponse[] | null;
 }

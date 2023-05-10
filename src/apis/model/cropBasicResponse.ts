@@ -8,5 +8,6 @@
 export interface CropBasicResponse {
   id?: string | null;
   name?: string | null;
+  colorCode?: string | null;
   imageUrl?: string | null;
 }

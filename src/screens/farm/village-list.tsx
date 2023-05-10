@@ -76,6 +76,7 @@ const VillageList = ({ onVillageSelect, onClose, cityId }: Props) => {
           onRightIconClick={() => onClose && onClose()}
         />
         <FlashList
+          keyExtractor={(item, index) => `${index}`}
           extraData={selections}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}

@@ -142,7 +142,7 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       pausesLocationUpdatesAutomatically: false,
       showsBackgroundLocationIndicator: true,
     });
-    RNLocation.getLatestLocation({ timeout: 20000 }).then(
+    RNLocation.getLatestLocation({ timeout: 40000 }).then(
       (latestLocation: Location | null) => {
         setCurrentLocationLoading(false);
 

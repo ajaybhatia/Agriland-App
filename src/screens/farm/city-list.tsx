@@ -79,6 +79,7 @@ const CityList = ({ onCitySelect, onClose, governateId }: Props) => {
           extraData={selections}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => `${index}`}
           data={cityResponse}
           renderItem={({ item, index }: { item: City; index: number }) => {
             return (

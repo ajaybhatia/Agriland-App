@@ -83,6 +83,7 @@ const GetGovernerate = ({ onGovernerateSelect, onClose }: Props) => {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={governateResponse}
+          keyExtractor={(item, index) => `${index}`}
           // eslint-disable-next-line react/no-unstable-nested-components
           ListEmptyComponent={() =>
             governateResponse.length <= 0 &&

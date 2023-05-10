@@ -23,6 +23,7 @@ const CropDragPointArea = ({ onNextStep, onSkipStep }: Props) => {
             <Header
               title={'Drag The Point To Select The Area Of Your Crop'}
               fontSize={'xs'}
+              textAlign="center"
             />
           </View>
 

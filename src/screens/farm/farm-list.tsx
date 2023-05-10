@@ -96,6 +96,7 @@ const FarmList = ({
       <FlashList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
+        keyExtractor={(item, index) => `${index}`}
         contentContainerStyle={{
           paddingBottom: 120,
         }}

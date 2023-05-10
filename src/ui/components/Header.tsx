@@ -30,6 +30,7 @@ type Props = {
   btnTitle?: string;
   onRightIconClick?: () => void;
   numberOfLines?: number | undefined;
+  textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify' | undefined;
 };
 
 export default function Header({
@@ -48,6 +49,7 @@ export default function Header({
   onRightIconClick,
   iconColor = colors.TITLE_COLOR,
   numberOfLines,
+  textAlign,
 }: Props) {
   return (
     <View
@@ -66,8 +68,13 @@ export default function Header({
         fontFamily={'heading'}
         color={color}
         fontStyle={'normal'}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{ textAlign: I18nManager.isRTL ? 'left' : 'right' }}
+        style={{
+          textAlign: textAlign
+            ? textAlign
+            : I18nManager.isRTL
+            ? 'left'
+            : 'right',
+        }}
       >
         {title}
       </Text>

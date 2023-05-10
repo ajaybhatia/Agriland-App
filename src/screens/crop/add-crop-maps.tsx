@@ -5,7 +5,8 @@ import { Alert, StyleSheet } from 'react-native';
 import KeepAwake from 'react-native-keep-awake';
 import type { Location } from 'react-native-location';
 import RNLocation from 'react-native-location';
-import type { MapPressEvent, MarkerDragStartEndEvent } from 'react-native-maps';
+import type { MapPressEvent } from 'react-native-maps';
+import { Polyline } from 'react-native-maps';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { Polygon } from 'react-native-maps';
@@ -14,18 +15,32 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import type { FarmRequest } from '@/apis/model';
+import type {
+  CoOrdinates,
+  CropBasicResponse,
+  CropCategoryResponse,
+  FarmCropsDetailResponse,
+  FarmResponse,
+} from '@/apis/model';
+import CustomButton from '@/ui/components/CustomButton';
 import WidthAnimation, { AnimationSide } from '@/ui/components/WidthAnimation';
 
-import type { FarmInfoModal } from '../farm/add-farm-maps';
-import type { MapType } from '../farm/add-farm-maps';
-import FarmList from '../farm/farm-list';
+import AboutCropScreen from './about-crop-screen';
 import ChooseFarmCropCategory from './choose-farm-crop-category';
 import CropDragPointArea from './crop-drag-point-area';
+import CropsReviewList from './crops-review-list';
 
 type Props = {
   onNextStep?: () => void;
   onPreviousSubmit?: () => void;
+};
+
+export type CropRegisterType = {
+  farm?: FarmResponse;
+  crop?: CropBasicResponse;
+  userLocation?: Location[];
+  cropCategory?: CropCategoryResponse;
+  cropArea?: FarmCropsDetailResponse;
 };
 
 const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
@@ -34,7 +49,9 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
     CHOOSE_FARM_SELECT_CROP,
     CROP_LIST,
     DRAG_PIN,
+    ENTER_ABOUT_CROP,
   }
+
   const { t } = useTranslation();
   let zoomLevel = 18;
   const mapRef = React.useRef<MapView>(null);
@@ -43,11 +60,8 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
   const [cropState, setCropState] = React.useState<AddCropState>(
     AddCropState.CHOOSE_FARM_SELECT_CROP
   );
-  const [farmInfo, setFarmInfo] = useState<
-    (FarmRequest & FarmInfoModal) | undefined
-  >();
 
-  const [isMapPinType, setMapType] = React.useState<MapType.PinMap>();
+  const [cropInfo, setCropInfo] = useState<CropRegisterType | undefined>();
 
   // request location permission
   function reQuestPermission(isCurrentLocation: boolean) {
@@ -98,7 +112,7 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
       pausesLocationUpdatesAutomatically: false,
       showsBackgroundLocationIndicator: true,
     });
-    RNLocation.getLatestLocation({ timeout: 20000 }).then(
+    RNLocation.getLatestLocation({ timeout: 40000 }).then(
       (latestLocation: Location | null) => {
         if (latestLocation && latestLocation != null) {
           console.log('Location found');
@@ -150,32 +164,56 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
   //  add farm steps function
 
   function onAddCoordinates() {
-    if (userLocation.length > 0) {
-      var loc: FarmRequest & FarmInfoModal = {
-        ...farmInfo,
-        coordinates: userLocation.map((x) => {
-          return {
-            lat: x.latitude,
-            lng: x.longitude,
-            accuracy: x.accuracy,
-            altitude: x.altitude,
-            altitudeAccuracy: x.altitudeAccuracy,
-            course: x.course,
-            speed: x.speed,
-          };
-        }),
-      };
-      onNextFarmListShow(loc);
+    if (userLocation && userLocation.length > 0) {
+      setCropInfo({ ...cropInfo, userLocation: userLocation });
+      setCropState(AddCropState.ENTER_ABOUT_CROP);
     }
   }
 
-  function onNextFarmListShow(farmRequest: FarmRequest & FarmInfoModal) {
-    setFarmInfo(farmRequest);
-    //setFarmState(AddFarmState.CROP_LIST);
+  function onCropCategorySubmit(
+    farm: FarmResponse,
+    crop: CropBasicResponse,
+    cropCategory: CropCategoryResponse
+  ) {
+    setCropState(AddCropState.MAP);
+    setCropInfo({
+      ...cropInfo,
+      crop: cropInfo ? { ...cropInfo.crop, ...crop } : crop,
+      farm: farm,
+      cropCategory: cropCategory,
+    });
+    if (
+      mapRef &&
+      mapRef.current &&
+      farm &&
+      farm.coordinates &&
+      farm.coordinates.length > 0
+    ) {
+      mapRef.current.animateCamera(
+        {
+          center: {
+            latitude: farm?.coordinates[0]?.lat ?? 0.0,
+            longitude: farm?.coordinates[0]?.lng ?? 0.0,
+          },
+          heading: 1,
+          pitch: 1,
+          zoom: 18,
+        },
+        { duration: 1000 }
+      );
+    }
   }
 
   function onNextMap() {
     setCropState(AddCropState.MAP);
+  }
+
+  function onNextFromAboutCrop(cropArea: FarmCropsDetailResponse) {
+    setCropInfo({
+      ...cropInfo,
+      cropArea: cropArea,
+    });
+    setCropState(AddCropState.CROP_LIST);
   }
 
   // map events
@@ -232,28 +270,16 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
   }
 
   // farm operations
-  function onEditFarm(farmRequest: FarmRequest & FarmInfoModal) {
-    let loc: Location[] =
-      farmRequest?.coordinates?.map((x) => {
-        return {
-          latitude: x.lat ?? 0.0,
-          longitude: x.lng ?? 0.0,
-          accuracy: x.accuracy ?? 0.0,
-          altitude: 0,
-          altitudeAccuracy: 0,
-          course: 0,
-          speed: 0,
-        };
-      }) ?? [];
-    setUserLocation(loc);
-    setFarmInfo(farmRequest);
-    //setFarmState(AddFarmState.CHOOSE_FARM_SELECT_CROP);
+  function onEditFarm(cropRequest: CropRegisterType) {
+    setUserLocation(cropRequest?.userLocation ?? []);
+    setCropInfo(cropRequest);
+    setCropState(AddCropState.CHOOSE_FARM_SELECT_CROP);
   }
 
-  function onAddMoreFarm() {
+  function onAddMoreCrop() {
     setUserLocation([]);
-    setFarmInfo(undefined);
-    //setFarmState(AddFarmState.CHOOSE_FARM_SELECT_CROP);
+    setCropInfo(undefined);
+    setCropState(AddCropState.CHOOSE_FARM_SELECT_CROP);
   }
 
   return (
@@ -279,7 +305,7 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
                 if (newUserL.length > 3) {
                   newUserL = newUserL.slice(0, -1);
                 }
-                console.log('newUserL ===> ', newUserL.length, '\n', newUserL);
+
                 return [
                   ...newUserL,
                   ...[
@@ -325,80 +351,92 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
             zIndex={10}
           />
         )}
-        {userLocation.map((loc: Location, indexLoc: number) => {
-          return (
-            <Marker
-              key={`${indexLoc}`}
-              id={`${indexLoc}`}
-              identifier={`${indexLoc}`}
-              //draggable
 
-              // title={'Hello Test'}
-              // description={'Test Description'}
-              nativeID={`${indexLoc}`}
-              coordinate={{
-                latitude: loc.latitude,
-                longitude: loc.longitude,
-              }}
-              onPress={() => {
-                Toast.show({
-                  type: 'error',
-                  text1: 'view show',
-                });
-              }}
-              //   centerOffset={{x: -42, y: -60}}
-              //   anchor={{x: 0.84, y: 1}}
-              //opacity={0.6}
-              // image={require('@assets/images/home/location-pin.png')}
-              onDragEnd={(event: MarkerDragStartEndEvent) => {
-                console.log('event===> ', event);
-                let lcs = userLocation.map(
-                  (location: Location, index: number) => {
-                    let lat = event.nativeEvent.coordinate.latitude;
-                    let lng = event.nativeEvent.coordinate.longitude;
-                    console.log(
-                      'event update===> ',
-                      index,
-                      ' == ',
-                      event.nativeEvent.id,
-                      ' == ',
-                      `${index}` === event.nativeEvent.id
-                    );
-                    if (`${index}` === event.nativeEvent.id) {
-                      return {
-                        latitude: lat,
-                        longitude: lng,
-                        accuracy: location.accuracy,
-                        altitude: location.altitude,
-                        course: location.course,
-                        altitudeAccuracy: location.altitudeAccuracy,
-                        speed: location.speed,
-                        timestamp: location.timestamp,
-                        courseAccuracy: location.courseAccuracy,
-                        floor: location.floor,
-                        fromMockProvider: location.fromMockProvider,
-                        speedAccuracy: location.speedAccuracy,
-                      };
-                    } else {
-                      return location;
-                    }
-                  }
-                );
+        {userLocation &&
+          userLocation.map((loc: Location, indexLoc: number) => {
+            return (
+              <Marker
+                key={`${indexLoc}`}
+                id={`${indexLoc}`}
+                identifier={`${indexLoc}`}
+                //draggable
 
-                setUserLocation(lcs);
-              }}
+                // title={'Hello Test'}
+                // description={'Test Description'}
+                nativeID={`${indexLoc}`}
+                coordinate={{
+                  latitude: loc?.latitude ?? 0.0,
+                  longitude: loc?.longitude ?? 0.0,
+                }}
+              />
+            );
+          })}
+
+        {/* Farm Poly Line */}
+        {cropInfo?.farm &&
+          cropInfo?.farm?.coordinates &&
+          cropInfo?.farm.coordinates.length > 0 && (
+            <Polyline
+              // fillColor={'rgba(256,256,256,0.5)'}
+              // geodesic={true}
+              coordinates={cropInfo?.farm?.coordinates.map(
+                (value: CoOrdinates) => {
+                  return {
+                    latitude: value?.lat ?? 0.0,
+                    longitude: value?.lng ?? 0.0,
+                  };
+                }
+              )}
+              strokeColor="white" // fallback for when `strokeColors` is not supported by the map-provider
+              strokeWidth={3}
+              zIndex={10}
             />
-          );
-        })}
+          )}
+
+        {/* Old Crops Playline */}
+        {cropInfo?.farm &&
+          cropInfo?.farm?.crops &&
+          cropInfo?.farm?.crops.length > 0 &&
+          cropInfo?.farm?.crops.map((loc: FarmCropsDetailResponse) => {
+            if (loc.coordinates && loc.coordinates.length > 0) {
+              return (
+                <Polyline
+                  coordinates={loc.coordinates.map((value: CoOrdinates) => {
+                    return {
+                      latitude: value?.lat ?? 0.0,
+                      longitude: value?.lng ?? 0.0,
+                    };
+                  })}
+                  strokeColor={
+                    loc?.crop?.colorCode
+                      ? loc?.crop?.colorCode ?? 'white'
+                      : 'white'
+                  } // fallback for when `strokeColors` is not supported by the map-provider
+                  strokeWidth={3}
+                  zIndex={10}
+                />
+              );
+            } else {
+              return undefined;
+            }
+          })}
       </MapView>
 
       {/* \right left buttons */}
       {cropState === AddCropState.MAP && (
         <>
-          <VStack position={'absolute'} left={5} bottom={10}>
-            <WidthAnimation animationSide={AnimationSide.RIGHT} />
-            <WidthAnimation animationSide={AnimationSide.LEFT} />
-          </VStack>
+          {cropInfo && (
+            <VStack position={'absolute'} left={5} bottom={10}>
+              <WidthAnimation
+                animationSide={AnimationSide.RIGHT}
+                crop={cropInfo}
+              />
+              <WidthAnimation
+                animationSide={AnimationSide.LEFT}
+                crop={cropInfo}
+              />
+            </VStack>
+          )}
           <VStack position={'absolute'} right={5} bottom={10}>
             <IconButton
               borderColor={'white'}
@@ -495,22 +533,44 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
               }
             />
           </VStack>
+
+          {userLocation && userLocation.length > 0 && (
+            <View position={'absolute'} bottom={10} left={0} right={0}>
+              <CustomButton
+                mt={5}
+                onPress={onAddCoordinates}
+                width={'55%'}
+                title={t('save-continue')}
+              />
+            </View>
+          )}
         </>
       )}
       {cropState === AddCropState.CHOOSE_FARM_SELECT_CROP && (
-        <ChooseFarmCropCategory onPreviousSubmit={onPreviousSubmit} />
+        <ChooseFarmCropCategory
+          cropInfo={cropInfo}
+          onPreviousSubmit={onPreviousSubmit}
+          onNextSubmit={onCropCategorySubmit}
+        />
       )}
 
       {cropState === AddCropState.DRAG_PIN && (
         <CropDragPointArea onNextStep={onNextMap} />
       )}
 
+      {cropState === AddCropState.ENTER_ABOUT_CROP && (
+        <AboutCropScreen
+          cropRequest={cropInfo?.cropArea}
+          onNext={onNextFromAboutCrop}
+        />
+      )}
+
       {cropState === AddCropState.CROP_LIST && (
-        <FarmList
-          farmRequest={farmInfo}
+        <CropsReviewList
+          cropRequest={cropInfo}
           onEditStep={onEditFarm}
-          addMoreFarm={onAddMoreFarm}
-          onNextStep={onNextStep}
+          addMoreCrop={onAddMoreCrop}
+          // onNextStep={onNextStep}
         />
       )}
     </View>

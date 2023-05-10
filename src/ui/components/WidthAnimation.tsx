@@ -1,7 +1,10 @@
+import { Image as NImage } from 'expo-image';
 import { Image, Pressable, View, VStack } from 'native-base';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions } from 'react-native';
 import { StyleSheet } from 'react-native';
+
+import type { CropRegisterType } from '@/screens/crop/add-crop-maps';
 
 import BodyTitle from './BodyTitle';
 
@@ -9,8 +12,17 @@ export enum AnimationSide {
   LEFT,
   RIGHT,
 }
+type Prop = {
+  mt?: number;
+  animationSide: AnimationSide;
+  crop: CropRegisterType;
+};
 const width = Dimensions.get('screen').width;
-const WidthAnimation = ({ mt = 10, animationSide = AnimationSide.RIGHT }) => {
+const WidthAnimation = ({
+  mt = 10,
+  animationSide = AnimationSide.RIGHT,
+  crop,
+}: Prop) => {
   const animatedValue = useRef(new Animated.Value(50)).current;
   const [isExpand, setViewExpand] = useState<boolean>(false);
 
@@ -63,31 +75,38 @@ const WidthAnimation = ({ mt = 10, animationSide = AnimationSide.RIGHT }) => {
       {AnimationSide.LEFT === animationSide ? (
         <Pressable flex={1} onPress={isExpand ? onClapse : onExpand}>
           <View flexDirection={'row'} flex={1} alignItems={'center'}>
-            <Image
+            {/* <Image
               alt=""
               source={require('@assets/logo.png')}
               h={50}
               w={50}
               alignSelf={'center'}
               rounded={'full'}
+            /> */}
+            <NImage
+              style={{ height: 50, width: 50, borderRadius: 25 }}
+              source={`http://95.111.231.114:88${crop?.crop?.imageUrl}`}
+              placeholder={require('@assets/app-logo.png')}
+              contentFit="cover"
+              transition={1000}
             />
             {isExpand && (
               <View flexDirection={'row'} flex={1} alignItems={'center'}>
-                <VStack ml={5} flex={0.6}>
+                <VStack ml={5} flex={0.5}>
                   <BodyTitle title="Farm" fontSize={12} fontWeight={100} />
                   <BodyTitle
                     numberOfLines={1}
-                    title="EL MISRYA FARM"
-                    fontSize={13}
+                    title={crop?.farm?.name ?? ''}
+                    fontSize={12}
                     fontWeight={400}
                   />
                 </VStack>
-                <VStack ml={2} flex={0.4}>
+                <VStack ml={2} flex={0.5}>
                   <BodyTitle title="Type" fontSize={12} fontWeight={100} />
                   <BodyTitle
                     numberOfLines={1}
-                    title="Fruits "
-                    fontSize={13}
+                    title={crop?.cropCategory?.name ?? ''}
+                    fontSize={12}
                     fontWeight={400}
                   />
                 </VStack>
@@ -107,7 +126,7 @@ const WidthAnimation = ({ mt = 10, animationSide = AnimationSide.RIGHT }) => {
               <VStack ml={5}>
                 <BodyTitle title="Farm" fontSize={12} fontWeight={100} />
                 <BodyTitle
-                  title="EL MISRYA FARM"
+                  title={crop?.farm?.name ?? ''}
                   fontSize={13}
                   fontWeight={400}
                 />

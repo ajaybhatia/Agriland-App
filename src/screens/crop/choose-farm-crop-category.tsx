@@ -1,16 +1,18 @@
 import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
-import { Image as ImageBase, Pressable, View, VStack } from 'native-base';
+import { Icon, Image as ImageBase, Pressable, View, VStack } from 'native-base';
 import React, { useState } from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { ActivityIndicator, Animated, StyleSheet } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 import Modal from 'react-native-modal';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
   useGetApiCropGetCropCategories,
   useGetApiFarmGetFarms,
 } from '@/apis/endpoints/api';
 import type {
+  CropBasicResponse,
   CropCategoryPaginatedResponse,
   CropCategoryResponse,
   FarmResponse,
@@ -20,15 +22,26 @@ import EmptyList from '@/ui/components/EmptyList';
 import Header from '@/ui/components/Header';
 import colors from '@/ui/theme/colors';
 
+import type { CropRegisterType } from './add-crop-maps';
 import ChooseCropScreen from './choose-crop-screen';
 import FarmAddCell from './components/farm-add-cell';
 import FarmMapSelectionCell from './components/farm-map-selection-cell';
 
 type Props = {
   onPreviousSubmit?: () => void;
+  onNextSubmit?: (
+    farm: FarmResponse,
+    crop: CropBasicResponse,
+    cropCategory: CropCategoryResponse
+  ) => void;
+  cropInfo?: CropRegisterType;
 };
 
-function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
+function ChooseFarmCropCategory({
+  onPreviousSubmit,
+  onNextSubmit,
+  cropInfo,
+}: Props) {
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const [isCropScreeenOpen, setCropScreenOpen] = useState<boolean>(false);
   const [farms, setFarms] = useState<FarmResponse[]>([]);
@@ -49,6 +62,12 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
     take: 20,
     skip: 0,
   });
+  const [selectedCropCategory, setSelectedCropCategory] = useState<
+    CropCategoryResponse | undefined
+  >(cropInfo?.cropCategory);
+  const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>(
+    cropInfo?.farm
+  );
   // Apis
 
   const getFarms = useGetApiFarmGetFarms(
@@ -61,6 +80,9 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
         onSuccess: (data: FarmResponse[]) => {
           if (data.length > 0) {
             setFarms(moreInfo.skip <= 0 ? data : [...farms, ...data]);
+            if (selectedFarm === undefined && data.length > 0) {
+              setSelectedFarm(data[0]);
+            }
           }
         },
       },
@@ -90,13 +112,22 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
     }
   );
 
-  const onCropSelected = () => {
-    console.log('crop Selected');
+  const onCropSelected = (
+    crop: CropBasicResponse,
+    cropCategory: CropCategoryResponse
+  ) => {
     setCropScreenOpen(false);
+    onNextSubmit &&
+      selectedFarm &&
+      onNextSubmit(selectedFarm, crop, cropCategory);
   };
 
   const onCropSelectionClose = () => {
     setCropScreenOpen(false);
+  };
+
+  const onSelectFarm = (farm: FarmResponse) => {
+    setSelectedFarm(farm);
   };
 
   return (
@@ -118,6 +149,8 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
               useNativeDriver: false,
             }
           )}
+          extraData={selectedFarm}
+          keyExtractor={(item, index) => `${index}`}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -131,7 +164,41 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
           }: {
             item: FarmResponse;
             index: number;
-          }) => <FarmMapSelectionCell item={item} />}
+          }) => (
+            <FarmMapSelectionCell
+              item={item}
+              selectedItem={selectedFarm}
+              onSelectFarm={onSelectFarm}
+            />
+          )}
+          onEndReachedThreshold={0.5}
+          onEndReached={() => {
+            console.log('onEndReached');
+            if (
+              !getFarms.isLoading &&
+              !getFarms.isFetching &&
+              moreInfo.take <= farms.length
+            ) {
+              setMoreInfo({
+                take: moreInfo.take,
+                skip: moreInfo.skip + moreInfo.take,
+              });
+            }
+          }}
+          ListFooterComponent={
+            (getFarms.isLoading || getFarms.isFetching) &&
+            farms.length > 0 && (
+              <View
+                alignItems={'center'}
+                justifyContent={'center'}
+                alignSelf={'center'}
+                h={100}
+                pr={5}
+              >
+                <ActivityIndicator size="small" color="#00ff00" />
+              </View>
+            )
+          }
           estimatedItemSize={300}
         />
         <ExpandingDot
@@ -151,11 +218,14 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
         <FlashList
           horizontal={false}
           numColumns={2}
+          keyExtractor={(item, index) => `${index}`}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={cropCategories}
           extraData={
-            getCropCategories.isLoading || getCropCategories.isFetching
+            getCropCategories.isLoading ||
+            getCropCategories.isFetching ||
+            selectedCropCategory
           }
           // eslint-disable-next-line react/no-unstable-nested-components
           ListEmptyComponent={() =>
@@ -180,26 +250,74 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
               bgColor={'amber.400'}
               flexDirection={'column'}
               margin={2}
-              onPress={() => setCropScreenOpen(true)}
+              onPress={() => {
+                setSelectedCropCategory(item);
+                setCropScreenOpen(true);
+              }}
             >
-              {item.imageUrl && item.imageUrl !== null ? (
-                <Image
-                  style={{ height: 150 }}
-                  source={item.imageUrl}
-                  placeholder={require('@assets/app-logo.png')}
-                  contentFit="cover"
-                  transition={1000}
-                />
-              ) : (
-                <ImageBase
-                  alt=""
-                  h={150}
-                  resizeMode={'cover'}
-                  source={require('@assets/app-logo.png')}
-                />
-              )}
+              <>
+                {item.imageUrl && item.imageUrl !== null ? (
+                  <Image
+                    style={{ height: 150 }}
+                    source={`http://95.111.231.114:88${item.imageUrl}`}
+                    placeholder={require('@assets/app-logo.png')}
+                    contentFit="cover"
+                    transition={1000}
+                  />
+                ) : (
+                  <ImageBase
+                    alt=""
+                    h={150}
+                    resizeMode={'cover'}
+                    source={require('@assets/app-logo.png')}
+                  />
+                )}
+                {selectedCropCategory &&
+                  selectedCropCategory?.id === item?.id && (
+                    <View
+                      position={'absolute'}
+                      left={0}
+                      right={0}
+                      top={0}
+                      bottom={0}
+                      justifyContent={'center'}
+                      alignItems={'center'}
+                      bgColor={'rgba(0,0,0,0.5)'}
+                    >
+                      <Icon
+                        as={FontAwesome}
+                        name={'check'}
+                        size={'2xl'}
+                        color={'white'}
+                      />
+                    </View>
+                  )}
+              </>
             </Pressable>
           )}
+          ListFooterComponent={
+            (getCropCategories.isLoading || getCropCategories.isFetching) &&
+            cropCategories.length > 0 && (
+              <View h={50}>
+                <ActivityIndicator size="small" color="#00ff00" />
+              </View>
+            )
+          }
+          listFooterComponentStyle={{ flexGrow: 1 }}
+          onEndReachedThreshold={0.5}
+          onEndReached={() => {
+            console.log('onEndReached');
+            if (
+              !getCropCategories.isLoading &&
+              !getCropCategories.isFetching &&
+              moreCategoryInfo.take <= cropCategories.length
+            ) {
+              setMoreInfo({
+                take: moreCategoryInfo.take,
+                skip: moreCategoryInfo.skip + moreCategoryInfo.take,
+              });
+            }
+          }}
           estimatedItemSize={300}
         />
       </View>
@@ -210,16 +328,17 @@ function ChooseFarmCropCategory({ onPreviousSubmit }: Props) {
       )}
       <Modal
         coverScreen={true}
-        statusBarTranslucent={true}
+        backdropColor="white"
         style={{ margin: 0 }}
-        isVisible={isCropScreeenOpen}
+        isVisible={isCropScreeenOpen && selectedCropCategory !== undefined}
         onDismiss={() => setCropScreenOpen(false)}
         onModalHide={() => setCropScreenOpen(false)}
       >
         <ChooseCropScreen
           onCropSelected={onCropSelected}
           onCropSelectionClose={onCropSelectionClose}
-          farmId={farms.length > 0 ? farms[0]?.id ?? '' : ''}
+          cropCategory={selectedCropCategory}
+          defaultCrop={cropInfo?.crop}
         />
       </Modal>
     </View>

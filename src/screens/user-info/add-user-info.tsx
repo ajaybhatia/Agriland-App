@@ -157,40 +157,6 @@ function AddUserInfo({ onNextSubmit }: Props) {
           errors.mobileNumber && touched.mobileNumber && errors.mobileNumber
         }
       />
-      {/* <RoundInput mt={5} placeholder="password" />
-      <Header
-        title="Register as a company?"
-        mt={5}
-        fontSize={13}
-        fontWeight={'normal'}
-      />
-      <Radio.Group
-        name="exampleGroup"
-        defaultValue="1"
-        accessibilityLabel="pick a size"
-      >
-        <Stack
-          mt={3}
-          direction={{
-            base: 'row',
-            md: 'row',
-          }}
-          alignItems={{
-            base: 'flex-start',
-            md: 'center',
-          }}
-          space={4}
-          w="75%"
-          maxW="300px"
-        >
-          <Radio value="1" colorScheme="red" size="sm" my={1}>
-            Yes
-          </Radio>
-          <Radio value="0" colorScheme="red" size="sm" my={1}>
-            No
-          </Radio>
-        </Stack>
-      </Radio.Group> */}
 
       <Button
         isLoading={addUserInfo.isLoading}

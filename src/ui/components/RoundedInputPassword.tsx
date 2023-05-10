@@ -14,21 +14,21 @@ export default function RoundedInputPassword({
   value = '',
   onChangeText,
   mt = 2,
-  placeholder = 'Enter text here...'
+  placeholder = 'Enter text here...',
 }: Props) {
   return (
     <View>
       <Input
         mt={mt}
         multiline={true}
-        py={3}
         placeholder={placeholder}
-        borderWidth={2}
         value={value}
+        borderWidth={2}
         borderColor={BORDER_COLOR_DARK}
-        color="#000"
-        bgColor={'white'}
         borderRadius={15}
+        bgColor={'white'}
+        py={3}
+        color="#000"
         focusOutlineColor={BORDER_COLOR_DARK}
         variant="outline"
         size="xl"
