@@ -40,21 +40,30 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
 
   const { t } = useTranslation();
   const onSowingDate = (date: Date) => {
-    setMyCropRequest({
-      ...myCropRequest,
-      sowingDate: dayjs(date).utc().format(),
+    setMyCropRequest((r) => {
+      const v = {
+        ...r,
+        sowingDate: dayjs(date).utc().format(),
+      };
+      return v;
     });
   };
   const onHarvestDate = (date: Date) => {
-    setMyCropRequest({
-      ...myCropRequest,
-      harvestDate: dayjs(date).utc().format(),
+    setMyCropRequest((r) => {
+      const v = {
+        ...r,
+        harvestDate: dayjs(date).utc().format(),
+      };
+      return v;
     });
   };
   const onNewNumber = (v: number) => {
-    setMyCropRequest({
-      ...myCropRequest,
-      quantity: v,
+    setMyCropRequest((r) => {
+      const v = {
+        ...r,
+        quantity: v,
+      };
+      return v;
     });
   };
 
@@ -119,9 +128,13 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
             accessibilityLabel="pick a size"
             value={`${myCropRequest?.typeOfIrrigation ?? 1}`}
             onChange={(nextValue) => {
-              setMyCropRequest({
-                ...myCropRequest,
-                typeOfIrrigation: Number(nextValue),
+              setMyCropRequest((r) => {
+                const v = {
+                  ...r,
+                  typeOfIrrigation: Number(nextValue),
+                };
+                console.log('\n\nexampleGroup ==>', v, '\n\n\n');
+                return v;
               });
             }}
           >

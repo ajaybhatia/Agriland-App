@@ -52,9 +52,11 @@ export default function FarmMapSelectionCell({
       mx={3}
       w={width / 2 + width / 5}
       borderRadius={20}
-      borderWidth={2}
+      borderWidth={selectedItem && selectedItem.id === item.id ? 4 : 0}
       borderColor={
-        selectedItem && selectedItem.id === item.id ? 'black' : 'rgba(0,0,0,0)'
+        selectedItem && selectedItem.id === item.id
+          ? 'green.400'
+          : 'rgba(0,0,0,0)'
       }
       overflow={'hidden'}
     >
