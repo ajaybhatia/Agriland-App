@@ -1,3 +1,4 @@
+import auth from '@react-native-firebase/auth';
 import type {
   DrawerContentComponentProps,
   DrawerHeaderProps,
@@ -6,7 +7,7 @@ import {
   createDrawerNavigator,
   useDrawerStatus,
 } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import {
   Box,
   HStack,
@@ -20,7 +21,7 @@ import {
   VStack,
 } from 'native-base';
 import * as React from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { Alert, Animated, StyleSheet } from 'react-native';
 import { Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
@@ -32,6 +33,7 @@ import AccountDetailScreen from '@/screens/account/account-detail-screen';
 import ChooseFarmCropCategory from '@/screens/crop/choose-farm-crop-category';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
+import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
 import WeatherDetailScreen from '@/screens/weather/weather-detail-screen';
 import AppHeader from '@/ui/components/AppHeader';
 import DrawerOptions from '@/ui/components/DrawerOptions';
@@ -137,7 +139,7 @@ function CustomDrawerContent({ navigation }: DrawerContentComponentProps) {
         {
           label: 'Sign Out',
           as: MaterialIcons,
-          navigation: 'MyFarmsTab',
+          navigation: 'SignOut',
           icon: require('@assets/app-logo.png'),
         },
       ],
@@ -183,8 +185,31 @@ function CustomDrawerContent({ navigation }: DrawerContentComponentProps) {
               index={index}
               item={item}
               onPress={(item2: DrawerSubOptionObj) => {
-                navigation.closeDrawer();
-                navigation.navigate(item2.navigation);
+                if (item2.navigation === 'SignOut') {
+                  Alert.alert('Warning', 'Are you sure, you want to logout?', [
+                    {
+                      text: 'Cancel',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'LogOut',
+                      onPress: async () => {
+                        navigation.closeDrawer();
+                        await auth().signOut();
+                        navigation.dispatch(
+                          CommonActions.reset({
+                            index: 1,
+                            routes: [{ name: 'Auth' }],
+                          })
+                        );
+                      },
+                    },
+                  ]);
+                } else {
+                  navigation.closeDrawer();
+                  navigation.navigate(item2.navigation);
+                }
               }}
             />
           )}
@@ -235,43 +260,44 @@ const Drawer = createDrawerNavigator<AuthStackParamList>();
 // Tabs
 
 const _renderIcon = (routeName: string, selectedTab: string) => {
-  let icon = '';
+  let icon = require('@assets/bottom-bar/home.png');
   let title = '';
 
   switch (routeName) {
     case 'title1':
-      icon = 'ios-home-outline';
+      icon = require('@assets/bottom-bar/home.png');
       title = 'HOME';
       break;
     case 'title2':
-      icon = 'settings-outline';
+      icon = require('@assets/bottom-bar/dashboard.png');
       title = 'DASHBOARD';
       break;
     case 'title4':
-      icon = 'settings';
+      icon = require('@assets/bottom-bar/crops.png');
       title = 'CROPS';
       break;
     case 'title5':
-      icon = 'outline';
+      icon = require('@assets/bottom-bar/farms.png');
       title = 'FARMS';
       break;
   }
 
   return (
     <VStack alignItems={'center'}>
-      <Icon
+      {/* <Icon
         as={MaterialCommunityIcons}
         name={'plus-circle'}
         size={'lg'}
         color={routeName !== selectedTab ? 'black' : 'rgba(256,45,45,1)'}
-      />
+      /> */}
+      <Image h={5} w={5} alt="" resizeMode="contain" source={icon} />
       <Text
         fontSize={11}
         mt={2}
         numberOfLines={1}
-        color={routeName !== selectedTab ? 'black' : 'rgba(256,45,45,1)'}
+        color={routeName !== selectedTab ? '#36cad0' : '#36cad0'}
         fontFamily={'body'}
-        fontWeight={'400'}
+        fontWeight={routeName !== selectedTab ? '400' : '600'}
         fontStyle={'normal'}
       >
         {title}
@@ -294,7 +320,7 @@ const BottomTabs = () => {
   return (
     <CurvedBottomBar.Navigator
       type="UP"
-      style={styles.bottomBar}
+      style={styles.bottombar}
       shadowStyle={styles.shawdow}
       height={80}
       circleWidth={60}
@@ -519,6 +545,33 @@ export const TabNavigator = () => {
         name="WeatherDetailScreen"
         component={WeatherDetailScreen}
       />
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Notifications',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: ({ options }) => {
+            return (
+              <AppHeader
+                title={options?.title ?? 'Test'}
+                iconName={'arrow-u-right-top'}
+                onBackPress={onBackPress}
+              />
+            );
+          },
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="NotificationsDetails"
+        component={NotificationsDetails}
+      />
     </Drawer.Navigator>
   );
 };
@@ -547,7 +600,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  bottomBar: {},
+  bottombar: {},
   btnCircleUp: {
     width: 55,
     height: 55,

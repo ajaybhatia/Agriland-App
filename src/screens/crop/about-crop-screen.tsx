@@ -59,11 +59,11 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
   };
   const onNewNumber = (v: number) => {
     setMyCropRequest((r) => {
-      const v = {
+      const vx = {
         ...r,
         quantity: v,
       };
-      return v;
+      return vx;
     });
   };
 

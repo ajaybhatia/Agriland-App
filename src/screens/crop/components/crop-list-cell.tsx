@@ -317,6 +317,24 @@ const CropListCell = ({ onNextStep, cropInfo }: Props) => {
                 : 'Traditional'}
             </Text>
           </HStack>
+          <HStack alignItems={'center'} justifyContent={'space-between'} mt={1}>
+            <Text
+              fontFamily={'heading'}
+              fontSize={12}
+              fontWeight={'200'}
+              color={'green.300'}
+            >
+              Quantity
+            </Text>
+            <Text
+              fontFamily={'heading'}
+              fontSize={13}
+              fontWeight={'600'}
+              mr={1}
+            >
+              {cropInfo?.cropArea?.quantity ?? 0}
+            </Text>
+          </HStack>
         </VStack>
       </CardWithShadow>
     </View>

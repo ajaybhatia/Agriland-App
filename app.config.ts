@@ -19,10 +19,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   icon: `${withEnvSuffix('./assets/icon')}.png`,
   userInterfaceStyle: 'light',
+
   splash: {
     image: './assets/splash2.png',
     resizeMode: 'cover',
-    backgroundColor: '#F75469',
+    backgroundColor: '#023c69',
   },
   updates: {
     fallbackToCacheTimeout: 0,

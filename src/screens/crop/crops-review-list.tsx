@@ -1,18 +1,18 @@
-import { FlashList } from '@shopify/flash-list';
-import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { HStack, Icon, Pressable, Text, VStack, View } from 'native-base';
+
+import CropListCell from './components/crop-list-cell';
+import type { CropRegisterType } from './add-crop-maps';
+import CustomButton from '@/ui/components/CustomButton';
+import { FlashList } from '@shopify/flash-list';
+import Header from '@/ui/components/Header';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import React from 'react';
+import Toast from 'react-native-toast-message';
 import { usePostApiCropCreateCultivationDetails } from '@/apis/endpoints/api';
-import CustomButton from '@/ui/components/CustomButton';
-import Header from '@/ui/components/Header';
-
-import type { CropRegisterType } from './add-crop-maps';
-import CropListCell from './components/crop-list-cell';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   addMoreCrop?: () => void;
@@ -27,30 +27,13 @@ const CropsReviewList = ({
   cropRequest,
 }: Props) => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
 
   // add farm APi
 
   const addCropApi = usePostApiCropCreateCultivationDetails();
 
   function apiSubmitAddFarm(isAddNew: boolean) {
-    console.log(
-      'cropRequest ===> ',
-      JSON.stringify({
-        cropId: cropRequest?.crop?.id,
-        farmId: cropRequest?.farm?.id,
-        area: cropRequest?.cropArea?.area ?? null,
-        coordinates: cropRequest?.userLocation?.map((v) => {
-          return {
-            lat: v.latitude,
-            lng: v.longitude,
-          };
-        }),
-        harvestDate: cropRequest?.cropArea?.harvestDate,
-        sowingDate: cropRequest?.cropArea?.sowingDate,
-        quantity: cropRequest?.cropArea?.quantity,
-        typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
-      })
-    );
     addCropApi.mutate(
       {
         data: [
@@ -82,7 +65,16 @@ const CropsReviewList = ({
             if (isAddNew) {
               onCropAddMore && onCropAddMore();
             } else {
-              // onNextStep && onNextStep();
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 1,
+                  routes: [
+                    {
+                      name: 'App',
+                    },
+                  ],
+                })
+              );
             }
           } else {
             Toast.show({

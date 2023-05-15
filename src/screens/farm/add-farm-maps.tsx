@@ -685,7 +685,8 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
         </View>
       )}
       {/* \right buttons */}
-      {farmState === AddFarmState.MAP && (
+      {(farmState === AddFarmState.MAP ||
+        farmState === AddFarmState.CURRENT_LOCATION_MAP) && (
         <VStack position={'absolute'} right={5} bottom={10}>
           {isMapPinType === MapType.PinMap && (
             <IconButton
@@ -764,7 +765,8 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
               />
             }
           />
-          {isMapPinType === MapType.PinMap && (
+          {(isMapPinType === MapType.PinMap ||
+            farmState === AddFarmState.CURRENT_LOCATION_MAP) && (
             <IconButton
               mt={5}
               borderColor={'white'}

@@ -6,10 +6,10 @@ import KeepAwake from 'react-native-keep-awake';
 import type { Location } from 'react-native-location';
 import RNLocation from 'react-native-location';
 import type { MapPressEvent } from 'react-native-maps';
-import { Polyline } from 'react-native-maps';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { Polygon } from 'react-native-maps';
+import { Polyline } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -268,7 +268,6 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
   function onMapMarkerClear() {
     setUserLocation([]);
   }
-
   // farm operations
   function onEditFarm(cropRequest: CropRegisterType) {
     setUserLocation(cropRequest?.userLocation ?? []);
@@ -338,7 +337,11 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
             coordinates={userLocation.map((value: Location) => {
               return { latitude: value.latitude, longitude: value.longitude };
             })}
-            strokeColor="white" // fallback for when `strokeColors` is not supported by the map-provider
+            strokeColor={
+              cropInfo?.crop?.colorCode
+                ? cropInfo?.crop?.colorCode ?? 'white'
+                : 'white'
+            } // fallback for when `strokeColors` is not supported by the map-provider
             // strokeColors={[
             //   '#7F0000',
             //   '#00000000', // no color, creates a "long" gradient between the previous and next coordinate

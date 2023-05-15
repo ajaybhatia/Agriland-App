@@ -1,10 +1,11 @@
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
 import type { NativeModuleError } from '@react-native-google-signin/google-signin';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import {
   Box,
   Button,
@@ -24,6 +25,8 @@ import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as z from 'zod';
 
+import { useGetApiFarmIsFarmAdded } from '@/apis/endpoints/api';
+import type { FarmExists } from '@/apis/model';
 import { useSelectedLanguage } from '@/core';
 import type { Language } from '@/core/i18n/resources';
 import { LoginType } from '@/navigation/auth-navigator';
@@ -54,7 +57,7 @@ export const LoginForm = () => {
   const phoneInput = useRef<PhoneInput>(null);
   const { t } = useTranslation();
   const { language, setLanguage } = useSelectedLanguage();
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
 
   const [valuePhone, setPhoneValue] = useState<string>('');
   const [formattedValue, setFormattedValue] = useState<string>('');
@@ -62,10 +65,67 @@ export const LoginForm = () => {
   const [isGoogleLoading, setGoogleLoading] = useState<boolean>(false);
   const [isFacebookLoading, setFacebookLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isEnable, setAddFarmEnable] = useState<boolean>(false);
+  const [googleCredentials, setGoogleCredentials] = useState<
+    FirebaseAuthTypes.User | undefined
+  >();
   // const { handleSubmit, control } = useForm<FormType>({
   //   resolver: zodResolver(schema)
   // });
-
+  const isFarmAdded = useGetApiFarmIsFarmAdded({
+    query: {
+      enabled: isEnable,
+      onSuccess: (data: FarmExists) => {
+        if (data.isFarmAdded) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [
+                {
+                  name: 'AddFarmScreen',
+                  params: {
+                    loginType: LoginType.GOOGLE,
+                    google: googleCredentials,
+                  },
+                },
+              ],
+            })
+          );
+        } else {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [
+                {
+                  name: 'AddFarmScreen',
+                  params: {
+                    loginType: LoginType.GOOGLE,
+                    google: googleCredentials,
+                  },
+                },
+              ],
+            })
+          );
+        }
+      },
+      onError: () => {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [
+              {
+                name: 'AddFarmScreen',
+                params: {
+                  loginType: LoginType.GOOGLE,
+                  google: googleCredentials,
+                },
+              },
+            ],
+          })
+        );
+      },
+    },
+  });
   const onOtpLogin = () => {
     if (phoneInput.current?.isValidNumber(formattedValue)) {
       setOTPLoading(true);
@@ -74,7 +134,7 @@ export const LoginForm = () => {
         .signInWithPhoneNumber(formattedValue)
         .then((confirmation) => {
           setOTPLoading(false);
-          navigate('OtpVerifyScreen', {
+          navigation.navigate('OtpVerifyScreen', {
             phoneNumber: formattedValue,
             confirmation: confirmation,
           });
@@ -94,35 +154,37 @@ export const LoginForm = () => {
 
   // Somewhere in your code
   const signIn = async () => {
-    try {
-      setGoogleLoading(true);
-      await GoogleSignin.signOut();
-      await GoogleSignin.hasPlayServices();
-      // Get the users ID token
-      const userInfo = await GoogleSignin.signIn();
-      // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(
-        userInfo.idToken
-      );
-      // Sign-in the user with the credential
-      let googleDetail = await auth().signInWithCredential(googleCredential);
+    if (!isFarmAdded.isLoading) {
+      try {
+        setGoogleLoading(true);
+        await GoogleSignin.signOut();
+        await GoogleSignin.hasPlayServices();
+        // Get the users ID token
+        const userInfo = await GoogleSignin.signIn();
+        // Create a Google credential with the token
+        const googleCredential = auth.GoogleAuthProvider.credential(
+          userInfo.idToken
+        );
+        // Sign-in the user with the credential
+        let googleDetail = await auth().signInWithCredential(googleCredential);
 
-      setGoogleLoading(false);
-      navigate('AddFarmScreen', {
-        loginType: LoginType.GOOGLE,
-        google: googleDetail.user,
-      });
-    } catch (error) {
-      setGoogleLoading(false);
-      const typedError = error as NativeModuleError;
-      if (typedError?.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (typedError?.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (typedError?.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
+        setGoogleCredentials(googleDetail.user);
+        setAddFarmEnable(true);
+        setGoogleLoading(false);
+      } catch (error) {
+        setGoogleLoading(false);
+        const typedError = error as NativeModuleError;
+        if (typedError?.code === statusCodes.SIGN_IN_CANCELLED) {
+          // user cancelled the login flow
+        } else if (typedError?.code === statusCodes.IN_PROGRESS) {
+          // operation (e.g. sign in) is in progress already
+        } else if (
+          typedError?.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+        ) {
+          // play services not available or outdated
+        } else {
+          // some other error happened
+        }
       }
     }
   };
@@ -318,7 +380,11 @@ export const LoginForm = () => {
                     )}
                   </Pressable> */}
                   <Button
-                    isLoading={isGoogleLoading}
+                    isLoading={
+                      isGoogleLoading ||
+                      isFarmAdded.isLoading ||
+                      isFarmAdded.isFetching
+                    }
                     onPress={signIn}
                     overflow={'hidden'}
                     w={'80%'}

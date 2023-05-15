@@ -13,25 +13,15 @@ import { I18nManager } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import Toast from 'react-native-toast-message';
 
-import { hydrateAuth, useSelectedLanguage } from '@/core';
+import { useSelectedLanguage } from '@/core';
 import { RootNavigator } from '@/navigation';
 
-hydrateAuth();
+//hydrateAuth();
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const { language, setLanguage } = useSelectedLanguage();
-  // const [fontsLoaded] = useFonts({
-  //   'Poppins-Black': require('@assets/fonts/Poppins-Black.ttf'),
-  //   'Poppins-Bold': require('@assets/fonts/Poppins-Bold.ttf'),
-  //   'Poppins-ExtraBold': require('@assets/fonts/Poppins-ExtraBold.ttf'),
-  //   'Poppins-ExtraLight': require('@assets/fonts/Poppins-ExtraLight.ttf'),
-  //   'Poppins-Light': require('@assets/fonts/Poppins-Light.ttf'),
-  //   'Poppins-Medium': require('@assets/fonts/Poppins-Medium.ttf'),
-  //   'Poppins-Regular': require('@assets/fonts/Poppins-Regular.ttf'),
-  //   'Poppins-SemiBold': require('@assets/fonts/Poppins-SemiBold.ttf'),
-  //   'Poppins-Thin': require('@assets/fonts/Poppins-Thin.ttf'),
-  // });
+
   useEffect(() => {
     if (
       locale === 'ur-IN' ||

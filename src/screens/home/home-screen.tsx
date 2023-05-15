@@ -53,6 +53,10 @@ function HomeScreen() {
     }
   );
 
+  const onNotificationDetail = () => {
+    nav.navigate('NotificationsDetails');
+  };
+
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
@@ -158,6 +162,7 @@ function HomeScreen() {
                   iconLeftSize={'lg'}
                   iconName="arrow-top-right-bold-box"
                   as={MaterialCommunityIcons}
+                  onRightIconClick={onNotificationDetail}
                 />
               </VStack>
             );
