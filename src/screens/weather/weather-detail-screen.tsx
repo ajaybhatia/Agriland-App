@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import {
+  Button,
   HStack,
   Icon,
   Image,
@@ -12,8 +13,15 @@ import {
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import colors from '@/ui/theme/colors';
+
 const WeatherDetailScreen = () => {
   const nav = useNavigation();
+
+  const onWeatherDetail = () => {
+    nav.navigate('WeatherSingleDetail');
+  };
+
   return (
     <View flex={1}>
       <View
@@ -279,35 +287,56 @@ const WeatherDetailScreen = () => {
               'Light Intensity',
             ].map((v, index) => {
               return (
-                <VStack key={`${index}`} flex={0.19} mx={1.5}>
-                  <View
-                    borderColor={'rgb(256,256,256)'}
-                    borderWidth={1}
-                    h={10}
-                    w={10}
-                    overflow={'hidden'}
-                    borderRadius={10}
-                  >
-                    <Image
-                      alt=""
-                      flex={1}
-                      source={require('@assets/weather_bg.png')}
-                      resizeMode="cover"
-                    />
-                  </View>
-                  <Text
-                    color={'white'}
-                    fontFamily={'heading'}
-                    fontSize={10}
-                    textAlign={'center'}
-                    fontWeight={'200'}
-                  >
-                    {v}
-                  </Text>
-                </VStack>
+                <Pressable
+                  key={`${index}`}
+                  flex={0.19}
+                  mx={1.5}
+                  onPress={onWeatherDetail}
+                >
+                  <VStack>
+                    <View
+                      borderColor={'rgb(256,256,256)'}
+                      borderWidth={1}
+                      h={10}
+                      w={10}
+                      overflow={'hidden'}
+                      borderRadius={10}
+                    >
+                      <Image
+                        alt=""
+                        flex={1}
+                        source={require('@assets/weather_bg.png')}
+                        resizeMode="cover"
+                      />
+                    </View>
+                    <Text
+                      color={'white'}
+                      fontFamily={'heading'}
+                      fontSize={10}
+                      textAlign={'center'}
+                      fontWeight={'200'}
+                    >
+                      {v}
+                    </Text>
+                  </VStack>
+                </Pressable>
               );
             })}
           </HStack>
+
+          <Button
+            backgroundColor={colors.button_color}
+            onPress={() => nav.navigate('WeatherChangesScreen')}
+            borderRadius={8}
+            width={'80%'}
+            mt={30}
+            fontWeight={'normal'}
+            fontSize={20}
+            overflow={'hidden'}
+            alignSelf={'center'}
+          >
+            {'View Details'}
+          </Button>
         </VStack>
       </ScrollView>
 

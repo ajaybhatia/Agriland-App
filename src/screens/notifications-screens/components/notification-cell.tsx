@@ -12,6 +12,7 @@ const NoticationCell = (props: Props) => {
       borderColor={colors.BORDER_COLOR_DARK}
       borderWidth={0.5}
       shadow="1"
+      borderRadius={5}
     >
       <HStack my={2} alignItems={'center'}>
         <Image

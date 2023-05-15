@@ -27,6 +27,7 @@
     "governate",
     "Governerate",
     "Governorates",
+    "Ionicons",
     "Lato",
     "nativebase",
     "Notication",
@@ -38,7 +39,8 @@
     "shawdow",
     "Signin",
     "splited",
-    "tanstack"
+    "tanstack",
+    "Taskdetail"
   ],
   "i18n-ally.localesPaths": ["src/translations/"],
   "i18n-ally.keystyle": "nested",

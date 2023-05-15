@@ -12,7 +12,7 @@ import AddFramCropMaps from '../farm/add-farm-maps';
 import AddUserInfo from '../user-info/add-user-info';
 
 const AddFarmScreen = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(1);
   const navigation = useNavigation();
   const { t } = useTranslation();
   const onNextSubmit = () => {

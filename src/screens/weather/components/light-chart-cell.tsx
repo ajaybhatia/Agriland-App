@@ -1,0 +1,107 @@
+import dayjs from 'dayjs';
+import { View, VStack } from 'native-base';
+import * as React from 'react';
+import { Dimensions } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+
+import CardWithShadow from '@/ui/components/CardWithShadow';
+import ListHeader from '@/ui/components/ListHeader';
+
+type Props = {
+  title?: string;
+};
+const LightChartCell = ({ title }: Props) => {
+  return (
+    <VStack>
+      {title && (
+        <ListHeader
+          title={title}
+          mt={3}
+          ml={5}
+          mr={5}
+          mb={2}
+          isSeeAllShow={false}
+        />
+      )}
+      <CardWithShadow>
+        <View shadow={1} py={2}>
+          <LineChart
+            data={{
+              labels: [...Array(7).keys()].map((v, index) => {
+                return dayjs().add(index, 'day').format('DD MMM');
+              }),
+              datasets: [
+                {
+                  data: [
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                  ],
+                  strokeWidth: 5,
+                  color: (opacity = 1) => `rgba(255,0,0, ${opacity})`, // optional
+                },
+                {
+                  data: [
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                    Math.floor(Math.random() * 10) + 1,
+                  ],
+                  strokeWidth: 5,
+                  color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
+                },
+              ],
+            }}
+            width={Dimensions.get('window').width - 40} // from react-native
+            height={220}
+            // yAxisLabel="$"
+            // yAxisSuffix="k"
+            yLabelsOffset={30}
+            yAxisInterval={1} // optional, defaults to 1
+            chartConfig={{
+              //backgroundColor: '#FFF',
+              propsForBackgroundLines: {
+                strokeDasharray: '',
+              },
+              barPercentage: 0.5,
+              decimalPlaces: 2, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              useShadowColorFromDataset: false, // optional
+              propsForVerticalLabels: {
+                fontSize: 8,
+                alignmentBaseline: 'after-edge',
+              },
+              propsForHorizontalLabels: {
+                fontSize: 8,
+              },
+              style: {
+                backgroundColor: 'green',
+                alignSelf: 'flex-start',
+                marginLeft: 10,
+              },
+              propsForDots: {
+                r: '6',
+                strokeWidth: '2',
+                stroke: '#ffa726',
+              },
+            }}
+            transparent
+            verticalLabelRotation={0}
+            withVerticalLabels
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
+          />
+        </View>
+      </CardWithShadow>
+    </VStack>
+  );
+};
+export default LightChartCell;

@@ -34,7 +34,10 @@ import ChooseFarmCropCategory from '@/screens/crop/choose-farm-crop-category';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
 import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
+import TaskDetailScreen from '@/screens/tasks/tasks-detail-screen';
+import WeatherChangesScreen from '@/screens/weather/weather-changes-screen';
 import WeatherDetailScreen from '@/screens/weather/weather-detail-screen';
+import WeatherSingleDetail from '@/screens/weather/weather-single-detail';
 import AppHeader from '@/ui/components/AppHeader';
 import DrawerOptions from '@/ui/components/DrawerOptions';
 import colors from '@/ui/theme/colors';
@@ -571,6 +574,87 @@ export const TabNavigator = () => {
         }}
         name="NotificationsDetails"
         component={NotificationsDetails}
+      />
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Harvesting',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: ({ options }) => {
+            return (
+              <AppHeader
+                title={options?.title ?? 'Test'}
+                iconName={'arrow-u-right-top'}
+                onBackPress={onBackPress}
+              />
+            );
+          },
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="TaskDetailScreen"
+        component={TaskDetailScreen}
+      />
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Atmmospheric Pressure',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: ({ options }) => {
+            return (
+              <AppHeader
+                title={options?.title ?? 'Test'}
+                iconName={'arrow-u-right-top'}
+                onBackPress={onBackPress}
+              />
+            );
+          },
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="WeatherSingleDetail"
+        component={WeatherSingleDetail}
+      />
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Weather Changes',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: ({ options }) => {
+            return (
+              <AppHeader
+                title={options?.title ?? 'Test'}
+                iconName={'arrow-u-right-top'}
+                onBackPress={onBackPress}
+              />
+            );
+          },
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="WeatherChangesScreen"
+        component={WeatherChangesScreen}
       />
     </Drawer.Navigator>
   );

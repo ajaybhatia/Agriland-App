@@ -1,8 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import {
   Circle,
   FlatList,
   HStack,
   Image,
+  Pressable,
   Text,
   View,
   VStack,
@@ -58,6 +60,7 @@ const dataArray: DataValues[] = [
   },
 ];
 const TaskActivitesCell = () => {
+  const navigation = useNavigation();
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const viewabilityConfig = React.useRef({
     itemVisiblePercentThreshold: 40,
@@ -80,10 +83,14 @@ const TaskActivitesCell = () => {
     );
   };
 
+  const onTaskdetailOpen = () => {
+    navigation.navigate('TaskDetailScreen');
+  };
+
   const renderListPage = (rowData: any) => {
     const item = rowData.item;
     return (
-      <View flex={1} mb={1} mr={5}>
+      <Pressable flex={1} mb={1} mr={5} onPress={onTaskdetailOpen}>
         <HStack
           flex={1}
           bgColor={'white'}
@@ -129,7 +136,7 @@ const TaskActivitesCell = () => {
             </Circle>
           </VStack>
         </HStack>
-      </View>
+      </Pressable>
     );
   };
 

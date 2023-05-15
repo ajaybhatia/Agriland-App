@@ -1,18 +1,19 @@
-import { ActivityIndicator, StyleSheet } from 'react-native';
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import { HStack, Icon, Pressable, Text, VStack, View } from 'native-base';
-
-import CropListCell from './components/crop-list-cell';
-import type { CropRegisterType } from './add-crop-maps';
-import CustomButton from '@/ui/components/CustomButton';
 import { FlashList } from '@shopify/flash-list';
-import Header from '@/ui/components/Header';
+import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import React from 'react';
-import Toast from 'react-native-toast-message';
+
 import { usePostApiCropCreateCultivationDetails } from '@/apis/endpoints/api';
-import { useTranslation } from 'react-i18next';
+import CustomButton from '@/ui/components/CustomButton';
+import Header from '@/ui/components/Header';
+
+import type { CropRegisterType } from './add-crop-maps';
+import CropListCell from './components/crop-list-cell';
 
 type Props = {
   addMoreCrop?: () => void;

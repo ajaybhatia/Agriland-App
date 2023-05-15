@@ -31,6 +31,9 @@ export type AuthStackParamList = {
   FarmDetailScreen: undefined;
   WeatherDetailScreen: undefined;
   NotificationsDetails: undefined;
+  TaskDetailScreen: undefined;
+  WeatherSingleDetail: undefined;
+  WeatherChangesScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
