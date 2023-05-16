@@ -3,7 +3,7 @@ import { View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
-import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import type { CoOrdinates, FarmRequest } from '@/apis/model';
 import type { FarmInfoModal } from '@/screens/farm/add-farm-maps';
@@ -98,7 +98,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
                   zIndex={10}
                 />
               )}
-              {farmInfo?.coordinates &&
+              {/* {farmInfo?.coordinates &&
                 farmInfo?.coordinates?.length > 0 &&
                 farmInfo?.coordinates?.map(
                   (loc: CoOrdinates, indexLoc: number) => {
@@ -120,7 +120,7 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
                       />
                     );
                   }
-                )}
+                )} */}
             </MapView>
           ) : (
             <MapView

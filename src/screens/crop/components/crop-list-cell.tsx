@@ -5,12 +5,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import type { Location } from 'react-native-location';
-import MapView, {
-  Marker,
-  Polygon,
-  Polyline,
-  PROVIDER_GOOGLE,
-} from 'react-native-maps';
+import MapView, { Polygon, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import type { CoOrdinates, FarmCropsDetailResponse } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
@@ -129,7 +124,7 @@ const CropListCell = ({ onNextStep, cropInfo }: Props) => {
                     }
                   }
                 )}
-              {cropInfo?.userLocation &&
+              {/* {cropInfo?.userLocation &&
                 cropInfo?.userLocation.length > 0 &&
                 cropInfo?.userLocation.map(
                   (loc: Location, indexLoc: number) => {
@@ -151,7 +146,7 @@ const CropListCell = ({ onNextStep, cropInfo }: Props) => {
                       />
                     );
                   }
-                )}
+                )} */}
 
               {cropInfo?.userLocation && cropInfo?.userLocation.length > 0 && (
                 <Polygon
@@ -332,7 +327,10 @@ const CropListCell = ({ onNextStep, cropInfo }: Props) => {
               fontWeight={'600'}
               mr={1}
             >
-              {cropInfo?.cropArea?.quantity ?? 0}
+              {cropInfo?.cropArea?.quantity ?? 0}{' '}
+              {`${
+                (cropInfo?.cropArea?.quantity ?? 0) <= 1 ? '(ton)' : '(tons)'
+              }`}
             </Text>
           </HStack>
         </VStack>

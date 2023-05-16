@@ -3,7 +3,7 @@ import * as geolib from 'geolib';
 import { HStack, Pressable, View, VStack } from 'native-base';
 import React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
-import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import type {
   CoOrdinates,
@@ -106,7 +106,7 @@ export default function FarmMapSelectionCell({
             )}
 
             {/* Farm Markers */}
-            {item.coordinates &&
+            {/* {item.coordinates &&
               item.coordinates.map((loc: CoOrdinates, indexLoc: number) => {
                 return (
                   <Marker
@@ -118,7 +118,7 @@ export default function FarmMapSelectionCell({
                     }}
                   />
                 );
-              })}
+              })} */}
 
             {/* Old Crops Playline */}
             {item.crops &&
@@ -140,7 +140,7 @@ export default function FarmMapSelectionCell({
                             };
                           }
                         )}
-                        strokeColor="white" // fallback for when `strokeColors` is not supported by the map-provider
+                        strokeColor={loc.crop?.colorCode ?? 'white'} // fallback for when `strokeColors` is not supported by the map-provider
                         // strokeColors={[
                         //   '#7F0000',
                         //   '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
@@ -160,7 +160,7 @@ export default function FarmMapSelectionCell({
               )}
 
             {/* old crop Markers */}
-            {item.crops &&
+            {/* {item.crops &&
               item.crops !== null &&
               item.crops.length > 0 &&
               item.crops.map((cropLatLng: FarmCropsDetailResponse) => {
@@ -191,7 +191,7 @@ export default function FarmMapSelectionCell({
                 } else {
                   return undefined;
                 }
-              })}
+              })} */}
           </MapView>
         ) : (
           <MapView

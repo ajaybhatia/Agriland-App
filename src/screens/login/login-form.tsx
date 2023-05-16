@@ -76,6 +76,7 @@ export const LoginForm = () => {
     query: {
       enabled: isEnable,
       onSuccess: (data: FarmExists) => {
+        setGoogleLoading(false);
         if (data.isFarmAdded) {
           navigation.dispatch(
             CommonActions.reset({
@@ -109,6 +110,7 @@ export const LoginForm = () => {
         }
       },
       onError: () => {
+        setGoogleLoading(false);
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
@@ -154,37 +156,32 @@ export const LoginForm = () => {
 
   // Somewhere in your code
   const signIn = async () => {
-    if (!isFarmAdded.isLoading) {
-      try {
-        setGoogleLoading(true);
-        await GoogleSignin.signOut();
-        await GoogleSignin.hasPlayServices();
-        // Get the users ID token
-        const userInfo = await GoogleSignin.signIn();
-        // Create a Google credential with the token
-        const googleCredential = auth.GoogleAuthProvider.credential(
-          userInfo.idToken
-        );
-        // Sign-in the user with the credential
-        let googleDetail = await auth().signInWithCredential(googleCredential);
+    try {
+      setGoogleLoading(true);
+      await GoogleSignin.signOut();
+      await GoogleSignin.hasPlayServices();
+      // Get the users ID token
+      const userInfo = await GoogleSignin.signIn();
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(
+        userInfo.idToken
+      );
+      // Sign-in the user with the credential
+      let googleDetail = await auth().signInWithCredential(googleCredential);
 
-        setGoogleCredentials(googleDetail.user);
-        setAddFarmEnable(true);
-        setGoogleLoading(false);
-      } catch (error) {
-        setGoogleLoading(false);
-        const typedError = error as NativeModuleError;
-        if (typedError?.code === statusCodes.SIGN_IN_CANCELLED) {
-          // user cancelled the login flow
-        } else if (typedError?.code === statusCodes.IN_PROGRESS) {
-          // operation (e.g. sign in) is in progress already
-        } else if (
-          typedError?.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
-        ) {
-          // play services not available or outdated
-        } else {
-          // some other error happened
-        }
+      setGoogleCredentials(googleDetail.user);
+      setAddFarmEnable(true);
+    } catch (error) {
+      setGoogleLoading(false);
+      const typedError = error as NativeModuleError;
+      if (typedError?.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (typedError?.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (typedError?.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
       }
     }
   };
@@ -380,11 +377,7 @@ export const LoginForm = () => {
                     )}
                   </Pressable> */}
                   <Button
-                    isLoading={
-                      isGoogleLoading ||
-                      isFarmAdded.isLoading ||
-                      isFarmAdded.isFetching
-                    }
+                    isLoading={isGoogleLoading}
                     onPress={signIn}
                     overflow={'hidden'}
                     w={'80%'}
