@@ -2,7 +2,6 @@ import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-/* eslint-disable react-native/no-inline-styles */
 import {
   Button,
   HStack,
@@ -24,11 +23,10 @@ import {
 import OTPTextInput from 'react-native-otp-textinput';
 import Toast from 'react-native-toast-message';
 
+import type { AuthStackParamList } from '@/navigation/types';
+import { LoginType } from '@/navigation/types';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
-
-import type { AuthStackParamList } from '../../navigation/auth-navigator';
-import { LoginType } from '../../navigation/auth-navigator';
 
 type OtpVerifyScreenProps = NativeStackScreenProps<
   AuthStackParamList,

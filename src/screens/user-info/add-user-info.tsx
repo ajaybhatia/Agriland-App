@@ -13,7 +13,7 @@ import * as yup from 'yup';
 import { usePostApiAccountCreateUserBasicDetails } from '@/apis/endpoints/api';
 import { useSelectedLanguage } from '@/core';
 import type { Language } from '@/core/i18n/resources';
-import type { AuthStackParamList } from '@/navigation/auth-navigator';
+import type { AuthStackParamList } from '@/navigation/types';
 import type { Option } from '@/ui';
 import Header from '@/ui/components/Header';
 import RoundInput from '@/ui/components/RoundInput';

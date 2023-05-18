@@ -57,7 +57,6 @@ const CropsReviewList = ({
       },
       {
         onSuccess(data) {
-          console.log('onSuccess ==> ', data);
           if (data) {
             Toast.show({
               type: 'error',
@@ -85,7 +84,6 @@ const CropsReviewList = ({
           }
         },
         onError(error) {
-          console.log('onError ==> ', error);
           Toast.show({
             type: 'error',
             text1: error.message,

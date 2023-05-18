@@ -93,8 +93,8 @@ function ChooseFarmCropCategory({
 
   const getFarms = useGetApiFarmGetFarms(
     {
-      skip: moreInfo.skip,
-      take: moreInfo.take,
+      // skip: moreInfo.skip,
+      // take: moreInfo.take,
     },
     {
       query: {
@@ -180,11 +180,12 @@ function ChooseFarmCropCategory({
               useNativeDriver: false,
             }
           )}
-          extraData={selectedFarm}
+          extraData={selectedFarm || farms.length}
           keyExtractor={(item, index) => `${index}`}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={farms}
+          initialNumToRender={3}
           ListHeaderComponent={
             <FarmAddCell onPreviousSubmit={onPreviousSubmit} />
           }

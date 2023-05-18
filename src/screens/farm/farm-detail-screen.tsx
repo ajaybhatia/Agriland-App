@@ -39,8 +39,8 @@ function FarmDetailScreen() {
 
   const getFarms = useGetApiFarmGetFarms(
     {
-      skip: moreFarmInfo.skip,
-      take: moreFarmInfo.take,
+      // skip: moreFarmInfo.skip,
+      // take: moreFarmInfo.take,
     },
     {
       query: {
@@ -77,13 +77,18 @@ function FarmDetailScreen() {
                       useNativeDriver: false,
                     }
                   )}
-                  extraData={selectedFarm}
+                  extraData={selectedFarm || farms.length}
                   keyExtractor={(item, index) => `${index}`}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 20 }}
                   data={farms}
-                  ListHeaderComponent={<FarmAddCell />}
+                  initialNumToRender={3}
+                  ListHeaderComponent={
+                    <FarmAddCell
+                      onPreviousSubmit={() => nav.navigate('AddFarmHomeScreen')}
+                    />
+                  }
                   renderItem={({
                     item,
                     index,

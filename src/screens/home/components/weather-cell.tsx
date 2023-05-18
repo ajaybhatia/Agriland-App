@@ -1,63 +1,98 @@
-import { HStack, Icon, Image, Text, View, VStack } from 'native-base';
+import dayjs from 'dayjs';
+import { Image } from 'expo-image';
+import { HStack, Icon, Text, View, VStack } from 'native-base';
 import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import type { LocationAddress } from '@/screens/maps-views/model/location-address-model';
+import type { ForecastModel } from '@/screens/weather/models/weather-forecast-models';
+import weatherCodeToString from '@/screens/weather/weather-icons';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
 
-type Props = {};
+type Props = {
+  currentWeather: ForecastModel;
+  farmName?: string;
+  locationAddress?: LocationAddress;
+};
 
-function WeatherCell({}: Props) {
+function WeatherCell({
+  currentWeather,
+  farmName = '',
+  locationAddress,
+}: Props) {
+  let index = currentWeather.hourly.time.findIndex((v) =>
+    dayjs(v)
+      .startOf('hour')
+      .utc(true)
+      .isSame(
+        dayjs(currentWeather.current_weather.time).startOf('hour').utc(true)
+      )
+  );
   return (
     <CardWithShadow borderRadius={4} shadow="2" mx={5} bgColor={'#ededed'}>
       <VStack m={2}>
         <Header
           numberOfLines={1}
-          title={'El-Amal Farm'}
+          title={farmName}
           color={'black'}
           fontSize={11}
           fontWeight={'500'}
         />
         <HStack alignItems={'center'} justifyContent={'space-between'}>
           <View pr={2}>
-            <Image
+            {/* <Image
               alt=""
               height={'16'}
               width={'16'}
               resizeMode="contain"
               source={require('@assets/weather-icon/8-s.png')}
+            /> */}
+            <Image
+              style={{ height: 30, width: 30 }}
+              source={`https://www.weatherbit.io/static/img/icons/${
+                weatherCodeToString[currentWeather.current_weather.weathercode]
+                  ?.icon ?? ''
+              }.png`}
+              placeholder={require('@assets/app-logo.png')}
+              contentFit="cover"
+              transition={1000}
             />
             <Text
               fontWeight={'700'}
               fontSize={15}
               fontStyle={'normal'}
               position={'absolute'}
-              top={1}
-              right={1}
+              top={-10}
+              right={-10}
             >
-              21°
+              {Math.round(currentWeather.current_weather.temperature)}°
             </Text>
           </View>
           <VStack>
             <Text color={'black'} fontSize={11} fontWeight={'700'}>
-              Cairo
+              {locationAddress?.address?.state_district ?? ''}
             </Text>
             <Text color={'black'} fontSize={11} fontWeight={'500'}>
-              Thur.13:09
+              {/* Thur.13:09 */}
+              {dayjs(currentWeather.current_weather.time).format('ddd, h:mm A')}
             </Text>
             <Text color={'black'} fontSize={11} fontWeight={'500'}>
-              Sunny
+              {weatherCodeToString[currentWeather.current_weather.weathercode]
+                ?.label ?? ''}
             </Text>
           </VStack>
           <VStack>
-            <HStack alignItems={'center'}>
-              <Icon color={'black'} as={Entypo} name={'drop'} size={3} />
-              <Text ml={2} color={'black'} fontSize={11} fontWeight={'500'}>
-                60%
-              </Text>
-            </HStack>
+            {index >= 0 && (
+              <HStack alignItems={'center'}>
+                <Icon color={'black'} as={Entypo} name={'drop'} size={3} />
+                <Text ml={2} color={'black'} fontSize={11} fontWeight={'500'}>
+                  {currentWeather.hourly.cloudcover_700hPa[index]} %
+                </Text>
+              </HStack>
+            )}
             <HStack alignItems={'center'}>
               <Icon
                 color={'black'}
@@ -66,7 +101,7 @@ function WeatherCell({}: Props) {
                 size={3}
               />
               <Text ml={2} color={'black'} fontSize={11} fontWeight={'500'}>
-                30%
+                {currentWeather.hourly?.rain[index]} mm
               </Text>
             </HStack>
             <HStack alignItems={'center'}>
@@ -77,7 +112,7 @@ function WeatherCell({}: Props) {
                 size={3}
               />
               <Text ml={2} color={'black'} fontSize={11} fontWeight={'500'}>
-                10 kmph
+                {Math.round(currentWeather.current_weather.windspeed)} kmph
               </Text>
             </HStack>
           </VStack>

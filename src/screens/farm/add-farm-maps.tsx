@@ -42,9 +42,18 @@ export interface FarmInfoModal {
 
 type Props = {
   onNextStep?: () => void;
+  addFarmFrom?: AddfarmFrom;
 };
 
-const AddFramCropMaps = ({ onNextStep }: Props) => {
+export enum AddfarmFrom {
+  REGISTER,
+  HOMESCREEN,
+}
+
+const AddFramCropMaps = ({
+  onNextStep,
+  addFarmFrom = AddfarmFrom.REGISTER,
+}: Props) => {
   enum AddFarmState {
     MAP,
     CURRENT_LOCATION_MAP,
@@ -484,12 +493,6 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
                   if (newUserL.length > 3) {
                     newUserL = newUserL.slice(0, -1);
                   }
-                  console.log(
-                    'newUserL ===> ',
-                    newUserL.length,
-                    '\n',
-                    newUserL
-                  );
                   return [
                     ...newUserL,
                     ...[
@@ -562,19 +565,11 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
               //opacity={0.6}
               // image={require('@assets/images/home/location-pin.png')}
               onDragEnd={(event: MarkerDragStartEndEvent) => {
-                console.log('event===> ', event);
                 let lcs = userLocation.map(
                   (location: Location, index: number) => {
                     let lat = event.nativeEvent.coordinate.latitude;
                     let lng = event.nativeEvent.coordinate.longitude;
-                    console.log(
-                      'event update===> ',
-                      index,
-                      ' == ',
-                      event.nativeEvent.id,
-                      ' == ',
-                      `${index}` === event.nativeEvent.id
-                    );
+
                     if (`${index}` === event.nativeEvent.id) {
                       return {
                         latitude: lat,
@@ -616,7 +611,12 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       {farmState === AddFarmState.MAP &&
         userLocation.length > 0 &&
         isMapPinType === MapType.PinMap && (
-          <View position={'absolute'} bottom={10} left={0} right={0}>
+          <View
+            position={'absolute'}
+            bottom={addFarmFrom === AddfarmFrom.REGISTER ? 10 : 100}
+            left={0}
+            right={0}
+          >
             <CustomButton
               mt={5}
               onPress={onAddCoordinates}
@@ -629,7 +629,7 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       {isMapPinType === MapType.WalkMap && farmState === AddFarmState.MAP && (
         <VStack
           position={'absolute'}
-          bottom={10}
+          bottom={addFarmFrom === AddfarmFrom.REGISTER ? 10 : 100}
           width={'70%'}
           alignItems={'center'}
           justifyContent={'center'}
@@ -675,7 +675,11 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
         </VStack>
       )}
       {farmState === AddFarmState.CURRENT_LOCATION_MAP && (
-        <View position={'absolute'} alignSelf={'center'} bottom={10}>
+        <View
+          position={'absolute'}
+          alignSelf={'center'}
+          bottom={addFarmFrom === AddfarmFrom.REGISTER ? 10 : 100}
+        >
           <CustomButton
             mt={0}
             onPress={onNextFarmMapType}
@@ -687,7 +691,11 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
       {/* \right buttons */}
       {(farmState === AddFarmState.MAP ||
         farmState === AddFarmState.CURRENT_LOCATION_MAP) && (
-        <VStack position={'absolute'} right={5} bottom={10}>
+        <VStack
+          position={'absolute'}
+          right={5}
+          bottom={addFarmFrom === AddfarmFrom.REGISTER ? 10 : 100}
+        >
           {isMapPinType === MapType.PinMap && (
             <IconButton
               size={8}
@@ -818,6 +826,7 @@ const AddFramCropMaps = ({ onNextStep }: Props) => {
           onEditStep={onEditFarm}
           addMoreFarm={onAddMoreFarm}
           onNextStep={onNextStep}
+          addFarmFrom={addFarmFrom}
         />
       )}
     </View>

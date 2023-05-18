@@ -1,5 +1,13 @@
-import { FlashList } from '@shopify/flash-list';
-import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import {
+  FlatList,
+  HStack,
+  Icon,
+  Pressable,
+  Text,
+  View,
+  VStack,
+} from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet } from 'react-native';
@@ -9,10 +17,12 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { usePostApiFarmCreateUpdateFarm } from '@/apis/endpoints/api';
 import type { FarmRequest } from '@/apis/model';
+import client from '@/config/react-query/client';
 import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
 
 import type { FarmInfoModal } from './add-farm-maps';
+import { AddfarmFrom } from './add-farm-maps';
 import FarmListCell from './components/farm-list-cell';
 
 type Props = {
@@ -20,14 +30,17 @@ type Props = {
   onNextStep?: () => void;
   onEditStep?: (farmInfo: FarmRequest & FarmInfoModal) => void;
   farmRequest?: FarmRequest & FarmInfoModal;
+  addFarmFrom?: AddfarmFrom;
 };
 const FarmList = ({
   addMoreFarm,
   onEditStep,
   onNextStep,
   farmRequest,
+  addFarmFrom = AddfarmFrom.REGISTER,
 }: Props) => {
   const { t } = useTranslation();
+  const nav = useNavigation();
   const [farmInfo, setFarmInfo] = useState<FarmRequest & FarmInfoModal[]>(
     farmRequest ? [farmRequest] : []
   );
@@ -49,12 +62,25 @@ const FarmList = ({
         },
       },
       {
-        onSuccess(data) {
+        onSuccess: (data) => {
           if (data) {
             if (isAddNew) {
               onFarmAddMore && onFarmAddMore();
             } else {
-              onNextStep && onNextStep();
+              if (addFarmFrom === AddfarmFrom.REGISTER) {
+                onNextStep && onNextStep();
+              } else {
+                client
+                  .invalidateQueries({
+                    queryKey: ['/api/Farm/getFarms'],
+                  })
+                  .then((item) => {
+                    nav.goBack();
+                  })
+                  .catch((e) => {
+                    console.log('Error==> ', e);
+                  });
+              }
             }
           } else {
             Toast.show({
@@ -93,7 +119,7 @@ const FarmList = ({
         iconSize={'md'}
         onRightIconClick={onFarmEdit}
       />
-      <FlashList
+      <FlatList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => `${index}`}
@@ -108,9 +134,14 @@ const FarmList = ({
           item: FarmRequest & FarmInfoModal;
           index: number;
         }) => <FarmListCell farmInfo={item} />}
-        estimatedItemSize={300}
+        //estimatedItemSize={300}
       />
-      <VStack position={'absolute'} bottom={10} left={0} right={0}>
+      <VStack
+        position={'absolute'}
+        bottom={addFarmFrom === AddfarmFrom.REGISTER ? 10 : 100}
+        left={0}
+        right={0}
+      >
         <CustomButton
           isLoading={addFarmApi.isLoading}
           mt={2}

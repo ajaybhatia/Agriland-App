@@ -8,6 +8,8 @@ import {
   useDrawerStatus,
 } from '@react-navigation/drawer';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   Box,
   HStack,
@@ -30,7 +32,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import AccountDetailScreen from '@/screens/account/account-detail-screen';
-import ChooseFarmCropCategory from '@/screens/crop/choose-farm-crop-category';
+import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
 import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
@@ -42,7 +44,7 @@ import AppHeader from '@/ui/components/AppHeader';
 import DrawerOptions from '@/ui/components/DrawerOptions';
 import colors from '@/ui/theme/colors';
 
-import type { AuthStackParamList } from './auth-navigator';
+import type { AuthStackParamList } from './types';
 
 const Screen1 = () => {
   return <View style={styles.screen1} />;
@@ -319,63 +321,283 @@ const renderTabBar = ({ routeName, selectedTab, navigate }) => {
   );
 };
 
-const BottomTabs = () => {
+const RootStack = createNativeStackNavigator<AuthStackParamList>();
+
+function HomeRootStackView() {
+  const nav = useNavigation();
+  const onBackPress = () => {
+    nav.goBack();
+  };
   return (
-    <CurvedBottomBar.Navigator
-      type="UP"
-      style={styles.bottombar}
-      shadowStyle={styles.shawdow}
-      height={80}
-      circleWidth={60}
-      bgColor="white"
-      initialRouteName="title1"
-      borderTopLeftRight
-      screenOptions={{
-        headerShown: false,
-      }}
-      renderCircle={({ selectedTab, navigate }) => (
-        <Animated.View style={styles.btnCircleUp}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigate('title3')}
-          >
-            <Icon
-              as={MaterialCommunityIcons}
-              name={'plus'}
-              size={'2xl'}
-              color={'white'}
-            />
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-      tabBar={renderTabBar}
+    <RootStack.Navigator
+      initialRouteName="HomeScreen"
+      screenOptions={{ headerShown: false, animation: 'none' }}
     >
-      <CurvedBottomBar.Screen
-        name="title1"
-        position="LEFT"
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'AgriLand',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              //onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'sort'}
+              as={MaterialIcons}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="HomeScreen"
         component={HomeScreen}
       />
-      <CurvedBottomBar.Screen
-        name="title2"
-        position="LEFT"
-        component={() => <Screen2 />}
+
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Account Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="AccountDetailScreen"
+        component={AccountDetailScreen}
       />
-      <CurvedBottomBar.Screen
-        name="title4"
-        component={() => <Screen1 />}
-        position="RIGHT"
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Farm Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="FarmDetailScreen"
+        component={FarmDetailScreen}
       />
-      <CurvedBottomBar.Screen
-        name="title5"
-        component={() => <Screen2 />}
-        position="RIGHT"
+      <RootStack.Screen
+        options={{
+          headerShown: false,
+          title: 'Weather Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="WeatherDetailScreen"
+        component={WeatherDetailScreen}
       />
-      <CurvedBottomBar.Screen
-        name="title3"
-        component={() => <ChooseFarmCropCategory />}
-        position="CENTER"
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Notifications',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="NotificationsDetails"
+        component={NotificationsDetails}
       />
-    </CurvedBottomBar.Navigator>
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Harvesting',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="TaskDetailScreen"
+        component={TaskDetailScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Atmmospheric Pressure',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="WeatherSingleDetail"
+        component={WeatherSingleDetail}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Weather Changes',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="WeatherChangesScreen"
+        component={WeatherChangesScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Add Farm',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="AddFarmHomeScreen"
+        component={AddFarmHomeScreen}
+      />
+    </RootStack.Navigator>
+  );
+}
+
+const DrawerMainRender = () => {
+  return (
+    <Drawer.Navigator
+      // eslint-disable-next-line react/no-unstable-nested-components
+      drawerContent={(props: DrawerContentComponentProps) => (
+        <CustomDrawerContent {...props} />
+      )}
+      // screenOptions={{
+      //   drawerType: '',
+      // }}
+    >
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Hello, Harminder',
+          headerTitle: 'Hello, Harminder',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: DrawerHeaderProps) => (
+            <AppBarHeader {...props} left={false} />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="HomeScreen"
+        component={HomeScreen}
+      />
+    </Drawer.Navigator>
   );
 };
 type HeaderType = {
@@ -444,219 +666,63 @@ export const TabNavigator = () => {
   const onBackPress = () => {
     nav.goBack();
   };
+
   return (
-    <Drawer.Navigator
-      // eslint-disable-next-line react/no-unstable-nested-components
-      drawerContent={(props: DrawerContentComponentProps) => (
-        <CustomDrawerContent {...props} />
+    <CurvedBottomBar.Navigator
+      type="UP"
+      style={styles.bottombar}
+      shadowStyle={styles.shawdow}
+      height={80}
+      circleWidth={60}
+      bgColor="white"
+      initialRouteName="title1"
+      borderTopLeftRight
+      screenOptions={{
+        headerShown: false,
+      }}
+      renderCircle={({ selectedTab, navigate }) => (
+        <Animated.View style={styles.btnCircleUp}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate('title3')}
+          >
+            <Icon
+              as={MaterialCommunityIcons}
+              name={'plus'}
+              size={'2xl'}
+              color={'white'}
+            />
+          </TouchableOpacity>
+        </Animated.View>
       )}
+      tabBar={renderTabBar}
     >
-      <Drawer.Screen
-        options={{
-          headerShown: true,
-          title: 'Hello, Harminder',
-          headerTitle: 'Hello, Harminder',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: (props: DrawerHeaderProps) => (
-            <AppBarHeader {...props} left={false} />
-          ),
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="BottomTabs"
-        component={BottomTabs}
+      <CurvedBottomBar.Screen
+        name="title1"
+        position="LEFT"
+        component={HomeRootStackView}
       />
-      <Drawer.Screen
-        options={{
-          headerShown: true,
-          title: 'Account Details',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: (props: DrawerHeaderProps) => (
-            <AppBarHeader {...props} left={true} />
-          ),
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="AccountDetailScreen"
-        component={AccountDetailScreen}
+      <CurvedBottomBar.Screen
+        name="title2"
+        position="LEFT"
+        component={() => <Screen2 />}
       />
-      <Drawer.Screen
-        options={{
-          headerShown: true,
-          title: 'Farm Details',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: ({ options }) => {
-            return (
-              <AppHeader
-                title={options?.title ?? 'Test'}
-                iconName={'arrow-u-right-top'}
-                onBackPress={onBackPress}
-              />
-            );
-          },
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="FarmDetailScreen"
-        component={FarmDetailScreen}
+      <CurvedBottomBar.Screen
+        name="title4"
+        component={() => <Screen1 />}
+        position="RIGHT"
       />
-      <Drawer.Screen
-        options={{
-          headerShown: false,
-          title: 'Weather Details',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: ({ options }) => {
-            return (
-              <AppHeader
-                title={options?.title ?? 'Test'}
-                iconName={'arrow-u-right-top'}
-                onBackPress={onBackPress}
-              />
-            );
-          },
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="WeatherDetailScreen"
-        component={WeatherDetailScreen}
+      <CurvedBottomBar.Screen
+        name="title5"
+        component={() => <Screen2 />}
+        position="RIGHT"
       />
-      <Drawer.Screen
-        options={{
-          headerShown: true,
-          title: 'Notifications',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: ({ options }) => {
-            return (
-              <AppHeader
-                title={options?.title ?? 'Test'}
-                iconName={'arrow-u-right-top'}
-                onBackPress={onBackPress}
-              />
-            );
-          },
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="NotificationsDetails"
-        component={NotificationsDetails}
+      <CurvedBottomBar.Screen
+        name="title3"
+        component={() => <Screen1 />}
+        position="CENTER"
       />
-      <Drawer.Screen
-        options={{
-          headerShown: true,
-          title: 'Harvesting',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: ({ options }) => {
-            return (
-              <AppHeader
-                title={options?.title ?? 'Test'}
-                iconName={'arrow-u-right-top'}
-                onBackPress={onBackPress}
-              />
-            );
-          },
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="TaskDetailScreen"
-        component={TaskDetailScreen}
-      />
-      <Drawer.Screen
-        options={{
-          headerShown: true,
-          title: 'Atmmospheric Pressure',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: ({ options }) => {
-            return (
-              <AppHeader
-                title={options?.title ?? 'Test'}
-                iconName={'arrow-u-right-top'}
-                onBackPress={onBackPress}
-              />
-            );
-          },
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="WeatherSingleDetail"
-        component={WeatherSingleDetail}
-      />
-      <Drawer.Screen
-        options={{
-          headerShown: true,
-          title: 'Weather Changes',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: ({ options }) => {
-            return (
-              <AppHeader
-                title={options?.title ?? 'Test'}
-                iconName={'arrow-u-right-top'}
-                onBackPress={onBackPress}
-              />
-            );
-          },
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="WeatherChangesScreen"
-        component={WeatherChangesScreen}
-      />
-    </Drawer.Navigator>
+    </CurvedBottomBar.Navigator>
   );
 };
 

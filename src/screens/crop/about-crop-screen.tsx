@@ -133,7 +133,6 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
                   ...r,
                   typeOfIrrigation: Number(nextValue),
                 };
-                console.log('\n\nexampleGroup ==>', v, '\n\n\n');
                 return v;
               });
             }}

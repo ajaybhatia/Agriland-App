@@ -26,6 +26,7 @@ type Props = {
   color?: string;
   fontWeight?: ResponsiveValue<IFontWeight | number | (string & {})>;
   onBackPress?: () => void;
+  as?: any;
 };
 
 export default function AppHeader({
@@ -35,6 +36,7 @@ export default function AppHeader({
   fontSize = 'xl',
   fontWeight = '700',
   iconSize = 'lg',
+  as = MaterialCommunityIcons,
   onBackPress,
 }: Props) {
   const insets = useSafeAreaInsets();
@@ -60,7 +62,7 @@ export default function AppHeader({
         {iconName && (
           <Pressable onPress={() => onBackPress && onBackPress()}>
             <Icon
-              as={MaterialCommunityIcons}
+              as={as}
               name={iconName ? iconName : 'arrow-u-right-top'}
               size={iconSize}
               color={colors.button_color}

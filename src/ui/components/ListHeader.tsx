@@ -1,4 +1,4 @@
-import { HStack, Icon, Pressable, Text, View } from 'native-base';
+import { HStack, Icon, Text, View } from 'native-base';
 import type {
   ResponsiveValue,
   ThemeComponentSizeType,
@@ -9,7 +9,7 @@ import type {
   IFontWeight,
 } from 'native-base/lib/typescript/theme/base/typography';
 import React from 'react';
-import { Dimensions, I18nManager } from 'react-native';
+import { Dimensions, I18nManager, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import colors from '../theme/colors';
@@ -100,8 +100,8 @@ export default function ListHeader({
       </HStack>
 
       {(btnTitle || iconName) && isSeeAllShow && (
-        <Pressable
-          alignItems={'center'}
+        <TouchableOpacity
+          style={{ alignItems: 'center' }}
           onPress={() => onRightIconClick && onRightIconClick()}
         >
           <HStack alignItems={'center'}>
@@ -125,7 +125,7 @@ export default function ListHeader({
               />
             )}
           </HStack>
-        </Pressable>
+        </TouchableOpacity>
       )}
     </View>
   );

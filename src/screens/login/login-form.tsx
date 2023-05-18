@@ -29,7 +29,7 @@ import { useGetApiFarmIsFarmAdded } from '@/apis/endpoints/api';
 import type { FarmExists } from '@/apis/model';
 import { useSelectedLanguage } from '@/core';
 import type { Language } from '@/core/i18n/resources';
-import { LoginType } from '@/navigation/auth-navigator';
+import { LoginType } from '@/navigation/types';
 import type { Option } from '@/ui';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import Header from '@/ui/components/Header';
@@ -81,15 +81,7 @@ export const LoginForm = () => {
           navigation.dispatch(
             CommonActions.reset({
               index: 1,
-              routes: [
-                {
-                  name: 'AddFarmScreen',
-                  params: {
-                    loginType: LoginType.GOOGLE,
-                    google: googleCredentials,
-                  },
-                },
-              ],
+              routes: [{ name: 'App' }],
             })
           );
         } else {
@@ -111,18 +103,14 @@ export const LoginForm = () => {
       },
       onError: () => {
         setGoogleLoading(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Not able to get details from server',
+        });
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [
-              {
-                name: 'AddFarmScreen',
-                params: {
-                  loginType: LoginType.GOOGLE,
-                  google: googleCredentials,
-                },
-              },
-            ],
+            routes: [{ name: 'App' }],
           })
         );
       },

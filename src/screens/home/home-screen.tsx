@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { FlatList, Image, Pressable, Text, View, VStack } from 'native-base';
-import React, { useState } from 'react';
+import axios from 'axios';
+import { FlatList, Image, View, VStack } from 'native-base';
+import React, { useCallback, useState } from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,21 +10,31 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { useGetApiFarmGetFarms } from '@/apis/endpoints/api';
 import type { FarmResponse } from '@/apis/model';
+import { useWeather } from '@/core/weather';
 import ListHeader from '@/ui/components/ListHeader';
 import colors from '@/ui/theme/colors';
 
 import FarmAddCell from '../crop/components/farm-add-cell';
 import FarmMapSelectionCell from '../crop/components/farm-map-selection-cell';
+import type { LocationAddress } from '../maps-views/model/location-address-model';
+import type { ForecastModel } from '../weather/models/weather-forecast-models';
 import CompleteProfileCell from './components/complete-profile-cell';
 import CropHomeCell from './components/crops-home-cell';
 import TaskActivitesCell from './components/task-activites-cell';
 import WeatherCell from './components/weather-cell';
 
 function HomeScreen() {
+  const setData = useWeather.use.setData();
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const nav = useNavigation();
   const [farms, setFarms] = useState<FarmResponse[]>([]);
   const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>();
+  const [weatherReport, setWeatherReport] = useState<
+    ForecastModel | undefined
+  >();
+  const [currentAddress, setCurrentAddress] = useState<
+    LocationAddress | undefined
+  >();
   const [moreFarmInfo, setMoreFarmInfo] = useState<{
     take: number;
     skip: number;
@@ -36,16 +47,23 @@ function HomeScreen() {
 
   const getFarms = useGetApiFarmGetFarms(
     {
-      skip: moreFarmInfo.skip,
-      take: moreFarmInfo.take,
+      // skip: moreFarmInfo.skip,
+      // take: moreFarmInfo.take,
     },
     {
       query: {
         onSuccess: (data: FarmResponse[]) => {
+          console.log('\n\n\ndata ===> ', data.length, '\n\n\n');
           if (data.length > 0) {
             setFarms(moreFarmInfo.skip <= 0 ? data : [...farms, ...data]);
             if (selectedFarm === undefined && data.length > 0) {
               setSelectedFarm(data[0]);
+              if (data[0].coordinates && data[0].coordinates?.length > 0) {
+                onWeatherForecast(
+                  data[0].coordinates[0]?.lat ?? 0.0,
+                  data[0].coordinates[0]?.lng ?? 0.0
+                );
+              }
             }
           }
         },
@@ -53,14 +71,74 @@ function HomeScreen() {
     }
   );
 
+  const onWeatherForecast = (lat: number, lng: number) => {
+    axios
+      .get(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,rain,weathercode,windspeed_10m,uv_index,is_day,temperature_1000hPa,temperature_700hPa,relativehumidity_1000hPa,relativehumidity_700hPa,cloudcover_1000hPa,cloudcover_700hPa,windspeed_1000hPa,winddirection_1000hPa&daily=weathercode,rain_sum,precipitation_probability_max,windspeed_10m_max&current_weather=true&timezone=auto`
+      )
+      .then((resp) => {
+        if (resp.data && (resp.data as ForecastModel)) {
+          let response = resp.data as ForecastModel;
+          console.log(response.current_weather);
+          setWeatherReport(response);
+          findLocation(lat, lng);
+        } else {
+          console.log('Not found');
+        }
+      })
+      .catch((e) => {
+        console.log('Not found Error ===> ', e);
+      });
+  };
+
+  const findLocation = (lat: number, lng: number) => {
+    axios
+      .get(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+      )
+      .then((resp) => {
+        if (resp.data && (resp.data as LocationAddress)) {
+          let response = resp.data as LocationAddress;
+          setCurrentAddress(response);
+        } else {
+          console.log('Address Not found');
+        }
+      })
+      .catch((e) => {
+        console.log('Address Not found Error ===> ', e);
+      });
+  };
+
   const onNotificationDetail = () => {
     nav.navigate('NotificationsDetails');
   };
 
+  const onSelectFarm = (item: FarmResponse) => {
+    setSelectedFarm(item);
+    if (item.coordinates && item.coordinates.length > 0) {
+      onWeatherForecast(
+        item.coordinates[0]?.lat ?? 0.0,
+        item.coordinates[0]?.lng ?? 0.0
+      );
+    }
+  };
+
+  const addNewFarm = useCallback(() => nav.navigate('AddFarmHomeScreen'), []);
+  const onSeeWeatherDDetail = useCallback(() => {
+    if (weatherReport && currentAddress && selectedFarm) {
+      setData(
+        weatherReport,
+        selectedFarm?.name ?? '',
+        currentAddress,
+        selectedFarm
+      );
+      nav.navigate('WeatherDetailScreen');
+    }
+  }, [weatherReport, currentAddress, selectedFarm, nav, setData]);
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
-        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+        data={[1, 2]}
         keyExtractor={(item, index) => `${index}`}
         renderItem={({ item, index }: { item: number; index: number }) => {
           if (index === 0) {
@@ -68,19 +146,22 @@ function HomeScreen() {
               <VStack mt={2} pb={5}>
                 <FlatList
                   horizontal
+                  initialNumToRender={3}
                   onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
                     {
                       useNativeDriver: false,
                     }
                   )}
-                  extraData={selectedFarm}
+                  extraData={farms.length || selectedFarm}
                   keyExtractor={(item, index) => `${index}`}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 20 }}
                   data={farms}
-                  ListHeaderComponent={<FarmAddCell />}
+                  ListHeaderComponent={
+                    <FarmAddCell onPreviousSubmit={addNewFarm} />
+                  }
                   renderItem={({
                     item,
                     index,
@@ -91,7 +172,7 @@ function HomeScreen() {
                     <FarmMapSelectionCell
                       item={item}
                       selectedItem={selectedFarm}
-                      // onSelectFarm={onSelectFarm}
+                      onSelectFarm={onSelectFarm}
                     />
                   )}
                   //estimatedItemSize={300}
@@ -109,7 +190,11 @@ function HomeScreen() {
                 />
               </VStack>
             );
-          } else if (index === 1) {
+          } else if (
+            index === 1 &&
+            weatherReport &&
+            weatherReport.current_weather
+          ) {
             return (
               <VStack mt={3}>
                 <ListHeader
@@ -119,9 +204,13 @@ function HomeScreen() {
                   btnTitle="See All"
                   iconName="arrow-top-right-bold-box"
                   as={MaterialCommunityIcons}
-                  onRightIconClick={() => nav.navigate('WeatherDetailScreen')}
+                  onRightIconClick={onSeeWeatherDDetail}
                 />
-                <WeatherCell />
+                <WeatherCell
+                  currentWeather={weatherReport}
+                  farmName={selectedFarm?.name ?? ''}
+                  locationAddress={currentAddress}
+                />
               </VStack>
             );
           } else if (index === 2) {
@@ -220,11 +309,7 @@ function HomeScreen() {
               </VStack>
             );
           }
-          return (
-            <Pressable onPress={() => nav.navigate('title2')} py={4}>
-              <Text>{item}</Text>
-            </Pressable>
-          );
+          return <View />;
         }}
       />
     </View>

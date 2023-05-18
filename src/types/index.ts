@@ -4,6 +4,7 @@ declare module 'react-native-keep-awake';
 declare module 'react-native-locale-detector';
 declare module 'react-native-splited-progress-bar';
 declare module 'react-native-counters';
+declare module 'react-query';
 // import type FontAwesome from '@expo/vector-icons/FontAwesome';
 // import type { ComponentProps } from 'react';
 

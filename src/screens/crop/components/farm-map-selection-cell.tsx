@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import * as geolib from 'geolib';
 import { HStack, Pressable, View, VStack } from 'native-base';
-import React from 'react';
+import React, { memo } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import MapView, { Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
@@ -19,11 +19,7 @@ type Props = {
   onSelectFarm?: (item: FarmResponse) => void;
 };
 const width = Dimensions.get('window').width;
-export default function FarmMapSelectionCell({
-  item,
-  selectedItem,
-  onSelectFarm,
-}: Props) {
+const FarmMapSelectionCell = ({ item, selectedItem, onSelectFarm }: Props) => {
   const mapRef = React.useRef<MapView>(null);
   const navigation = useNavigation();
 
@@ -273,8 +269,9 @@ export default function FarmMapSelectionCell({
       </Pressable>
     </View>
   );
-}
+};
 
+export default memo(FarmMapSelectionCell);
 const styles = StyleSheet.create({
   map: {
     flex: 1,
