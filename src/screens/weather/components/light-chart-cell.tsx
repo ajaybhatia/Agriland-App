@@ -96,4 +96,4 @@ const LightChartCell = ({ title, historyReport }: Props) => {
     </VStack>
   );
 };
-export default LightChartCell;
+export default React.memo(LightChartCell);

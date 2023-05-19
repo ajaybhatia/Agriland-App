@@ -79,7 +79,7 @@ function HomeScreen() {
       .then((resp) => {
         if (resp.data && (resp.data as ForecastModel)) {
           let response = resp.data as ForecastModel;
-          console.log(response.current_weather);
+          console.log('onWeatherForecast ===> ', response.current_weather);
           setWeatherReport(response);
           findLocation(lat, lng);
         } else {
@@ -99,6 +99,7 @@ function HomeScreen() {
       .then((resp) => {
         if (resp.data && (resp.data as LocationAddress)) {
           let response = resp.data as LocationAddress;
+          console.log('Address Found ===> ', response.address);
           setCurrentAddress(response);
         } else {
           console.log('Address Not found');
@@ -113,15 +114,18 @@ function HomeScreen() {
     nav.navigate('NotificationsDetails');
   };
 
-  const onSelectFarm = (item: FarmResponse) => {
-    setSelectedFarm(item);
-    if (item.coordinates && item.coordinates.length > 0) {
-      onWeatherForecast(
-        item.coordinates[0]?.lat ?? 0.0,
-        item.coordinates[0]?.lng ?? 0.0
-      );
-    }
-  };
+  const onSelectFarm = useCallback(
+    (item: FarmResponse) => {
+      setSelectedFarm(item);
+      if (item.coordinates && item.coordinates.length > 0) {
+        onWeatherForecast(
+          item.coordinates[0]?.lat ?? 0.0,
+          item.coordinates[0]?.lng ?? 0.0
+        );
+      }
+    },
+    [setSelectedFarm]
+  );
 
   const addNewFarm = useCallback(() => nav.navigate('AddFarmHomeScreen'), []);
   const onSeeWeatherDDetail = useCallback(() => {
@@ -154,7 +158,7 @@ function HomeScreen() {
                     }
                   )}
                   extraData={farms.length || selectedFarm}
-                  keyExtractor={(item, index) => `${index}`}
+                  keyExtractor={(item, indexV) => `${indexV}`}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -162,15 +166,9 @@ function HomeScreen() {
                   ListHeaderComponent={
                     <FarmAddCell onPreviousSubmit={addNewFarm} />
                   }
-                  renderItem={({
-                    item,
-                    index,
-                  }: {
-                    item: FarmResponse;
-                    index: number;
-                  }) => (
+                  renderItem={({ item: farm }: { item: FarmResponse }) => (
                     <FarmMapSelectionCell
-                      item={item}
+                      item={farm}
                       selectedItem={selectedFarm}
                       onSelectFarm={onSelectFarm}
                     />

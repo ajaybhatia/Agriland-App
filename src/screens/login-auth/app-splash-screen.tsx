@@ -21,7 +21,7 @@ const AppSplashScreen = () => {
           navigation.dispatch(
             CommonActions.reset({
               index: 1,
-              routes: [{ name: 'Auth' }],
+              routes: [{ name: 'Login' }],
             })
           );
         }
@@ -30,7 +30,7 @@ const AppSplashScreen = () => {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{ name: 'Auth' }],
+            routes: [{ name: 'Login' }],
           })
         );
       },

@@ -1,34 +1,45 @@
 import dayjs from 'dayjs';
-import { Image as ImageRemote } from 'expo-image';
-import { HStack, Icon, ScrollView, Text, View, VStack } from 'native-base';
+import { FlatList, HStack, Icon, Text, View, VStack } from 'native-base';
 import * as React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import type { ForecastModel } from '../models/weather-forecast-models';
-import weatherCodeToString from '../weather-icons';
+import WeatherHorizontalTime from './weather-horizontal-time';
 
 type Props = {
   weatherReport: ForecastModel;
 };
 const WeatherTodayCell = ({ weatherReport }: Props) => {
-  const scrollRef = React.useRef();
   let indexV = weatherReport.hourly.time.findIndex((v) => {
-    return dayjs(v)
-      .startOf('hour')
-      .utc(true)
-      .isSame(
-        dayjs(weatherReport.current_weather.time).startOf('hour').utc(true)
-      );
-  });
-
-  let indexWeather = weatherReport.hourly.time.findIndex((v) => {
     return dayjs(v)
       .startOf('hour')
       .utc(true)
       .isSame(dayjs().startOf('hour').utc(true));
   });
+  let weatherReportTime =
+    indexV <= 0
+      ? weatherReport.hourly.time
+      : weatherReport.hourly.time.slice(
+          indexV,
+          weatherReport.hourly.time.length
+        );
+  let weatherReportCode =
+    indexV <= 0
+      ? weatherReport.hourly.weathercode
+      : weatherReport.hourly.weathercode.slice(
+          indexV,
+          weatherReport.hourly.weathercode.length
+        );
+
+  let weatherReportTemperature =
+    indexV <= 0
+      ? weatherReport.hourly.temperature_2m
+      : weatherReport.hourly.temperature_2m.slice(
+          indexV,
+          weatherReport.hourly.temperature_2m.length
+        );
   return (
     <VStack
       bgColor={'rgba(0,0,0,0.5)'}
@@ -95,62 +106,24 @@ const WeatherTodayCell = ({ weatherReport }: Props) => {
         </VStack>
       </HStack>
       <View h={0.3} mb={2} bgColor={'white'} w={'100%'} />
-      <ScrollView
+      <FlatList
         horizontal
-        ref={scrollRef}
-        contentOffset={{ x: indexWeather > 0 ? indexWeather * 41 : 0, y: 0 }}
+        //initialScrollIndex={indexWeather > 0 ? indexWeather * 41 : 0}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-      >
-        <HStack p={3}>
-          {weatherReport.hourly.time.map((v, index) => {
-            return (
-              <VStack
-                key={`${index}`}
-                alignItems={'center'}
-                justifyContent={'center'}
-                mr={3}
-              >
-                <Text
-                  color={'white'}
-                  fontFamily={'heading'}
-                  fontSize={12}
-                  fontWeight={'400'}
-                >
-                  {dayjs(v).startOf('hour').utc(true).format('h A')}
-                </Text>
-                {/* <Image
-                        my={3}
-                        alt=""
-                        h={5}
-                        w={5}
-                        source={require('@assets/weather-icon/1.png')}
-                        resizeMode="cover"
-                      /> */}
-                <ImageRemote
-                  style={{ height: 20, width: 20, marginVertical: 8 }}
-                  source={`https://www.weatherbit.io/static/img/icons/${
-                    weatherCodeToString[weatherReport.hourly.weathercode[index]]
-                      ?.icon ?? ''
-                  }.png`}
-                  placeholder={require('@assets/app-logo.png')}
-                  contentFit="cover"
-                  transition={1000}
-                />
-                <Text
-                  color={'white'}
-                  fontFamily={'heading'}
-                  fontSize={12}
-                  fontWeight={'400'}
-                >
-                  {Math.round(weatherReport.hourly.temperature_2m[index])}°
-                </Text>
-              </VStack>
-            );
-          })}
-        </HStack>
-      </ScrollView>
+        keyExtractor={(item, index) => `${index}`}
+        contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 10 }}
+        data={weatherReportTime}
+        renderItem={({ item, index }: { item: string; index: number }) => (
+          <WeatherHorizontalTime
+            temperature_2m={weatherReportTemperature[index]}
+            weathercode={weatherReportCode[index]}
+            time={item}
+          />
+        )}
+        //estimatedItemSize={300}
+      />
     </VStack>
   );
 };
-export default WeatherTodayCell;
+export default React.memo(WeatherTodayCell);

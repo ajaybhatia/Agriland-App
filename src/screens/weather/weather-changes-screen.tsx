@@ -2,13 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { FlatList, View, VStack } from 'native-base';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 
 import { useGetApiFarmGetFarms } from '@/apis/endpoints/api';
 import type { FarmResponse } from '@/apis/model';
 import { useWeather } from '@/core/weather';
+import AppLoader from '@/ui/components/AppLoader';
 import colors from '@/ui/theme/colors';
 
 import FarmAddCell from '../crop/components/farm-add-cell';
@@ -55,7 +56,6 @@ const WeatherChangesScreen = () => {
     {
       query: {
         onSuccess: (data: FarmResponse[]) => {
-          console.log('Farm onSuccess ===> ', data.length);
           if (data.length > 0) {
             setFarms(moreFarmInfo.skip <= 0 ? data : [...farms, ...data]);
             if (selectedFarm === undefined && data.length > 0) {
@@ -77,25 +77,13 @@ const WeatherChangesScreen = () => {
             }
           }
         },
+        onError: (e) => {
+          console.log('\n\n\n Farm onError ===> ', e);
+        },
       },
     }
   );
-
-  const onSelectFarm = (item: FarmResponse) => {
-    setSelectedFarm(item);
-    if (item.coordinates && item.coordinates.length > 0) {
-      setLoadingData(true);
-      onWeatherForecast(
-        item.coordinates[0]?.lat ?? 0.0,
-        item.coordinates[0]?.lng ?? 0.0
-      );
-      onWeatherHistory(
-        item.coordinates[0]?.lat ?? 0.0,
-        item.coordinates[0]?.lng ?? 0.0
-      );
-    }
-  };
-
+  console.log(getFarms.isLoading, ' === ', getFarms.isFetching);
   const onWeatherForecast = (lat: number, lng: number) => {
     axios
       .get(
@@ -104,7 +92,7 @@ const WeatherChangesScreen = () => {
       .then((resp) => {
         if (resp.data && (resp.data as ForecastModel)) {
           let response = resp.data as ForecastModel;
-          console.log(response.current_weather);
+
           setWeatherReport(response);
         } else {
           console.log('Not found');
@@ -120,9 +108,11 @@ const WeatherChangesScreen = () => {
       .get(
         `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${dayjs()
           .subtract(1, 'month')
-          .format('YYYY-MM-DD')}&end_date=${dayjs().format(
-          'YYYY-MM-DD'
-        )}&hourly=relativehumidity_2m,surface_pressure,rain,cloudcover,windspeed_10m`
+          .format('YYYY-MM-DD')}&end_date=${dayjs()
+          .subtract(1, 'day')
+          .format(
+            'YYYY-MM-DD'
+          )}&hourly=relativehumidity_2m,surface_pressure,rain,cloudcover,windspeed_10m`
       )
       .then(async (resp) => {
         if (resp.data && resp.data) {
@@ -221,114 +211,133 @@ const WeatherChangesScreen = () => {
       });
   };
 
+  const onSelectFarm = useCallback(
+    (item: FarmResponse) => {
+      setSelectedFarm(item);
+      if (item.coordinates && item.coordinates.length > 0) {
+        setLoadingData(true);
+        onWeatherForecast(
+          item.coordinates[0]?.lat ?? 0.0,
+          item.coordinates[0]?.lng ?? 0.0
+        );
+        onWeatherHistory(
+          item.coordinates[0]?.lat ?? 0.0,
+          item.coordinates[0]?.lng ?? 0.0
+        );
+      }
+    },
+    [setSelectedFarm, setLoadingData]
+  );
+
   return (
     <View flex={1} backgroundColor={'white'}>
-      <FlatList
-        data={[0, 1, 2, ...historyReport]}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        keyExtractor={(item, index) => `${index}`}
-        renderItem={({ item, index }: { item: ListGraph; index: number }) => {
-          if (index === 0) {
-            return (
-              <VStack mt={2} pb={5}>
-                <FlatList
-                  horizontal
-                  onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    {
-                      useNativeDriver: false,
+      {!getFarms.isLoading && !getFarms.isFetching ? (
+        <FlatList
+          data={[0, 1, 2, ...historyReport]}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          keyExtractor={(item, index) => `${index}`}
+          extraData={selectedFarm}
+          renderItem={({ item, index }: { item: ListGraph; index: number }) => {
+            if (index === 0) {
+              return (
+                <VStack mt={2} pb={5}>
+                  <FlatList
+                    horizontal
+                    onScroll={Animated.event(
+                      [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                      {
+                        useNativeDriver: false,
+                      }
+                    )}
+                    extraData={selectedFarm || farms.length}
+                    keyExtractor={(item, indexV) => `${indexV}`}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingHorizontal: 20 }}
+                    data={farms}
+                    initialNumToRender={3}
+                    ListHeaderComponent={
+                      <FarmAddCell
+                        onPreviousSubmit={() =>
+                          nav.navigate('AddFarmHomeScreen')
+                        }
+                      />
                     }
-                  )}
-                  extraData={selectedFarm || farms.length}
-                  keyExtractor={(item, index) => `${index}`}
-                  showsHorizontalScrollIndicator={false}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{ paddingHorizontal: 20 }}
-                  data={farms}
-                  initialNumToRender={3}
-                  ListHeaderComponent={
-                    <FarmAddCell
-                      onPreviousSubmit={() => nav.navigate('AddFarmHomeScreen')}
-                    />
-                  }
-                  renderItem={({
-                    item,
-                    index,
-                  }: {
-                    item: FarmResponse;
-                    index: number;
-                  }) => (
-                    <FarmMapSelectionCell
-                      item={item}
-                      selectedItem={selectedFarm}
-                      onSelectFarm={onSelectFarm}
-                    />
-                  )}
-                  //estimatedItemSize={300}
-                />
-                <ExpandingDot
-                  data={farms}
-                  expandingDotWidth={8}
-                  scrollX={scrollX}
-                  inActiveDotOpacity={0.3}
-                  dotStyle={styles.dotStyle}
-                  activeDotColor={colors.button_color}
-                  containerStyle={{
-                    bottom: 0,
-                  }}
-                />
-              </VStack>
-            );
-          } else if (index === 1 && weatherReport) {
-            return <WeatherTodayCell weatherReport={weatherReport} />;
-          } else if (index === 2 && weatherReport) {
-            return <WeatherWeekCell weatherReport={weatherReport} />;
-          } else {
-            return (
-              <LightChartCell title={item.title} historyReport={item.value} />
-            );
-          }
-          // else if (index === 3) {
-          //   return (
-          //     <LightChartCell
-          //       title="Light Intensity"
-          //       historyReport={route.params.weatherReport}
-          //     />
-          //   );
-          // } else if (index === 4) {
-          //   return (
-          //     <LightChartCell
-          //       title="Wind Speed"
-          //       weatherReport={route.params.weatherReport}
-          //     />
-          //   );
-          // } else if (index === 5) {
-          //   return (
-          //     <LightChartCell
-          //       title="Clouds"
-          //       weatherReport={route.params.weatherReport}
-          //     />
-          //   );
-          // } else if (index === 6) {
-          //   return (
-          //     <LightChartCell
-          //       title="Humidity"
-          //       weatherReport={route.params.weatherReport}
-          //     />
-          //   );
-          // } else if (index === 7) {
-          //   return (
-          //     <LightChartCell
-          //       title="Pressure"
-          //       weatherReport={route.params.weatherReport}
-          //     />
-          //   );
-          // }
-          // else {
-          //   return <View />;
-          // }
-        }}
-      />
+                    renderItem={({ item: farm }: { item: FarmResponse }) => (
+                      <FarmMapSelectionCell
+                        item={farm}
+                        selectedItem={selectedFarm}
+                        onSelectFarm={onSelectFarm}
+                      />
+                    )}
+                    //estimatedItemSize={300}
+                  />
+                  <ExpandingDot
+                    data={farms}
+                    expandingDotWidth={8}
+                    scrollX={scrollX}
+                    inActiveDotOpacity={0.3}
+                    dotStyle={styles.dotStyle}
+                    activeDotColor={colors.button_color}
+                    containerStyle={{
+                      bottom: 0,
+                    }}
+                  />
+                </VStack>
+              );
+            } else if (index === 1 && weatherReport) {
+              return <WeatherTodayCell weatherReport={weatherReport} />;
+            } else if (index === 2 && weatherReport) {
+              return <WeatherWeekCell weatherReport={weatherReport} />;
+            } else {
+              return (
+                <LightChartCell title={item.title} historyReport={item.value} />
+              );
+            }
+            // else if (index === 3) {
+            //   return (
+            //     <LightChartCell
+            //       title="Light Intensity"
+            //       historyReport={route.params.weatherReport}
+            //     />
+            //   );
+            // } else if (index === 4) {
+            //   return (
+            //     <LightChartCell
+            //       title="Wind Speed"
+            //       weatherReport={route.params.weatherReport}
+            //     />
+            //   );
+            // } else if (index === 5) {
+            //   return (
+            //     <LightChartCell
+            //       title="Clouds"
+            //       weatherReport={route.params.weatherReport}
+            //     />
+            //   );
+            // } else if (index === 6) {
+            //   return (
+            //     <LightChartCell
+            //       title="Humidity"
+            //       weatherReport={route.params.weatherReport}
+            //     />
+            //   );
+            // } else if (index === 7) {
+            //   return (
+            //     <LightChartCell
+            //       title="Pressure"
+            //       weatherReport={route.params.weatherReport}
+            //     />
+            //   );
+            // }
+            // else {
+            //   return <View />;
+            // }
+          }}
+        />
+      ) : (
+        <AppLoader />
+      )}
     </View>
   );
 };

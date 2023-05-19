@@ -1,6 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import dayjs from 'dayjs';
-import { Image as ImageRemote } from 'expo-image';
 import {
   Button,
   FlatList,
@@ -13,7 +11,6 @@ import {
   VStack,
 } from 'native-base';
 import React from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -21,6 +18,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useWeather } from '@/core/weather';
 import colors from '@/ui/theme/colors';
 
+import WeatherTodayCell from './components/weather-today-cell';
+import WeatherWeekCell from './components/weather-week-cell';
 import weatherCodeToString from './weather-icons';
 import { DetailType } from './weather-single-detail';
 
@@ -38,26 +37,6 @@ const WeatherDetailScreen = () => {
       title: title,
     });
   };
-
-  let indexV = weatherReport
-    ? weatherReport.hourly.time.findIndex((v) =>
-        dayjs(v)
-          .startOf('hour')
-          .utc(true)
-          .isSame(
-            dayjs(weatherReport.current_weather.time).startOf('hour').utc(true)
-          )
-      )
-    : -1;
-
-  let indexWeather = weatherReport
-    ? weatherReport.hourly.time.findIndex((v) => {
-        return dayjs(v)
-          .startOf('hour')
-          .utc(true)
-          .isSame(dayjs().startOf('hour').utc(true));
-      })
-    : -1;
 
   return (
     <View flex={1}>
@@ -118,333 +97,10 @@ const WeatherDetailScreen = () => {
                 )}
               </VStack>
             );
-          } else if (index === 1) {
-            return (
-              <VStack
-                bgColor={'rgba(0,0,0,0.5)'}
-                mt={2}
-                mx={5}
-                overflow={'hidden'}
-                borderRadius={10}
-              >
-                <HStack justifyContent={'space-between'} p={3}>
-                  <VStack alignItems={'center'} justifyContent={'center'}>
-                    {/* <Image
-                  alt=""
-                  h={8}
-                  w={8}
-                  source={require('@assets/weather-icon/1.png')}
-                  resizeMode="cover"
-                /> */}
-                    <Icon
-                      as={FontAwesome5}
-                      name={'wind'}
-                      size={'lg'}
-                      color={'blue.700'}
-                    />
-                    <Text
-                      color={'white'}
-                      fontFamily={'heading'}
-                      fontSize={12}
-                      fontWeight={'400'}
-                    >
-                      {weatherReport &&
-                        Math.round(weatherReport.current_weather.windspeed)}
-                      Km/h
-                    </Text>
-                  </VStack>
-
-                  <VStack alignItems={'center'} justifyContent={'center'}>
-                    {/* <Image
-                  alt=""
-                  h={8}
-                  w={8}
-                  source={require('@assets/weather-icon/1.png')}
-                  resizeMode="cover"
-                /> */}
-                    <Icon
-                      as={MaterialCommunityIcons}
-                      name={'cloud'}
-                      size={'lg'}
-                      color={'blue.700'}
-                    />
-                    <Text
-                      color={'white'}
-                      fontFamily={'heading'}
-                      fontSize={12}
-                      fontWeight={'400'}
-                    >
-                      {weatherReport &&
-                        Math.round(
-                          indexV >= 0 && weatherReport.hourly.rain.length > 0
-                            ? weatherReport.hourly.rain[indexV]
-                            : 0
-                        )}
-                      mm
-                    </Text>
-                  </VStack>
-
-                  <VStack alignItems={'center'} justifyContent={'center'}>
-                    {/* <Image
-                  alt=""
-                  h={8}
-                  w={8}
-                  source={require('@assets/weather-icon/1.png')}
-                  resizeMode="cover"
-                /> */}
-                    <Icon
-                      as={Entypo}
-                      name={'drop'}
-                      size={'lg'}
-                      color={'blue.700'}
-                    />
-                    <Text
-                      color={'white'}
-                      fontFamily={'heading'}
-                      fontSize={12}
-                      fontWeight={'400'}
-                    >
-                      {weatherReport &&
-                        Math.round(
-                          indexV >= 0 &&
-                            weatherReport.hourly.cloudcover_700hPa.length > 0
-                            ? weatherReport.hourly.cloudcover_700hPa[indexV]
-                            : 0
-                        )}
-                      %
-                    </Text>
-                  </VStack>
-                </HStack>
-                <View h={0.3} mb={2} bgColor={'white'} w={'100%'} />
-                <HStack p={3}>
-                  <FlatList
-                    horizontal
-                    initialNumToRender={10}
-                    initialScrollIndex={indexWeather > 0 ? indexWeather : 0}
-                    keyExtractor={(item, index) => `${index}`}
-                    showsHorizontalScrollIndicator={false}
-                    showsVerticalScrollIndicator={false}
-                    data={weatherReport ? weatherReport.hourly.time : []}
-                    renderItem={({
-                      item,
-                      index,
-                    }: {
-                      item: string;
-                      index: number;
-                    }) => {
-                      return (
-                        <VStack
-                          key={`${index}`}
-                          alignItems={'center'}
-                          justifyContent={'center'}
-                          mr={3}
-                        >
-                          <Text
-                            color={'white'}
-                            fontFamily={'heading'}
-                            fontSize={12}
-                            fontWeight={'400'}
-                          >
-                            {dayjs(item)
-                              .startOf('hour')
-                              .utc(true)
-                              .format('h A')}
-                          </Text>
-
-                          {weatherReport ? (
-                            <ImageRemote
-                              style={{
-                                height: 20,
-                                width: 20,
-                                marginVertical: 8,
-                              }}
-                              source={`https://www.weatherbit.io/static/img/icons/${
-                                weatherCodeToString[
-                                  weatherReport.hourly.weathercode[index]
-                                ]?.icon ?? ''
-                              }.png`}
-                              placeholder={require('@assets/app-logo.png')}
-                              contentFit="cover"
-                              transition={1000}
-                            />
-                          ) : (
-                            <Image
-                              my={3}
-                              alt=""
-                              h={5}
-                              w={5}
-                              source={require('@assets/weather-icon/1.png')}
-                              resizeMode="cover"
-                            />
-                          )}
-                          <Text
-                            color={'white'}
-                            fontFamily={'heading'}
-                            fontSize={12}
-                            fontWeight={'400'}
-                          >
-                            {weatherReport &&
-                              Math.round(
-                                weatherReport.hourly.temperature_2m[index]
-                              )}
-                            °
-                          </Text>
-                        </VStack>
-                      );
-                    }}
-                    //estimatedItemSize={300}
-                  />
-                </HStack>
-              </VStack>
-            );
-          } else if (index === 2) {
-            return (
-              <VStack
-                bgColor={'rgba(0,0,0,0.5)'}
-                mx={5}
-                mt={5}
-                overflow={'hidden'}
-                borderRadius={10}
-              >
-                <FlatList
-                  scrollEnabled={false}
-                  keyExtractor={(item, indexv) => `${indexv}`}
-                  showsHorizontalScrollIndicator={false}
-                  showsVerticalScrollIndicator={false}
-                  ListHeaderComponent={
-                    <HStack
-                      justifyContent={'space-between'}
-                      p={3}
-                      alignItems={'center'}
-                    >
-                      <Text
-                        color={'white'}
-                        fontFamily={'heading'}
-                        fontSize={14}
-                        fontWeight={'500'}
-                      >
-                        Today
-                      </Text>
-                      {/* <Image
-                              alt=""
-                              h={8}
-                              w={8}
-                              source={require('@assets/weather-icon/1.png')}
-                              resizeMode="cover"
-                            /> */}
-
-                      {/* <Image
-                              alt=""
-                              h={8}
-                              w={8}
-                              source={require('@assets/weather-icon/1.png')}
-                              resizeMode="cover"
-                            /> */}
-                      <Icon
-                        as={Entypo}
-                        name={'drop'}
-                        size={'lg'}
-                        color={'blue.700'}
-                      />
-                      {/* <Image
-                              alt=""
-                              h={8}
-                              w={8}
-                              source={require('@assets/weather-icon/1.png')}
-                              resizeMode="cover"
-                            /> */}
-                      <Icon
-                        as={MaterialCommunityIcons}
-                        name={'cloud'}
-                        size={'lg'}
-                        color={'blue.700'}
-                      />
-                      <Icon
-                        as={FontAwesome5}
-                        name={'wind'}
-                        size={'lg'}
-                        color={'blue.700'}
-                      />
-                    </HStack>
-                  }
-                  data={weatherReport ? weatherReport.daily.time : []}
-                  renderItem={({
-                    item,
-                    indexv,
-                  }: {
-                    item: string;
-                    indexv: number;
-                  }) => {
-                    return (
-                      <HStack
-                        // borderBottomColor={'white'}
-                        // borderBottomWidth={0.3}
-                        borderTopColor={'white'}
-                        borderTopWidth={0.3}
-                        justifyContent={'space-between'}
-                        p={3}
-                        alignItems={'center'}
-                      >
-                        <Text
-                          flex={0.35}
-                          color={'white'}
-                          fontFamily={'heading'}
-                          fontSize={14}
-                          fontWeight={'500'}
-                        >
-                          {dayjs(item).utc(true).format('dddd')}
-                        </Text>
-                        <Text
-                          flex={0.22}
-                          color={'white'}
-                          fontFamily={'heading'}
-                          fontSize={12}
-                          fontWeight={'500'}
-                        >
-                          {Math.round(
-                            weatherReport
-                              ? weatherReport.daily
-                                  ?.precipitation_probability_max[index] ?? 0
-                              : 0
-                          )}
-                          %
-                        </Text>
-                        <Text
-                          flex={0.22}
-                          color={'white'}
-                          fontFamily={'heading'}
-                          fontSize={12}
-                          fontWeight={'500'}
-                        >
-                          {Math.round(
-                            weatherReport
-                              ? weatherReport.daily?.rain_sum[index] ?? 0
-                              : 0
-                          )}
-                          mm
-                        </Text>
-                        <Text
-                          flex={0.22}
-                          color={'white'}
-                          fontFamily={'heading'}
-                          fontSize={12}
-                          fontWeight={'500'}
-                        >
-                          {Math.round(
-                            weatherReport
-                              ? weatherReport.daily?.windspeed_10m_max[index] ??
-                                  0
-                              : 0
-                          )}
-                          Km/h
-                        </Text>
-                      </HStack>
-                    );
-                  }}
-                  //estimatedItemSize={300}
-                />
-              </VStack>
-            );
+          } else if (index === 1 && weatherReport) {
+            return <WeatherTodayCell weatherReport={weatherReport} />;
+          } else if (index === 2 && weatherReport) {
+            return <WeatherWeekCell weatherReport={weatherReport} />;
           } else if (index === 3) {
             return (
               <HStack
@@ -470,7 +126,7 @@ const WeatherDetailScreen = () => {
                       mx={1.5}
                       onPress={() => onWeatherDetail(v)}
                     >
-                      <VStack>
+                      <VStack alignItems={'center'}>
                         <View
                           borderColor={'rgb(256,256,256)'}
                           borderWidth={1}

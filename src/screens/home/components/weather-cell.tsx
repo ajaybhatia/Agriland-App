@@ -73,11 +73,15 @@ function WeatherCell({
           </View>
           <VStack>
             <Text color={'black'} fontSize={11} fontWeight={'700'}>
-              {locationAddress?.address?.state_district ?? ''}
+              {locationAddress?.address?.state_district ??
+                locationAddress?.address?.city_district ??
+                ''}
             </Text>
             <Text color={'black'} fontSize={11} fontWeight={'500'}>
               {/* Thur.13:09 */}
-              {dayjs(currentWeather.current_weather.time).format('ddd, h:mm A')}
+              {dayjs(currentWeather.current_weather.time)
+                .utc(true)
+                .format('ddd, h:mm A')}
             </Text>
             <Text color={'black'} fontSize={11} fontWeight={'500'}>
               {weatherCodeToString[currentWeather.current_weather.weathercode]
