@@ -141,6 +141,7 @@ const NotificationsDetails = () => {
       </HStack>
       <SectionList
         sections={demoArray}
+        contentContainerStyle={{ paddingBottom: 100 }}
         keyExtractor={(item, index) => `${index}`}
         renderItem={({ item, index }: { item: SubTitle; index: number }) => (
           <NoticationCell />

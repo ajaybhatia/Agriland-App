@@ -13,7 +13,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const TaskDetailScreen = () => {
   return (
-    <ScrollView contentContainerStyle={{ paddingBottom: 10 }}>
+    <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
       <VStack flex={1} mx={5}>
         <HStack alignItems={'center'} justifyContent={'space-between'} py={5}>
           <HStack alignItems={'center'}>

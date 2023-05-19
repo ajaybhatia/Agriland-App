@@ -178,6 +178,7 @@ function CustomDrawerContent({ navigation }: DrawerContentComponentProps) {
         </HStack>
         <SectionList
           sections={options}
+          contentContainerStyle={{ paddingBottom: 100 }}
           keyExtractor={(item, index) => `${index}`}
           renderItem={({
             item,
@@ -330,12 +331,12 @@ function HomeRootStackView() {
   };
   return (
     <RootStack.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="Drawer"
       screenOptions={{ headerShown: false, animation: 'none' }}
     >
       <RootStack.Screen
         options={{
-          headerShown: true,
+          headerShown: false,
           title: 'AgriLand',
           headerTitleStyle: {
             fontFamily: 'Poppins-Medium',
@@ -356,8 +357,8 @@ function HomeRootStackView() {
             borderBottomRightRadius: 20,
           },
         }}
-        name="HomeScreen"
-        component={HomeScreen}
+        name="Drawer"
+        component={DrawerMainRender}
       />
 
       <RootStack.Screen

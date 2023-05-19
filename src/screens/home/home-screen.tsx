@@ -142,8 +142,9 @@ function HomeScreen() {
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
-        data={[1, 2]}
+        data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
         keyExtractor={(item, index) => `${index}`}
+        contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item, index }: { item: number; index: number }) => {
           if (index === 0) {
             return (

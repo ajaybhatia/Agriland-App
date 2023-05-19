@@ -107,7 +107,7 @@ const AccountDetailScreen = () => {
         mt={30}
         fontWeight={'normal'}
         fontSize={20}
-        bottom={20}
+        bottom={'24'}
         overflow={'hidden'}
         alignSelf={'center'}
         position={'absolute'}
