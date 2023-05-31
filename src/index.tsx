@@ -4,6 +4,11 @@ import theme from '@config/nativebase/theme';
 import client from '@config/react-query/client';
 // import { APIProvider } from '@/api';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import type { Event } from '@notifee/react-native';
+import { AndroidImportance, EventType } from '@notifee/react-native';
+import notifee from '@notifee/react-native';
+import type { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { locale } from 'expo-localization';
 import * as SplashScreen from 'expo-splash-screen';
@@ -38,8 +43,76 @@ const App = () => {
         setLanguage('en');
       }
       I18nManager.forceRTL(false);
+      const getToken = async () => {
+        // Register the device with FCM
+        await messaging().registerDeviceForRemoteMessages();
+
+        // Get the token
+        const token = await messaging().getToken();
+        console.log('token ====> ', token);
+      };
+
+      getToken();
+      messaging().onMessage(onMessageReceived);
+      messaging().setBackgroundMessageHandler(onMessageReceived);
+      addNotificationActions();
     }
   }, []);
+
+  async function onMessageReceived(
+    message: FirebaseMessagingTypes.RemoteMessage
+  ) {
+    // Do something
+    console.log('message ===> ', message);
+    onDisplayNotification(message);
+  }
+
+  async function onDisplayNotification(
+    message: FirebaseMessagingTypes.RemoteMessage
+  ) {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: message?.messageId ?? '',
+      name: 'AgriLand',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      id: message?.messageId ?? '',
+      title: message.notification?.title ?? '',
+      body: message.notification?.body ?? '',
+      android: {
+        channelId,
+        smallIcon: 'ic_launcher_noti',
+        importance: AndroidImportance.HIGH,
+      },
+    });
+  }
+
+  function addNotificationActions() {
+    notifee.onForegroundEvent((event: Event) => {
+      console.log('onForegroundEvent Event Type ===> ', event);
+      if (event.type === EventType.PRESS) {
+        console.log(
+          'User pressed an action with the id: ',
+          event.detail.notification
+        );
+      }
+    });
+    notifee.onBackgroundEvent(async (event: Event) => {
+      console.log('onBackgroundEvent Event Type ===> ', event);
+      if (event.type === EventType.PRESS) {
+        console.log(
+          'User pressed an action with the id: ',
+          event.detail.notification
+        );
+      }
+    });
+  }
+
   return (
     <QueryClientProvider client={client}>
       {/* config={config} */}
