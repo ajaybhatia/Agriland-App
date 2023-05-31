@@ -21,11 +21,14 @@ import Toast from 'react-native-toast-message';
 import { useSelectedLanguage } from '@/core';
 import { RootNavigator } from '@/navigation';
 
+import { usePutApiAccountUpdatefcmtoken } from './apis/endpoints/api';
+
 //hydrateAuth();
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const { language, setLanguage } = useSelectedLanguage();
+  const putToken = usePutApiAccountUpdatefcmtoken();
 
   useEffect(() => {
     if (
@@ -49,7 +52,12 @@ const App = () => {
 
         // Get the token
         const token = await messaging().getToken();
-        console.log('token ====> ', token);
+        // console.log('token ====> ', token);
+        putToken.mutate({
+          params: {
+            fcmToken: token,
+          },
+        });
       };
 
       getToken();
@@ -63,7 +71,6 @@ const App = () => {
     message: FirebaseMessagingTypes.RemoteMessage
   ) {
     // Do something
-    console.log('message ===> ', message);
     onDisplayNotification(message);
   }
 
@@ -94,7 +101,6 @@ const App = () => {
 
   function addNotificationActions() {
     notifee.onForegroundEvent((event: Event) => {
-      console.log('onForegroundEvent Event Type ===> ', event);
       if (event.type === EventType.PRESS) {
         console.log(
           'User pressed an action with the id: ',
@@ -103,7 +109,6 @@ const App = () => {
       }
     });
     notifee.onBackgroundEvent(async (event: Event) => {
-      console.log('onBackgroundEvent Event Type ===> ', event);
       if (event.type === EventType.PRESS) {
         console.log(
           'User pressed an action with the id: ',

@@ -43,6 +43,7 @@ import type {
   PutApiAccountDeleteCostCalculationParams,
   UserBasicDetails,
   MobileAppUserBasicDetails,
+  PutApiAccountUpdatefcmtokenParams,
   PostApiAdBannerCreateUpdateAdBannerBody,
   AdBannerResponse,
   GetApiAdBannerGetByAdBannerIdParams,
@@ -99,6 +100,9 @@ import type {
   GetApiIrrigationTypeGetIrrigationTypeByIdParams,
   GetApiIrrigationTypeGetGetIrrigationTypesParams,
   Rss,
+  PushNotificationModel,
+  DeleteApiNotificationDeletenotificationParams,
+  GetApiNotificationGetallnotificationParams,
   SoilTypeRequest,
   PostApiSoilTypeGetSoilTypeByIdParams,
   SoilTypeResponse,
@@ -107,10 +111,7 @@ import type {
   RoleUpdateModel,
   IdentityRole,
   DeleteApiUserRoleDeleteRoleParams,
-  CurrentConditions,
-  GetApiWeatherGetCurrentConditionsParams,
-  GeoLocation,
-  GetApiWeatherGetLocationKeyParams
+  GetApiWeatherGetWeatherDataParams
 } from '../model'
 import { customInstance } from '../mutator/custom-instance';
 import type { ErrorType } from '../mutator/custom-instance';
@@ -1191,6 +1192,55 @@ export const useGetApiAccountFetchUserBasicDetails = <TData = Awaited<ReturnType
 }
 
 
+/**
+ * @summary UpdateFcmToken
+ */
+export const putApiAccountUpdatefcmtoken = (
+    params?: PutApiAccountUpdatefcmtokenParams,
+ ) => {
+      return customInstance<void>(
+      {url: `/api/Account/updatefcmtoken`, method: 'put',
+        params
+    },
+      );
+    }
+  
+
+
+export const getPutApiAccountUpdatefcmtokenMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAccountUpdatefcmtoken>>, TError,{params?: PutApiAccountUpdatefcmtokenParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiAccountUpdatefcmtoken>>, TError,{params?: PutApiAccountUpdatefcmtokenParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAccountUpdatefcmtoken>>, {params?: PutApiAccountUpdatefcmtokenParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  putApiAccountUpdatefcmtoken(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiAccountUpdatefcmtokenMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAccountUpdatefcmtoken>>>
+    
+    export type PutApiAccountUpdatefcmtokenMutationError = ErrorType<unknown>
+
+    export const usePutApiAccountUpdatefcmtoken = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAccountUpdatefcmtoken>>, TError,{params?: PutApiAccountUpdatefcmtokenParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getPutApiAccountUpdatefcmtokenMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
 export const postApiAdBannerCreateUpdateAdBanner = (
     postApiAdBannerCreateUpdateAdBannerBody: PostApiAdBannerCreateUpdateAdBannerBody,
  ) => {const formData = new FormData();
@@ -3511,6 +3561,156 @@ export const useGetApiNewsTest = <TData = Awaited<ReturnType<typeof getApiNewsTe
 }
 
 
+/**
+ * @summary CreateOrUpdateNotification
+ */
+export const postApiNotificationCreatenotification = (
+    pushNotificationModel: PushNotificationModel,
+ ) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/Notification/createnotification`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: pushNotificationModel
+    },
+      );
+    }
+  
+
+
+export const getPostApiNotificationCreatenotificationMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{data: PushNotificationModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{data: PushNotificationModel}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, {data: PushNotificationModel}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiNotificationCreatenotification(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiNotificationCreatenotificationMutationResult = NonNullable<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>>
+    export type PostApiNotificationCreatenotificationMutationBody = PushNotificationModel
+    export type PostApiNotificationCreatenotificationMutationError = ErrorType<unknown>
+
+    export const usePostApiNotificationCreatenotification = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{data: PushNotificationModel}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiNotificationCreatenotificationMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary DeleteNotification
+ */
+export const deleteApiNotificationDeletenotification = (
+    params?: DeleteApiNotificationDeletenotificationParams,
+ ) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/Notification/deletenotification`, method: 'delete',
+        params
+    },
+      );
+    }
+  
+
+
+export const getDeleteApiNotificationDeletenotificationMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiNotificationDeletenotification>>, TError,{params?: DeleteApiNotificationDeletenotificationParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiNotificationDeletenotification>>, TError,{params?: DeleteApiNotificationDeletenotificationParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiNotificationDeletenotification>>, {params?: DeleteApiNotificationDeletenotificationParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  deleteApiNotificationDeletenotification(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiNotificationDeletenotificationMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiNotificationDeletenotification>>>
+    
+    export type DeleteApiNotificationDeletenotificationMutationError = ErrorType<unknown>
+
+    export const useDeleteApiNotificationDeletenotification = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiNotificationDeletenotification>>, TError,{params?: DeleteApiNotificationDeletenotificationParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getDeleteApiNotificationDeletenotificationMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary GetAllNotification
+ */
+export const getApiNotificationGetallnotification = (
+    params?: GetApiNotificationGetallnotificationParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/Notification/getallnotification`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiNotificationGetallnotificationQueryKey = (params?: GetApiNotificationGetallnotificationParams,) => [`/api/Notification/getallnotification`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiNotificationGetallnotificationQueryOptions = <TData = Awaited<ReturnType<typeof getApiNotificationGetallnotification>>, TError = ErrorType<unknown>>(params?: GetApiNotificationGetallnotificationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotification>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotification>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiNotificationGetallnotificationQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiNotificationGetallnotification>>> = ({ signal }) => getApiNotificationGetallnotification(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiNotificationGetallnotificationQueryResult = NonNullable<Awaited<ReturnType<typeof getApiNotificationGetallnotification>>>
+export type GetApiNotificationGetallnotificationQueryError = ErrorType<unknown>
+
+export const useGetApiNotificationGetallnotification = <TData = Awaited<ReturnType<typeof getApiNotificationGetallnotification>>, TError = ErrorType<unknown>>(
+ params?: GetApiNotificationGetallnotificationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotification>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiNotificationGetallnotificationQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
 export const postApiSoilTypeCreateUpdateSoilType = (
     soilTypeRequest: SoilTypeRequest,
  ) => {
@@ -3851,93 +4051,48 @@ export const getDeleteApiUserRoleDeleteRoleMutationOptions = <TError = ErrorType
       return useMutation(mutationOptions);
     }
     
-export const getApiWeatherGetCurrentConditions = (
-    params?: GetApiWeatherGetCurrentConditionsParams,
+/**
+ * @summary Get Weather Details
+ */
+export const getApiWeatherGetWeatherData = (
+    params?: GetApiWeatherGetWeatherDataParams,
  signal?: AbortSignal
 ) => {
-      return customInstance<CurrentConditions[]>(
-      {url: `/api/Weather/GetCurrentConditions`, method: 'get',
+      return customInstance<void>(
+      {url: `/api/Weather/GetWeatherData`, method: 'get',
         params, signal
     },
       );
     }
   
 
-export const getGetApiWeatherGetCurrentConditionsQueryKey = (params?: GetApiWeatherGetCurrentConditionsParams,) => [`/api/Weather/GetCurrentConditions`, ...(params ? [params]: [])] as const;
+export const getGetApiWeatherGetWeatherDataQueryKey = (params?: GetApiWeatherGetWeatherDataParams,) => [`/api/Weather/GetWeatherData`, ...(params ? [params]: [])] as const;
   
 
     
-export const getGetApiWeatherGetCurrentConditionsQueryOptions = <TData = Awaited<ReturnType<typeof getApiWeatherGetCurrentConditions>>, TError = ErrorType<unknown>>(params?: GetApiWeatherGetCurrentConditionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetCurrentConditions>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetCurrentConditions>>, TError, TData> & { queryKey: QueryKey } => {
+export const getGetApiWeatherGetWeatherDataQueryOptions = <TData = Awaited<ReturnType<typeof getApiWeatherGetWeatherData>>, TError = ErrorType<unknown>>(params?: GetApiWeatherGetWeatherDataParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetWeatherData>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetWeatherData>>, TError, TData> & { queryKey: QueryKey } => {
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiWeatherGetCurrentConditionsQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiWeatherGetWeatherDataQueryKey(params);
 
   
   
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiWeatherGetCurrentConditions>>> = ({ signal }) => getApiWeatherGetCurrentConditions(params, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiWeatherGetWeatherData>>> = ({ signal }) => getApiWeatherGetWeatherData(params, signal);
     
       
       
    return  { queryKey, queryFn, ...queryOptions}}
 
-export type GetApiWeatherGetCurrentConditionsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiWeatherGetCurrentConditions>>>
-export type GetApiWeatherGetCurrentConditionsQueryError = ErrorType<unknown>
+export type GetApiWeatherGetWeatherDataQueryResult = NonNullable<Awaited<ReturnType<typeof getApiWeatherGetWeatherData>>>
+export type GetApiWeatherGetWeatherDataQueryError = ErrorType<unknown>
 
-export const useGetApiWeatherGetCurrentConditions = <TData = Awaited<ReturnType<typeof getApiWeatherGetCurrentConditions>>, TError = ErrorType<unknown>>(
- params?: GetApiWeatherGetCurrentConditionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetCurrentConditions>>, TError, TData>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetApiWeatherGetCurrentConditionsQueryOptions(params,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-
-export const getApiWeatherGetLocationKey = (
-    params?: GetApiWeatherGetLocationKeyParams,
- signal?: AbortSignal
-) => {
-      return customInstance<GeoLocation>(
-      {url: `/api/Weather/GetLocationKey`, method: 'get',
-        params, signal
-    },
-      );
-    }
-  
-
-export const getGetApiWeatherGetLocationKeyQueryKey = (params?: GetApiWeatherGetLocationKeyParams,) => [`/api/Weather/GetLocationKey`, ...(params ? [params]: [])] as const;
-  
-
-    
-export const getGetApiWeatherGetLocationKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApiWeatherGetLocationKey>>, TError = ErrorType<unknown>>(params?: GetApiWeatherGetLocationKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetLocationKey>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetLocationKey>>, TError, TData> & { queryKey: QueryKey } => {
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiWeatherGetLocationKeyQueryKey(params);
-
-  
-  
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiWeatherGetLocationKey>>> = ({ signal }) => getApiWeatherGetLocationKey(params, signal);
-    
-      
-      
-   return  { queryKey, queryFn, ...queryOptions}}
-
-export type GetApiWeatherGetLocationKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getApiWeatherGetLocationKey>>>
-export type GetApiWeatherGetLocationKeyQueryError = ErrorType<unknown>
-
-export const useGetApiWeatherGetLocationKey = <TData = Awaited<ReturnType<typeof getApiWeatherGetLocationKey>>, TError = ErrorType<unknown>>(
- params?: GetApiWeatherGetLocationKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetLocationKey>>, TError, TData>, }
+export const useGetApiWeatherGetWeatherData = <TData = Awaited<ReturnType<typeof getApiWeatherGetWeatherData>>, TError = ErrorType<unknown>>(
+ params?: GetApiWeatherGetWeatherDataParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiWeatherGetWeatherData>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetApiWeatherGetLocationKeyQueryOptions(params,options)
+  const queryOptions = getGetApiWeatherGetWeatherDataQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

@@ -1,14 +1,18 @@
+import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import axios from 'axios';
 import { FlatList, Image, View, VStack } from 'native-base';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { useGetApiFarmGetFarms } from '@/apis/endpoints/api';
+import {
+  useGetApiFarmGetFarms,
+  usePutApiAccountUpdatefcmtoken,
+} from '@/apis/endpoints/api';
 import type { FarmResponse } from '@/apis/model';
 import { useWeather } from '@/core/weather';
 import ListHeader from '@/ui/components/ListHeader';
@@ -27,6 +31,7 @@ function HomeScreen() {
   const setData = useWeather.use.setData();
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const nav = useNavigation();
+  const putToken = usePutApiAccountUpdatefcmtoken();
   const [farms, setFarms] = useState<FarmResponse[]>([]);
   const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>();
   const [weatherReport, setWeatherReport] = useState<
@@ -42,6 +47,23 @@ function HomeScreen() {
     take: 20,
     skip: 0,
   });
+
+  useEffect(() => {
+    const getToken = async () => {
+      // Register the device with FCM
+      await messaging().registerDeviceForRemoteMessages();
+
+      // Get the token
+      const token = await messaging().getToken();
+      putToken.mutate({
+        params: {
+          fcmToken: token,
+        },
+      });
+    };
+
+    getToken();
+  }, []);
 
   // get Farm APis
 
