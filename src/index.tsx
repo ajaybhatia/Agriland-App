@@ -5,8 +5,7 @@ import client from '@config/react-query/client';
 // import { APIProvider } from '@/api';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import type { Event } from '@notifee/react-native';
-import { AndroidImportance, EventType } from '@notifee/react-native';
-import notifee from '@notifee/react-native';
+import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 import type { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import messaging from '@react-native-firebase/messaging';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -21,14 +20,11 @@ import Toast from 'react-native-toast-message';
 import { useSelectedLanguage } from '@/core';
 import { RootNavigator } from '@/navigation';
 
-import { usePutApiAccountUpdatefcmtoken } from './apis/endpoints/api';
-
 //hydrateAuth();
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const { language, setLanguage } = useSelectedLanguage();
-  const putToken = usePutApiAccountUpdatefcmtoken();
 
   useEffect(() => {
     if (
@@ -46,21 +42,21 @@ const App = () => {
         setLanguage('en');
       }
       I18nManager.forceRTL(false);
-      const getToken = async () => {
-        // Register the device with FCM
-        await messaging().registerDeviceForRemoteMessages();
+      // const getToken = async () => {
+      //   // Register the device with FCM
+      //   await messaging().registerDeviceForRemoteMessages();
 
-        // Get the token
-        const token = await messaging().getToken();
-        // console.log('token ====> ', token);
-        putToken.mutate({
-          params: {
-            fcmToken: token,
-          },
-        });
-      };
+      //   // Get the token
+      //   const token = await messaging().getToken();
+      //   // console.log('token ====> ', token);
+      //   putToken.mutate({
+      //     params: {
+      //       fcmToken: token,
+      //     },
+      //   });
+      // };
 
-      getToken();
+      // getToken();
       messaging().onMessage(onMessageReceived);
       messaging().setBackgroundMessageHandler(onMessageReceived);
       addNotificationActions();

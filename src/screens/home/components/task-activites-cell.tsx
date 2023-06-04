@@ -149,7 +149,7 @@ const TaskActivitesCell = () => {
   return (
     <View
       style={styles.container}
-      borderBottomWidth={0.5}
+      //borderBottomWidth={0.5}
       w={'100%'}
       borderBottomColor={BORDER_COLOR}
     >

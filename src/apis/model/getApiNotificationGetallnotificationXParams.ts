@@ -5,11 +5,7 @@
  * OpenAPI spec version: v1
  */
 
-export type GetApiNotificationGetallnotificationParams = {
+export type GetApiNotificationGetallnotificationXParams = {
 skip?: number;
 take?: number;
-isProcessed?: boolean;
-q?: string;
-sortColumn?: string;
-sortOrder?: string;
 };

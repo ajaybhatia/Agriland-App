@@ -102,7 +102,11 @@ import type {
   Rss,
   PushNotificationModel,
   DeleteApiNotificationDeletenotificationParams,
+  GetApiNotificationGetallnotificationXParams,
   GetApiNotificationGetallnotificationParams,
+  ViewNotificationPaginatedResponse,
+  GetApiNotificationGetallviewnotificationParams,
+  PostApiNotificationAddviewnotificationParams,
   SoilTypeRequest,
   PostApiSoilTypeGetSoilTypeByIdParams,
   SoilTypeResponse,
@@ -3663,11 +3667,59 @@ export const getDeleteApiNotificationDeletenotificationMutationOptions = <TError
 /**
  * @summary GetAllNotification
  */
+export const getApiNotificationGetallnotificationX = (
+    params?: GetApiNotificationGetallnotificationXParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/Notification/getallnotificationX`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiNotificationGetallnotificationXQueryKey = (params?: GetApiNotificationGetallnotificationXParams,) => [`/api/Notification/getallnotificationX`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiNotificationGetallnotificationXQueryOptions = <TData = Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError = ErrorType<unknown>>(params?: GetApiNotificationGetallnotificationXParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiNotificationGetallnotificationXQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>> = ({ signal }) => getApiNotificationGetallnotificationX(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiNotificationGetallnotificationXQueryResult = NonNullable<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>>
+export type GetApiNotificationGetallnotificationXQueryError = ErrorType<unknown>
+
+export const useGetApiNotificationGetallnotificationX = <TData = Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError = ErrorType<unknown>>(
+ params?: GetApiNotificationGetallnotificationXParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiNotificationGetallnotificationXQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
 export const getApiNotificationGetallnotification = (
     params?: GetApiNotificationGetallnotificationParams,
  signal?: AbortSignal
 ) => {
-      return customInstance<ApiResponse>(
+      return customInstance<CropPaginatedResponse>(
       {url: `/api/Notification/getallnotification`, method: 'get',
         params, signal
     },
@@ -3711,6 +3763,147 @@ export const useGetApiNotificationGetallnotification = <TData = Awaited<ReturnTy
 }
 
 
+export const getApiNotificationGetallviewnotification = (
+    params?: GetApiNotificationGetallviewnotificationParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<ViewNotificationPaginatedResponse>(
+      {url: `/api/Notification/getallviewnotification`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiNotificationGetallviewnotificationQueryKey = (params?: GetApiNotificationGetallviewnotificationParams,) => [`/api/Notification/getallviewnotification`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiNotificationGetallviewnotificationQueryOptions = <TData = Awaited<ReturnType<typeof getApiNotificationGetallviewnotification>>, TError = ErrorType<unknown>>(params?: GetApiNotificationGetallviewnotificationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallviewnotification>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallviewnotification>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiNotificationGetallviewnotificationQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiNotificationGetallviewnotification>>> = ({ signal }) => getApiNotificationGetallviewnotification(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiNotificationGetallviewnotificationQueryResult = NonNullable<Awaited<ReturnType<typeof getApiNotificationGetallviewnotification>>>
+export type GetApiNotificationGetallviewnotificationQueryError = ErrorType<unknown>
+
+export const useGetApiNotificationGetallviewnotification = <TData = Awaited<ReturnType<typeof getApiNotificationGetallviewnotification>>, TError = ErrorType<unknown>>(
+ params?: GetApiNotificationGetallviewnotificationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallviewnotification>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiNotificationGetallviewnotificationQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const getApiNotificationGetallunreadnotification = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<void>(
+      {url: `/api/Notification/getallunreadnotification`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiNotificationGetallunreadnotificationQueryKey = () => [`/api/Notification/getallunreadnotification`] as const;
+  
+
+    
+export const getGetApiNotificationGetallunreadnotificationQueryOptions = <TData = Awaited<ReturnType<typeof getApiNotificationGetallunreadnotification>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallunreadnotification>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallunreadnotification>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiNotificationGetallunreadnotificationQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiNotificationGetallunreadnotification>>> = ({ signal }) => getApiNotificationGetallunreadnotification(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiNotificationGetallunreadnotificationQueryResult = NonNullable<Awaited<ReturnType<typeof getApiNotificationGetallunreadnotification>>>
+export type GetApiNotificationGetallunreadnotificationQueryError = ErrorType<unknown>
+
+export const useGetApiNotificationGetallunreadnotification = <TData = Awaited<ReturnType<typeof getApiNotificationGetallunreadnotification>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallunreadnotification>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiNotificationGetallunreadnotificationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const postApiNotificationAddviewnotification = (
+    params?: PostApiNotificationAddviewnotificationParams,
+ ) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/Notification/addviewnotification`, method: 'post',
+        params
+    },
+      );
+    }
+  
+
+
+export const getPostApiNotificationAddviewnotificationMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationAddviewnotification>>, TError,{params?: PostApiNotificationAddviewnotificationParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationAddviewnotification>>, TError,{params?: PostApiNotificationAddviewnotificationParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiNotificationAddviewnotification>>, {params?: PostApiNotificationAddviewnotificationParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  postApiNotificationAddviewnotification(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiNotificationAddviewnotificationMutationResult = NonNullable<Awaited<ReturnType<typeof postApiNotificationAddviewnotification>>>
+    
+    export type PostApiNotificationAddviewnotificationMutationError = ErrorType<unknown>
+
+    export const usePostApiNotificationAddviewnotification = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationAddviewnotification>>, TError,{params?: PostApiNotificationAddviewnotificationParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiNotificationAddviewnotificationMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
 export const postApiSoilTypeCreateUpdateSoilType = (
     soilTypeRequest: SoilTypeRequest,
  ) => {

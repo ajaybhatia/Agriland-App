@@ -1,9 +1,11 @@
+import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
-import { Text, View } from 'native-base';
+import { View } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet } from 'react-native';
 
+import { usePutApiAccountUpdatefcmtoken } from '@/apis/endpoints/api';
 import Stepper from '@/ui/components/Stepper';
 import { button_color } from '@/ui/theme/colors';
 
@@ -15,6 +17,7 @@ const AddFarmScreen = () => {
   const [active, setActive] = useState(1);
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const putToken = usePutApiAccountUpdatefcmtoken();
   const onNextSubmit = () => {
     setActive((p) => {
       headerTitle(p + 1);
@@ -36,17 +39,23 @@ const AddFarmScreen = () => {
       navigation.setOptions({ title: t('register-crop') });
     }
   };
+
   useEffect(() => {
+    const getToken = async () => {
+      // Register the device with FCM
+      await messaging().registerDeviceForRemoteMessages();
+
+      // Get the token
+      const token = await messaging().getToken();
+      putToken.mutate({
+        params: {
+          fcmToken: token,
+        },
+      });
+    };
     headerTitle(active);
+    getToken();
   }, []);
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const MyComponent = () => {
-    return (
-      <View justifyContent={'center'} alignItems={'center'} flex={1}>
-        <Text>{'Crop here'}</Text>
-      </View>
-    );
-  };
 
   const content = [
     {

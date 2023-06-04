@@ -4,12 +4,14 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { NotificationType } from './notificationType';
 
-export type GetApiNotificationGetallnotificationParams = {
+export type GetApiNotificationGetallviewnotificationParams = {
 skip?: number;
 take?: number;
-isProcessed?: boolean;
+isRead?: boolean;
 q?: string;
 sortColumn?: string;
+notificationType?: NotificationType;
 sortOrder?: string;
 };

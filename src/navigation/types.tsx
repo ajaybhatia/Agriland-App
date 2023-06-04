@@ -46,4 +46,7 @@ export type AuthStackParamList = {
   Drawer: undefined;
   AppSplashScreen: undefined;
   App: undefined;
+  DashboardScreen: undefined;
+  bottomTab: undefined;
+  AddOperationScreen: undefined;
 };

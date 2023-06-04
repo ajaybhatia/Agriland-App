@@ -22,8 +22,8 @@ import {
   View,
   VStack,
 } from 'native-base';
-import * as React from 'react';
-import { Alert, Animated, StyleSheet } from 'react-native';
+import React from 'react';
+import { Alert, Animated, Keyboard, StyleSheet } from 'react-native';
 import { Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
@@ -32,6 +32,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import AccountDetailScreen from '@/screens/account/account-detail-screen';
+import AddOperationScreen from '@/screens/CenterScreens/add-operations-screen';
+import DashboardScreen from '@/screens/dashboard/dashboard-screen';
 import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
@@ -322,13 +324,320 @@ const renderTabBar = ({ routeName, selectedTab, navigate }) => {
   );
 };
 
-const RootStack = createNativeStackNavigator<AuthStackParamList>();
+const RootHomeStack = createNativeStackNavigator<AuthStackParamList>();
 
 function HomeRootStackView() {
   const nav = useNavigation();
   const onBackPress = () => {
     nav.goBack();
   };
+  return (
+    <RootHomeStack.Navigator
+      initialRouteName="Drawer"
+      screenOptions={{ headerShown: false, animation: 'none' }}
+    >
+      <RootHomeStack.Screen
+        options={{
+          headerShown: false,
+          title: 'AgriLand',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              //onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'sort'}
+              as={MaterialIcons}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="HomeScreen"
+        component={HomeScreen}
+      />
+    </RootHomeStack.Navigator>
+  );
+}
+const DashboardRootStack = createNativeStackNavigator<AuthStackParamList>();
+function DashboardRootStackView() {
+  const nav = useNavigation();
+  const onBackPress = () => {
+    nav.goBack();
+  };
+  return (
+    <DashboardRootStack.Navigator
+      initialRouteName="DashboardScreen"
+      screenOptions={{ headerShown: false, animation: 'none' }}
+    >
+      <DashboardRootStack.Screen
+        options={{
+          headerShown: false,
+          title: 'AgriLand',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              //onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'sort'}
+              as={MaterialIcons}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="DashboardScreen"
+        component={DashboardScreen}
+      />
+    </DashboardRootStack.Navigator>
+  );
+}
+
+const CenterRootStack = createNativeStackNavigator<AuthStackParamList>();
+function CenterRootStackView() {
+  const nav = useNavigation();
+  const onBackPress = () => {
+    nav.goBack();
+  };
+  return (
+    <CenterRootStack.Navigator
+      initialRouteName="DashboardScreen"
+      screenOptions={{ headerShown: false, animation: 'none' }}
+    >
+      <CenterRootStack.Screen
+        options={{
+          headerShown: false,
+          title: 'AgriLand',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              //onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'sort'}
+              as={MaterialIcons}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="AddOperationScreen"
+        component={AddOperationScreen}
+      />
+    </CenterRootStack.Navigator>
+  );
+}
+
+const DrawerMainRender = () => {
+  return (
+    <Drawer.Navigator
+      // eslint-disable-next-line react/no-unstable-nested-components
+      drawerContent={(props: DrawerContentComponentProps) => (
+        <CustomDrawerContent {...props} />
+      )}
+      screenOptions={{
+        headerShown: false,
+      }}
+      // screenOptions={{
+      //   drawerType: '',
+      // }}
+    >
+      <Drawer.Screen
+        options={{
+          headerShown: true,
+          title: 'Hello, Harminder',
+          headerTitle: 'Hello, Harminder',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: DrawerHeaderProps) => (
+            <AppBarHeader {...props} left={false} />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="bottomTab"
+        component={BottomTab}
+      />
+    </Drawer.Navigator>
+  );
+};
+
+type HeaderType = {
+  left?: boolean;
+};
+
+const AppBarHeader = ({
+  navigation,
+  left = false,
+  options,
+}: DrawerHeaderProps & HeaderType) => {
+  const isDrawerOpen = useDrawerStatus() === 'open';
+
+  return (
+    <SafeAreaView style={styles.headerContainer}>
+      <View style={styles.headerSubContainer}>
+        <HStack
+          my={Platform.OS === 'ios' ? 1 : 2}
+          mx={5}
+          justifyContent={left ? 'flex-start' : 'space-between'}
+          alignItems="center"
+        >
+          <HStack alignItems="center">
+            <IconButton
+              ml={-1}
+              onPress={() => {
+                if (isDrawerOpen) {
+                  //navigationRef?.current?.setVisible(true);
+                  navigation.closeDrawer();
+                } else {
+                  // navigationRef?.current?.setVisible(false);
+                  navigation.openDrawer();
+                }
+              }}
+              icon={
+                <Icon
+                  as={MaterialIcons}
+                  name={'sort'}
+                  size={29}
+                  color={'#000'}
+                />
+              }
+            />
+          </HStack>
+          <Text fontWeight="700" fontSize={16}>
+            {options?.title ?? 'Hello'}
+          </Text>
+          {/* <HStack>
+            <View borderRadius={30 / 2} overflow={'hidden'} w={35} h={35}>
+              <Image
+                alt=""
+                // resizeMode="cover"
+                style={styles.userHeaderImg}
+                source={AllImages.DEFAULT_IMAGE}
+              />
+            </View>
+          </HStack> */}
+        </HStack>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const BottomTab = () => {
+  const bottomBarRef = React.useRef();
+  React.useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      //console.log('keyboardDidShow')
+      bottomBarRef &&
+        bottomBarRef.current &&
+        bottomBarRef.current.setVisible(false);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      //console.log('keyboardDidHide')
+      bottomBarRef &&
+        bottomBarRef.current &&
+        bottomBarRef.current.setVisible(true);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+  return (
+    <CurvedBottomBar.Navigator
+      type="UP"
+      ref={bottomBarRef}
+      style={styles.bottombar}
+      shadowStyle={styles.shawdow}
+      height={80}
+      circleWidth={60}
+      bgColor="white"
+      initialRouteName="title1"
+      borderTopLeftRight
+      screenOptions={{
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+      }}
+      renderCircle={({ selectedTab, navigate }) => (
+        <Animated.View style={styles.btnCircleUp}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate('title3')}
+          >
+            <Icon
+              as={MaterialCommunityIcons}
+              name={'plus'}
+              size={'2xl'}
+              color={'white'}
+            />
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+      tabBar={renderTabBar}
+    >
+      <CurvedBottomBar.Screen
+        name="title1"
+        position="LEFT"
+        component={HomeRootStackView}
+      />
+      <CurvedBottomBar.Screen
+        name="title2"
+        position="LEFT"
+        //  component={() => <Screen2 />}
+        component={DashboardRootStackView}
+      />
+      <CurvedBottomBar.Screen
+        name="title4"
+        component={() => <Screen1 />}
+        position="RIGHT"
+      />
+      <CurvedBottomBar.Screen
+        name="title5"
+        component={() => <Screen2 />}
+        position="RIGHT"
+      />
+      <CurvedBottomBar.Screen
+        name="title3"
+        component={CenterRootStackView}
+        position="CENTER"
+      />
+    </CurvedBottomBar.Navigator>
+  );
+};
+
+const RootStack = createNativeStackNavigator<AuthStackParamList>();
+export const TabNavigator = () => {
+  const nav = useNavigation();
+  const onBackPress = () => {
+    nav.goBack();
+  };
+
   return (
     <RootStack.Navigator
       initialRouteName="Drawer"
@@ -360,7 +669,6 @@ function HomeRootStackView() {
         name="Drawer"
         component={DrawerMainRender}
       />
-
       <RootStack.Screen
         options={{
           headerShown: true,
@@ -562,168 +870,6 @@ function HomeRootStackView() {
         component={AddFarmHomeScreen}
       />
     </RootStack.Navigator>
-  );
-}
-
-const DrawerMainRender = () => {
-  return (
-    <Drawer.Navigator
-      // eslint-disable-next-line react/no-unstable-nested-components
-      drawerContent={(props: DrawerContentComponentProps) => (
-        <CustomDrawerContent {...props} />
-      )}
-      // screenOptions={{
-      //   drawerType: '',
-      // }}
-    >
-      <Drawer.Screen
-        options={{
-          headerShown: true,
-          title: 'Hello, Harminder',
-          headerTitle: 'Hello, Harminder',
-          headerTitleStyle: {
-            fontFamily: 'Poppins-Medium',
-            fontSize: 16,
-          },
-          // eslint-disable-next-line react/no-unstable-nested-components
-          header: (props: DrawerHeaderProps) => (
-            <AppBarHeader {...props} left={false} />
-          ),
-          overlayColor: 'rgba(0,0,0,0)',
-          drawerStyle: {
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-          },
-        }}
-        name="HomeScreen"
-        component={HomeScreen}
-      />
-    </Drawer.Navigator>
-  );
-};
-type HeaderType = {
-  left?: boolean;
-};
-
-const AppBarHeader = ({
-  navigation,
-  left = false,
-  options,
-}: DrawerHeaderProps & HeaderType) => {
-  const isDrawerOpen = useDrawerStatus() === 'open';
-
-  return (
-    <SafeAreaView style={styles.headerContainer}>
-      <View style={styles.headerSubContainer}>
-        <HStack
-          my={Platform.OS === 'ios' ? 1 : 2}
-          mx={5}
-          justifyContent={left ? 'flex-start' : 'space-between'}
-          alignItems="center"
-        >
-          <HStack alignItems="center">
-            <IconButton
-              ml={-1}
-              onPress={() => {
-                if (isDrawerOpen) {
-                  //navigationRef?.current?.setVisible(true);
-                  navigation.closeDrawer();
-                } else {
-                  // navigationRef?.current?.setVisible(false);
-                  navigation.openDrawer();
-                }
-              }}
-              icon={
-                <Icon
-                  as={MaterialIcons}
-                  name={'sort'}
-                  size={29}
-                  color={'#000'}
-                />
-              }
-            />
-          </HStack>
-          <Text fontWeight="700" fontSize={16}>
-            {options?.title ?? 'Hello'}
-          </Text>
-          {/* <HStack>
-            <View borderRadius={30 / 2} overflow={'hidden'} w={35} h={35}>
-              <Image
-                alt=""
-                // resizeMode="cover"
-                style={styles.userHeaderImg}
-                source={AllImages.DEFAULT_IMAGE}
-              />
-            </View>
-          </HStack> */}
-        </HStack>
-      </View>
-    </SafeAreaView>
-  );
-};
-
-export const TabNavigator = () => {
-  const nav = useNavigation();
-  const onBackPress = () => {
-    nav.goBack();
-  };
-
-  return (
-    <CurvedBottomBar.Navigator
-      type="UP"
-      style={styles.bottombar}
-      shadowStyle={styles.shawdow}
-      height={80}
-      circleWidth={60}
-      bgColor="white"
-      initialRouteName="title1"
-      borderTopLeftRight
-      screenOptions={{
-        headerShown: false,
-      }}
-      renderCircle={({ selectedTab, navigate }) => (
-        <Animated.View style={styles.btnCircleUp}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigate('title3')}
-          >
-            <Icon
-              as={MaterialCommunityIcons}
-              name={'plus'}
-              size={'2xl'}
-              color={'white'}
-            />
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-      tabBar={renderTabBar}
-    >
-      <CurvedBottomBar.Screen
-        name="title1"
-        position="LEFT"
-        component={HomeRootStackView}
-      />
-      <CurvedBottomBar.Screen
-        name="title2"
-        position="LEFT"
-        component={() => <Screen2 />}
-      />
-      <CurvedBottomBar.Screen
-        name="title4"
-        component={() => <Screen1 />}
-        position="RIGHT"
-      />
-      <CurvedBottomBar.Screen
-        name="title5"
-        component={() => <Screen2 />}
-        position="RIGHT"
-      />
-      <CurvedBottomBar.Screen
-        name="title3"
-        component={() => <Screen1 />}
-        position="CENTER"
-      />
-    </CurvedBottomBar.Navigator>
   );
 };
 

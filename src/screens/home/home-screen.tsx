@@ -2,9 +2,10 @@ import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import axios from 'axios';
-import { FlatList, Image, View, VStack } from 'native-base';
+import { Image as ImageBase } from 'expo-image';
+import { FlatList, View, VStack } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { Animated, Dimensions, StyleSheet } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -13,7 +14,8 @@ import {
   useGetApiFarmGetFarms,
   usePutApiAccountUpdatefcmtoken,
 } from '@/apis/endpoints/api';
-import type { FarmResponse } from '@/apis/model';
+import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
+import type { AdBannerResponse, FarmResponse } from '@/apis/model';
 import { useWeather } from '@/core/weather';
 import ListHeader from '@/ui/components/ListHeader';
 import colors from '@/ui/theme/colors';
@@ -24,6 +26,8 @@ import type { LocationAddress } from '../maps-views/model/location-address-model
 import type { ForecastModel } from '../weather/models/weather-forecast-models';
 import CompleteProfileCell from './components/complete-profile-cell';
 import CropHomeCell from './components/crops-home-cell';
+import type { DropDownCellType } from './components/dropdown-item-cell';
+import DropDownIteCell from './components/dropdown-item-cell';
 import TaskActivitesCell from './components/task-activites-cell';
 import WeatherCell from './components/weather-cell';
 
@@ -40,6 +44,10 @@ function HomeScreen() {
   const [currentAddress, setCurrentAddress] = useState<
     LocationAddress | undefined
   >();
+  const [isShowSheets, setShowSheets] = useState<{
+    isShow: boolean;
+    index: number;
+  }>({ index: 0, isShow: false });
   const [moreFarmInfo, setMoreFarmInfo] = useState<{
     take: number;
     skip: number;
@@ -55,6 +63,7 @@ function HomeScreen() {
 
       // Get the token
       const token = await messaging().getToken();
+      console.log('token ==> ', token);
       putToken.mutate({
         params: {
           fcmToken: token,
@@ -93,6 +102,7 @@ function HomeScreen() {
     }
   );
 
+  const getAdBanners = useGetApiAdBannerGetAdBanners();
   const onWeatherForecast = (lat: number, lng: number) => {
     axios
       .get(
@@ -149,6 +159,13 @@ function HomeScreen() {
     [setSelectedFarm]
   );
 
+  const onShowBottomSheet = useCallback(
+    (isShowItem: boolean, index: number) => {
+      setShowSheets({ index: index, isShow: isShowItem });
+    },
+    [setShowSheets]
+  );
+
   const addNewFarm = useCallback(() => nav.navigate('AddFarmHomeScreen'), []);
   const onSeeWeatherDDetail = useCallback(() => {
     if (weatherReport && currentAddress && selectedFarm) {
@@ -164,7 +181,7 @@ function HomeScreen() {
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
-        data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]}
         keyExtractor={(item, index) => `${index}`}
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item, index }: { item: number; index: number }) => {
@@ -293,39 +310,135 @@ function HomeScreen() {
                 <TaskActivitesCell />
               </VStack>
             );
-          } else if (index === 6) {
+          } else if (
+            index === 6 &&
+            getAdBanners.data?.adBannerResponses &&
+            getAdBanners.data?.adBannerResponses.filter((v) => v.isActive)
+              ?.length > 0
+          ) {
             return (
-              <VStack
-                mt={3}
-                backgroundColor={'amber.400'}
-                mx={5}
-                borderRadius={10}
-                overflow={'hidden'}
-              >
-                <Image
-                  alt=""
-                  resizeMode="contain"
-                  h={150}
-                  flex={1}
-                  source={require('@assets/app-logo.png')}
+              <VStack>
+                <FlatList
+                  horizontal
+                  pagingEnabled
+                  initialNumToRender={3}
+                  keyExtractor={(item, indexV) => `${indexV}`}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  // contentContainerStyle={{ paddingHorizontal: 20 }}
+                  data={getAdBanners.data?.adBannerResponses.filter(
+                    (v) => v.isActive
+                  )}
+                  renderItem={({ item: ads }: { item: AdBannerResponse }) => {
+                    console.log(`http://95.111.231.114:88${ads.imageUrl}`);
+                    return (
+                      <VStack mt={3} mb={2} w={Dimensions.get('screen').width}>
+                        <VStack
+                          mx={3}
+                          shadow={1}
+                          borderRadius={10}
+                          overflow={'hidden'}
+                        >
+                          <ImageBase
+                            style={{ height: 150, flex: 1 }}
+                            source={`http://95.111.231.114:88${ads.imageUrl}`}
+                            // source={ads.imageUrl}
+                            placeholder={require('@assets/app-logo.png')}
+                            contentFit="contain"
+                            transition={1000}
+                          />
+                        </VStack>
+                      </VStack>
+                    );
+                  }}
+                  //estimatedItemSize={300}
                 />
               </VStack>
             );
-          } else if (index === 6) {
+          } else if (index === 7) {
+            const items: DropDownCellType[] = [
+              {
+                title: 'Crop coding',
+                color: '#f5b794',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+              {
+                title: 'Reserve stations',
+                color: '#ed9393',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+              {
+                title: 'Tests',
+                color: '#1ebdc3',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+            ];
             return (
-              <VStack
-                mt={3}
-                backgroundColor={'amber.400'}
-                mx={5}
-                borderRadius={10}
-                overflow={'hidden'}
-              >
-                <Image
-                  alt=""
-                  resizeMode="contain"
-                  h={150}
-                  flex={1}
-                  source={require('@assets/app-logo.png')}
+              <VStack mt={3} mx={3}>
+                <DropDownIteCell
+                  title="Services"
+                  items={items}
+                  index={index}
+                  isShow={isShowSheets.isShow && index === isShowSheets.index}
+                  onShow={onShowBottomSheet}
+                />
+              </VStack>
+            );
+          } else if (index === 8) {
+            const items: DropDownCellType[] = [
+              {
+                title: 'Production Supplies',
+                color: '#f5b794',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+              {
+                title: 'Crop Marketing',
+                color: '#ed9393',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+              {
+                title: 'Crop Loan',
+                color: '#1ebdc3',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+            ];
+            return (
+              <VStack mt={3} mx={3}>
+                <DropDownIteCell
+                  title="Agriculture market"
+                  items={items}
+                  index={index}
+                  isShow={isShowSheets.isShow && index === isShowSheets.index}
+                  onShow={onShowBottomSheet}
+                />
+              </VStack>
+            );
+          } else if (index === 9) {
+            const items: DropDownCellType[] = [
+              {
+                title: 'Weather Changes',
+                color: '#f5b794',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+              {
+                title: 'Social Media',
+                color: '#ed9393',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+              {
+                title: 'Satelite Data',
+                color: '#1ebdc3',
+                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+              },
+            ];
+            return (
+              <VStack mt={3} mx={3}>
+                <DropDownIteCell
+                  title="Information center"
+                  items={items}
+                  index={index}
+                  isShow={isShowSheets.isShow && index === isShowSheets.index}
+                  onShow={onShowBottomSheet}
                 />
               </VStack>
             );
