@@ -49,4 +49,14 @@ export type AuthStackParamList = {
   DashboardScreen: undefined;
   bottomTab: undefined;
   AddOperationScreen: undefined;
+  CropRegistration: undefined;
+  CropRegisterDetails: undefined;
+  CropCodingScreen: undefined;
+  StationBookingScreen: undefined;
+  STationBookedScreen: undefined;
+  TestScreen: undefined;
+  MakeAppointmentScreen: {
+    title: string;
+  };
+  MyCropsScreen: undefined;
 };

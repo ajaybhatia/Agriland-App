@@ -151,6 +151,7 @@ const TaskActivitesCell = () => {
       style={styles.container}
       //borderBottomWidth={0.5}
       w={'100%'}
+      mt={3}
       borderBottomColor={BORDER_COLOR}
     >
       <View style={styles.stepIndicator}>

@@ -59,6 +59,10 @@ export default function ListHeader({
   asLeft,
   isSeeAllShow = true,
 }: Props) {
+  console.log(
+    textAlign ? textAlign : I18nManager.isRTL ? 'right' : 'left',
+    I18nManager.isRTL
+  );
   return (
     <View
       ml={ml}
@@ -80,7 +84,10 @@ export default function ListHeader({
         )}
         <Text
           maxW={
-            Dimensions.get('window').width - Dimensions.get('window').width / 2
+            (btnTitle || iconName) && isSeeAllShow
+              ? Dimensions.get('window').width -
+                Dimensions.get('window').width / 2
+              : Dimensions.get('window').width
           }
           numberOfLines={numberOfLines}
           fontSize={fontSize}
@@ -91,8 +98,8 @@ export default function ListHeader({
             textAlign: textAlign
               ? textAlign
               : I18nManager.isRTL
-              ? 'left'
-              : 'right',
+              ? 'right'
+              : 'left',
           }}
         >
           {title}

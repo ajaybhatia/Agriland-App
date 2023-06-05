@@ -13,6 +13,7 @@ import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
 
 import type { CropRegisterType } from './add-crop-maps';
+import { AddCropRegisterType } from './add-crop-maps';
 import CropListCell from './components/crop-list-cell';
 
 type Props = {
@@ -20,12 +21,14 @@ type Props = {
   onNextStep?: () => void;
   onEditStep?: (farmInfo: CropRegisterType) => void;
   cropRequest?: CropRegisterType;
+  registerType?: AddCropRegisterType;
 };
 const CropsReviewList = ({
   addMoreCrop,
   onEditStep,
   onNextStep,
   cropRequest,
+  registerType,
 }: Props) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -62,19 +65,23 @@ const CropsReviewList = ({
               type: 'error',
               text1: 'successfully added',
             });
-            if (isAddNew) {
-              onCropAddMore && onCropAddMore();
+            if (registerType === AddCropRegisterType.FROM_REGISTER) {
+              if (isAddNew) {
+                onCropAddMore && onCropAddMore();
+              } else {
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 1,
+                    routes: [
+                      {
+                        name: 'App',
+                      },
+                    ],
+                  })
+                );
+              }
             } else {
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 1,
-                  routes: [
-                    {
-                      name: 'App',
-                    },
-                  ],
-                })
-              );
+              navigation.goBack();
             }
           } else {
             Toast.show({

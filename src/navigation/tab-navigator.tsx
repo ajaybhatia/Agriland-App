@@ -33,12 +33,20 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import AccountDetailScreen from '@/screens/account/account-detail-screen';
 import AddOperationScreen from '@/screens/CenterScreens/add-operations-screen';
+import CropCodingScreen from '@/screens/crop/crop-coding-screen';
+import CropRegisterDetails from '@/screens/crop/crop-register-details';
+import CropRegistration from '@/screens/crop/crop-registration';
+import MyCropsScreen from '@/screens/crop/my-crops-screen';
+import STationBookedScreen from '@/screens/crop/station-booked-screen';
+import StationBookingScreen from '@/screens/crop/station-booking-screen';
 import DashboardScreen from '@/screens/dashboard/dashboard-screen';
 import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
 import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
 import TaskDetailScreen from '@/screens/tasks/tasks-detail-screen';
+import MakeAppointmentScreen from '@/screens/TestScreens/make-appointment-screen';
+import TestScreen from '@/screens/TestScreens/tests-screen';
 import WeatherChangesScreen from '@/screens/weather/weather-changes-screen';
 import WeatherDetailScreen from '@/screens/weather/weather-detail-screen';
 import WeatherSingleDetail from '@/screens/weather/weather-single-detail';
@@ -406,6 +414,47 @@ function DashboardRootStackView() {
   );
 }
 
+const MyCropRootStack = createNativeStackNavigator<AuthStackParamList>();
+function MyCropRootStackView() {
+  const nav = useNavigation();
+  const onBackPress = () => {
+    nav.goBack();
+  };
+  return (
+    <MyCropRootStack.Navigator
+      initialRouteName="MyCropsScreen"
+      screenOptions={{ headerShown: false, animation: 'none' }}
+    >
+      <MyCropRootStack.Screen
+        options={{
+          headerShown: false,
+          title: 'AgriLand',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              //onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'sort'}
+              as={MaterialIcons}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="MyCropsScreen"
+        component={MyCropsScreen}
+      />
+    </MyCropRootStack.Navigator>
+  );
+}
+
 const CenterRootStack = createNativeStackNavigator<AuthStackParamList>();
 function CenterRootStackView() {
   const nav = useNavigation();
@@ -614,7 +663,7 @@ const BottomTab = () => {
       />
       <CurvedBottomBar.Screen
         name="title4"
-        component={() => <Screen1 />}
+        component={MyCropRootStackView}
         position="RIGHT"
       />
       <CurvedBottomBar.Screen
@@ -868,6 +917,181 @@ export const TabNavigator = () => {
         }}
         name="AddFarmHomeScreen"
         component={AddFarmHomeScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Add A Crop',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="CropRegistration"
+        component={CropRegistration}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Crop',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="CropRegisterDetails"
+        component={CropRegisterDetails}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Crop Coding',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="CropCodingScreen"
+        component={CropCodingScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Station Booking',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="StationBookingScreen"
+        component={StationBookingScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Station Booking',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="STationBookedScreen"
+        component={STationBookedScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Tests',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="TestScreen"
+        component={TestScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Appointment',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="MakeAppointmentScreen"
+        component={MakeAppointmentScreen}
       />
     </RootStack.Navigator>
   );

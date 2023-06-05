@@ -41,9 +41,19 @@ export type CropRegisterType = {
   userLocation?: Location[];
   cropCategory?: CropCategoryResponse;
   cropArea?: FarmCropsDetailResponse;
+  registerType?: AddCropRegisterType;
 };
 
-const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
+export enum AddCropRegisterType {
+  FROM_HOME,
+  FROM_REGISTER,
+}
+
+const AddCropMaps = ({
+  onNextStep,
+  onPreviousSubmit,
+  registerType = AddCropRegisterType.FROM_REGISTER,
+}: Props) => {
   enum AddCropState {
     MAP,
     CHOOSE_FARM_SELECT_CROP,
@@ -574,6 +584,7 @@ const AddCropMaps = ({ onNextStep, onPreviousSubmit }: Props) => {
           cropRequest={cropInfo}
           onEditStep={onEditFarm}
           addMoreCrop={onAddMoreCrop}
+          registerType={registerType}
           // onNextStep={onNextStep}
         />
       )}
