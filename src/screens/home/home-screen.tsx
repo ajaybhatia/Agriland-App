@@ -330,7 +330,6 @@ function HomeScreen() {
                     (v) => v.isActive
                   )}
                   renderItem={({ item: ads }: { item: AdBannerResponse }) => {
-                    console.log(`http://95.111.231.114:88${ads.imageUrl}`);
                     return (
                       <VStack mt={3} mb={2} w={Dimensions.get('screen').width}>
                         <VStack

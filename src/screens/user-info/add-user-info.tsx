@@ -122,7 +122,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
 
   return (
     <ScrollView flex={1} mx={5}>
-      <Header title={t('account-data')} mt={3} />
+      <Header title={'Test'} mt={3} />
       <RoundInput
         mt={5}
         onBlur={handleBlur('displayName')}

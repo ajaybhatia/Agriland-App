@@ -23,6 +23,8 @@ import {
 import OTPTextInput from 'react-native-otp-textinput';
 import Toast from 'react-native-toast-message';
 
+import { useGetApiFarmIsFarmAdded } from '@/apis/endpoints/api';
+import type { FarmExists } from '@/apis/model';
 import type { AuthStackParamList } from '@/navigation/types';
 import { LoginType } from '@/navigation/types';
 import CardWithShadow from '@/ui/components/CardWithShadow';
@@ -44,6 +46,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
   const [otpValue, setOtpValue] = useState<string>('');
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isResendLoading, setResendLoading] = useState<boolean>(false);
+  const [isEnable, setEnable] = useState<boolean>(false);
 
   useEffect(() => {
     if (route?.params?.confirmation) {
@@ -52,6 +55,51 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
       setPhoneNumber(route.params.phoneNumber);
     }
   }, [route?.params?.confirmation, route?.params?.phoneNumber]);
+
+  const isFarmAdded = useGetApiFarmIsFarmAdded({
+    query: {
+      enabled: isEnable,
+      onSuccess: (data: FarmExists) => {
+        setLoading(false);
+        if (data.isFarmAdded) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: 'App' }],
+            })
+          );
+        } else {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [
+                {
+                  name: 'AddFarmScreen',
+                  params: {
+                    loginType: LoginType.OTP,
+                    phoneNumber: phoneNumber,
+                  },
+                },
+              ],
+            })
+          );
+        }
+      },
+      onError: () => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Not able to get details from server',
+        });
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: 'App' }],
+          })
+        );
+      },
+    },
+  });
 
   const onResendOtp = async () => {
     try {
@@ -91,22 +139,7 @@ const OtpVerifyScreen = ({ route }: OtpVerifyScreenProps) => {
     try {
       setLoading(true);
       let confirm = await confirmation?.confirm(otpValue);
-
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [
-            {
-              name: 'AddFarmScreen',
-              params: {
-                loginType: LoginType.OTP,
-                phoneNumber: phoneNumber,
-              },
-            },
-          ],
-        })
-      );
-      setLoading(false);
+      setEnable(true);
     } catch (error) {
       setLoading(false);
       Toast.show({
