@@ -15,7 +15,7 @@ import {
   usePutApiAccountExternaluserupdate,
 } from '@/apis/endpoints/api';
 import type { MobileAppUserBasicDetails } from '@/apis/model';
-import { useSelectedLanguage } from '@/core';
+import { useAuth, useSelectedLanguage } from '@/core';
 import type { Language } from '@/core/i18n/resources';
 import type { AuthStackParamList } from '@/navigation/types';
 import type { Option } from '@/ui';
@@ -33,7 +33,7 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
   const route = useRoute<RouteProp<AuthStackParamList, 'AddFarmScreen'>>();
   const addUserInfo = usePostApiAccountCreateUserBasicDetails();
   const updateUser = usePutApiAccountExternaluserupdate();
-
+  const setUserInfo = useAuth.use.setUserInfo();
   // Formik
   const {
     handleSubmit,
@@ -100,6 +100,11 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
         {
           onSuccess(data) {
             if (data) {
+              setUserInfo(
+                values.emailId,
+                values.mobileNumber,
+                values.displayName
+              );
               onNextSubmit && onNextSubmit();
             } else {
               Toast.show({
@@ -125,6 +130,11 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
         {
           onSuccess(data) {
             if (data) {
+              setUserInfo(
+                values.emailId,
+                values.mobileNumber,
+                values.displayName
+              );
               onNextSubmit && onNextSubmit();
             } else {
               Toast.show({

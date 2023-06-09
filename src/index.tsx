@@ -17,10 +17,10 @@ import { I18nManager } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import Toast from 'react-native-toast-message';
 
-import { useSelectedLanguage } from '@/core';
+import { hydrateAuth, useSelectedLanguage } from '@/core';
 import { RootNavigator } from '@/navigation';
 
-//hydrateAuth();
+hydrateAuth();
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {

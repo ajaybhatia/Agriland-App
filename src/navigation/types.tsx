@@ -63,4 +63,5 @@ export type AuthStackParamList = {
     title: string;
   };
   MyCropsScreen: undefined;
+  TaskCalenderDetailScreen: undefined;
 };

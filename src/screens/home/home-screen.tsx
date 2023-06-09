@@ -9,6 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {
+  useGetApiAccountFetchUserBasicDetails,
   useGetApiCropGetCultivationDetailsByFarmId,
   usePutApiAccountUpdatefcmtoken,
 } from '@/apis/endpoints/api';
@@ -18,7 +19,9 @@ import type {
   CultivationDetailResponse,
   FarmCropCultivationResponse,
   FarmResponse,
+  MobileAppUserBasicDetails,
 } from '@/apis/model';
+import { useAuth } from '@/core';
 import { useWeather } from '@/core/weather';
 import ListHeader from '@/ui/components/ListHeader';
 import colors from '@/ui/theme/colors';
@@ -38,7 +41,7 @@ function HomeScreen() {
 
   const nav = useNavigation();
   const putToken = usePutApiAccountUpdatefcmtoken();
-
+  const setUserInfo = useAuth.use.setUserInfo();
   const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>();
   const [selectedCrop, setSelectedCrop] = useState<
     CultivationDetailResponse | undefined
@@ -71,6 +74,17 @@ function HomeScreen() {
 
     getToken();
   }, []);
+
+  // userInfo
+  useGetApiAccountFetchUserBasicDetails({
+    query: {
+      onSuccess(data: MobileAppUserBasicDetails) {
+        if (data && data?.displayName && data?.emailId && data?.mobileNumber) {
+          setUserInfo(data.emailId, data.mobileNumber, data.displayName);
+        }
+      },
+    },
+  });
   // get crops by farmId
 
   const getCrops = useGetApiCropGetCultivationDetailsByFarmId(
@@ -136,6 +150,10 @@ function HomeScreen() {
   const onNotificationDetail = () => {
     nav.navigate('NotificationsDetails');
   };
+
+  const onTaskCalenderDetail = useCallback(() => {
+    nav.navigate('TaskCalenderDetailScreen');
+  }, [nav]);
 
   const onSelectFarm = useCallback(
     (item: FarmResponse) => {
@@ -285,6 +303,7 @@ function HomeScreen() {
                   btnTitle="See All"
                   iconName="arrow-top-right-bold-box"
                   as={MaterialCommunityIcons}
+                  onRightIconClick={onTaskCalenderDetail}
                 />
                 <TaskActivitesCell />
               </VStack>

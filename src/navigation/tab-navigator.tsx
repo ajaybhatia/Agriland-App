@@ -37,6 +37,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import { useAuth } from '@/core';
 import AccountDetailScreen from '@/screens/account/account-detail-screen';
 import AddOperationScreen from '@/screens/CenterScreens/add-operations-screen';
 import CropCodingScreen from '@/screens/crop/crop-coding-screen';
@@ -50,6 +51,7 @@ import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
 import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
+import TaskCalenderDetailScreen from '@/screens/tasks/task-calender-detail-screen';
 import TaskDetailScreen from '@/screens/tasks/tasks-detail-screen';
 import MakeAppointmentScreen from '@/screens/TestScreens/make-appointment-screen';
 import TestScreen from '@/screens/TestScreens/tests-screen';
@@ -83,6 +85,8 @@ export type DrawerSubOptionObj = {
 };
 
 function CustomDrawerContent({ navigation }: DrawerContentComponentProps) {
+  const name = useAuth.use.displayName();
+
   const options: DrawerOptionObj[] = [
     {
       title: 'Account Management',
@@ -188,7 +192,7 @@ function CustomDrawerContent({ navigation }: DrawerContentComponentProps) {
           </Box>
           <VStack>
             <Text fontWeight="700" fontSize={16}>
-              Username
+              {name}
             </Text>
           </VStack>
         </HStack>
@@ -503,6 +507,7 @@ function CenterRootStackView() {
 }
 
 const DrawerMainRender = () => {
+  const name = useAuth.use.displayName();
   return (
     <Drawer.Navigator
       // eslint-disable-next-line react/no-unstable-nested-components
@@ -521,8 +526,8 @@ const DrawerMainRender = () => {
         options={{
           headerShown: true,
 
-          title: 'Hello, Username',
-          headerTitle: 'Hello, Username',
+          title: `Hello, ${name}`,
+          headerTitle: `Hello, ${name}`,
           headerTitleStyle: {
             fontFamily: 'Poppins-Medium',
             fontSize: 16,
@@ -1102,6 +1107,31 @@ export const TabNavigator = () => {
         }}
         name="MakeAppointmentScreen"
         component={MakeAppointmentScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Tasks',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="TaskCalenderDetailScreen"
+        component={TaskCalenderDetailScreen}
       />
     </RootStack.Navigator>
   );

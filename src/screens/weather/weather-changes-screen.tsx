@@ -68,7 +68,6 @@ const WeatherChangesScreen = () => {
           )}&hourly=relativehumidity_2m,surface_pressure,rain,cloudcover,windspeed_10m`
       )
       .then(async (resp) => {
-        console.log('onWeatherHistory ===> ', resp);
         setLoadingData(false);
         if (resp.data && resp.data) {
           let response = resp.data;
@@ -216,7 +215,6 @@ const WeatherChangesScreen = () => {
           keyExtractor={(item, index) => `${index}`}
           extraData={selectedFarm}
           renderItem={({ item, index }: { item: ListGraph; index: number }) => {
-            console.log('item ===> ', item);
             if (index === 0) {
               return (
                 <FarmerListCell

@@ -2,10 +2,10 @@ import { Image } from 'expo-image';
 import { HStack, ScrollView, Text, View, VStack } from 'native-base';
 import React from 'react';
 
-import type { CropResponse } from '@/apis/model';
+import type { CropResponse, CultivationDetailResponse } from '@/apis/model';
 
 type Props = {
-  item: CropResponse;
+  item: CropResponse | CultivationDetailResponse;
 };
 type CropItems = {
   date: string;
