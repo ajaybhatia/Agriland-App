@@ -57,7 +57,13 @@ const WeatherWeekCell = ({ weatherReport }: Props) => {
           size={'lg'}
           color={'blue.700'}
         />
-        <Icon as={FontAwesome5} name={'wind'} size={'lg'} color={'blue.700'} />
+        <Icon
+          as={FontAwesome5}
+          name={'wind'}
+          size={'lg'}
+          color={'blue.700'}
+          mr={3}
+        />
       </HStack>
 
       <FlatList

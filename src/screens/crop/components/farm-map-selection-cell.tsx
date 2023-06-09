@@ -271,7 +271,11 @@ const FarmMapSelectionCell = ({ item, selectedItem, onSelectFarm }: Props) => {
   );
 };
 
-export default memo(FarmMapSelectionCell);
+function arePropsEqual(prevProps: Props, nextProps: Props) {
+  return prevProps.selectedItem === nextProps.selectedItem;
+}
+
+export default memo(FarmMapSelectionCell, arePropsEqual);
 const styles = StyleSheet.create({
   map: {
     flex: 1,

@@ -88,7 +88,7 @@ const DropDownIteCell = ({
                 </View>
                 <Image
                   style={{ height: 40, width: 40 }}
-                  source={item.icon}
+                  source={'https://app'}
                   placeholder={require('@assets/app-logo.png')}
                   contentFit="cover"
                   transition={1000}

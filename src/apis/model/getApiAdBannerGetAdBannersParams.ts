@@ -9,6 +9,7 @@ export type GetApiAdBannerGetAdBannersParams = {
 skip?: number;
 take?: number;
 q?: string;
+onlyActive?: boolean;
 sortColumn?: string;
 sortOrder?: string;
 };

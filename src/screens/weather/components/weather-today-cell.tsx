@@ -108,7 +108,7 @@ const WeatherTodayCell = ({ weatherReport }: Props) => {
       <View h={0.3} mb={2} bgColor={'white'} w={'100%'} />
       <FlatList
         horizontal
-        //initialScrollIndex={indexWeather > 0 ? indexWeather * 41 : 0}
+        // initialScrollIndex={0}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => `${index}`}

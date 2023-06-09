@@ -10,7 +10,11 @@ import { I18nManager } from 'react-native';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 
-import { usePostApiAccountCreateUserBasicDetails } from '@/apis/endpoints/api';
+import {
+  usePostApiAccountCreateUserBasicDetails,
+  usePutApiAccountExternaluserupdate,
+} from '@/apis/endpoints/api';
+import type { MobileAppUserBasicDetails } from '@/apis/model';
 import { useSelectedLanguage } from '@/core';
 import type { Language } from '@/core/i18n/resources';
 import type { AuthStackParamList } from '@/navigation/types';
@@ -21,13 +25,14 @@ import colors from '@/ui/theme/colors';
 
 interface Props {
   onNextSubmit?: () => void;
+  userInfo?: MobileAppUserBasicDetails;
 }
 
-function AddUserInfo({ onNextSubmit }: Props) {
+function AddUserInfo({ onNextSubmit, userInfo }: Props) {
   const { language, setLanguage } = useSelectedLanguage();
   const route = useRoute<RouteProp<AuthStackParamList, 'AddFarmScreen'>>();
   const addUserInfo = usePostApiAccountCreateUserBasicDetails();
-  // const getUserInfo = useGetApiAccountFetchUserBasicDetails({})
+  const updateUser = usePutApiAccountExternaluserupdate();
 
   // Formik
   const {
@@ -42,9 +47,10 @@ function AddUserInfo({ onNextSubmit }: Props) {
     setValues,
   } = useFormik<FormikValues>({
     initialValues: {
-      displayName: route.params?.google?.displayName ?? '',
-      emailId: route.params?.google?.email ?? '',
-      mobileNumber: route.params?.phoneNumber ?? '',
+      displayName:
+        route.params?.google?.displayName ?? userInfo?.displayName ?? '',
+      emailId: route.params?.google?.email ?? userInfo?.emailId ?? '',
+      mobileNumber: route.params?.phoneNumber ?? userInfo?.mobileNumber ?? '',
     },
     onSubmit: () => {
       apiSubmitInfo(values);
@@ -82,30 +88,60 @@ function AddUserInfo({ onNextSubmit }: Props) {
   });
 
   function apiSubmitInfo() {
-    const currentUser = auth().currentUser;
-    addUserInfo.mutate(
-      {
-        data: { ...values, firebaseUserId: currentUser?.uid ?? '' },
-      },
-      {
-        onSuccess(data) {
-          if (data) {
-            onNextSubmit && onNextSubmit();
-          } else {
+    if (userInfo?.displayName) {
+      updateUser.mutate(
+        {
+          data: {
+            displayName: values.displayName,
+            email: values.emailId,
+            phoneNumber: values.mobileNumber,
+          },
+        },
+        {
+          onSuccess(data) {
+            if (data) {
+              onNextSubmit && onNextSubmit();
+            } else {
+              Toast.show({
+                type: 'error',
+                text1: 'Something went wrong!',
+              });
+            }
+          },
+          onError(error) {
             Toast.show({
               type: 'error',
-              text1: 'Something went wrong!',
+              text1: error.message,
             });
-          }
+          },
+        }
+      );
+    } else {
+      const currentUser = auth().currentUser;
+      addUserInfo.mutate(
+        {
+          data: { ...values, firebaseUserId: currentUser?.uid ?? '' },
         },
-        onError(error) {
-          Toast.show({
-            type: 'error',
-            text1: error.message,
-          });
-        },
-      }
-    );
+        {
+          onSuccess(data) {
+            if (data) {
+              onNextSubmit && onNextSubmit();
+            } else {
+              Toast.show({
+                type: 'error',
+                text1: 'Something went wrong!',
+              });
+            }
+          },
+          onError(error) {
+            Toast.show({
+              type: 'error',
+              text1: error.message,
+            });
+          },
+        }
+      );
+    }
   }
 
   const onSelect = React.useCallback(
@@ -122,7 +158,7 @@ function AddUserInfo({ onNextSubmit }: Props) {
 
   return (
     <ScrollView flex={1} mx={5}>
-      <Header title={'Test'} mt={3} />
+      <Header title={t('account-data')} mt={3} />
       <RoundInput
         mt={5}
         onBlur={handleBlur('displayName')}

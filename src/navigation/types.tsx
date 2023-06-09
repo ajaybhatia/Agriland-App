@@ -1,6 +1,8 @@
 import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import type { RouteProp as NRouteProp } from '@react-navigation/native';
 
+import type { MobileAppUserBasicDetails } from '@/apis/model';
+
 export type RootStackParamList = AuthStackParamList; //  & FooStackParamList & BarStackParamList
 // very important to type check useNavigation hook
 declare global {
@@ -33,7 +35,9 @@ export type AuthStackParamList = {
     phoneNumber?: string | undefined;
   };
   BottomTabs: undefined;
-  AccountDetailScreen: undefined;
+  AccountDetailScreen: {
+    userInfo?: MobileAppUserBasicDetails;
+  };
   FarmDetailScreen: undefined;
   WeatherDetailScreen: undefined;
   NotificationsDetails: undefined;

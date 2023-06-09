@@ -44,6 +44,7 @@ import type {
   UserBasicDetails,
   MobileAppUserBasicDetails,
   PutApiAccountUpdatefcmtokenParams,
+  UpdateExternalUserModel,
   PostApiAdBannerCreateUpdateAdBannerBody,
   AdBannerResponse,
   GetApiAdBannerGetByAdBannerIdParams,
@@ -100,9 +101,9 @@ import type {
   GetApiIrrigationTypeGetIrrigationTypeByIdParams,
   GetApiIrrigationTypeGetGetIrrigationTypesParams,
   Rss,
-  PushNotificationModel,
+  PostApiNotificationCreatenotificationParams,
   DeleteApiNotificationDeletenotificationParams,
-  GetApiNotificationGetallnotificationXParams,
+  PushNotificationPaginatedResponse,
   GetApiNotificationGetallnotificationParams,
   ViewNotificationPaginatedResponse,
   GetApiNotificationGetallviewnotificationParams,
@@ -1241,6 +1242,53 @@ export const getPutApiAccountUpdatefcmtokenMutationOptions = <TError = ErrorType
 ) => {
     
       const mutationOptions = getPutApiAccountUpdatefcmtokenMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+export const putApiAccountExternaluserupdate = (
+    updateExternalUserModel: UpdateExternalUserModel,
+ ) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/Account/externaluserupdate`, method: 'put',
+      headers: {'Content-Type': 'application/json', },
+      data: updateExternalUserModel
+    },
+      );
+    }
+  
+
+
+export const getPutApiAccountExternaluserupdateMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAccountExternaluserupdate>>, TError,{data: UpdateExternalUserModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiAccountExternaluserupdate>>, TError,{data: UpdateExternalUserModel}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAccountExternaluserupdate>>, {data: UpdateExternalUserModel}> = (props) => {
+          const {data} = props ?? {};
+
+          return  putApiAccountExternaluserupdate(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiAccountExternaluserupdateMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAccountExternaluserupdate>>>
+    export type PutApiAccountExternaluserupdateMutationBody = UpdateExternalUserModel
+    export type PutApiAccountExternaluserupdateMutationError = ErrorType<unknown>
+
+    export const usePutApiAccountExternaluserupdate = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAccountExternaluserupdate>>, TError,{data: UpdateExternalUserModel}, TContext>, }
+) => {
+    
+      const mutationOptions = getPutApiAccountExternaluserupdateMutationOptions(options);
      
       return useMutation(mutationOptions);
     }
@@ -2413,6 +2461,53 @@ export const useGetApiCropGetCultivationDetailsByFarmId = <TData = Awaited<Retur
 }
 
 
+export const getApiCropGetCultivationDetailsByUserId = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<FarmCropCultivationResponse>(
+      {url: `/api/Crop/getCultivationDetailsByUserId`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiCropGetCultivationDetailsByUserIdQueryKey = () => [`/api/Crop/getCultivationDetailsByUserId`] as const;
+  
+
+    
+export const getGetApiCropGetCultivationDetailsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiCropGetCultivationDetailsByUserIdQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>> = ({ signal }) => getApiCropGetCultivationDetailsByUserId(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiCropGetCultivationDetailsByUserIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>>
+export type GetApiCropGetCultivationDetailsByUserIdQueryError = ErrorType<unknown>
+
+export const useGetApiCropGetCultivationDetailsByUserId = <TData = Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiCropGetCultivationDetailsByUserIdQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
 export const getApiCropGetCropsByFarmId = (
     params?: GetApiCropGetCropsByFarmIdParams,
  signal?: AbortSignal
@@ -3569,12 +3664,11 @@ export const useGetApiNewsTest = <TData = Awaited<ReturnType<typeof getApiNewsTe
  * @summary CreateOrUpdateNotification
  */
 export const postApiNotificationCreatenotification = (
-    pushNotificationModel: PushNotificationModel,
+    params?: PostApiNotificationCreatenotificationParams,
  ) => {
       return customInstance<ApiResponse>(
       {url: `/api/Notification/createnotification`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: pushNotificationModel
+        params
     },
       );
     }
@@ -3583,17 +3677,17 @@ export const postApiNotificationCreatenotification = (
 
 export const getPostApiNotificationCreatenotificationMutationOptions = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{data: PushNotificationModel}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{data: PushNotificationModel}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{params?: PostApiNotificationCreatenotificationParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{params?: PostApiNotificationCreatenotificationParams}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, {data: PushNotificationModel}> = (props) => {
-          const {data} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, {params?: PostApiNotificationCreatenotificationParams}> = (props) => {
+          const {params} = props ?? {};
 
-          return  postApiNotificationCreatenotification(data,)
+          return  postApiNotificationCreatenotification(params,)
         }
 
         
@@ -3602,12 +3696,12 @@ export const getPostApiNotificationCreatenotificationMutationOptions = <TError =
    return  { mutationFn, ...mutationOptions }}
 
     export type PostApiNotificationCreatenotificationMutationResult = NonNullable<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>>
-    export type PostApiNotificationCreatenotificationMutationBody = PushNotificationModel
+    
     export type PostApiNotificationCreatenotificationMutationError = ErrorType<unknown>
 
     export const usePostApiNotificationCreatenotification = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{data: PushNotificationModel}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationCreatenotification>>, TError,{params?: PostApiNotificationCreatenotificationParams}, TContext>, }
 ) => {
     
       const mutationOptions = getPostApiNotificationCreatenotificationMutationOptions(options);
@@ -3664,62 +3758,11 @@ export const getDeleteApiNotificationDeletenotificationMutationOptions = <TError
       return useMutation(mutationOptions);
     }
     
-/**
- * @summary GetAllNotification
- */
-export const getApiNotificationGetallnotificationX = (
-    params?: GetApiNotificationGetallnotificationXParams,
- signal?: AbortSignal
-) => {
-      return customInstance<ApiResponse>(
-      {url: `/api/Notification/getallnotificationX`, method: 'get',
-        params, signal
-    },
-      );
-    }
-  
-
-export const getGetApiNotificationGetallnotificationXQueryKey = (params?: GetApiNotificationGetallnotificationXParams,) => [`/api/Notification/getallnotificationX`, ...(params ? [params]: [])] as const;
-  
-
-    
-export const getGetApiNotificationGetallnotificationXQueryOptions = <TData = Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError = ErrorType<unknown>>(params?: GetApiNotificationGetallnotificationXParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError, TData> & { queryKey: QueryKey } => {
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiNotificationGetallnotificationXQueryKey(params);
-
-  
-  
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>> = ({ signal }) => getApiNotificationGetallnotificationX(params, signal);
-    
-      
-      
-   return  { queryKey, queryFn, ...queryOptions}}
-
-export type GetApiNotificationGetallnotificationXQueryResult = NonNullable<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>>
-export type GetApiNotificationGetallnotificationXQueryError = ErrorType<unknown>
-
-export const useGetApiNotificationGetallnotificationX = <TData = Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError = ErrorType<unknown>>(
- params?: GetApiNotificationGetallnotificationXParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiNotificationGetallnotificationX>>, TError, TData>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetApiNotificationGetallnotificationXQueryOptions(params,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-
 export const getApiNotificationGetallnotification = (
     params?: GetApiNotificationGetallnotificationParams,
  signal?: AbortSignal
 ) => {
-      return customInstance<CropPaginatedResponse>(
+      return customInstance<PushNotificationPaginatedResponse>(
       {url: `/api/Notification/getallnotification`, method: 'get',
         params, signal
     },
@@ -3815,7 +3858,7 @@ export const getApiNotificationGetallunreadnotification = (
     
  signal?: AbortSignal
 ) => {
-      return customInstance<void>(
+      return customInstance<number>(
       {url: `/api/Notification/getallunreadnotification`, method: 'get', signal
     },
       );

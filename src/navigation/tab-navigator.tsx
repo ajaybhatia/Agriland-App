@@ -23,7 +23,13 @@ import {
   VStack,
 } from 'native-base';
 import React from 'react';
-import { Alert, Animated, Keyboard, StyleSheet } from 'react-native';
+import {
+  Alert,
+  Animated,
+  I18nManager,
+  Keyboard,
+  StyleSheet,
+} from 'react-native';
 import { Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
@@ -505,6 +511,7 @@ const DrawerMainRender = () => {
       )}
       screenOptions={{
         headerShown: false,
+        drawerPosition: I18nManager.isRTL ? 'right' : 'left',
       }}
       // screenOptions={{
       //   drawerType: '',
@@ -513,8 +520,9 @@ const DrawerMainRender = () => {
       <Drawer.Screen
         options={{
           headerShown: true,
-          title: 'Hello, Harminder',
-          headerTitle: 'Hello, Harminder',
+
+          title: 'Hello, Username',
+          headerTitle: 'Hello, Username',
           headerTitleStyle: {
             fontFamily: 'Poppins-Medium',
             fontSize: 16,
@@ -658,12 +666,13 @@ const BottomTab = () => {
       <CurvedBottomBar.Screen
         name="title2"
         position="LEFT"
-        //  component={() => <Screen2 />}
-        component={DashboardRootStackView}
+        component={() => <Screen2 />}
+        /// component={DashboardRootStackView}
       />
       <CurvedBottomBar.Screen
         name="title4"
-        component={MyCropRootStackView}
+        //component={MyCropRootStackView}
+        component={() => <Screen1 />}
         position="RIGHT"
       />
       <CurvedBottomBar.Screen
@@ -673,7 +682,8 @@ const BottomTab = () => {
       />
       <CurvedBottomBar.Screen
         name="title3"
-        component={CenterRootStackView}
+        component={() => <Screen1 />}
+        //component={CenterRootStackView}
         position="CENTER"
       />
     </CurvedBottomBar.Navigator>

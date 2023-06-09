@@ -1,43 +1,48 @@
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
 import axios from 'axios';
 import { Image as ImageBase } from 'expo-image';
 import { FlatList, View, VStack } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Animated, Dimensions, StyleSheet } from 'react-native';
-import { ExpandingDot } from 'react-native-animated-pagination-dots';
+import { Dimensions } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {
-  useGetApiFarmGetFarms,
+  useGetApiCropGetCultivationDetailsByFarmId,
   usePutApiAccountUpdatefcmtoken,
 } from '@/apis/endpoints/api';
 import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
-import type { AdBannerResponse, FarmResponse } from '@/apis/model';
+import type {
+  AdBannerResponse,
+  CultivationDetailResponse,
+  FarmCropCultivationResponse,
+  FarmResponse,
+} from '@/apis/model';
 import { useWeather } from '@/core/weather';
 import ListHeader from '@/ui/components/ListHeader';
 import colors from '@/ui/theme/colors';
 
-import FarmAddCell from '../crop/components/farm-add-cell';
-import FarmMapSelectionCell from '../crop/components/farm-map-selection-cell';
 import type { LocationAddress } from '../maps-views/model/location-address-model';
 import type { ForecastModel } from '../weather/models/weather-forecast-models';
 import CompleteProfileCell from './components/complete-profile-cell';
 import CropHomeCell from './components/crops-home-cell';
 import type { DropDownCellType } from './components/dropdown-item-cell';
 import DropDownIteCell from './components/dropdown-item-cell';
+import FarmerListCell from './components/farmer-list-cell';
 import TaskActivitesCell from './components/task-activites-cell';
 import WeatherCell from './components/weather-cell';
 
 function HomeScreen() {
   const setData = useWeather.use.setData();
-  const scrollX = React.useRef(new Animated.Value(0)).current;
+
   const nav = useNavigation();
   const putToken = usePutApiAccountUpdatefcmtoken();
-  const [farms, setFarms] = useState<FarmResponse[]>([]);
+
   const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>();
+  const [selectedCrop, setSelectedCrop] = useState<
+    CultivationDetailResponse | undefined
+  >();
   const [weatherReport, setWeatherReport] = useState<
     ForecastModel | undefined
   >();
@@ -48,13 +53,6 @@ function HomeScreen() {
     isShow: boolean;
     index: number;
   }>({ index: 0, isShow: false });
-  const [moreFarmInfo, setMoreFarmInfo] = useState<{
-    take: number;
-    skip: number;
-  }>({
-    take: 20,
-    skip: 0,
-  });
 
   useEffect(() => {
     const getToken = async () => {
@@ -73,29 +71,22 @@ function HomeScreen() {
 
     getToken();
   }, []);
+  // get crops by farmId
 
-  // get Farm APis
-
-  const getFarms = useGetApiFarmGetFarms(
+  const getCrops = useGetApiCropGetCultivationDetailsByFarmId(
     {
-      // skip: moreFarmInfo.skip,
-      // take: moreFarmInfo.take,
+      farmId: selectedFarm?.id ?? '',
     },
     {
       query: {
-        onSuccess: (data: FarmResponse[]) => {
-          console.log('\n\n\ndata ===> ', data.length, '\n\n\n');
-          if (data.length > 0) {
-            setFarms(moreFarmInfo.skip <= 0 ? data : [...farms, ...data]);
-            if (selectedFarm === undefined && data.length > 0) {
-              setSelectedFarm(data[0]);
-              if (data[0].coordinates && data[0].coordinates?.length > 0) {
-                onWeatherForecast(
-                  data[0].coordinates[0]?.lat ?? 0.0,
-                  data[0].coordinates[0]?.lng ?? 0.0
-                );
-              }
-            }
+        enabled: selectedFarm !== undefined,
+        onSuccess: (data: FarmCropCultivationResponse) => {
+          if (
+            data &&
+            data?.cultivationDetails &&
+            data?.cultivationDetails.length > 0
+          ) {
+            setSelectedCrop(data?.cultivationDetails[0]);
           }
         },
       },
@@ -159,6 +150,22 @@ function HomeScreen() {
     [setSelectedFarm]
   );
 
+  const farmCell = useCallback(() => {
+    return (
+      <FarmerListCell
+        onSelectedFarm={onSelectFarm}
+        selectedFarm={selectedFarm}
+      />
+    );
+  }, []);
+
+  const onSelectCrop = useCallback(
+    (item: CultivationDetailResponse) => {
+      setSelectedCrop(item);
+    },
+    [setSelectedCrop]
+  );
+
   const onShowBottomSheet = useCallback(
     (isShowItem: boolean, index: number) => {
       setShowSheets({ index: index, isShow: isShowItem });
@@ -166,7 +173,6 @@ function HomeScreen() {
     [setShowSheets]
   );
 
-  const addNewFarm = useCallback(() => nav.navigate('AddFarmHomeScreen'), []);
   const onSeeWeatherDDetail = useCallback(() => {
     if (weatherReport && currentAddress && selectedFarm) {
       setData(
@@ -184,49 +190,14 @@ function HomeScreen() {
         data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]}
         keyExtractor={(item, index) => `${index}`}
         contentContainerStyle={{ paddingBottom: 100 }}
+        initialScrollIndex={0}
         renderItem={({ item, index }: { item: number; index: number }) => {
           if (index === 0) {
             return (
-              <VStack mt={2} pb={5}>
-                <FlatList
-                  horizontal
-                  initialNumToRender={3}
-                  onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    {
-                      useNativeDriver: false,
-                    }
-                  )}
-                  extraData={farms.length || selectedFarm}
-                  keyExtractor={(item, indexV) => `${indexV}`}
-                  showsHorizontalScrollIndicator={false}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{ paddingHorizontal: 20 }}
-                  data={farms}
-                  ListHeaderComponent={
-                    <FarmAddCell onPreviousSubmit={addNewFarm} />
-                  }
-                  renderItem={({ item: farm }: { item: FarmResponse }) => (
-                    <FarmMapSelectionCell
-                      item={farm}
-                      selectedItem={selectedFarm}
-                      onSelectFarm={onSelectFarm}
-                    />
-                  )}
-                  //estimatedItemSize={300}
-                />
-                <ExpandingDot
-                  data={farms}
-                  expandingDotWidth={8}
-                  scrollX={scrollX}
-                  inActiveDotOpacity={0.3}
-                  dotStyle={styles.dotStyle}
-                  activeDotColor={colors.button_color}
-                  containerStyle={{
-                    bottom: 0,
-                  }}
-                />
-              </VStack>
+              <FarmerListCell
+                onSelectedFarm={onSelectFarm}
+                selectedFarm={selectedFarm}
+              />
             );
           } else if (
             index === 1 &&
@@ -251,25 +222,33 @@ function HomeScreen() {
                 />
               </VStack>
             );
-          } else if (index === 2) {
+          } else if (
+            index === 2 &&
+            getCrops.data?.cultivationDetails &&
+            getCrops.data?.cultivationDetails.length > 0
+          ) {
             return (
               <VStack mt={2} height={120}>
-                <FlashList
+                <FlatList
                   horizontal
-                  estimatedItemSize={120}
-                  extraData={selectedFarm}
                   keyExtractor={(item, index) => `${index}`}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 20 }}
-                  data={[1, 2, 3, 4]}
+                  data={getCrops.data?.cultivationDetails ?? []}
                   renderItem={({
                     item,
                     index,
                   }: {
-                    item: number;
+                    item: CultivationDetailResponse;
                     index: number;
-                  }) => <CropHomeCell />}
+                  }) => (
+                    <CropHomeCell
+                      item={item}
+                      // selectedItem={selectedCrop}
+                      // onSelect={onSelectCrop}
+                    />
+                  )}
                 />
               </VStack>
             );
@@ -302,7 +281,7 @@ function HomeScreen() {
                   title="Tasks"
                   ml={5}
                   mr={5}
-                  isSeeAllShow={false}
+                  isSeeAllShow={true}
                   btnTitle="See All"
                   iconName="arrow-top-right-bold-box"
                   as={MaterialCommunityIcons}
@@ -450,13 +429,3 @@ function HomeScreen() {
 }
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  dotStyle: {
-    width: 8,
-    height: 8,
-    backgroundColor: colors.button_color,
-    borderRadius: 5,
-    marginHorizontal: 5,
-  },
-});

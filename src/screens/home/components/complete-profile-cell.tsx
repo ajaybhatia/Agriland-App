@@ -29,7 +29,7 @@ const CompleteProfileCell = () => {
               Complete Your Account
             </Text>
           </VStack>
-          <CircleProgressBar percentage={24} size={60} splited={false} />
+          <CircleProgressBar percentage={100} size={60} splited={false} />
         </HStack>
       </Pressable>
     </CardWithShadow>

@@ -16,4 +16,5 @@ export interface MobileAppUserBasicDetails {
   emailId?: string | null;
   mobileNumber?: string | null;
   firebaseUserId?: string | null;
+  fcmToken?: string | null;
 }
