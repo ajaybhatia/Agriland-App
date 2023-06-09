@@ -25,7 +25,7 @@ const ForecastDetailCell = ({ index, day, weatherReport }: Props) => {
       <View flex={0.35}>
         <Text
           w={'100%'}
-          textAlign={I18nManager.isRTL ? 'left' : 'right'}
+          textAlign={I18nManager.isRTL ? 'left' : 'left'}
           color={'white'}
           fontFamily={'heading'}
           fontSize={14}
@@ -37,7 +37,7 @@ const ForecastDetailCell = ({ index, day, weatherReport }: Props) => {
       <View flex={0.21}>
         <Text
           w={'100%'}
-          textAlign={I18nManager.isRTL ? 'left' : 'right'}
+          textAlign={I18nManager.isRTL ? 'left' : 'left'}
           color={'white'}
           fontFamily={'heading'}
           fontSize={12}
@@ -52,7 +52,7 @@ const ForecastDetailCell = ({ index, day, weatherReport }: Props) => {
       <View flex={0.22}>
         <Text
           w={'100%'}
-          textAlign={I18nManager.isRTL ? 'center' : 'right'}
+          textAlign={I18nManager.isRTL ? 'center' : 'left'}
           color={'white'}
           fontFamily={'heading'}
           fontSize={12}
@@ -68,6 +68,7 @@ const ForecastDetailCell = ({ index, day, weatherReport }: Props) => {
         fontFamily={'heading'}
         fontSize={12}
         fontWeight={'500'}
+        textAlign={I18nManager.isRTL ? 'left' : 'right'}
       >
         {Math.round(weatherReport.daily?.windspeed_10m_max[index] ?? 0)}
         Km/h

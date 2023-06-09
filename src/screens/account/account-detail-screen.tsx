@@ -1,6 +1,5 @@
 import { Button, HStack, Text, View, VStack } from 'native-base';
 import React, { useCallback, useState } from 'react';
-import { I18nManager } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 import { useGetApiAccountFetchUserBasicDetails } from '@/apis/endpoints/api';
@@ -34,7 +33,7 @@ const AccountDetailScreen = () => {
                   fontStyle={'normal'}
                   fontSize={13}
                   fontWeight={'200'}
-                  textAlign={I18nManager.isRTL ? 'left' : 'right'}
+                  textAlign={'left'}
                   color={colors.TITLE_COLOR}
                   flex={0.4}
                 >
@@ -57,7 +56,7 @@ const AccountDetailScreen = () => {
                   fontStyle={'normal'}
                   fontSize={13}
                   fontWeight={'200'}
-                  textAlign={I18nManager.isRTL ? 'left' : 'right'}
+                  textAlign={'left'}
                   color={colors.TITLE_COLOR}
                 >
                   ID Number
@@ -76,7 +75,7 @@ const AccountDetailScreen = () => {
               <HStack mt={2}>
                 <Text
                   flex={0.4}
-                  textAlign={I18nManager.isRTL ? 'left' : 'right'}
+                  textAlign={'left'}
                   fontStyle={'normal'}
                   fontSize={13}
                   fontWeight={'200'}
@@ -101,7 +100,7 @@ const AccountDetailScreen = () => {
                   fontStyle={'normal'}
                   fontSize={13}
                   fontWeight={'200'}
-                  textAlign={I18nManager.isRTL ? 'left' : 'right'}
+                  textAlign={'left'}
                   color={colors.TITLE_COLOR}
                 >
                   E-mail
