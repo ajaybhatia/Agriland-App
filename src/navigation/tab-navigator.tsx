@@ -41,6 +41,7 @@ import { useAuth } from '@/core';
 import AccountDetailScreen from '@/screens/account/account-detail-screen';
 import AddOperationScreen from '@/screens/CenterScreens/add-operations-screen';
 import CropCodingScreen from '@/screens/crop/crop-coding-screen';
+import CropDetailScreen from '@/screens/crop/crop-detail-screen';
 import CropRegisterDetails from '@/screens/crop/crop-register-details';
 import CropRegistration from '@/screens/crop/crop-registration';
 import MyCropsScreen from '@/screens/crop/my-crops-screen';
@@ -51,6 +52,12 @@ import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
 import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
+import ChooseSateliteFarmScreen from '@/screens/satellite/choose-satelite-farm-screen';
+import SateliteDemoMapScreen from '@/screens/satellite/satelite-demo-map-screen';
+import SateLiteDemoScreen from '@/screens/satellite/satelite-demo-screen';
+import SateliteDetailSubscriptionScreen from '@/screens/satellite/satelite-detail-subscription-screen';
+import SateliteMapScreen from '@/screens/satellite/satelite-map-screen';
+import SubscriptionBundleScreen from '@/screens/satellite/subscription-bundle-screen';
 import TaskCalenderDetailScreen from '@/screens/tasks/task-calender-detail-screen';
 import TaskDetailScreen from '@/screens/tasks/tasks-detail-screen';
 import MakeAppointmentScreen from '@/screens/TestScreens/make-appointment-screen';
@@ -671,13 +678,13 @@ const BottomTab = () => {
       <CurvedBottomBar.Screen
         name="title2"
         position="LEFT"
-        component={() => <Screen2 />}
-        /// component={DashboardRootStackView}
+        //component={() => <Screen2 />}
+        component={DashboardRootStackView}
       />
       <CurvedBottomBar.Screen
         name="title4"
-        //component={MyCropRootStackView}
-        component={() => <Screen1 />}
+        component={MyCropRootStackView}
+        //component={() => <Screen1 />}
         position="RIGHT"
       />
       <CurvedBottomBar.Screen
@@ -687,8 +694,8 @@ const BottomTab = () => {
       />
       <CurvedBottomBar.Screen
         name="title3"
-        component={() => <Screen1 />}
-        //component={CenterRootStackView}
+        //component={() => <Screen1 />}
+        component={CenterRootStackView}
         position="CENTER"
       />
     </CurvedBottomBar.Navigator>
@@ -1132,6 +1139,181 @@ export const TabNavigator = () => {
         }}
         name="TaskCalenderDetailScreen"
         component={TaskCalenderDetailScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Crop',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="CropDetailScreen"
+        component={CropDetailScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: false,
+          title: 'Crop',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="SateLiteDemoScreen"
+        component={SateLiteDemoScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Choose A Bundle',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="SubscriptionBundleScreen"
+        component={SubscriptionBundleScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Satellite Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="SateliteDetailSubscriptionScreen"
+        component={SateliteDetailSubscriptionScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Satellite Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="ChooseSateliteFarmScreen"
+        component={ChooseSateliteFarmScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Satellite Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="SateliteDemoMapScreen"
+        component={SateliteDemoMapScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Satellite Details',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="SateliteMapScreen"
+        component={SateliteMapScreen}
       />
     </RootStack.Navigator>
   );

@@ -1,4 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
+import type {
+  ApiResponse,
+  ViewNotificationPaginatedResponse,
+  ViewNotificationResponse,
+} from '@/apis/model';
 import {
   Box,
   CheckIcon,
@@ -10,35 +14,30 @@ import {
   Select,
   Stack,
   Text,
-  View,
   VStack,
+  View,
 } from 'native-base';
-import React, { useEffect, useState } from 'react';
 import type {
   NativeSyntheticEvent,
   TextInputSubmitEditingEventData,
 } from 'react-native';
-import { ActivityIndicator } from 'react-native';
-import { I18nManager } from 'react-native';
-import { RefreshControl } from 'react-native';
-import Toast from 'react-native-toast-message';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import React, { useEffect, useState } from 'react';
 import {
   useGetApiNotificationGetallviewnotification,
   usePostApiNotificationAddviewnotification,
 } from '@/apis/endpoints/api';
-import type {
-  ApiResponse,
-  ViewNotificationPaginatedResponse,
-  ViewNotificationResponse,
-} from '@/apis/model';
+
+import { ActivityIndicator } from 'react-native';
 import AppLoader from '@/ui/components/AppLoader';
 import EmptyList from '@/ui/components/EmptyList';
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { I18nManager } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import NoticationCell from './components/notification-cell';
+import { RefreshControl } from 'react-native';
+import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
 
 type MainTitle = {
   title: string;
@@ -125,7 +124,7 @@ const NotificationsDetails = () => {
                   if (ItemIndex >= 0) {
                     mainArray[ItemIndex] = {
                       data: infoArray,
-                      id: 1,
+                      id: 2,
                       title: 'Information Center',
                     };
                   } else {
@@ -133,7 +132,7 @@ const NotificationsDetails = () => {
                       ...mainArray,
                       {
                         data: infoArray,
-                        id: 1,
+                        id: 2,
                         title: 'Information Center',
                       },
                     ];
@@ -145,7 +144,7 @@ const NotificationsDetails = () => {
                   if (ItemIndex >= 0) {
                     mainArray[ItemIndex] = {
                       data: serviceArray,
-                      id: 1,
+                      id: 3,
                       title: 'Service',
                     };
                   } else {
@@ -153,7 +152,7 @@ const NotificationsDetails = () => {
                       ...mainArray,
                       {
                         data: serviceArray,
-                        id: 1,
+                        id: 3,
                         title: 'Service',
                       },
                     ];

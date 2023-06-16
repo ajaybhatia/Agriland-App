@@ -3,23 +3,28 @@ import { FlatList, View, VStack } from 'native-base';
 import React, { useCallback, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useGetApiCropGetCrops } from '@/apis/endpoints/api';
-import type { CropResponse } from '@/apis/model';
+import { useGetApiCropGetCultivationDetailsByUserId } from '@/apis/endpoints/api';
+import type {
+  CultivationDetailResponse,
+  FarmCropCultivationResponse,
+} from '@/apis/model';
 import ListHeader from '@/ui/components/ListHeader';
 
 import TaskActivitesCell from '../home/components/task-activites-cell';
 import CropAddCell from './components/crop-add-cell';
 import CropCodingCell from './components/crop-coding-cell';
+import CropFarmLocationCell from './components/crop-farm-location-cell';
 import CropGrowthCell from './components/crop-growth-cell';
-import CropMapCell from './components/crop-map-cell';
 import CropMapSelectionCell from './components/crop-map-selection-cell';
 import CropMarketingCell from './components/crop-marketing-cell';
 
-const CropRegisterDetails = () => {
+const CropDetailScreen = () => {
   const nav = useNavigation();
-  const [crops, setCrops] = useState<CropResponse[]>([]);
-  const [selectedCrop, setSelectedCrop] = useState<CropResponse | undefined>();
-  const addNewCrop = useCallback(() => nav.navigate('AddFarmHomeScreen'), []);
+  const [crops, setCrops] = useState<CultivationDetailResponse[]>([]);
+  const [selectedCrop, setSelectedCrop] = useState<
+    CultivationDetailResponse | undefined
+  >();
+  const addNewCrop = useCallback(() => nav.navigate('CropRegistration'), []);
   const [moreCropInfo, setMoreCropInfo] = useState<{
     take: number;
     skip: number;
@@ -29,7 +34,7 @@ const CropRegisterDetails = () => {
   });
 
   const onSelectCrop = useCallback(
-    (item: CropResponse) => {
+    (item?: CultivationDetailResponse) => {
       setSelectedCrop(item);
     },
     [setSelectedCrop]
@@ -41,27 +46,36 @@ const CropRegisterDetails = () => {
 
   // get Crops
 
-  const getCrops = useGetApiCropGetCrops(
-    {
-      // skip: moreFarmInfo.skip,
-      // take: moreFarmInfo.take,
-    },
-    {
-      query: {
-        onSuccess: (data: CropResponse[]) => {
-          if (data && data.length > 0) {
-            setCrops(moreCropInfo.skip <= 0 ? data : [...crops, ...data]);
-            if (selectedCrop === undefined && data && data.length > 0) {
-              setSelectedCrop(data[0]);
-            }
+  const getCrops = useGetApiCropGetCultivationDetailsByUserId({
+    query: {
+      onSuccess: (data: FarmCropCultivationResponse) => {
+        console.log(
+          '\n\ndatauseGetApiCropGetCultivationDetailsByUserId ===> ',
+          data
+        );
+        if (data && data?.cultivationDetails) {
+          setCrops(
+            moreCropInfo.skip <= 0
+              ? data.cultivationDetails
+              : [...crops, ...data.cultivationDetails]
+          );
+          if (
+            selectedCrop === undefined &&
+            data &&
+            data?.cultivationDetails &&
+            data?.cultivationDetails.length > 0
+          ) {
+            setSelectedCrop(data?.cultivationDetails[0]);
+          } else if (selectedCrop && data?.cultivationDetails.length <= 0) {
+            setSelectedCrop(undefined);
           }
-        },
-        onError(err) {
-          console.log('getCrops==> ', err.message);
-        },
+        }
       },
-    }
-  );
+      onError(err) {
+        console.log('getCrops==> ', err.message);
+      },
+    },
+  });
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
@@ -84,18 +98,28 @@ const CropRegisterDetails = () => {
                   ListHeaderComponent={
                     <CropAddCell onPreviousSubmit={addNewCrop} />
                   }
-                  renderItem={({ item: itemCrop }: { item: CropResponse }) => (
+                  renderItem={({
+                    item: itemCrop,
+                  }: {
+                    item: CultivationDetailResponse;
+                  }) => (
                     <CropMapSelectionCell
                       item={itemCrop}
                       selectedItem={selectedCrop}
-                      onSelectCrop={onSelectCrop}
+                      onSelectCrop={() => onSelectCrop(itemCrop)}
                     />
                   )}
                   //estimatedItemSize={300}
                 />
               </VStack>
             );
-          } else if (index === 1 && selectedCrop) {
+          } else if (index === 1) {
+            return (
+              <VStack mt={3}>
+                <CropGrowthCell item={selectedCrop} />
+              </VStack>
+            );
+          } else if (index === 2) {
             return (
               <VStack mt={3}>
                 <ListHeader
@@ -107,11 +131,10 @@ const CropRegisterDetails = () => {
                   iconName="arrow-top-right-bold-box"
                   as={MaterialCommunityIcons}
                 />
-                <CropGrowthCell item={selectedCrop} />
                 <TaskActivitesCell />
               </VStack>
             );
-          } else if (index === 2) {
+          } else if (index === 3) {
             return (
               <VStack mt={3}>
                 <ListHeader
@@ -131,7 +154,7 @@ const CropRegisterDetails = () => {
                 />
               </VStack>
             );
-          } else if (index === 3) {
+          } else if (index === 4) {
             return (
               <VStack mt={3}>
                 <ListHeader
@@ -143,14 +166,18 @@ const CropRegisterDetails = () => {
                   iconName="arrow-top-right-bold-box"
                   as={MaterialCommunityIcons}
                 />
-                <CropMarketingCell />
+                <CropMarketingCell
+                  btnTitle="Start Now"
+                  title="Do you want to code the crop for export abroad?"
+                  onSelect={onCropCoding}
+                />
               </VStack>
             );
-          } else if (index === 4) {
+          } else if (index === 5) {
             return (
               <VStack mt={3}>
                 <ListHeader
-                  title="Crop Location On The Map"
+                  title="Crop Location on the map"
                   ml={5}
                   mr={5}
                   isSeeAllShow={false}
@@ -158,10 +185,10 @@ const CropRegisterDetails = () => {
                   iconName="arrow-top-right-bold-box"
                   as={MaterialCommunityIcons}
                 />
-                <CropMapCell cropItem={selectedCrop} />
+                <CropFarmLocationCell />
               </VStack>
             );
-          } else if (index === 5) {
+          } else if (index === 6) {
             return (
               <VStack mt={3}>
                 <ListHeader
@@ -176,11 +203,12 @@ const CropRegisterDetails = () => {
                 <CropCodingCell
                   btnTitle="Apply Now"
                   img="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
-                  title="Apply for GLOBALG.AP. certification"
+                  title="Apply for GLOBALG.A.P certification"
+                  onSelect={onCropCoding}
                 />
               </VStack>
             );
-          } else if (index === 6) {
+          } else if (index === 7) {
             return (
               <VStack mt={3}>
                 <ListHeader
@@ -196,10 +224,11 @@ const CropRegisterDetails = () => {
                   btnTitle="Apply Now"
                   img="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
                   title="Apply now on the agricultural advance"
+                  onSelect={onCropCoding}
                 />
               </VStack>
             );
-          } else if (index === 7) {
+          } else if (index === 8) {
             return (
               <VStack mt={3}>
                 <ListHeader
@@ -214,7 +243,8 @@ const CropRegisterDetails = () => {
                 <CropCodingCell
                   btnTitle="Start Now"
                   img="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
-                  title="Store your crop in one of the approved stations"
+                  title="Store your crop in one oof the approved stations"
+                  onSelect={onCropCoding}
                 />
               </VStack>
             );
@@ -226,4 +256,4 @@ const CropRegisterDetails = () => {
   );
 };
 
-export default CropRegisterDetails;
+export default CropDetailScreen;

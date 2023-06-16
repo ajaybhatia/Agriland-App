@@ -58,7 +58,7 @@ const App = () => {
 
       // getToken();
       messaging().onMessage(onMessageReceived);
-      messaging().setBackgroundMessageHandler(onMessageReceived);
+      //messaging().setBackgroundMessageHandler(onMessageReceived);
       addNotificationActions();
     }
   }, []);

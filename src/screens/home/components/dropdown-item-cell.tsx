@@ -16,6 +16,7 @@ export interface DropDownIteCellType {
   isShow?: boolean;
   items: DropDownCellType[];
   onShow?: (isShowItem: boolean, index: number) => void;
+  onPress?: (title: string) => void;
 }
 const DropDownIteCell = ({
   title,
@@ -23,6 +24,7 @@ const DropDownIteCell = ({
   items,
   onShow,
   index: indexV,
+  onPress,
 }: DropDownIteCellType) => {
   return (
     <VStack>
@@ -56,7 +58,11 @@ const DropDownIteCell = ({
       {isShow &&
         items.map((item: DropDownCellType, index: number) => {
           return (
-            <View key={`${index}`} mt={2}>
+            <Pressable
+              onPress={() => onPress && onPress(item.title)}
+              key={`${index}`}
+              mt={2}
+            >
               <HStack
                 shadow={1}
                 borderRadius={5}
@@ -94,7 +100,7 @@ const DropDownIteCell = ({
                   transition={1000}
                 />
               </HStack>
-            </View>
+            </Pressable>
           );
         })}
     </VStack>

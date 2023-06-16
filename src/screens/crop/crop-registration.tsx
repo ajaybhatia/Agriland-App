@@ -1,5 +1,5 @@
+import { View } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
 
 import AddCropMaps from './add-crop-maps';
 

@@ -20,6 +20,14 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { I18nManager, Platform, SafeAreaView } from 'react-native';
 import { StyleSheet } from 'react-native';
+import type { LoginResult } from 'react-native-fbsdk-next';
+import {
+  AccessToken,
+  AuthenticationToken,
+  GraphRequest,
+  GraphRequestManager,
+  LoginManager,
+} from 'react-native-fbsdk-next';
 import PhoneInput from 'react-native-phone-number-input';
 import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -185,6 +193,113 @@ export const LoginForm = () => {
     },
     [setLanguage]
   );
+
+  // Facebook Login
+
+  const faceBookSignin = async () => {
+    try {
+      setFacebookLoading(true);
+
+      // Attempt a login using the Facebook login dialog asking for default permissions.
+      LoginManager.logInWithPermissions(['public_profile']).then(
+        async function (result: LoginResult) {
+          if (result.isCancelled) {
+            console.log('Login cancelled');
+          } else if (result.declinedPermissions) {
+            console.log('Login decline with permissions: ');
+            Toast.show({
+              type: 'error',
+              text1: 'Login decline',
+            });
+          } else if (result.grantedPermissions) {
+            console.log('Login success with permissions: ');
+
+            let resultAuth: AuthenticationToken | AccessToken | null;
+            let facebookCredential: FirebaseAuthTypes.AuthCredential | null;
+
+            if (Platform.OS === 'ios') {
+              resultAuth =
+                await AuthenticationToken.getAuthenticationTokenIOS();
+
+              if (resultAuth) {
+                facebookUserInfo(resultAuth?.authenticationToken ?? '');
+                facebookCredential = auth.FacebookAuthProvider.credential(
+                  resultAuth!.authenticationToken
+                );
+                if (facebookCredential) {
+                  let faceBookDetails = await auth().signInWithCredential(
+                    facebookCredential
+                  );
+                  console.log('faceBookDetails ==> ', faceBookDetails);
+                  setFacebookLoading(false);
+                } else {
+                  Toast.show({
+                    type: 'error',
+                    text1: 'Login fail with firebase',
+                  });
+                }
+                setFacebookLoading(false);
+              } else {
+                setFacebookLoading(false);
+              }
+            } else {
+              resultAuth = await AccessToken.getCurrentAccessToken();
+              if (resultAuth) {
+                facebookUserInfo(resultAuth?.accessToken ?? '');
+                facebookCredential = auth.FacebookAuthProvider.credential(
+                  resultAuth.accessToken
+                );
+
+                if (facebookCredential) {
+                  await auth().signInWithCredential(facebookCredential);
+                  setFacebookLoading(false);
+                }
+              }
+            }
+          }
+        },
+        function (error) {
+          setFacebookLoading(false);
+          Toast.show({
+            type: 'error',
+            text1: 'Login fail',
+          });
+          console.log('Login fail with error: ' + error);
+        }
+      );
+    } catch (error) {
+      setFacebookLoading(false);
+      console.log('faceBookSignin error==> ', error);
+    }
+  };
+
+  const responseInfoCallback = (error: any, result: any) => {
+    if (error) {
+      setFacebookLoading(false);
+      console.log('\n\n responseInfoCallback Error ===> ', error);
+    } else {
+      setFacebookLoading(false);
+      console.log('\n\n responseInfoCallback Success ===> ', result);
+    }
+  };
+
+  const facebookUserInfo = (accessToken: string) => {
+    const infoRequest = new GraphRequest(
+      '/me',
+      {
+        accessToken: accessToken,
+        parameters: {
+          fields: {
+            string: 'name,first_name,last_name',
+          },
+        },
+      },
+      responseInfoCallback
+    );
+
+    // Start the graph request.
+    new GraphRequestManager().addRequest(infoRequest).start();
+  };
 
   return (
     <ScrollView
@@ -392,24 +507,24 @@ export const LoginForm = () => {
                     w={'80%'}
                     mb={3}
                     isLoading={isFacebookLoading}
-                    //onPress={() => faceBookSignin()}
-                    onPress={() => {
-                      // onFacebookButtonPress().then(() => {
-                      //   console.log('Signed in with Facebook!');
-                      //   setFacebookLoading(false);
-                      // })
-                      // if (I18nManager.isRTL) {
-                      //   onSelect({
-                      //     label: translate('settings.english'),
-                      //     value: 'en',
-                      //   });
-                      // } else {
-                      //   onSelect({
-                      //     label: translate('settings.arabic'),
-                      //     value: 'ar',
-                      //   });
-                      // }
-                    }}
+                    onPress={() => faceBookSignin()}
+                    //</VStack>onPress={() => {
+                    // onFacebookButtonPress().then(() => {
+                    //   console.log('Signed in with Facebook!');
+                    //   setFacebookLoading(false);
+                    // })
+                    // if (I18nManager.isRTL) {
+                    //   onSelect({
+                    //     label: translate('settings.english'),
+                    //     value: 'en',
+                    //   });
+                    // } else {
+                    //   onSelect({
+                    //     label: translate('settings.arabic'),
+                    //     value: 'ar',
+                    //   });
+                    // }
+                    // }}
                     overflow={'hidden'}
                     borderRadius={'lg'}
                     mt={5}

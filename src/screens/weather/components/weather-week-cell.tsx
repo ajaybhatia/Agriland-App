@@ -1,4 +1,10 @@
 import { FlatList, HStack, Icon, Text, VStack } from 'native-base';
+import type { ILinearGradientProps } from 'native-base/lib/typescript/components/primitives/Box/types';
+import type {
+  ColorType,
+  ResponsiveValue,
+} from 'native-base/lib/typescript/components/types';
+import type { IColors } from 'native-base/lib/typescript/theme/base/colors';
 import * as React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -9,11 +15,13 @@ import ForecastDetailCell from './forecast-detail-cell';
 
 type Props = {
   weatherReport: ForecastModel;
+  iconColor?: ResponsiveValue<IColors | (string & {})>;
+  bgColor?: ResponsiveValue<ColorType | (string & {}) | ILinearGradientProps>;
 };
-const WeatherWeekCell = ({ weatherReport }: Props) => {
+const WeatherWeekCell = ({ weatherReport, bgColor, iconColor }: Props) => {
   return (
     <VStack
-      bgColor={'rgba(0,0,0,0.5)'}
+      bgColor={bgColor ? bgColor : 'rgba(0,0,0,0.5)'}
       mx={5}
       my={3}
       overflow={'hidden'}
@@ -43,7 +51,12 @@ const WeatherWeekCell = ({ weatherReport }: Props) => {
                 source={require('@assets/weather-icon/1.png')}
                 resizeMode="cover"
               /> */}
-        <Icon as={Entypo} name={'drop'} size={'lg'} color={'blue.700'} />
+        <Icon
+          as={Entypo}
+          name={'drop'}
+          size={'lg'}
+          color={iconColor ? iconColor : 'blue.700'}
+        />
         {/* <Image
                 alt=""
                 h={8}
@@ -55,13 +68,13 @@ const WeatherWeekCell = ({ weatherReport }: Props) => {
           as={MaterialCommunityIcons}
           name={'cloud'}
           size={'lg'}
-          color={'blue.700'}
+          color={iconColor ? iconColor : 'blue.700'}
         />
         <Icon
           as={FontAwesome5}
           name={'wind'}
           size={'lg'}
-          color={'blue.700'}
+          color={iconColor ? iconColor : 'blue.700'}
           mr={3}
         />
       </HStack>

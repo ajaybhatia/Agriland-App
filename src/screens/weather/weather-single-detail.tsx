@@ -118,7 +118,6 @@ const WeatherSingleDetail = () => {
           });
           setHistoryReport(hoursArray);
           setLoading(false);
-          console.log(hoursArray);
         } else {
           console.log('Not found');
           setLoading(false);

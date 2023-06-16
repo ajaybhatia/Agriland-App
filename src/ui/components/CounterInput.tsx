@@ -48,7 +48,6 @@ export default function CounterInput({
             color: '#333',
           }}
           onChange={(v: number, type: any) => {
-            console.log('onChange ==> ', v, type);
             onNewNumber && onNewNumber(v);
           }}
         />

@@ -9,6 +9,7 @@ type Props = {
   borderColor?: string;
   borderWidth?: number;
   borderRadius?: number;
+  overflow?: string;
 };
 export default function CardWithShadow({
   bgColor = 'white',
@@ -18,6 +19,7 @@ export default function CardWithShadow({
   borderWidth = 1,
   borderRadius,
   children,
+  overflow = 'hidden',
 }: PropsWithChildren<Props>) {
   return (
     <Box
@@ -27,6 +29,7 @@ export default function CardWithShadow({
       my={2}
       mx={mx}
       shadow={shadow}
+      overflow={overflow}
       borderRadius={borderRadius ? borderRadius : 'xl'}
     >
       {children}

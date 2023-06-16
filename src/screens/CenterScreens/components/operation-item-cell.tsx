@@ -15,8 +15,16 @@ export type OperationItem = {
 };
 type Props = {
   btns: OperationItem;
+  onFirstOption?: () => void;
+  onSecondOption?: () => void;
+  onThirdOption?: () => void;
 };
-const OperationItemCell = ({ btns }: Props) => {
+const OperationItemCell = ({
+  btns,
+  onFirstOption,
+  onSecondOption,
+  onThirdOption,
+}: Props) => {
   const nav = useNavigation();
   return (
     <VStack mx={3} mt={2}>
@@ -60,7 +68,7 @@ const OperationItemCell = ({ btns }: Props) => {
           shadow={1}
           py={2}
           alignItems={'center'}
-          onPress={() => nav.navigate('CropRegisterDetails')}
+          onPress={onFirstOption}
         >
           <HStack justifyContent={'space-between'} alignItems={'center'}>
             <Text
@@ -81,7 +89,8 @@ const OperationItemCell = ({ btns }: Props) => {
           </HStack>
         </Pressable>
         <Pressable
-          onPress={() => nav.navigate('STationBookedScreen')}
+          onPress={onSecondOption}
+          //onPress={() => nav.navigate('STationBookedScreen')}
           flex={0.48}
           backgroundColor={'white'}
           borderRadius={10}
@@ -110,7 +119,8 @@ const OperationItemCell = ({ btns }: Props) => {
       </HStack>
 
       <Pressable
-        onPress={() => nav.navigate('TestScreen')}
+        onPress={onThirdOption}
+        //onPress={() => nav.navigate('TestScreen')}
         backgroundColor={'white'}
         borderRadius={10}
         shadow={1}

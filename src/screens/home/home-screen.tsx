@@ -95,6 +95,7 @@ function HomeScreen() {
       query: {
         enabled: selectedFarm !== undefined,
         onSuccess: (data: FarmCropCultivationResponse) => {
+          console.log('onSuccess ==> ', data.cultivationDetails?.length);
           if (
             data &&
             data?.cultivationDetails &&
@@ -102,6 +103,12 @@ function HomeScreen() {
           ) {
             setSelectedCrop(data?.cultivationDetails[0]);
           }
+        },
+        onError: (err) => {
+          console.log(
+            'useGetApiCropGetCultivationDetailsByFarmId ==> ',
+            err.message
+          );
         },
       },
     }
@@ -116,7 +123,6 @@ function HomeScreen() {
       .then((resp) => {
         if (resp.data && (resp.data as ForecastModel)) {
           let response = resp.data as ForecastModel;
-          console.log('onWeatherForecast ===> ', response.current_weather);
           setWeatherReport(response);
           findLocation(lat, lng);
         } else {
@@ -136,7 +142,6 @@ function HomeScreen() {
       .then((resp) => {
         if (resp.data && (resp.data as LocationAddress)) {
           let response = resp.data as LocationAddress;
-          console.log('Address Found ===> ', response.address);
           setCurrentAddress(response);
         } else {
           console.log('Address Not found');
@@ -151,9 +156,33 @@ function HomeScreen() {
     nav.navigate('NotificationsDetails');
   };
 
+  const onCropDetailScreen = () => {
+    nav.navigate('CropDetailScreen');
+  };
+
   const onTaskCalenderDetail = useCallback(() => {
     nav.navigate('TaskCalenderDetailScreen');
   }, [nav]);
+
+  const onDropDownPress = useCallback(
+    (title: string) => {
+      if (title === 'Satellite Data') {
+        nav.navigate('SateLiteDemoScreen');
+      } else if (title === 'Weather Changes') {
+        if (weatherReport && currentAddress && selectedFarm) {
+          setData(
+            weatherReport,
+            selectedFarm?.name ?? '',
+            currentAddress,
+            selectedFarm
+          );
+          nav.navigate('WeatherDetailScreen');
+        }
+      }
+      nav.navigate('TaskCalenderDetailScreen');
+    },
+    [nav]
+  );
 
   const onSelectFarm = useCallback(
     (item: FarmResponse) => {
@@ -265,6 +294,7 @@ function HomeScreen() {
                       item={item}
                       // selectedItem={selectedCrop}
                       // onSelect={onSelectCrop}
+                      onNextScreen={onCropDetailScreen}
                     />
                   )}
                 />
@@ -423,7 +453,7 @@ function HomeScreen() {
                 icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
               },
               {
-                title: 'Satelite Data',
+                title: 'Satellite Data',
                 color: '#1ebdc3',
                 icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
               },
@@ -436,6 +466,7 @@ function HomeScreen() {
                   index={index}
                   isShow={isShowSheets.isShow && index === isShowSheets.index}
                   onShow={onShowBottomSheet}
+                  onPress={onDropDownPress}
                 />
               </VStack>
             );

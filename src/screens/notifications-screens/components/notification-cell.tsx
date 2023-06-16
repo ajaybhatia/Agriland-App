@@ -1,6 +1,6 @@
+//import utc from 'dayjs/plugin/utc';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import utc from 'dayjs/plugin/utc';
 import { HStack, Pressable, Text, VStack } from 'native-base';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import type { ViewNotificationResponse } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import colors from '@/ui/theme/colors';
 
-dayjs.extend(utc);
+//dayjs.extend(utc);
 dayjs.extend(relativeTime);
 
 type Props = {
@@ -17,6 +17,7 @@ type Props = {
 };
 
 const NoticationCell = ({ item, onViewPress }: Props) => {
+  console.log('NoticationCell===> ', item?.msgCreatedOn);
   return (
     <CardWithShadow
       borderColor={colors.BORDER_COLOR_DARK}
@@ -62,7 +63,7 @@ const NoticationCell = ({ item, onViewPress }: Props) => {
               fontStyle={'normal'}
               fontSize={12}
             >
-              {dayjs(item?.msgCreatedOn).utc(true).fromNow()}
+              {dayjs(item?.msgCreatedOn).utc().fromNow()}
             </Text>
           </VStack>
         </HStack>

@@ -168,7 +168,6 @@ const WeatherChangesScreen = () => {
 
   const onSelectFarm = useCallback(
     (item: FarmResponse) => {
-      console.log('onSelectFarm ===> ', item);
       setSelectedFarm((farSelected) =>
         farSelected === undefined ? selectedFarms : item
       );
@@ -224,9 +223,21 @@ const WeatherChangesScreen = () => {
                 />
               );
             } else if (index === 1 && weatherReport && !isLoadingData) {
-              return <WeatherTodayCell weatherReport={weatherReport} />;
+              return (
+                <WeatherTodayCell
+                  bgColor={'rgba(45,70,114,1)'}
+                  iconColor={'rgba(256,256,256,1)'}
+                  weatherReport={weatherReport}
+                />
+              );
             } else if (index === 2 && weatherReport && !isLoadingData) {
-              return <WeatherWeekCell weatherReport={weatherReport} />;
+              return (
+                <WeatherWeekCell
+                  bgColor={'rgba(45,70,114,1)'}
+                  iconColor={'rgba(256,256,256,1)'}
+                  weatherReport={weatherReport}
+                />
+              );
             } else if (!isLoadingData && item?.value) {
               return (
                 <LightChartCell title={item.title} historyReport={item.value} />

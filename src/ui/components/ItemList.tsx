@@ -28,7 +28,6 @@ const ItemList = ({
   setSelection,
 }: Props) => {
   const { t } = useTranslation();
-  console.log();
   return (
     <Pressable
       onPress={() => {

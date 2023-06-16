@@ -69,7 +69,6 @@ const AddressFarmType = ({
                   placeholder="Search Address"
                   onPress={(data, details = null) => {
                     // 'details' is provided when fetchDetails = true
-                    console.log(data, details);
                   }}
                   query={{
                     key: 'AIzaSyBVWF2g8JcrsHflOL7OfSF4f1dsgwLDuXw',

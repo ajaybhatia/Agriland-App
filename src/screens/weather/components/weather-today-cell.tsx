@@ -1,5 +1,10 @@
 import dayjs from 'dayjs';
 import { FlatList, HStack, Icon, Text, View, VStack } from 'native-base';
+import type { ILinearGradientProps } from 'native-base/lib/typescript/components/primitives/Box/types';
+import type {
+  ColorType,
+  ResponsiveValue,
+} from 'native-base/lib/typescript/components/types';
 import * as React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -10,8 +15,10 @@ import WeatherHorizontalTime from './weather-horizontal-time';
 
 type Props = {
   weatherReport: ForecastModel;
+  iconColor?: ResponsiveValue<IColors | (string & {})>;
+  bgColor?: ResponsiveValue<ColorType | (string & {}) | ILinearGradientProps>;
 };
-const WeatherTodayCell = ({ weatherReport }: Props) => {
+const WeatherTodayCell = ({ weatherReport, bgColor, iconColor }: Props) => {
   let indexV = weatherReport.hourly.time.findIndex((v) => {
     return dayjs(v)
       .startOf('hour')
@@ -42,7 +49,7 @@ const WeatherTodayCell = ({ weatherReport }: Props) => {
         );
   return (
     <VStack
-      bgColor={'rgba(0,0,0,0.5)'}
+      bgColor={bgColor ? bgColor : 'rgba(0,0,0,0.5)'}
       overflow={'hidden'}
       borderRadius={10}
       mx={5}
@@ -54,7 +61,7 @@ const WeatherTodayCell = ({ weatherReport }: Props) => {
             as={FontAwesome5}
             name={'wind'}
             size={'lg'}
-            color={'blue.700'}
+            color={iconColor ? iconColor : 'blue.700'}
           />
           <Text
             color={'white'}
@@ -71,7 +78,7 @@ const WeatherTodayCell = ({ weatherReport }: Props) => {
             as={MaterialCommunityIcons}
             name={'cloud'}
             size={'lg'}
-            color={'blue.700'}
+            color={iconColor ? iconColor : 'blue.700'}
           />
           <Text
             color={'white'}
@@ -89,7 +96,12 @@ const WeatherTodayCell = ({ weatherReport }: Props) => {
         </VStack>
 
         <VStack alignItems={'center'} justifyContent={'center'}>
-          <Icon as={Entypo} name={'drop'} size={'lg'} color={'blue.700'} />
+          <Icon
+            as={Entypo}
+            name={'drop'}
+            size={'lg'}
+            color={iconColor ? iconColor : 'blue.700'}
+          />
           <Text
             color={'white'}
             fontFamily={'heading'}

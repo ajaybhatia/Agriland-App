@@ -3,8 +3,11 @@ import { FlatList, View, VStack } from 'native-base';
 import React, { useCallback, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useGetApiCropGetCrops } from '@/apis/endpoints/api';
-import type { CropResponse } from '@/apis/model';
+import { useGetApiCropGetCultivationDetailsByUserId } from '@/apis/endpoints/api';
+import type {
+  CultivationDetailResponse,
+  FarmCropCultivationResponse,
+} from '@/apis/model';
 import ListHeader from '@/ui/components/ListHeader';
 
 import TaskActivitesCell from '../home/components/task-activites-cell';
@@ -16,8 +19,10 @@ import CropMarketingCell from './components/crop-marketing-cell';
 
 const MyCropsScreen = () => {
   const nav = useNavigation();
-  const [crops, setCrops] = useState<CropResponse[]>([]);
-  const [selectedCrop, setSelectedCrop] = useState<CropResponse | undefined>();
+  const [crops, setCrops] = useState<CultivationDetailResponse[]>([]);
+  const [selectedCrop, setSelectedCrop] = useState<
+    CultivationDetailResponse | undefined
+  >();
   const addNewCrop = useCallback(() => nav.navigate('AddFarmHomeScreen'), []);
   const [moreCropInfo, setMoreCropInfo] = useState<{
     take: number;
@@ -28,7 +33,7 @@ const MyCropsScreen = () => {
   });
 
   const onSelectCrop = useCallback(
-    (item: CropResponse) => {
+    (item?: CultivationDetailResponse) => {
       setSelectedCrop(item);
     },
     [setSelectedCrop]
@@ -40,28 +45,32 @@ const MyCropsScreen = () => {
 
   // get Crops
 
-  const getCrops = useGetApiCropGetCrops(
-    {
-      // skip: moreFarmInfo.skip,
-      // take: moreFarmInfo.take,
-    },
-    {
-      query: {
-        onSuccess: (data: CropResponse[]) => {
-          console.log('data ===> ', data);
-          if (data && data.length > 0) {
-            setCrops(moreCropInfo.skip <= 0 ? data : [...crops, ...data]);
-            if (selectedCrop === undefined && data && data.length > 0) {
-              setSelectedCrop(data[0]);
-            }
+  const getCrops = useGetApiCropGetCultivationDetailsByUserId({
+    query: {
+      onSuccess: (data: FarmCropCultivationResponse) => {
+        if (data && data?.cultivationDetails) {
+          setCrops(
+            moreCropInfo.skip <= 0
+              ? data.cultivationDetails
+              : [...crops, ...data.cultivationDetails]
+          );
+          if (
+            selectedCrop === undefined &&
+            data &&
+            data?.cultivationDetails &&
+            data?.cultivationDetails.length > 0
+          ) {
+            setSelectedCrop(data?.cultivationDetails[0]);
+          } else if (selectedCrop && data?.cultivationDetails.length <= 0) {
+            setSelectedCrop(undefined);
           }
-        },
-        onError(err) {
-          console.log('getCrops==> ', err.message);
-        },
+        }
       },
-    }
-  );
+      onError(err) {
+        console.log('getCrops==> ', err.message);
+      },
+    },
+  });
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
@@ -84,11 +93,15 @@ const MyCropsScreen = () => {
                   ListHeaderComponent={
                     <CropAddCell onPreviousSubmit={addNewCrop} />
                   }
-                  renderItem={({ item: itemCrop }: { item: CropResponse }) => (
+                  renderItem={({
+                    item: itemCrop,
+                  }: {
+                    item: CultivationDetailResponse;
+                  }) => (
                     <CropMapSelectionCell
                       item={itemCrop}
                       selectedItem={selectedCrop}
-                      onSelectCrop={onSelectCrop}
+                      onSelectCrop={() => onSelectCrop(itemCrop)}
                     />
                   )}
                   //estimatedItemSize={300}

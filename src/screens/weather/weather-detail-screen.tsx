@@ -11,13 +11,10 @@ import {
   VStack,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { useWeather } from '@/core/weather';
 import AppLoader from '@/ui/components/AppLoader';
-import colors from '@/ui/theme/colors';
 
 import WeatherTodayCell from './components/weather-today-cell';
 import WeatherWeekCell from './components/weather-week-cell';
@@ -107,13 +104,23 @@ const WeatherDetailScreen = () => {
                   </VStack>
                 );
               } else if (index === 1 && weatherReport) {
-                return <WeatherTodayCell weatherReport={weatherReport} />;
+                return (
+                  <WeatherTodayCell
+                    bgColor={'rgba(256,256,256,0.4)'}
+                    weatherReport={weatherReport}
+                  />
+                );
               } else if (index === 2 && weatherReport) {
-                return <WeatherWeekCell weatherReport={weatherReport} />;
+                return (
+                  <WeatherWeekCell
+                    bgColor={'rgba(256,256,256,0.4)'}
+                    weatherReport={weatherReport}
+                  />
+                );
               } else if (index === 3) {
                 return (
                   <HStack
-                    bgColor={'rgba(0,0,0,0.5)'}
+                    bgColor={'rgba(256,256,256,0.4)'}
                     mx={5}
                     mt={5}
                     justifyContent={'center'}
@@ -122,18 +129,33 @@ const WeatherDetailScreen = () => {
                     borderRadius={10}
                   >
                     {[
-                      DetailType.Pressure,
-                      DetailType.Humidity,
-                      DetailType.Clouds,
-                      DetailType.Wind,
-                      DetailType.Light,
+                      {
+                        name: DetailType.Pressure,
+                        img: require('@assets/pressure.png'),
+                      },
+                      {
+                        name: DetailType.Humidity,
+                        img: require('@assets/humidity.png'),
+                      },
+                      {
+                        name: DetailType.Clouds,
+                        img: require('@assets/clouds.png'),
+                      },
+                      {
+                        name: DetailType.Wind,
+                        img: require('@assets/wind_speed.png'),
+                      },
+                      {
+                        name: DetailType.Light,
+                        img: require('@assets/light_intensity.png'),
+                      },
                     ].map((v, indexS) => {
                       return (
                         <Pressable
                           key={`${indexS}`}
                           flex={0.19}
                           mx={1.5}
-                          onPress={() => onWeatherDetail(v)}
+                          onPress={() => onWeatherDetail(v.name)}
                         >
                           <VStack alignItems={'center'}>
                             <View
@@ -146,37 +168,38 @@ const WeatherDetailScreen = () => {
                               overflow={'hidden'}
                               borderRadius={10}
                             >
-                              {/* <Image
-                        alt=""
-                        flex={1}
-                        source={require('@assets/weather_bg.png')}
-                        resizeMode="cover"
-                      /> */}
-                              <Icon
+                              <Image
+                                alt=""
+                                w={6}
+                                h={6}
+                                source={v.img}
+                                resizeMode="contain"
+                              />
+                              {/* <Icon
                                 as={
-                                  DetailType.Pressure === v
+                                  DetailType.Pressure === v.name
                                     ? FontAwesome5
-                                    : DetailType.Humidity === v ||
-                                      DetailType.Clouds === v
+                                    : DetailType.Humidity === v.name ||
+                                      DetailType.Clouds === v.name
                                     ? MaterialCommunityIcons
-                                    : DetailType.Wind === v
+                                    : DetailType.Wind === v.name
                                     ? FontAwesome5
                                     : MaterialIcons
                                 }
                                 name={
-                                  DetailType.Pressure === v
+                                  DetailType.Pressure === v.name
                                     ? 'temperature-high'
-                                    : DetailType.Humidity === v
+                                    : DetailType.Humidity === v.name
                                     ? 'air-humidifier'
-                                    : DetailType.Clouds === v
+                                    : DetailType.Clouds === v.name
                                     ? 'cloud'
-                                    : DetailType.Wind === v
+                                    : DetailType.Wind === v.name
                                     ? 'wind'
                                     : 'wb-twighlight'
                                 }
                                 size={'lg'}
                                 color={'white'}
-                              />
+                              /> */}
                             </View>
                             <Text
                               color={'white'}
@@ -185,7 +208,7 @@ const WeatherDetailScreen = () => {
                               textAlign={'center'}
                               fontWeight={'200'}
                             >
-                              {v}
+                              {v.name}
                             </Text>
                           </VStack>
                         </Pressable>
@@ -196,15 +219,18 @@ const WeatherDetailScreen = () => {
               } else if (index === 4) {
                 return (
                   <Button
-                    backgroundColor={colors.button_color}
+                    backgroundColor={'white'}
                     onPress={() => nav.navigate('WeatherChangesScreen')}
                     borderRadius={8}
                     width={'80%'}
                     mt={30}
-                    fontWeight={'normal'}
+                    fontWeight={'bold'}
                     fontSize={20}
                     overflow={'hidden'}
                     alignSelf={'center'}
+                    _text={{
+                      color: '#0058b1',
+                    }}
                   >
                     {'View Details'}
                   </Button>

@@ -33,6 +33,7 @@ import CropsReviewList from './crops-review-list';
 type Props = {
   onNextStep?: () => void;
   onPreviousSubmit?: () => void;
+  registerType?: AddCropRegisterType;
 };
 
 export type CropRegisterType = {
@@ -262,14 +263,10 @@ const AddCropMaps = ({
   function onMapMarkerUndo() {
     var tempLocation = [...userLocation];
     if (tempLocation.length > 3) {
-      console.log('first1 ==> ', tempLocation.length);
       tempLocation.splice(tempLocation.length - 2, 1);
-      console.log('first2 ==> ', tempLocation.length);
     } else if (tempLocation.length >= 3) {
-      console.log('second');
       tempLocation = tempLocation.slice(0, -2);
     } else if (tempLocation.length > 0) {
-      console.log('third');
       tempLocation = tempLocation.slice(0, -1);
     }
     setUserLocation(tempLocation);

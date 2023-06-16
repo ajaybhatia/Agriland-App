@@ -5,7 +5,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import colors from '@/ui/theme/colors';
 
-const CropMarketingCell = () => {
+type Props = {
+  title: string;
+  btnTitle: string;
+  img?: string;
+  onSelect?: () => void;
+};
+const CropMarketingCell = ({ title, btnTitle, img, onSelect }: Props) => {
   return (
     <HStack
       shadow={1}
@@ -20,6 +26,7 @@ const CropMarketingCell = () => {
         <Image
           style={{ height: '100%', width: '100%' }}
           source={
+            img ??
             'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U'
           }
           placeholder={require('@assets/app-logo.png')}
@@ -36,9 +43,10 @@ const CropMarketingCell = () => {
             fontStyle={'normal'}
             color={'white'}
           >
-            Do You Want To Code The Crop For Export Abroad?
+            {title ?? 'Do You Want To Code The Crop For Export Abroad?'}
           </Text>
           <Button
+            onPress={onSelect}
             backgroundColor={'white'}
             borderRadius={8}
             width={'80%'}
@@ -49,7 +57,7 @@ const CropMarketingCell = () => {
             alignSelf={'center'}
             _text={{ color: colors.button_color, fontWeight: '600' }}
           >
-            {'Start Now'}
+            {btnTitle ?? 'Start Now'}
           </Button>
         </VStack>
         <View flex={0.35} alignItems={'center'} justifyContent={'center'}>

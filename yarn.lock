@@ -12567,6 +12567,13 @@ react-native-curved-bottom-bar@^3.2.6:
     d3-shape "^3.2.0"
     react-native-size-scaling "^0.5.1"
 
+react-native-fbsdk-next@^11.2.1:
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-11.2.1.tgz#624b16c245c505887ad1dd17265ddaefb6c71e02"
+  integrity sha512-CfJmexiDpdeAUAGM3uHxLEHyRtiAQTeELoZ+eKp1z9W2X5a7/uITHIxCaqy/B+4GfHCCj4m1WF1RKjOy+d6G/A==
+  dependencies:
+    xml2js "^0.4.23"
+
 react-native-flash-message@^0.4.0:
   version "0.4.1"
   resolved "https://registry.npmjs.org/react-native-flash-message/-/react-native-flash-message-0.4.1.tgz"
@@ -15175,7 +15182,7 @@ xml-name-validator@^4.0.0:
   resolved "https://registry.npmjs.org/xml-name-validator/-/xml-name-validator-4.0.0.tgz"
   integrity sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==
 
-xml2js@0.4.23:
+xml2js@0.4.23, xml2js@^0.4.23:
   version "0.4.23"
   resolved "https://registry.npmjs.org/xml2js/-/xml2js-0.4.23.tgz"
   integrity sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==

@@ -59,10 +59,6 @@ export default function ListHeader({
   asLeft,
   isSeeAllShow = true,
 }: Props) {
-  console.log(
-    textAlign ? textAlign : I18nManager.isRTL ? 'right' : 'left',
-    I18nManager.isRTL
-  );
   return (
     <View
       ml={ml}

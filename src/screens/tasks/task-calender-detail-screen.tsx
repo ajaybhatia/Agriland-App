@@ -25,7 +25,6 @@ const TaskCalenderDetailScreen = (props: Props) => {
   const getCrops = useGetApiCropGetCultivationDetailsByUserId({
     query: {
       onSuccess: (data: FarmCropCultivationResponse) => {
-        console.log('data ===> ', data);
         if (
           data &&
           data?.cultivationDetails &&
