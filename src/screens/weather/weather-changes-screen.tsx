@@ -19,6 +19,7 @@ import type { HourlyWeather } from './weather-single-detail';
 
 const WeatherChangesScreen = () => {
   const weatherReports = useWeather.use.weatherReport();
+
   const selectedFarms = useWeather.use.selectedFarm();
   const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>();
 

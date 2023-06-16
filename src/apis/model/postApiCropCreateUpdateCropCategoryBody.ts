@@ -6,7 +6,8 @@
  */
 
 export type PostApiCropCreateUpdateCropCategoryBody = {
-  Name?: string;
+  'Name.En'?: string;
+  'Name.Ar'?: string;
   Description?: string;
   Id?: string;
   IsActive?: boolean;

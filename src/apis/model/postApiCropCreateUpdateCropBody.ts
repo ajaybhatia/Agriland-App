@@ -7,11 +7,13 @@
 
 export type PostApiCropCreateUpdateCropBody = {
   Id?: string;
-  Name?: string;
+  EnName?: string;
+  ArName?: string;
   Description?: string;
   ImageUrl?: string;
   ColorCode?: string;
   CropCategoryId?: string;
   IsActive?: boolean;
   File?: Blob;
+  FarmonautCropCode?: string;
 };

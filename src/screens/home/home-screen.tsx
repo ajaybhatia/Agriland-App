@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Image as ImageBase } from 'expo-image';
 import { FlatList, View, VStack } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, I18nManager } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -38,6 +38,7 @@ import WeatherCell from './components/weather-cell';
 
 function HomeScreen() {
   const setData = useWeather.use.setData();
+  const clearWeatherData = useWeather.use.clearData();
 
   const nav = useNavigation();
   const putToken = usePutApiAccountUpdatefcmtoken();
@@ -169,17 +170,19 @@ function HomeScreen() {
       if (title === 'Satellite Data') {
         nav.navigate('SateLiteDemoScreen');
       } else if (title === 'Weather Changes') {
+        clearWeatherData();
         if (weatherReport && currentAddress && selectedFarm) {
           setData(
             weatherReport,
-            selectedFarm?.name ?? '',
+            I18nManager.isRTL
+              ? selectedFarm?.name?.ar ?? ''
+              : selectedFarm?.name?.en ?? '',
             currentAddress,
             selectedFarm
           );
-          nav.navigate('WeatherDetailScreen');
         }
+        nav.navigate('WeatherDetailScreen');
       }
-      nav.navigate('TaskCalenderDetailScreen');
     },
     [nav]
   );
@@ -224,7 +227,9 @@ function HomeScreen() {
     if (weatherReport && currentAddress && selectedFarm) {
       setData(
         weatherReport,
-        selectedFarm?.name ?? '',
+        I18nManager.isRTL
+          ? selectedFarm?.name?.ar ?? ''
+          : selectedFarm?.name?.en ?? '',
         currentAddress,
         selectedFarm
       );
@@ -264,7 +269,11 @@ function HomeScreen() {
                 />
                 <WeatherCell
                   currentWeather={weatherReport}
-                  farmName={selectedFarm?.name ?? ''}
+                  farmName={
+                    I18nManager.isRTL
+                      ? selectedFarm?.name?.ar ?? ''
+                      : selectedFarm?.name?.en ?? ''
+                  }
                   locationAddress={currentAddress}
                 />
               </VStack>

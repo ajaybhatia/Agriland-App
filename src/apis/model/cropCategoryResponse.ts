@@ -4,10 +4,11 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { LanguageName } from './languageName';
 
 export interface CropCategoryResponse {
   id?: string;
-  name?: string | null;
+  name?: LanguageName;
   description?: string | null;
   createdOn?: string;
   updatedBy?: string | null;

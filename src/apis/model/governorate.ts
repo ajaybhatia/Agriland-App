@@ -12,5 +12,6 @@ export interface Governorate {
   updatedOn?: string | null;
   isActive?: boolean;
   isDeleted?: boolean | null;
-  name: string;
+  enName: string;
+  arName?: string | null;
 }

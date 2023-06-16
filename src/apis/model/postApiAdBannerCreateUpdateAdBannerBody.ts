@@ -7,7 +7,8 @@
 
 export type PostApiAdBannerCreateUpdateAdBannerBody = {
   Id?: string;
-  Name?: string;
+  'Name.En'?: string;
+  'Name.Ar'?: string;
   ImageUrl?: string;
   IsActive?: boolean;
   File?: Blob;

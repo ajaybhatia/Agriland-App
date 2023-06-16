@@ -24,13 +24,16 @@ const AddFarmName = ({ onNextStep, farmRequest }: Props) => {
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
     useFormik<FormikValues>({
       initialValues: {
-        farmName: farmRequest?.name ?? '',
+        farmName: farmRequest?.name?.en ?? farmRequest?.name?.ar ?? '',
       },
       onSubmit: () => {
         onNextStep &&
           onNextStep({
             ...farmRequest,
-            name: values.farmName,
+            name: {
+              ar: values.farmName,
+              en: values.farmName,
+            },
           });
       },
       validationSchema: yup.object({

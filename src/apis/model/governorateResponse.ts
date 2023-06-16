@@ -4,10 +4,11 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { LanguageName } from './languageName';
 
 export interface GovernorateResponse {
   id?: string;
-  name?: string | null;
+  name?: LanguageName;
   createdOn?: string;
   updatedBy?: string | null;
   createdBy?: string | null;

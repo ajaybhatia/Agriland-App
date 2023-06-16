@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as geolib from 'geolib';
 import { HStack, Pressable, View, VStack } from 'native-base';
 import React, { memo } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, I18nManager, StyleSheet } from 'react-native';
 import MapView, { Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import type {
@@ -224,7 +224,11 @@ const FarmMapSelectionCell = ({ item, selectedItem, onSelectFarm }: Props) => {
       >
         <VStack>
           <Header
-            title={item?.name ?? 'Title'}
+            title={
+              I18nManager.isRTL
+                ? item?.name?.ar ?? ''
+                : item?.name?.en ?? 'Title'
+            }
             fontSize={13}
             fontWeight={'semibold'}
             color="#FFF"

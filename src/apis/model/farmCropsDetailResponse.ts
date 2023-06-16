@@ -15,4 +15,5 @@ export interface FarmCropsDetailResponse {
   quantity?: number | null;
   typeOfIrrigation?: number | null;
   coordinates?: CoOrdinates[] | null;
+  fieldId?: string | null;
 }

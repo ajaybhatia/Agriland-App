@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import {
   Button,
   FlatList,
@@ -11,13 +12,18 @@ import {
   VStack,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+import type { Location } from 'react-native-location';
+import RNLocation from 'react-native-location';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useWeather } from '@/core/weather';
 import AppLoader from '@/ui/components/AppLoader';
 
+import type { LocationAddress } from '../maps-views/model/location-address-model';
 import WeatherTodayCell from './components/weather-today-cell';
 import WeatherWeekCell from './components/weather-week-cell';
+import type { ForecastModel } from './models/weather-forecast-models';
 import weatherCodeToString from './weather-icons';
 import { DetailType } from './weather-single-detail';
 
@@ -26,7 +32,14 @@ import { DetailType } from './weather-single-detail';
 //dayjs.extend(relativeTime);
 const WeatherDetailScreen = () => {
   const nav = useNavigation();
-  const weatherReport = useWeather.use.weatherReport();
+  const setLocationData = useWeather.use.setLocation();
+  const weatherReportTest = useWeather.use.weatherReport();
+  const [weatherReport, setWeatherReport] = useState<ForecastModel | undefined>(
+    weatherReportTest
+  );
+  const [currentAddress, setCurrentAddress] = useState<
+    LocationAddress | undefined
+  >();
   const farmName = useWeather.use.farmName();
   const [initLoading, setInitLoading] = useState<boolean>(true);
 
@@ -36,10 +49,121 @@ const WeatherDetailScreen = () => {
       title: title,
     });
   };
+  // request location permission
+  function reQuestPermission() {
+    console.log('START REQUEST');
+
+    RNLocation.requestPermission({
+      ios: 'whenInUse',
+      android: {
+        detail: 'fine',
+      },
+    })
+      .then((granted) => {
+        if (granted) {
+          requestCurrentLocation();
+        } else {
+          setInitLoading(false);
+          Alert.alert('Warning', 'Permission not granted.');
+        }
+      })
+      // eslint-disable-next-line handle-callback-err
+      .catch((err) => {
+        Alert.alert('Warning', 'Permission request fail.');
+        setInitLoading(false);
+      });
+  }
+
+  function requestCurrentLocation() {
+    RNLocation.configure({
+      distanceFilter: undefined, // Meters
+      desiredAccuracy: {
+        ios: 'best',
+        android: 'highAccuracy',
+      },
+      // Android only
+      androidProvider: 'auto',
+      interval: 5000, // Milliseconds
+      fastestInterval: 10000, // Milliseconds
+      maxWaitTime: 10000, // Milliseconds
+      // iOS Only
+      activityType: 'other',
+
+      headingFilter: 1, // Degrees
+      headingOrientation: 'portrait',
+      pausesLocationUpdatesAutomatically: false,
+      showsBackgroundLocationIndicator: true,
+    });
+    RNLocation.getLatestLocation({ timeout: 40000 }).then(
+      (latestLocation: Location | null) => {
+        if (
+          latestLocation &&
+          latestLocation != null &&
+          latestLocation?.latitude &&
+          latestLocation?.longitude
+        ) {
+          console.log('Location found');
+          setLocationData(latestLocation);
+          onWeatherForecast(
+            latestLocation?.latitude,
+            latestLocation?.longitude
+          );
+        } else {
+          setInitLoading(false);
+          Alert.alert('Warning', 'Not able find your current location');
+        }
+      }
+    );
+  }
+
+  const onWeatherForecast = (lat: number, lng: number) => {
+    axios
+      .get(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,rain,weathercode,windspeed_10m,uv_index,is_day,temperature_1000hPa,temperature_700hPa,relativehumidity_1000hPa,relativehumidity_700hPa,cloudcover_1000hPa,cloudcover_700hPa,windspeed_1000hPa,winddirection_1000hPa&daily=weathercode,rain_sum,precipitation_probability_max,windspeed_10m_max&current_weather=true&timezone=auto`
+      )
+      .then((resp) => {
+        setInitLoading(false);
+        if (resp.data && (resp.data as ForecastModel)) {
+          let response = resp.data as ForecastModel;
+          setWeatherReport(response);
+          findLocation(lat, lng);
+        } else {
+          setInitLoading(false);
+          console.log('Not found');
+        }
+      })
+      .catch((e) => {
+        setInitLoading(false);
+        console.log('Not found Error ===> ', e);
+      });
+  };
+
+  const findLocation = (lat: number, lng: number) => {
+    axios
+      .get(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+      )
+      .then((resp) => {
+        if (resp.data && (resp.data as LocationAddress)) {
+          let response = resp.data as LocationAddress;
+          setCurrentAddress(response);
+        } else {
+          console.log('Address Not found');
+        }
+      })
+      .catch((e) => {
+        console.log('Address Not found Error ===> ', e);
+      });
+  };
+
   useEffect(() => {
-    setTimeout(() => {
-      setInitLoading(false);
-    }, 10);
+    if (weatherReport) {
+      setTimeout(() => {
+        setInitLoading(false);
+      }, 10);
+    } else {
+      reQuestPermission();
+    }
   }, []);
 
   return (
@@ -77,7 +201,11 @@ const WeatherDetailScreen = () => {
                       fontWeight={'700'}
                       color={'white'}
                     >
-                      {farmName}
+                      {farmName && farmName !== ''
+                        ? farmName
+                        : currentAddress?.address?.state_district ??
+                          currentAddress?.address?.city_district ??
+                          ''}
                     </Text>
                     {weatherReport && weatherReport.current_weather && (
                       <Text

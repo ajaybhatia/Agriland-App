@@ -2,7 +2,7 @@ import * as geolib from 'geolib';
 import { View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { I18nManager, StyleSheet } from 'react-native';
 import MapView, { Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import type { CoOrdinates, FarmRequest } from '@/apis/model';
@@ -142,7 +142,11 @@ const FarmListCell = ({ onNextStep, farmInfo }: Props) => {
         </View>
         <VStack px={5} py={3}>
           <Header
-            title={farmInfo?.name ?? ''}
+            title={
+              I18nManager.isRTL
+                ? farmInfo?.name?.ar ?? ''
+                : farmInfo?.name?.en ?? ''
+            }
             mt={1}
             color={colors.TITLE_COLOR}
             fontSize={13}

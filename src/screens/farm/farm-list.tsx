@@ -49,12 +49,21 @@ const FarmList = ({
   const addFarmApi = usePostApiFarmCreateUpdateFarm();
 
   function apiSubmitAddFarm(isAddNew: boolean) {
+    console.log('gh =======> ', {
+      name: farmRequest?.name,
+      coordinates: farmRequest?.coordinates,
+      //governorateFieldId: farmRequest?.governorateFieldId,
+      cityId: farmRequest?.cityId,
+      villageId: farmRequest?.villageId,
+      address: farmRequest?.address,
+      organization: farmRequest?.organization,
+    });
     addFarmApi.mutate(
       {
         data: {
           name: farmRequest?.name,
           coordinates: farmRequest?.coordinates,
-          governorateFieldId: farmRequest?.governorateFieldId,
+          //governorateFieldId: farmRequest?.governorateFieldId,
           cityId: farmRequest?.cityId,
           villageId: farmRequest?.villageId,
           address: farmRequest?.address,
@@ -90,6 +99,7 @@ const FarmList = ({
           }
         },
         onError(error) {
+          console.log('error farm ==> ', error);
           Toast.show({
             type: 'error',
             text1: error.message,

@@ -4,14 +4,15 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { LanguageName } from './languageName';
 import type { CoOrdinates } from './coOrdinates';
 
 export interface FarmRequest {
   id?: string | null;
-  name?: string | null;
+  name?: LanguageName;
   coordinates?: CoOrdinates[] | null;
   landHoldingNumber?: string | null;
-  governorateFieldId?: string | null;
+  governorateId?: string | null;
   irrigationTypeId?: string | null;
   cityId?: string | null;
   villageId?: string | null;

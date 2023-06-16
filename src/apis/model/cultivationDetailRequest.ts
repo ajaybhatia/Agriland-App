@@ -16,4 +16,7 @@ export interface CultivationDetailRequest {
   sowingDate?: string | null;
   quantity?: number | null;
   typeOfIrrigation?: number | null;
+  fieldId?: string | null;
+  cropCode?: string | null;
+  uid?: string | null;
 }

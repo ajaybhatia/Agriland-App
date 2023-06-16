@@ -1,22 +1,22 @@
+import type { FormikValues } from 'formik';
+import { useFormik } from 'formik';
+import { Button, ScrollView, View, VStack } from 'native-base';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import Modal from 'react-native-modal';
 import * as yup from 'yup';
 
-import { Button, ScrollView, VStack, View } from 'native-base';
 import type { City, FarmRequest, Governorate, Village } from '@/apis/model';
-import React, { useState } from 'react';
-
-import CityList from './city-list';
 import DummyInput from '@/ui/components/DummyInput';
-import type { FarmInfoModal } from './add-farm-maps';
-import type { FormikValues } from 'formik';
-import GetGovernerate from './get-governerate';
 import Header from '@/ui/components/Header';
-import Modal from 'react-native-modal';
 import RoundInput from '@/ui/components/RoundInput';
-import { StyleSheet } from 'react-native';
-import VillageList from './village-list';
 import colors from '@/ui/theme/colors';
-import { useFormik } from 'formik';
-import { useTranslation } from 'react-i18next';
+
+import type { FarmInfoModal } from './add-farm-maps';
+import CityList from './city-list';
+import GetGovernerate from './get-governerate';
+import VillageList from './village-list';
 
 type Props = {
   onNextStep?: (farmRequest: FarmRequest & FarmInfoModal) => void;

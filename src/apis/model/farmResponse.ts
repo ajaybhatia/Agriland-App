@@ -4,21 +4,22 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { LanguageName } from './languageName';
 import type { CoOrdinates } from './coOrdinates';
 import type { FarmCropsDetailResponse } from './farmCropsDetailResponse';
 
 export interface FarmResponse {
   id?: string;
-  name?: string | null;
+  name?: LanguageName;
   landHoldingNumber?: string | null;
   governorateFieldId?: string;
-  governorate?: string | null;
+  governorate?: LanguageName;
   irrigationTypeId?: string;
-  irrigationType?: string | null;
+  irrigationType?: LanguageName;
   cityId?: string | null;
-  city?: string | null;
+  city?: LanguageName;
   villageId?: string | null;
-  village?: string | null;
+  village?: LanguageName;
   address?: string | null;
   organization?: string | null;
   coordinates?: CoOrdinates[] | null;

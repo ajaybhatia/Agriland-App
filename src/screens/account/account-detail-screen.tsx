@@ -50,7 +50,7 @@ const AccountDetailScreen = () => {
                   {getUserDetails.data?.displayName ?? ''}
                 </Text>
               </HStack>
-              <HStack mt={2}>
+              {/* <HStack mt={2}>
                 <Text
                   flex={0.4}
                   fontStyle={'normal'}
@@ -71,7 +71,7 @@ const AccountDetailScreen = () => {
                 >
                   {getUserDetails.data?.id ?? ''}
                 </Text>
-              </HStack>
+              </HStack> */}
               <HStack mt={2}>
                 <Text
                   flex={0.4}

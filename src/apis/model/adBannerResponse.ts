@@ -4,10 +4,11 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { LanguageName } from './languageName';
 
 export interface AdBannerResponse {
   id?: string;
-  name?: string | null;
+  name?: LanguageName;
   imageUrl?: string | null;
   isActive?: boolean;
 }

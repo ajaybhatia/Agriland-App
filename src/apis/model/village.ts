@@ -13,7 +13,8 @@ export interface Village {
   updatedOn?: string | null;
   isActive?: boolean;
   isDeleted?: boolean | null;
-  name?: string | null;
+  enName?: string | null;
+  arName?: string | null;
   city?: City;
   cityId?: string | null;
 }

@@ -35,6 +35,7 @@ const WeatherSingleDetail = () => {
   const nav = useNavigation();
   const [isLoading, setLoading] = useState<boolean>(false);
   const weatherReport = useWeather.use.weatherReport();
+  const currentLocation = useWeather.use.location();
   const [historyReport, setHistoryReport] = useState<HourlyWeather[]>([]);
   const route =
     useRoute<RouteProp<AuthStackParamList, 'WeatherSingleDetail'>>();
@@ -131,12 +132,18 @@ const WeatherSingleDetail = () => {
 
   useEffect(() => {
     nav.setOptions({ title: route.params?.title ?? 'Detail' });
-    weatherReport &&
+    if (weatherReport) {
       onWeatherForecast(
-        weatherReport.latitude ?? 0.0,
-        weatherReport.longitude ?? 0.0
+        weatherReport.latitude ?? currentLocation?.latitude ?? 0.0,
+        weatherReport.longitude ?? currentLocation?.longitude ?? 0.0
       );
-  }, [route, weatherReport]);
+    } else if (currentLocation) {
+      onWeatherForecast(
+        currentLocation?.latitude ?? 0.0,
+        currentLocation?.longitude ?? 0.0
+      );
+    }
+  }, [route, weatherReport, currentLocation]);
   // eslint-disable-next-line react/no-unstable-nested-components
   const ConditionCell = () => {
     return (

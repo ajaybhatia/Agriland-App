@@ -13,7 +13,8 @@ export interface City {
   updatedOn?: string | null;
   isActive?: boolean;
   isDeleted?: boolean | null;
-  name?: string | null;
+  enName?: string | null;
+  arName?: string | null;
   governorate?: Governorate;
   governorateId?: string | null;
 }

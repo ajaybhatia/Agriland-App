@@ -4,18 +4,19 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { LanguageName } from './languageName';
 
 export interface UpdatedCropCalendarActivityResponse {
   id?: string | null;
   activityId?: string | null;
   calendarName?: string | null;
   cropIds?: string | null;
-  cropNames?: string | null;
-  activityName?: string | null;
+  cropNames?: LanguageName;
+  activityName?: LanguageName;
   days?: number | null;
   intervalInDays?: number | null;
   precedingActivityGap?: number | null;
   precedingActivityId?: string | null;
-  precedingActivityName?: string | null;
+  precedingActivityName?: LanguageName;
   activityOrder?: number | null;
 }

@@ -1,3 +1,4 @@
+import type { Location } from 'react-native-location';
 import { create } from 'zustand';
 
 import type { FarmResponse } from '@/apis/model';
@@ -11,12 +12,15 @@ interface WeatherState {
   farmName: string;
   locationAddress: LocationAddress | undefined;
   selectedFarm: FarmResponse | undefined;
+  location: Location | undefined;
   setData: (
     weatherReport: ForecastModel,
     farmName: string,
     locationAddress: LocationAddress,
     selectedFarm: FarmResponse
   ) => void;
+  clearData: () => void;
+  setLocation: (location: Location) => void;
 }
 
 const _useWeather = create<WeatherState>((set, get) => ({
@@ -24,6 +28,7 @@ const _useWeather = create<WeatherState>((set, get) => ({
   farmName: '',
   locationAddress: undefined,
   selectedFarm: undefined,
+  location: undefined,
   setData: (
     weatherReport: ForecastModel,
     farmName: string,
@@ -31,6 +36,20 @@ const _useWeather = create<WeatherState>((set, get) => ({
     selectedFarm: FarmResponse
   ) => {
     set({ weatherReport, farmName, locationAddress, selectedFarm });
+  },
+  clearData: () => {
+    set({
+      weatherReport: undefined,
+      farmName: '',
+      locationAddress: undefined,
+      selectedFarm: undefined,
+      location: undefined,
+    });
+  },
+  setLocation: (location: Location) => {
+    set({
+      location: location,
+    });
   },
 }));
 
@@ -46,3 +65,6 @@ export const setWeatherData = (
   _useWeather
     .getState()
     .setData(weatherReport, farmName, locationAddress, selectedFarm);
+export const clearWeatherData = () => _useWeather.getState().clearData();
+export const setLocationWeatherData = (location: Location) =>
+  _useWeather.getState().setLocation(location);
