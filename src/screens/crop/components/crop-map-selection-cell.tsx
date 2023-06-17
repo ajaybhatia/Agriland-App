@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import { Pressable, View, VStack } from 'native-base';
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, I18nManager } from 'react-native';
 
 import type { CropResponse, CultivationDetailResponse } from '@/apis/model';
 import Header from '@/ui/components/Header';
@@ -65,7 +65,12 @@ const CropMapSelectionCell = ({ item, selectedItem, onSelectCrop }: Props) => {
       >
         <VStack flex={1}>
           <Header
-            title={item?.name ?? item?.cropDetails?.name ?? 'Title'}
+            //title={item?.name ?? item?.cropDetails?.name ?? 'Title'}
+            title={
+              !I18nManager.isRTL
+                ? item?.name?.en ?? item?.cropDetails?.name?.en ?? ''
+                : item?.name?.ar ?? item?.cropDetails?.name?.ar ?? ''
+            }
             fontSize={13}
             fontWeight={'semibold'}
             color="#FFF"

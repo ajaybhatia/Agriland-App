@@ -65,7 +65,7 @@ const MakeAppointmentScreen = (props: Props) => {
             return (
               <VStack mt={2}>
                 <ListHeader
-                  title="Choose the crop you want to code"
+                  title="Choose Farm"
                   ml={5}
                   mr={5}
                   mb={3}
@@ -111,7 +111,7 @@ const MakeAppointmentScreen = (props: Props) => {
             return (
               <VStack justifyContent={'center'} py={3}>
                 <Button
-                  onPress={() => nav.navigate('StationBookingScreen')}
+                  //onPress={() => nav.navigate('StationBookingScreen')}
                   backgroundColor={colors.button_color}
                   borderRadius={8}
                   width={'80%'}

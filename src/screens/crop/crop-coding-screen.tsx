@@ -136,7 +136,7 @@ const CropCodingScreen = (props: Props) => {
             return (
               <VStack justifyContent={'center'} py={3}>
                 <Button
-                  onPress={() => nav.navigate('StationBookingScreen')}
+                  onPress={() => console.log('')}
                   backgroundColor={colors.button_color}
                   borderRadius={8}
                   width={'80%'}

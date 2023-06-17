@@ -12,7 +12,7 @@ import {
   VStack,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 import type { Location } from 'react-native-location';
 import RNLocation from 'react-native-location';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -174,6 +174,8 @@ const WeatherDetailScreen = () => {
             alt=""
             position={'absolute'}
             left={0}
+            minH={Dimensions.get('screen').height}
+            w={Dimensions.get('screen').width}
             right={0}
             top={0}
             bottom={0}

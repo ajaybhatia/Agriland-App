@@ -1,11 +1,19 @@
 import { Image } from 'expo-image';
-import { HStack, ScrollView, Text, View, VStack } from 'native-base';
+import {
+  HStack,
+  Image as ImageBase,
+  ScrollView,
+  Text,
+  View,
+  VStack,
+} from 'native-base';
 import React from 'react';
+import { I18nManager } from 'react-native';
 
 import type { CropResponse, CultivationDetailResponse } from '@/apis/model';
 
 type Props = {
-  item: CropResponse | CultivationDetailResponse;
+  item: CropResponse & CultivationDetailResponse;
 };
 type CropItems = {
   date: string;
@@ -15,33 +23,27 @@ const CropGrowthCell = ({ item }: Props) => {
   const arrayItems: CropItems[] = [
     {
       date: '1st Month',
-      image:
-        'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+      image: require('@assets/crop_growth1.png'),
     },
     {
       date: '2nd Month',
-      image:
-        'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+      image: require('@assets/crop_growth2.png'),
     },
     {
       date: '3rd Month',
-      image:
-        'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+      image: require('@assets/crop_growth3.png'),
     },
     {
       date: '4th Month',
-      image:
-        'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+      image: require('@assets/crop_growth4.png'),
     },
     {
       date: '5th Month',
-      image:
-        'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+      image: require('@assets/crop_growth5.png'),
     },
     {
       date: '6th Month',
-      image:
-        'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+      image: require('@assets/crop_growth5.png'),
     },
   ];
   return (
@@ -68,7 +70,9 @@ const CropGrowthCell = ({ item }: Props) => {
             fontStyle={'normal'}
             fontWeight={'500'}
           >
-            {item?.name ?? ''}
+            {!I18nManager.isRTL
+              ? item?.name?.en ?? item?.cropDetails?.name?.en ?? ''
+              : item?.name?.ar ?? item?.cropDetails?.name?.ar ?? ''}
           </Text>
         </HStack>
         <ScrollView
@@ -82,15 +86,22 @@ const CropGrowthCell = ({ item }: Props) => {
               <VStack
                 key={`${index}`}
                 alignItems={'center'}
-                justifyContent={'center'}
+                justifyContent={'flex-end'}
                 mr={2}
               >
-                <Image
+                {/* <Image
                   style={{ width: 40, height: 40 }}
                   source={cropItem.image}
                   placeholder={require('@assets/app-logo.png')}
                   contentFit="cover"
                   transition={1000}
+                /> */}
+                <ImageBase
+                  //h={12}
+                  w={12}
+                  alt=""
+                  resizeMode="contain"
+                  source={cropItem.image}
                 />
                 <Text
                   fontFamily={'body'}

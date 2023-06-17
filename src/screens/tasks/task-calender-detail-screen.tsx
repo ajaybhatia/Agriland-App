@@ -103,6 +103,12 @@ const TaskCalenderDetailScreen = (props: Props) => {
             );
           } else if (index === 3) {
             return (
+              <VStack my={5}>
+                <CropGrowthCell item={selectedCrop} />
+              </VStack>
+            );
+          } else if (index === 4) {
+            return (
               <VStack mt={3}>
                 <ListHeader
                   title="The Following Tasks"
@@ -115,12 +121,6 @@ const TaskCalenderDetailScreen = (props: Props) => {
                   // onRightIconClick={onTaskCalenderDetail}
                 />
                 <TaskActivitesCell />
-              </VStack>
-            );
-          } else if (index === 4) {
-            return (
-              <VStack my={5}>
-                <CropGrowthCell item={selectedCrop} />
               </VStack>
             );
           }

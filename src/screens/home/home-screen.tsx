@@ -182,6 +182,12 @@ function HomeScreen() {
           );
         }
         nav.navigate('WeatherDetailScreen');
+      } else if (title === 'Crop coding') {
+        nav.navigate('CropCodingScreen');
+      } else if (title === 'Reserve stations') {
+        nav.navigate('StationBookingScreen');
+      } else if (title === 'Tests') {
+        nav.navigate('TestScreen');
       }
     },
     [nav]
@@ -417,6 +423,7 @@ function HomeScreen() {
                   index={index}
                   isShow={isShowSheets.isShow && index === isShowSheets.index}
                   onShow={onShowBottomSheet}
+                  onPress={onDropDownPress}
                 />
               </VStack>
             );
@@ -446,6 +453,7 @@ function HomeScreen() {
                   index={index}
                   isShow={isShowSheets.isShow && index === isShowSheets.index}
                   onShow={onShowBottomSheet}
+                  onPress={onDropDownPress}
                 />
               </VStack>
             );

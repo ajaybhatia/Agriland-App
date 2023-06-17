@@ -87,6 +87,7 @@ const SateLiteDemoScreen = (props: Props) => {
           <View
             flex={1}
             w={Dimensions.get('screen').width}
+            minH={Dimensions.get('screen').height}
             // backgroundColor={item}
           >
             <Image
