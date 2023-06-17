@@ -91,13 +91,15 @@ const SateLiteDemoScreen = (props: Props) => {
           >
             <Image
               alt=""
+              w={Dimensions.get('screen').width}
+              minH={Dimensions.get('screen').height}
               position={'absolute'}
               left={0}
               right={0}
               top={0}
               bottom={0}
               bgColor={'amber.400'}
-              resizeMode="cover"
+              //  resizeMode="cover"
               source={item.img}
             />
             <View

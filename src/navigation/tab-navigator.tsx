@@ -101,7 +101,7 @@ function CustomDrawerContent({ navigation }: DrawerContentComponentProps) {
         {
           label: 'Account Details',
           as: MaterialIcons,
-          navigation: 'MyFarmsTab',
+          navigation: 'AccountDetailScreen',
           icon: require('@assets/app-logo.png'),
         },
         {

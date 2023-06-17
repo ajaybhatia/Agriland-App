@@ -170,21 +170,16 @@ const WeatherDetailScreen = () => {
     <View flex={1}>
       {!initLoading ? (
         <>
-          <View
-            flex={1}
+          <Image
+            alt=""
             position={'absolute'}
             left={0}
             right={0}
             top={0}
             bottom={0}
-          >
-            <Image
-              alt=""
-              flex={1}
-              source={require('@assets/weather_bg.png')}
-              resizeMode="cover"
-            />
-          </View>
+            source={require('@assets/weather_bg.png')}
+            resizeMode="cover"
+          />
           <FlatList
             keyExtractor={(item, index) => `${index}`}
             showsHorizontalScrollIndicator={false}
