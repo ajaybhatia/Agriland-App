@@ -1,8 +1,4 @@
-import type {
-  ApiResponse,
-  ViewNotificationPaginatedResponse,
-  ViewNotificationResponse,
-} from '@/apis/model';
+import { useNavigation } from '@react-navigation/native';
 import {
   Box,
   CheckIcon,
@@ -14,30 +10,36 @@ import {
   Select,
   Stack,
   Text,
-  VStack,
   View,
+  VStack,
 } from 'native-base';
+import React, { useEffect, useState } from 'react';
 import type {
   NativeSyntheticEvent,
   TextInputSubmitEditingEventData,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
+import { I18nManager } from 'react-native';
+import { RefreshControl } from 'react-native';
+import Toast from 'react-native-toast-message';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import {
   useGetApiNotificationGetallviewnotification,
   usePostApiNotificationAddviewnotification,
 } from '@/apis/endpoints/api';
-
-import { ActivityIndicator } from 'react-native';
+import type {
+  ApiResponse,
+  ViewNotificationPaginatedResponse,
+  ViewNotificationResponse,
+} from '@/apis/model';
+import client from '@/config/react-query/client';
 import AppLoader from '@/ui/components/AppLoader';
 import EmptyList from '@/ui/components/EmptyList';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { I18nManager } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import NoticationCell from './components/notification-cell';
-import { RefreshControl } from 'react-native';
-import Toast from 'react-native-toast-message';
-import { useNavigation } from '@react-navigation/native';
 
 type MainTitle = {
   title: string;
@@ -206,6 +208,16 @@ const NotificationsDetails = () => {
                 notiArray[findSectionIndex].data[index] = newItem;
                 setNotificationList(notiArray);
               }
+              client
+                .invalidateQueries({
+                  queryKey: ['/api/Notification/getallunreadnotification'],
+                })
+                .then((item) => {
+                  console.log('onSuccess==> ', item);
+                })
+                .catch((e) => {
+                  console.log('Error==> ', e);
+                });
             } else {
               Toast.show({
                 type: 'error',

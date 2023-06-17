@@ -11,6 +11,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   useGetApiAccountFetchUserBasicDetails,
   useGetApiCropGetCultivationDetailsByFarmId,
+  useGetApiNotificationGetallunreadnotification,
   usePutApiAccountUpdatefcmtoken,
 } from '@/apis/endpoints/api';
 import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
@@ -116,6 +117,12 @@ function HomeScreen() {
   );
 
   const getAdBanners = useGetApiAdBannerGetAdBanners();
+
+  // get unRead Notification Counts
+
+  const getUnreadNotifications =
+    useGetApiNotificationGetallunreadnotification();
+
   const onWeatherForecast = (lat: number, lng: number) => {
     axios
       .get(
@@ -319,7 +326,13 @@ function HomeScreen() {
             return (
               <VStack mt={3}>
                 <ListHeader
-                  title="You Have 3 Notifications "
+                  title={
+                    getUnreadNotifications?.data
+                      ? `You Have ${
+                          getUnreadNotifications?.data ?? ''
+                        } Notifications `
+                      : 'You Have Notifications '
+                  }
                   ml={5}
                   mr={5}
                   numberOfLines={1}
