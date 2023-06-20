@@ -1,20 +1,3 @@
-import messaging from '@react-native-firebase/messaging';
-import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-import { Image as ImageBase } from 'expo-image';
-import { FlatList, View, VStack } from 'native-base';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Dimensions, I18nManager } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-import {
-  useGetApiAccountFetchUserBasicDetails,
-  useGetApiCropGetCultivationDetailsByFarmId,
-  useGetApiNotificationGetallunreadnotification,
-  usePutApiAccountUpdatefcmtoken,
-} from '@/apis/endpoints/api';
-import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
 import type {
   AdBannerResponse,
   CultivationDetailResponse,
@@ -22,20 +5,36 @@ import type {
   FarmResponse,
   MobileAppUserBasicDetails,
 } from '@/apis/model';
-import { useAuth } from '@/core';
-import { useWeather } from '@/core/weather';
-import ListHeader from '@/ui/components/ListHeader';
-import colors from '@/ui/theme/colors';
+import { Dimensions, I18nManager } from 'react-native';
+import { FlatList, VStack, View } from 'native-base';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  useGetApiAccountFetchUserBasicDetails,
+  useGetApiCropGetCultivationDetailsByFarmId,
+  useGetApiNotificationGetallunreadnotification,
+  usePutApiAccountUpdatefcmtoken,
+} from '@/apis/endpoints/api';
 
-import type { LocationAddress } from '../maps-views/model/location-address-model';
-import type { ForecastModel } from '../weather/models/weather-forecast-models';
 import CompleteProfileCell from './components/complete-profile-cell';
 import CropHomeCell from './components/crops-home-cell';
 import type { DropDownCellType } from './components/dropdown-item-cell';
 import DropDownIteCell from './components/dropdown-item-cell';
 import FarmerListCell from './components/farmer-list-cell';
+import type { ForecastModel } from '../weather/models/weather-forecast-models';
+import { Image as ImageBase } from 'expo-image';
+import ListHeader from '@/ui/components/ListHeader';
+import type { LocationAddress } from '../maps-views/model/location-address-model';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TaskActivitesCell from './components/task-activites-cell';
 import WeatherCell from './components/weather-cell';
+import axios from 'axios';
+import colors from '@/ui/theme/colors';
+import messaging from '@react-native-firebase/messaging';
+import { useAuth } from '@/core';
+import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
+import { useNavigation } from '@react-navigation/native';
+import { useWeather } from '@/core/weather';
 
 function HomeScreen() {
   const setData = useWeather.use.setData();
@@ -415,17 +414,17 @@ function HomeScreen() {
               {
                 title: 'Crop coding',
                 color: '#f5b794',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/crop_coding_home.png'),
               },
               {
                 title: 'Reserve stations',
                 color: '#ed9393',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/reserve_station_home.png'),
               },
               {
                 title: 'Tests',
                 color: '#1ebdc3',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/test_home.png'),
               },
             ];
             return (
@@ -445,17 +444,17 @@ function HomeScreen() {
               {
                 title: 'Production Supplies',
                 color: '#f5b794',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/production_supplies_home.png'),
               },
               {
                 title: 'Crop Marketing',
                 color: '#ed9393',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/crop_markeing_home.png'),
               },
               {
                 title: 'Crop Loan',
                 color: '#1ebdc3',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/crop_loan_home.png'),
               },
             ];
             return (
@@ -475,17 +474,17 @@ function HomeScreen() {
               {
                 title: 'Weather Changes',
                 color: '#f5b794',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/weather_changes_home.png'),
               },
               {
                 title: 'Social Media',
                 color: '#ed9393',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/social_media_home.png'),
               },
               {
                 title: 'Satellite Data',
                 color: '#1ebdc3',
-                icon: 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                icon: require('@assets/satellite_home.png'),
               },
             ];
             return (

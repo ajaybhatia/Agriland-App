@@ -1,16 +1,15 @@
-import { useNavigation } from '@react-navigation/native';
-import { Button, FlatList, View, VStack } from 'native-base';
+import { Button, FlatList, VStack, View } from 'native-base';
 import React, { useCallback, useState } from 'react';
 
-import { useGetApiCropGetCrops } from '@/apis/endpoints/api';
-import type { CropResponse } from '@/apis/model';
 import CounterInput from '@/ui/components/CounterInput';
-import ListHeader from '@/ui/components/ListHeader';
-import colors from '@/ui/theme/colors';
-
 import CropAddCell from './components/crop-add-cell';
 import CropCalendarCell from './components/crop-calendar-cell';
 import CropMapSelectionCell from './components/crop-map-selection-cell';
+import type { CropResponse } from '@/apis/model';
+import ListHeader from '@/ui/components/ListHeader';
+import colors from '@/ui/theme/colors';
+import { useGetApiCropGetCrops } from '@/apis/endpoints/api';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {};
 
@@ -38,7 +37,6 @@ const CropCodingScreen = (props: Props) => {
     {
       query: {
         onSuccess: (data: CropResponse[]) => {
-          console.log('data ===> ', data);
           if (data && data.length > 0) {
             setCrops(moreCropInfo.skip <= 0 ? data : [...crops, ...data]);
             if (selectedCrop === undefined && data && data.length > 0) {

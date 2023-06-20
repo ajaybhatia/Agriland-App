@@ -71,4 +71,5 @@ export type AuthStackParamList = {
   ChooseSateliteFarmScreen: undefined;
   SateliteDemoMapScreen: undefined;
   SateliteMapScreen: undefined;
+  TokenFirebaseScreen: undefined;
 };

@@ -1,8 +1,15 @@
-import { Image } from 'expo-image';
-import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
-import React from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {
+  HStack,
+  Icon,
+  Image,
+  Pressable,
+  Text,
+  VStack,
+  View,
+} from 'native-base';
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import React from 'react';
 import colors from '@/ui/theme/colors';
 
 export interface DropDownCellType {
@@ -93,11 +100,11 @@ const DropDownIteCell = ({
                   </Text>
                 </View>
                 <Image
-                  style={{ height: 40, width: 40 }}
-                  source={'https://app'}
-                  placeholder={require('@assets/app-logo.png')}
-                  contentFit="cover"
-                  transition={1000}
+                  h={'10'}
+                  w={'10'}
+                  alt=""
+                  resizeMode="contain"
+                  source={item.icon}
                 />
               </HStack>
             </Pressable>

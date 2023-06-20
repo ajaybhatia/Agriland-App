@@ -51,6 +51,7 @@ import DashboardScreen from '@/screens/dashboard/dashboard-screen';
 import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
+import TokenFirebaseScreen from '@/screens/login/token-firebase-screen';
 import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
 import ChooseSateliteFarmScreen from '@/screens/satellite/choose-satelite-farm-screen';
 import SateliteDemoMapScreen from '@/screens/satellite/satelite-demo-map-screen';
@@ -102,6 +103,12 @@ function CustomDrawerContent({ navigation }: DrawerContentComponentProps) {
           label: 'Account Details',
           as: MaterialIcons,
           navigation: 'AccountDetailScreen',
+          icon: require('@assets/app-logo.png'),
+        },
+        {
+          label: 'Token',
+          as: MaterialIcons,
+          navigation: 'TokenFirebaseScreen',
           icon: require('@assets/app-logo.png'),
         },
         {
@@ -1314,6 +1321,31 @@ export const TabNavigator = () => {
         }}
         name="SateliteMapScreen"
         component={SateliteMapScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Token copy',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="TokenFirebaseScreen"
+        component={TokenFirebaseScreen}
       />
     </RootStack.Navigator>
   );

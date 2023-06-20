@@ -1,14 +1,45 @@
-import { useNavigation } from '@react-navigation/native';
-import { Image } from 'expo-image';
-import { FlatList, Pressable, View, VStack } from 'native-base';
-import React from 'react';
+import { FlatList, Image, Pressable, Text, VStack, View } from 'native-base';
+
 import { Dimensions } from 'react-native';
-
+import type { ImageSourcePropType } from 'react-native';
 import ListHeader from '@/ui/components/ListHeader';
-
 import PreviousTestCell from './components/previous-test-cell';
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {};
+type AnalysisType = {
+  title: string;
+  image: ImageSourcePropType;
+  color: string;
+};
+const arry: AnalysisType[] = [
+  {
+    image: require('@assets/test-icon/ph_analysis.png'),
+    title: 'PH Analysis And Soil Alkalinity',
+    color: '#db1a20',
+  },
+  {
+    image: require('@assets/test-icon/properties_analysis.png'),
+    title: 'Properties Analysis Soil Natural',
+    color: '#819a2f',
+  },
+  {
+    image: require('@assets/test-icon/ground_analysis.png'),
+    title: 'Curve Analysis Ground Moisture',
+    color: '#cd8719',
+  },
+  {
+    image: require('@assets/test-icon/water_analysis.png'),
+    title: 'Water Test',
+    color: '#4bbcc7',
+  },
+  {
+    image: require('@assets/test-icon/soil_analysis.png'),
+    title: 'Pollutant Analysis The Soil',
+    color: '#8a6e56',
+  },
+];
 
 const TestScreen = (props: Props) => {
   const nav = useNavigation();
@@ -37,29 +68,46 @@ const TestScreen = (props: Props) => {
                   keyExtractor={(item, indexV) => `${indexV}`}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
-                  data={[1, 2, 3, 4, 5]}
-                  renderItem={({ item: itemCrop }: { item: number }) => (
+                  data={arry}
+                  renderItem={({
+                    item: itemAnalysis,
+                  }: {
+                    item: AnalysisType;
+                  }) => (
                     <Pressable
                       onPress={() =>
                         nav.navigate('MakeAppointmentScreen', {
                           title: 'Test Appointment',
                         })
                       }
+                      bgColor={'white'}
                       shadow={2}
                       m={1}
                       borderRadius={10}
                       overflow={'hidden'}
+                      alignItems={'center'}
                       w={Dimensions.get('screen').width / 2 - 30}
                     >
                       <Image
-                        style={{ flex: 1, height: 100 }}
-                        source={
-                          'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U'
-                        }
-                        placeholder={require('@assets/app-logo.png')}
-                        contentFit="cover"
-                        transition={1000}
+                        h={'16'}
+                        w={'16'}
+                        alt={''}
+                        mt={3}
+                        resizeMode="contain"
+                        source={itemAnalysis.image}
                       />
+                      <Text
+                        color={itemAnalysis.color}
+                        my={3}
+                        fontSize={12}
+                        fontFamily={'body'}
+                        fontWeight={'700'}
+                        w={'100%'}
+                        px={3}
+                        textAlign={'center'}
+                      >
+                        {itemAnalysis.title}
+                      </Text>
                     </Pressable>
                   )}
                   //estimatedItemSize={300}

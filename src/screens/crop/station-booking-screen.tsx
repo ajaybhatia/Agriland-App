@@ -1,17 +1,17 @@
-import { useNavigation } from '@react-navigation/native';
-import { Button, FlatList, View, VStack } from 'native-base';
+import { Button, FlatList, VStack, View } from 'native-base';
 import React, { useCallback, useState } from 'react';
 
-import { useGetApiCropGetCrops } from '@/apis/endpoints/api';
-import type { CropResponse } from '@/apis/model';
-import CounterInput from '@/ui/components/CounterInput';
-import ListHeader from '@/ui/components/ListHeader';
-import colors from '@/ui/theme/colors';
-
 import AnotherServicesCell from './components/another-services-cell';
+import CounterInput from '@/ui/components/CounterInput';
 import CropAddCell from './components/crop-add-cell';
 import CropCalendarCell from './components/crop-calendar-cell';
 import CropMapSelectionCell from './components/crop-map-selection-cell';
+import type { CropResponse } from '@/apis/model';
+import ListHeader from '@/ui/components/ListHeader';
+import type { ServicesType } from './components/another-services-cell';
+import colors from '@/ui/theme/colors';
+import { useGetApiCropGetCrops } from '@/apis/endpoints/api';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {};
 
@@ -19,6 +19,7 @@ const StationBookingScreen = (props: Props) => {
   const nav = useNavigation();
   const [crops, setCrops] = useState<CropResponse[]>([]);
   const [quantity, setQuanitity] = useState<number>(1);
+  const [selectedServices, setSelectedServices] = useState<ServicesType[]>([]);
   const [selectedCrop, setSelectedCrop] = useState<CropResponse | undefined>();
   const addNewCrop = useCallback(() => nav.navigate('AddFarmHomeScreen'), []);
   const [moreCropInfo, setMoreCropInfo] = useState<{
@@ -39,7 +40,6 @@ const StationBookingScreen = (props: Props) => {
     {
       query: {
         onSuccess: (data: CropResponse[]) => {
-          console.log('data ===> ', data);
           if (data && data.length > 0) {
             setCrops(moreCropInfo.skip <= 0 ? data : [...crops, ...data]);
             if (selectedCrop === undefined && data && data.length > 0) {
@@ -52,6 +52,20 @@ const StationBookingScreen = (props: Props) => {
         },
       },
     }
+  );
+
+  const onSelectServices = useCallback(
+    (item: ServicesType) => {
+      console.log('onSelectServices === >', item);
+      setSelectedServices((v) => {
+        if (v.filter((x) => x.title === item.title).length > 0) {
+          return v.filter((x) => x.title === item.title);
+        } else {
+          return [...v, item];
+        }
+      });
+    },
+    [setSelectedServices]
   );
 
   const onSelectCrop = useCallback(
@@ -134,7 +148,10 @@ const StationBookingScreen = (props: Props) => {
                   mr={5}
                   isSeeAllShow={false}
                 />
-                <AnotherServicesCell />
+                <AnotherServicesCell
+                  onSelecteditem={onSelectServices}
+                  selecteditems={selectedServices}
+                />
               </VStack>
             );
           } else if (index === 4) {
