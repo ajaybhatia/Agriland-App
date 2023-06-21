@@ -56,10 +56,9 @@ const StationBookingScreen = (props: Props) => {
 
   const onSelectServices = useCallback(
     (item: ServicesType) => {
-      console.log('onSelectServices === >', item);
       setSelectedServices((v) => {
         if (v.filter((x) => x.title === item.title).length > 0) {
-          return v.filter((x) => x.title === item.title);
+          return v.filter((x) => x.title !== item.title);
         } else {
           return [...v, item];
         }

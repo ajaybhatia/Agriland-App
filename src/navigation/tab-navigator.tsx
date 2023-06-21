@@ -1,15 +1,10 @@
-import auth from '@react-native-firebase/auth';
-import type {
-  DrawerContentComponentProps,
-  DrawerHeaderProps,
-} from '@react-navigation/drawer';
 import {
-  createDrawerNavigator,
-  useDrawerStatus,
-} from '@react-navigation/drawer';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import type { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+  Alert,
+  Animated,
+  I18nManager,
+  Keyboard,
+  StyleSheet,
+} from 'react-native';
 import {
   Box,
   HStack,
@@ -19,58 +14,62 @@ import {
   Pressable,
   SectionList,
   Text,
-  View,
   VStack,
+  View,
 } from 'native-base';
-import React from 'react';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import type {
+  DrawerContentComponentProps,
+  DrawerHeaderProps,
+} from '@react-navigation/drawer';
 import {
-  Alert,
-  Animated,
-  I18nManager,
-  Keyboard,
-  StyleSheet,
-} from 'react-native';
-import { Platform } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+  createDrawerNavigator,
+  useDrawerStatus,
+} from '@react-navigation/drawer';
 
-import { useAuth } from '@/core';
 import AccountDetailScreen from '@/screens/account/account-detail-screen';
+import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import AddOperationScreen from '@/screens/CenterScreens/add-operations-screen';
+import AppHeader from '@/ui/components/AppHeader';
+import type { AuthStackParamList } from './types';
+import ChooseSateliteFarmScreen from '@/screens/satellite/choose-satelite-farm-screen';
 import CropCodingScreen from '@/screens/crop/crop-coding-screen';
 import CropDetailScreen from '@/screens/crop/crop-detail-screen';
 import CropRegisterDetails from '@/screens/crop/crop-register-details';
 import CropRegistration from '@/screens/crop/crop-registration';
-import MyCropsScreen from '@/screens/crop/my-crops-screen';
-import STationBookedScreen from '@/screens/crop/station-booked-screen';
-import StationBookingScreen from '@/screens/crop/station-booking-screen';
+import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
 import DashboardScreen from '@/screens/dashboard/dashboard-screen';
-import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
+import DrawerOptions from '@/ui/components/DrawerOptions';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
-import TokenFirebaseScreen from '@/screens/login/token-firebase-screen';
+import MakeAppointmentScreen from '@/screens/TestScreens/make-appointment-screen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MyCropsScreen from '@/screens/crop/my-crops-screen';
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
-import ChooseSateliteFarmScreen from '@/screens/satellite/choose-satelite-farm-screen';
-import SateliteDemoMapScreen from '@/screens/satellite/satelite-demo-map-screen';
+import { Platform } from 'react-native';
+import React from 'react';
+import STationBookedScreen from '@/screens/crop/station-booked-screen';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import SateLiteDemoScreen from '@/screens/satellite/satelite-demo-screen';
+import SateliteDemoMapScreen from '@/screens/satellite/satelite-demo-map-screen';
 import SateliteDetailSubscriptionScreen from '@/screens/satellite/satelite-detail-subscription-screen';
 import SateliteMapScreen from '@/screens/satellite/satelite-map-screen';
+import StationBookingScreen from '@/screens/crop/station-booking-screen';
 import SubscriptionBundleScreen from '@/screens/satellite/subscription-bundle-screen';
 import TaskCalenderDetailScreen from '@/screens/tasks/task-calender-detail-screen';
 import TaskDetailScreen from '@/screens/tasks/tasks-detail-screen';
-import MakeAppointmentScreen from '@/screens/TestScreens/make-appointment-screen';
 import TestScreen from '@/screens/TestScreens/tests-screen';
+import TokenFirebaseScreen from '@/screens/login/token-firebase-screen';
+import { TouchableOpacity } from 'react-native';
 import WeatherChangesScreen from '@/screens/weather/weather-changes-screen';
 import WeatherDetailScreen from '@/screens/weather/weather-detail-screen';
 import WeatherSingleDetail from '@/screens/weather/weather-single-detail';
-import AppHeader from '@/ui/components/AppHeader';
-import DrawerOptions from '@/ui/components/DrawerOptions';
+import auth from '@react-native-firebase/auth';
 import colors from '@/ui/theme/colors';
-
-import type { AuthStackParamList } from './types';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useAuth } from '@/core';
 
 const Screen1 = () => {
   return <View style={styles.screen1} />;

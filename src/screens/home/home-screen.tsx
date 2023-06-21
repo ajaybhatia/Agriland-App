@@ -96,7 +96,6 @@ function HomeScreen() {
       query: {
         enabled: selectedFarm !== undefined,
         onSuccess: (data: FarmCropCultivationResponse) => {
-          console.log('onSuccess ==> ', data.cultivationDetails?.length);
           if (
             data &&
             data?.cultivationDetails &&

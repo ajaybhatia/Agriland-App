@@ -83,7 +83,8 @@ const AnotherServicesCell = ({ onSelecteditem, selecteditems }: Props) => {
                     <Image
                       h={12}
                       w={12}
-                      alt={`${index}_selected`}
+                      key={`${index}_selected`}
+                      alt={''}
                       resizeMode="contain"
                       source={item.image_selected}
                     />
@@ -91,7 +92,8 @@ const AnotherServicesCell = ({ onSelecteditem, selecteditems }: Props) => {
                     <Image
                       h={12}
                       w={12}
-                      alt={`${index}_unselected`}
+                      key={`${index}_unselected`}
+                      alt={''}
                       resizeMode="contain"
                       source={item.image}
                     />
