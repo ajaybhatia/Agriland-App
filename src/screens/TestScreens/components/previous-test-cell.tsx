@@ -1,6 +1,6 @@
-import { HStack, Icon, Text, View, VStack } from 'native-base';
+import { HStack, Icon, Image, Text, View, VStack } from 'native-base';
 import React from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import colors from '@/ui/theme/colors';
 
@@ -13,7 +13,7 @@ const PreviousTestCell = (props: Props) => {
       bgColor={'gray.200'}
       my={1}
       py={3}
-      px={1}
+      px={2}
       borderRadius={10}
     >
       <View flex={0.13}>
@@ -23,15 +23,14 @@ const PreviousTestCell = (props: Props) => {
           borderRadius={5}
           alignItems={'center'}
           justifyContent={'center'}
-          px={5}
-          py={2}
           borderWidth={1}
+          p={2}
         >
-          <Icon
-            as={MaterialIcons}
-            name={'clear'}
-            size={'lg'}
-            color={'rose.400'}
+          <Image
+            alt=""
+            resizeMode="cover"
+            h={'8'}
+            source={require('@assets/test-icon/soil_analysis.png')}
           />
         </View>
       </View>
@@ -74,7 +73,13 @@ const PreviousTestCell = (props: Props) => {
           justifyContent={'center'}
           alignItems={'center'}
         >
-          <Icon as={MaterialIcons} name={'clear'} size={'lg'} color={'white'} />
+          <Icon
+            as={MaterialCommunityIcons}
+            name={'arrow-top-right-thick'}
+            size={'lg'}
+            my={1}
+            color={'white'}
+          />
         </View>
       </View>
     </HStack>
