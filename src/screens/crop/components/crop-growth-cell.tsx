@@ -1,16 +1,16 @@
-import { Image } from 'expo-image';
+import type { CropResponse, CultivationDetailResponse } from '@/apis/model';
 import {
   HStack,
   Image as ImageBase,
   ScrollView,
   Text,
-  View,
   VStack,
+  View,
 } from 'native-base';
-import React from 'react';
-import { I18nManager } from 'react-native';
 
-import type { CropResponse, CultivationDetailResponse } from '@/apis/model';
+import { I18nManager } from 'react-native';
+import { Image } from 'expo-image';
+import React from 'react';
 
 type Props = {
   item: CropResponse & CultivationDetailResponse;
@@ -55,7 +55,7 @@ const CropGrowthCell = ({ item }: Props) => {
               style={{ flex: 1, height: 20 }}
               source={
                 item?.imageUrl
-                  ? `http://95.111.231.114:85${item.imageUrl}`
+                  ? `http://95.111.231.114:88${item.imageUrl}`
                   : 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U'
               }
               placeholder={require('@assets/app-logo.png')}

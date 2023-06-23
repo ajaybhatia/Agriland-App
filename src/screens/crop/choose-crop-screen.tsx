@@ -1,15 +1,15 @@
-import { Image } from 'expo-image';
-import { FlatList, Icon, Pressable, View, VStack } from 'native-base';
-import React, { useState } from 'react';
-import { Dimensions, I18nManager } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import { useGetApiCropGetCropsByCategoryId } from '@/apis/endpoints/api';
 import type { CropBasicResponse, CropCategoryResponse } from '@/apis/model';
+import { Dimensions, I18nManager } from 'react-native';
+import { FlatList, Icon, Pressable, VStack, View } from 'native-base';
+import React, { useState } from 'react';
+
 import AppLoader from '@/ui/components/AppLoader';
 import BodyTitle from '@/ui/components/BodyTitle';
 import EmptyList from '@/ui/components/EmptyList';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Header from '@/ui/components/Header';
+import { Image } from 'expo-image';
+import { useGetApiCropGetCropsByCategoryId } from '@/apis/endpoints/api';
 
 type Props = {
   onCropSelected?: (
@@ -98,7 +98,7 @@ function ChooseCropScreen({
                   >
                     <Image
                       style={{ flex: 1 }}
-                      source={`http://95.111.231.114:85${item.imageUrl}`}
+                      source={`http://95.111.231.114:88${item.imageUrl}`}
                       placeholder={require('@assets/app-logo.png')}
                       contentFit="cover"
                       transition={1000}

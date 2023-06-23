@@ -1,11 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
-import { Image } from 'expo-image';
-import { Pressable, View, VStack } from 'native-base';
-import React from 'react';
-import { Dimensions, I18nManager } from 'react-native';
-
 import type { CropResponse, CultivationDetailResponse } from '@/apis/model';
+import { Dimensions, I18nManager } from 'react-native';
+import { Pressable, VStack, View } from 'native-base';
+
 import Header from '@/ui/components/Header';
+import { Image } from 'expo-image';
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   item: CropResponse & CultivationDetailResponse;
@@ -37,7 +37,7 @@ const CropMapSelectionCell = ({ item, selectedItem, onSelectCrop }: Props) => {
           style={{ flex: 1, height: 100 }}
           source={
             item?.imageUrl || item?.cropDetails?.imageUrl
-              ? `http://95.111.231.114:85${
+              ? `http://95.111.231.114:88${
                   item?.imageUrl ?? item?.cropDetails?.imageUrl ?? ''
                 }`
               : 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U'

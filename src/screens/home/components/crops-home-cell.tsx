@@ -1,10 +1,10 @@
-import { Image } from 'expo-image';
-import { Icon, Pressable, View, VStack } from 'native-base';
-import React from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Icon, Pressable, VStack, View } from 'native-base';
 
-import type { CultivationDetailResponse } from '@/apis/model';
 import BodyTitle from '@/ui/components/BodyTitle';
+import type { CultivationDetailResponse } from '@/apis/model';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Image } from 'expo-image';
+import React from 'react';
 
 type Props = {
   onSelect?: (item: CultivationDetailResponse) => void;
@@ -47,7 +47,7 @@ function CropHomeCell({ onSelect, onNextScreen, selectedItem, item }: Props) {
                 borderRadius: 75 / 2,
                 overflow: 'hidden',
               }}
-              source={`http://95.111.231.114:85${
+              source={`http://95.111.231.114:88${
                 item?.cropDetails?.imageUrl ?? ''
               }`}
               placeholder={require('@assets/app-logo.png')}

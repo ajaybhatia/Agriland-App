@@ -1,43 +1,42 @@
-import { Image } from 'expo-image';
-import {
-  FlatList,
-  Icon,
-  Image as ImageBase,
-  Pressable,
-  View,
-  VStack,
-} from 'native-base';
-import React, { useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Animated,
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import { I18nManager } from 'react-native';
-import { ExpandingDot } from 'react-native-animated-pagination-dots';
-import Modal from 'react-native-modal';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import {
-  useGetApiCropGetCropCategories,
-  useGetApiFarmGetFarms,
-} from '@/apis/endpoints/api';
 import type {
   CropBasicResponse,
   CropCategoryPaginatedResponse,
   CropCategoryResponse,
   FarmResponse,
 } from '@/apis/model';
-import AppLoader from '@/ui/components/AppLoader';
-import EmptyList from '@/ui/components/EmptyList';
-import Header from '@/ui/components/Header';
-import colors from '@/ui/theme/colors';
+import {
+  FlatList,
+  Icon,
+  Image as ImageBase,
+  Pressable,
+  VStack,
+  View,
+} from 'native-base';
+import React, { useRef, useState } from 'react';
+import {
+  useGetApiCropGetCropCategories,
+  useGetApiFarmGetFarms,
+} from '@/apis/endpoints/api';
 
-import type { CropRegisterType } from './add-crop-maps';
+import AppLoader from '@/ui/components/AppLoader';
 import ChooseCropScreen from './choose-crop-screen';
+import type { CropRegisterType } from './add-crop-maps';
+import EmptyList from '@/ui/components/EmptyList';
+import { ExpandingDot } from 'react-native-animated-pagination-dots';
 import FarmAddCell from './components/farm-add-cell';
 import FarmMapSelectionCell from './components/farm-map-selection-cell';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Header from '@/ui/components/Header';
+import { I18nManager } from 'react-native';
+import { Image } from 'expo-image';
+import Modal from 'react-native-modal';
+import colors from '@/ui/theme/colors';
 
 type Props = {
   onPreviousSubmit?: () => void;
@@ -294,7 +293,7 @@ function ChooseFarmCropCategory({
                 {item.imageUrl && item.imageUrl !== null ? (
                   <Image
                     style={{ height: 150 }}
-                    source={`http://95.111.231.114:85${item.imageUrl}`}
+                    source={`http://95.111.231.114:88${item.imageUrl}`}
                     placeholder={require('@assets/app-logo.png')}
                     contentFit="cover"
                     transition={1000}

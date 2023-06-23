@@ -1,13 +1,12 @@
-import { Image as NImage } from 'expo-image';
-import { Image, Pressable, View, VStack } from 'native-base';
-import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions } from 'react-native';
-import { I18nManager } from 'react-native';
-import { StyleSheet } from 'react-native';
-
-import type { CropRegisterType } from '@/screens/crop/add-crop-maps';
+import { Image, Pressable, VStack, View } from 'native-base';
+import React, { useEffect, useRef, useState } from 'react';
 
 import BodyTitle from './BodyTitle';
+import type { CropRegisterType } from '@/screens/crop/add-crop-maps';
+import { I18nManager } from 'react-native';
+import { Image as NImage } from 'expo-image';
+import { StyleSheet } from 'react-native';
 
 export enum AnimationSide {
   LEFT,
@@ -86,7 +85,7 @@ const WidthAnimation = ({
             /> */}
             <NImage
               style={{ height: 50, width: 50, borderRadius: 25 }}
-              source={`http://95.111.231.114:85${crop?.crop?.imageUrl}`}
+              source={`http://95.111.231.114:88${crop?.crop?.imageUrl}`}
               placeholder={require('@assets/app-logo.png')}
               contentFit="cover"
               transition={1000}
@@ -155,7 +154,7 @@ const WidthAnimation = ({
             />
             {/* <NImage
               style={{ height: 50, width: 50, borderRadius: 25 }}
-              source={`http://95.111.231.114:85${crop?.farm.}`}
+              source={`http://95.111.231.114:88${crop?.farm.}`}
               placeholder={require('@assets/app-logo.png')}
               contentFit="cover"
               transition={1000}

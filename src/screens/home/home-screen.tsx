@@ -85,7 +85,7 @@ function HomeScreen() {
   // tasks
   const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
     {
-      farmid: '0737bac5-b1a5-453b-a012-afa37fccb199', // selectedFarm?.id,
+      farmid: selectedFarm?.id, //'0737bac5-b1a5-453b-a012-afa37fccb199', //
       noOfDays: 7,
     },
     {
@@ -444,7 +444,7 @@ function HomeScreen() {
                         <CardWithShadow>
                           <ImageBase
                             style={{ height: 150, flex: 1 }}
-                            source={`http://95.111.231.114:85${ads.imageUrl}`}
+                            source={`http://95.111.231.114:88${ads.imageUrl}`}
                             // source={ads.imageUrl}
                             placeholder={require('@assets/app-logo.png')}
                             contentFit="cover"

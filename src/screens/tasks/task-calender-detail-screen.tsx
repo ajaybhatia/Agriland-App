@@ -61,7 +61,7 @@ const TaskCalenderDetailScreen = (props: Props) => {
   // tasks
   const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
     {
-      farmid: '0737bac5-b1a5-453b-a012-afa37fccb199', //route?.params?.farmId ?? '',
+      farmid: route?.params?.farmId ?? '', // '0737bac5-b1a5-453b-a012-afa37fccb199', //
       noOfDays: 7,
     },
     {
