@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 import { Button, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import type { ShareAction } from 'react-native';
@@ -35,6 +36,22 @@ const TokenFirebaseScreen = () => {
         err && console.log(err);
       });
   }
+
+  async function shareFirebaseToken() {
+    const token = await messaging().getToken();
+    let shareContent = {
+      title: 'Token',
+      message: `${token}`,
+    };
+
+    Share.share(shareContent)
+      .then((res: ShareAction) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        err && console.log(err);
+      });
+  }
   return (
     <View flex={1} justifyContent={'center'} alignItems={'center'}>
       <Button
@@ -50,6 +67,20 @@ const TokenFirebaseScreen = () => {
         alignSelf={'center'}
       >
         {'Request Token'}
+      </Button>
+
+      <Button
+        onPress={() => shareFirebaseToken()}
+        backgroundColor={colors.button_color}
+        borderRadius={8}
+        width={'80%'}
+        mt={30}
+        fontWeight={'normal'}
+        fontSize={20}
+        overflow={'hidden'}
+        alignSelf={'center'}
+      >
+        {'Notification Token'}
       </Button>
     </View>
   );

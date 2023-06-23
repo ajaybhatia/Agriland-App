@@ -22,6 +22,7 @@ import type {
   FarmCropsDetailResponse,
   FarmResponse,
 } from '@/apis/model';
+import { useRegisterFarm } from '@/core/register-farm';
 import CustomButton from '@/ui/components/CustomButton';
 import WidthAnimation, { AnimationSide } from '@/ui/components/WidthAnimation';
 
@@ -55,6 +56,7 @@ const AddCropMaps = ({
   onPreviousSubmit,
   registerType = AddCropRegisterType.FROM_REGISTER,
 }: Props) => {
+  const addedFarm = useRegisterFarm.use.selectedFarm();
   enum AddCropState {
     MAP,
     CHOOSE_FARM_SELECT_CROP,
@@ -72,7 +74,9 @@ const AddCropMaps = ({
     AddCropState.CHOOSE_FARM_SELECT_CROP
   );
 
-  const [cropInfo, setCropInfo] = useState<CropRegisterType | undefined>();
+  const [cropInfo, setCropInfo] = useState<CropRegisterType | undefined>({
+    farm: addedFarm,
+  });
 
   // request location permission
   function reQuestPermission(isCurrentLocation: boolean) {

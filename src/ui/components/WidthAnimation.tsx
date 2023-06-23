@@ -2,6 +2,7 @@ import { Image as NImage } from 'expo-image';
 import { Image, Pressable, View, VStack } from 'native-base';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions } from 'react-native';
+import { I18nManager } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 import type { CropRegisterType } from '@/screens/crop/add-crop-maps';
@@ -85,7 +86,7 @@ const WidthAnimation = ({
             /> */}
             <NImage
               style={{ height: 50, width: 50, borderRadius: 25 }}
-              source={`http://95.111.231.114:88${crop?.crop?.imageUrl}`}
+              source={`http://95.111.231.114:85${crop?.crop?.imageUrl}`}
               placeholder={require('@assets/app-logo.png')}
               contentFit="cover"
               transition={1000}
@@ -96,7 +97,11 @@ const WidthAnimation = ({
                   <BodyTitle title="Farm" fontSize={12} fontWeight={100} />
                   <BodyTitle
                     numberOfLines={1}
-                    title={crop?.farm?.name ?? ''}
+                    title={
+                      I18nManager.isRTL
+                        ? crop?.farm?.name?.ar ?? ''
+                        : crop?.farm?.name?.en ?? ''
+                    }
                     fontSize={12}
                     fontWeight={400}
                   />
@@ -105,7 +110,11 @@ const WidthAnimation = ({
                   <BodyTitle title="Type" fontSize={12} fontWeight={100} />
                   <BodyTitle
                     numberOfLines={1}
-                    title={crop?.cropCategory?.name ?? ''}
+                    title={
+                      I18nManager.isRTL
+                        ? crop?.cropCategory?.name?.ar ?? ''
+                        : crop?.cropCategory?.name?.en ?? ''
+                    }
                     fontSize={12}
                     fontWeight={400}
                   />
@@ -126,7 +135,11 @@ const WidthAnimation = ({
               <VStack ml={5}>
                 <BodyTitle title="Farm" fontSize={12} fontWeight={100} />
                 <BodyTitle
-                  title={crop?.farm?.name ?? ''}
+                  title={
+                    I18nManager.isRTL
+                      ? crop?.farm?.name?.ar ?? ''
+                      : crop?.farm?.name?.en ?? ''
+                  }
                   fontSize={13}
                   fontWeight={400}
                 />
@@ -140,6 +153,13 @@ const WidthAnimation = ({
               w={50}
               rounded={'full'}
             />
+            {/* <NImage
+              style={{ height: 50, width: 50, borderRadius: 25 }}
+              source={`http://95.111.231.114:85${crop?.farm.}`}
+              placeholder={require('@assets/app-logo.png')}
+              contentFit="cover"
+              transition={1000}
+            /> */}
           </View>
         </Pressable>
       )}

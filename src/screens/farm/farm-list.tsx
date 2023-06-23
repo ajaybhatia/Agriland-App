@@ -18,6 +18,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { usePostApiFarmCreateUpdateFarm } from '@/apis/endpoints/api';
 import type { FarmRequest } from '@/apis/model';
 import client from '@/config/react-query/client';
+import { useRegisterFarm } from '@/core/register-farm';
 import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
 
@@ -45,19 +46,10 @@ const FarmList = ({
     farmRequest ? [farmRequest] : []
   );
   // add farm APi
-
+  const setRegisterFarmData = useRegisterFarm.use.setData();
   const addFarmApi = usePostApiFarmCreateUpdateFarm();
 
   function apiSubmitAddFarm(isAddNew: boolean) {
-    console.log('gh =======> ', {
-      name: farmRequest?.name,
-      coordinates: farmRequest?.coordinates,
-      //governorateFieldId: farmRequest?.governorateFieldId,
-      cityId: farmRequest?.cityId,
-      villageId: farmRequest?.villageId,
-      address: farmRequest?.address,
-      organization: farmRequest?.organization,
-    });
     addFarmApi.mutate(
       {
         data: {
@@ -77,6 +69,10 @@ const FarmList = ({
               onFarmAddMore && onFarmAddMore();
             } else {
               if (addFarmFrom === AddfarmFrom.REGISTER) {
+                setRegisterFarmData({
+                  name: farmRequest?.name,
+                  coordinates: farmRequest?.coordinates,
+                });
                 onNextStep && onNextStep();
               } else {
                 client

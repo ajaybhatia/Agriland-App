@@ -1,40 +1,46 @@
+import messaging from '@react-native-firebase/messaging';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import { Image as ImageBase } from 'expo-image';
+import { FlatList, View, VStack } from 'native-base';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Dimensions, I18nManager } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import {
+  useGetApiAccountFetchUserBasicDetails,
+  useGetApiCropGetcropactivitiesbyfarmid,
+  useGetApiCropGetCultivationDetailsByFarmId,
+  useGetApiNotificationGetallunreadnotification,
+  usePutApiAccountUpdatefcmtoken,
+} from '@/apis/endpoints/api';
+import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
 import type {
+  ActivityDetails,
   AdBannerResponse,
   CultivationDetailResponse,
   FarmCropCultivationResponse,
   FarmResponse,
   MobileAppUserBasicDetails,
 } from '@/apis/model';
-import { Dimensions, I18nManager } from 'react-native';
-import { FlatList, VStack, View } from 'native-base';
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  useGetApiAccountFetchUserBasicDetails,
-  useGetApiCropGetCultivationDetailsByFarmId,
-  useGetApiNotificationGetallunreadnotification,
-  usePutApiAccountUpdatefcmtoken,
-} from '@/apis/endpoints/api';
+import { useAuth } from '@/core';
+import { useWeather } from '@/core/weather';
+import CardWithShadow from '@/ui/components/CardWithShadow';
+import ListHeader from '@/ui/components/ListHeader';
+import type { DataValues } from '@/ui/components/step-indicator/StepIndicator';
+import colors from '@/ui/theme/colors';
 
+import type { LocationAddress } from '../maps-views/model/location-address-model';
+import type { ForecastModel } from '../weather/models/weather-forecast-models';
 import CompleteProfileCell from './components/complete-profile-cell';
 import CropHomeCell from './components/crops-home-cell';
 import type { DropDownCellType } from './components/dropdown-item-cell';
 import DropDownIteCell from './components/dropdown-item-cell';
 import FarmerListCell from './components/farmer-list-cell';
-import type { ForecastModel } from '../weather/models/weather-forecast-models';
-import { Image as ImageBase } from 'expo-image';
-import ListHeader from '@/ui/components/ListHeader';
-import type { LocationAddress } from '../maps-views/model/location-address-model';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TaskActivitesCell from './components/task-activites-cell';
 import WeatherCell from './components/weather-cell';
-import axios from 'axios';
-import colors from '@/ui/theme/colors';
-import messaging from '@react-native-firebase/messaging';
-import { useAuth } from '@/core';
-import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
-import { useNavigation } from '@react-navigation/native';
-import { useWeather } from '@/core/weather';
 
 function HomeScreen() {
   const setData = useWeather.use.setData();
@@ -53,11 +59,11 @@ function HomeScreen() {
   const [currentAddress, setCurrentAddress] = useState<
     LocationAddress | undefined
   >();
+  const [tasks, setTasks] = useState<DataValues[]>([]);
   const [isShowSheets, setShowSheets] = useState<{
     isShow: boolean;
     index: number;
   }>({ index: 0, isShow: false });
-
   useEffect(() => {
     const getToken = async () => {
       // Register the device with FCM
@@ -76,6 +82,45 @@ function HomeScreen() {
     getToken();
   }, []);
 
+  // tasks
+  const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
+    {
+      farmid: '0737bac5-b1a5-453b-a012-afa37fccb199', // selectedFarm?.id,
+      noOfDays: 7,
+    },
+    {
+      query: {
+        enabled: selectedFarm !== undefined,
+        onSuccess(data: ActivityDetails) {
+          if (data && data.calendarActivities) {
+            var mainTempTask: DataValues[] = [];
+            let mainTask: DataValues[] = data.calendarActivities.map((x) => {
+              let obj: DataValues = {
+                title: x?.activityDate ?? '',
+                subTitle: x?.activityDate ?? '',
+                list: [x],
+              };
+              let index = mainTempTask.findIndex((y) =>
+                dayjs(y.title)
+                  .startOf('day')
+                  .isSame(dayjs(x.activityDate).startOf('day'))
+              );
+              if (index >= 0) {
+                let itemList = mainTempTask[index].list;
+                mainTempTask[index].list = [...itemList, x];
+              } else {
+                mainTempTask = [...mainTempTask, obj];
+              }
+              return obj;
+            });
+
+            setTasks(mainTempTask);
+          }
+        },
+      },
+    }
+  );
+
   // userInfo
   useGetApiAccountFetchUserBasicDetails({
     query: {
@@ -87,7 +132,7 @@ function HomeScreen() {
     },
   });
   // get crops by farmId
-
+  console.log(selectedFarm?.id ?? '');
   const getCrops = useGetApiCropGetCultivationDetailsByFarmId(
     {
       farmId: selectedFarm?.id ?? '',
@@ -167,8 +212,12 @@ function HomeScreen() {
   };
 
   const onTaskCalenderDetail = useCallback(() => {
-    nav.navigate('TaskCalenderDetailScreen');
-  }, [nav]);
+    if (selectedFarm && selectedFarm?.id) {
+      nav.navigate('TaskCalenderDetailScreen', {
+        farmId: selectedFarm?.id,
+      });
+    }
+  }, [nav, selectedFarm]);
 
   const onDropDownPress = useCallback(
     (title: string) => {
@@ -348,7 +397,7 @@ function HomeScreen() {
             );
           } else if (index === 4) {
             return <CompleteProfileCell />;
-          } else if (index === 5) {
+          } else if (index === 5 && tasks.length > 0) {
             return (
               <VStack mt={3}>
                 <ListHeader
@@ -361,7 +410,7 @@ function HomeScreen() {
                   as={MaterialCommunityIcons}
                   onRightIconClick={onTaskCalenderDetail}
                 />
-                <TaskActivitesCell />
+                <TaskActivitesCell dataArray={tasks} />
               </VStack>
             );
           } else if (
@@ -386,21 +435,23 @@ function HomeScreen() {
                   renderItem={({ item: ads }: { item: AdBannerResponse }) => {
                     return (
                       <VStack mt={3} mb={2} w={Dimensions.get('screen').width}>
-                        <VStack
+                        {/* <VStack
                           mx={3}
                           shadow={1}
                           borderRadius={10}
                           overflow={'hidden'}
-                        >
+                        > */}
+                        <CardWithShadow>
                           <ImageBase
                             style={{ height: 150, flex: 1 }}
-                            source={`http://95.111.231.114:88${ads.imageUrl}`}
+                            source={`http://95.111.231.114:85${ads.imageUrl}`}
                             // source={ads.imageUrl}
                             placeholder={require('@assets/app-logo.png')}
-                            contentFit="contain"
+                            contentFit="cover"
                             transition={1000}
                           />
-                        </VStack>
+                        </CardWithShadow>
+                        {/* </VStack> */}
                       </VStack>
                     );
                   }}

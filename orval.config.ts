@@ -15,7 +15,7 @@ export default defineConfig({
       },
     },
     input: {
-      target: 'http://95.111.231.114:88/swagger/v1/swagger.json',
+      target: 'http://95.111.231.114:85/swagger/v1/swagger.json',
     },
   },
 });

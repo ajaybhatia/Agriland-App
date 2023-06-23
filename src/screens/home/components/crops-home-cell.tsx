@@ -47,7 +47,7 @@ function CropHomeCell({ onSelect, onNextScreen, selectedItem, item }: Props) {
                 borderRadius: 75 / 2,
                 overflow: 'hidden',
               }}
-              source={`http://95.111.231.114:88${
+              source={`http://95.111.231.114:85${
                 item?.cropDetails?.imageUrl ?? ''
               }`}
               placeholder={require('@assets/app-logo.png')}

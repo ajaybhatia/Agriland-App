@@ -10,6 +10,7 @@ import type { CoOrdinates } from './coOrdinates';
 export interface FarmRequest {
   id?: string | null;
   name?: LanguageName;
+  isActive?: boolean | null;
   coordinates?: CoOrdinates[] | null;
   landHoldingNumber?: string | null;
   governorateId?: string | null;
@@ -17,5 +18,6 @@ export interface FarmRequest {
   cityId?: string | null;
   villageId?: string | null;
   address?: string | null;
+  farmerId?: string | null;
   organization?: string | null;
 }

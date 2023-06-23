@@ -7,8 +7,8 @@
 
 export type PostApiCropCreateUpdateCropBody = {
   Id?: string;
-  EnName?: string;
-  ArName?: string;
+  'Name.En'?: string;
+  'Name.Ar'?: string;
   Description?: string;
   ImageUrl?: string;
   ColorCode?: string;

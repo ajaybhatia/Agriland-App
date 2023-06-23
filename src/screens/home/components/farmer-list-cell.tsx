@@ -25,7 +25,7 @@ const FarmerListCell = ({ selectedFarm, onSelectedFarm, onLoading }: Props) => {
     take: number;
     skip: number;
   }>({
-    take: 20,
+    take: 10,
     skip: 0,
   });
 
@@ -43,12 +43,15 @@ const FarmerListCell = ({ selectedFarm, onSelectedFarm, onLoading }: Props) => {
 
   const getFarms = useGetApiFarmGetFarms(
     {
-      // skip: moreFarmInfo.skip,
-      // take: moreFarmInfo.take,
+      skip: moreFarmInfo.skip,
+      take: moreFarmInfo.take,
+      sortColumn: 'createdOn',
+      sortOrder: 'asc',
     },
     {
       query: {
         onSuccess: (data: FarmResponse[]) => {
+          console.log('getFarms ====> ', data.length);
           if (data.length > 0) {
             let isScroll = farms.length > 0 ? false : true;
             setFarms(moreFarmInfo.skip <= 0 ? data : [...farms, ...data]);
@@ -61,6 +64,9 @@ const FarmerListCell = ({ selectedFarm, onSelectedFarm, onLoading }: Props) => {
               setTimeout(() => scrollToIndex(0), 200);
             }
           }
+        },
+        onError: (err) => {
+          console.log('data error ===> ', err.message);
         },
       },
     }
@@ -102,6 +108,21 @@ const FarmerListCell = ({ selectedFarm, onSelectedFarm, onLoading }: Props) => {
             onSelectFarm={onSelectedFarm}
           />
         )}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => {
+          console.log('onEndReached');
+          if (
+            !getFarms.isLoading &&
+            !getFarms.isFetching &&
+            moreFarmInfo.take <= farms.length
+          ) {
+            console.log('onEndReached Start');
+            setMoreFarmInfo({
+              take: moreFarmInfo.take,
+              skip: moreFarmInfo.skip + moreFarmInfo.take,
+            });
+          }
+        }}
         //estimatedItemSize={300}
       />
       <ExpandingDot
@@ -120,11 +141,13 @@ const FarmerListCell = ({ selectedFarm, onSelectedFarm, onLoading }: Props) => {
   );
 };
 
-function arePropsEqual(prevProps: Props, nextProps: Props) {
-  return prevProps.selectedFarm === nextProps.selectedFarm;
-}
+// function arePropsEqual(prevProps: Props, nextProps: Props) {
+//   return prevProps.selectedFarm === nextProps.selectedFarm;
+// }
 
-export default memo(FarmerListCell, arePropsEqual);
+//export default memo(FarmerListCell, arePropsEqual);
+
+export default memo(FarmerListCell);
 
 const styles = StyleSheet.create({
   dotStyle: {

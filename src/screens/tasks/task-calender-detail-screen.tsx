@@ -1,13 +1,25 @@
+import type { RouteProp } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { FlatList, View, VStack } from 'native-base';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useGetApiCropGetCultivationDetailsByUserId } from '@/apis/endpoints/api';
+import {
+  useGetApiCropGetcropactivitiesbyfarmid,
+  useGetApiCropGetCultivationDetailsByUserId,
+} from '@/apis/endpoints/api';
 import type {
+  ActivityDetails,
   CultivationDetailResponse,
   FarmCropCultivationResponse,
+  FarmerCropCalendarActivity,
 } from '@/apis/model';
+import type { AuthStackParamList } from '@/navigation/types';
+import AppLoader from '@/ui/components/AppLoader';
 import ListHeader from '@/ui/components/ListHeader';
+import type { DataValues } from '@/ui/components/step-indicator/StepIndicator';
 
 import CropGrowthCell from '../crop/components/crop-growth-cell';
 import CropHomeCell from '../home/components/crops-home-cell';
@@ -15,12 +27,22 @@ import TaskActivitesCell from '../home/components/task-activites-cell';
 import TodayTaskListCell from './components/today-task-list-cell';
 import WeekCalenderCell from './components/week-calender-cell';
 
+dayjs.extend(utc);
 type Props = {};
 
 const TaskCalenderDetailScreen = (props: Props) => {
   const [selectedCrop, setSelectedCrop] = useState<
     CultivationDetailResponse | undefined
   >();
+  const route =
+    useRoute<RouteProp<AuthStackParamList, 'TaskCalenderDetailScreen'>>();
+  const [currentDate, setCurrentSelected] = useState<dayjs.Dayjs>(
+    dayjs(new Date()).startOf('days').utc(true)
+  );
+  console.log('currentDate ==> ', currentDate);
+  const [tasksCurrent, setCurrentTasks] = useState<DataValues[]>([]);
+  const [tasksOld, setOldTasks] = useState<DataValues[]>([]);
+  const [tasks, setTasks] = useState<DataValues[]>([]);
   // getCrops
   const getCrops = useGetApiCropGetCultivationDetailsByUserId({
     query: {
@@ -35,6 +57,104 @@ const TaskCalenderDetailScreen = (props: Props) => {
       },
     },
   });
+
+  // tasks
+  const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
+    {
+      farmid: '0737bac5-b1a5-453b-a012-afa37fccb199', //route?.params?.farmId ?? '',
+      noOfDays: 7,
+    },
+    {
+      query: {
+        onSuccess(data: ActivityDetails) {
+          if (data) {
+            var mainTempTask: DataValues[] = [];
+            var mainTempPendingTask: DataValues[] = [];
+            if (data && data.calendarActivities) {
+              data.calendarActivities.map((x) => {
+                let obj: DataValues = {
+                  title: x?.activityDate ?? '',
+                  subTitle: x?.activityDate ?? '',
+                  list: [x],
+                };
+                let index = mainTempTask.findIndex((y) =>
+                  dayjs(y.title)
+                    .startOf('day')
+                    .isSame(dayjs(x.activityDate).startOf('day'))
+                );
+                if (index >= 0) {
+                  let itemList = mainTempTask[index].list;
+                  mainTempTask[index].list = [...itemList, x];
+                } else {
+                  mainTempTask = [...mainTempTask, obj];
+                }
+                return obj;
+              });
+            }
+            if (data && data?.pendingActivities) {
+              data.pendingActivities.map((x) => {
+                let obj: DataValues = {
+                  title: x?.activityDate ?? '',
+                  subTitle: x?.activityDate ?? '',
+                  list: [x],
+                };
+                let index = mainTempPendingTask.findIndex((y) =>
+                  dayjs(y.title)
+                    .startOf('day')
+                    .isSame(dayjs(x.activityDate).startOf('day'))
+                );
+                if (index >= 0) {
+                  let itemList = mainTempPendingTask[index].list;
+                  mainTempPendingTask[index].list = [...itemList, x];
+                } else {
+                  mainTempPendingTask = [...mainTempPendingTask, obj];
+                }
+                return obj;
+              });
+            }
+
+            calculateTaskAccordingToDate(
+              mainTempTask,
+              mainTempPendingTask,
+              currentDate
+            );
+            setCurrentTasks(mainTempTask);
+            setOldTasks(mainTempPendingTask);
+          }
+        },
+      },
+    }
+  );
+  console.log('getCalActivityTasks ==> ', getCalActivityTasks.isLoading);
+  const calculateTaskAccordingToDate = (
+    mainTempTask: DataValues[],
+    mainTempPendingTask: DataValues[],
+    date: dayjs.Dayjs
+  ) => {
+    if (date.isBefore(dayjs(new Date()).startOf('day'))) {
+      console.log('Before', date, ' == ', date.startOf('day'));
+      setTasks(
+        mainTempPendingTask.filter((x) =>
+          date.isSame(dayjs(x.title).utc().startOf('day'))
+        )
+      );
+    } else {
+      console.log('Equal after', date, ' === ', mainTempTask.length);
+      setTasks(
+        mainTempTask.filter((x) => {
+          return date.isSame(dayjs(x.title).utc().startOf('day'));
+        })
+      );
+    }
+  };
+
+  const onSelectedDate = useCallback(
+    (date: dayjs.Dayjs) => {
+      setCurrentSelected(date);
+      calculateTaskAccordingToDate(tasksCurrent, tasksOld, date);
+    },
+    [tasksCurrent, tasksOld]
+  );
 
   return (
     <View flex={1} backgroundColor={'white'}>
@@ -75,8 +195,19 @@ const TaskCalenderDetailScreen = (props: Props) => {
               </VStack>
             );
           } else if (index === 1) {
-            return <WeekCalenderCell />;
+            return (
+              <WeekCalenderCell
+                onSelectedDate={onSelectedDate}
+                currentDate={currentDate}
+              />
+            );
           } else if (index === 2) {
+            let dataCurrent = tasksCurrent.filter((x) =>
+              dayjs(new Date())
+                .utc()
+                .startOf('day')
+                .isSame(dayjs(x.title).utc().startOf('day'))
+            );
             return (
               <VStack mt={3} mx={5}>
                 <ListHeader
@@ -90,14 +221,19 @@ const TaskCalenderDetailScreen = (props: Props) => {
                   keyExtractor={(item, index) => `${index}`}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
-                  data={[1, 2]}
+                  data={dataCurrent.length > 0 ? dataCurrent[0].list : []}
                   renderItem={({
-                    item,
+                    item: currentData,
                     index,
                   }: {
-                    item: number;
+                    item: FarmerCropCalendarActivity;
                     index: number;
-                  }) => <TodayTaskListCell isSelect={index === 0} />}
+                  }) => (
+                    <TodayTaskListCell
+                      isSelect={index === 0}
+                      item={currentData}
+                    />
+                  )}
                 />
               </VStack>
             );
@@ -120,13 +256,14 @@ const TaskCalenderDetailScreen = (props: Props) => {
                   as={MaterialCommunityIcons}
                   // onRightIconClick={onTaskCalenderDetail}
                 />
-                <TaskActivitesCell />
+                <TaskActivitesCell dataArray={tasks} />
               </VStack>
             );
           }
           return <View />;
         }}
       />
+      {getCalActivityTasks.isLoading && <AppLoader />}
     </View>
   );
 };

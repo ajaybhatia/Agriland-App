@@ -1,30 +1,35 @@
+//import arraySupport from 'dayjs/plugin/arraySupport';
+//import weekday from 'dayjs/plugin/weekday';
 import dayjs from 'dayjs';
-import arraySupport from 'dayjs/plugin/arraySupport';
-import weekday from 'dayjs/plugin/weekday';
 import { HStack, Pressable, Text, View, VStack } from 'native-base';
-import React, { useState } from 'react';
+import React from 'react';
 import { Dimensions } from 'react-native';
 
 import CardWithShadow from '@/ui/components/CardWithShadow';
 
-dayjs.extend(weekday);
-dayjs.extend(arraySupport);
+//////dayjs.extend(weekday);
 
-type Props = {};
+type Props = {
+  onSelectedDate?: (date: dayjs.Dayjs) => void;
+  currentDate: dayjs.Dayjs;
+};
 
 const width = Dimensions.get('screen').width;
-const WeekCalenderCell = (props: Props) => {
-  const [currentDate, setCurrentSelected] = useState<string>(dayjs().format());
-  let firstDate = dayjs().startOf('week').format();
-  const dateArry: string[] = [
+const WeekCalenderCell = ({
+  onSelectedDate,
+  currentDate = dayjs(new Date()).startOf('days').utc(true),
+}: Props) => {
+  let firstDate = dayjs(dayjs().startOf('week').utc(true).toDate());
+  const dateArry: dayjs.Dayjs[] = [
     firstDate,
-    dayjs(firstDate).add(1, 'day').format(),
-    dayjs(firstDate).add(2, 'day').format(),
-    dayjs(firstDate).add(3, 'day').format(),
-    dayjs(firstDate).add(4, 'day').format(),
-    dayjs(firstDate).add(5, 'day').format(),
-    dayjs(firstDate).add(6, 'day').format(),
+    firstDate.add(1, 'day'),
+    firstDate.add(2, 'day'),
+    firstDate.add(3, 'day'),
+    firstDate.add(4, 'day'),
+    firstDate.add(5, 'day'),
+    firstDate.add(6, 'day'),
   ];
+
   return (
     <CardWithShadow borderRadius={5}>
       <VStack mx={3} my={3}>
@@ -37,13 +42,14 @@ const WeekCalenderCell = (props: Props) => {
           This Week
         </Text>
         <HStack>
-          {dateArry.map((day: string, index: number) => {
-            const isSelected = dayjs(day)
-              .startOf('day')
-              .isSame(dayjs(currentDate).startOf('day'));
+          {dateArry.map((day: dayjs.Dayjs, index: number) => {
+            const isSelected = day.isSame(currentDate);
             return (
               <Pressable
-                onPress={() => setCurrentSelected(day)}
+                onPress={() => {
+                  console.log('onSelectedDate ==> ', day);
+                  onSelectedDate && onSelectedDate(day);
+                }}
                 key={`${index}`}
                 w={width / (dateArry.length - 1) - 17}
                 alignItems={'center'}
@@ -54,7 +60,7 @@ const WeekCalenderCell = (props: Props) => {
                   fontWeight={'500'}
                   fontStyle={'normal'}
                 >
-                  {dayjs(day).format('ddd')}
+                  {day.format('ddd')}
                 </Text>
                 <View
                   backgroundColor={isSelected ? '#a8c198' : '#FFFFFF'}
@@ -72,7 +78,7 @@ const WeekCalenderCell = (props: Props) => {
                     fontWeight={'500'}
                     fontStyle={'normal'}
                   >
-                    {dayjs(day).format('D')}
+                    {day.format('D')}
                   </Text>
                 </View>
               </Pressable>

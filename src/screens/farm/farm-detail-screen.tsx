@@ -41,6 +41,8 @@ function FarmDetailScreen() {
     {
       // skip: moreFarmInfo.skip,
       // take: moreFarmInfo.take,
+      sortColumn: 'createdOn',
+      sortOrder: 'asc',
     },
     {
       query: {

@@ -55,7 +55,7 @@ const CropGrowthCell = ({ item }: Props) => {
               style={{ flex: 1, height: 20 }}
               source={
                 item?.imageUrl
-                  ? `http://95.111.231.114:88${item.imageUrl}`
+                  ? `http://95.111.231.114:85${item.imageUrl}`
                   : 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U'
               }
               placeholder={require('@assets/app-logo.png')}
@@ -71,8 +71,8 @@ const CropGrowthCell = ({ item }: Props) => {
             fontWeight={'500'}
           >
             {!I18nManager.isRTL
-              ? item?.name?.en ?? item?.cropDetails?.name?.en ?? ''
-              : item?.name?.ar ?? item?.cropDetails?.name?.ar ?? ''}
+              ? item?.name?.en ?? item?.cropDetails?.name?.ar ?? ''
+              : item?.name?.ar ?? item?.cropDetails?.name?.en ?? ''}
           </Text>
         </HStack>
         <ScrollView

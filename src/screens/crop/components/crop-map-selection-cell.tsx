@@ -37,7 +37,7 @@ const CropMapSelectionCell = ({ item, selectedItem, onSelectCrop }: Props) => {
           style={{ flex: 1, height: 100 }}
           source={
             item?.imageUrl || item?.cropDetails?.imageUrl
-              ? `http://95.111.231.114:88${
+              ? `http://95.111.231.114:85${
                   item?.imageUrl ?? item?.cropDetails?.imageUrl ?? ''
                 }`
               : 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U'
@@ -68,8 +68,8 @@ const CropMapSelectionCell = ({ item, selectedItem, onSelectCrop }: Props) => {
             //title={item?.name ?? item?.cropDetails?.name ?? 'Title'}
             title={
               !I18nManager.isRTL
-                ? item?.name?.en ?? item?.cropDetails?.name?.en ?? ''
-                : item?.name?.ar ?? item?.cropDetails?.name?.ar ?? ''
+                ? item?.name?.en ?? item?.cropDetails?.name?.ar ?? ''
+                : item?.name?.ar ?? item?.cropDetails?.name?.en ?? ''
             }
             fontSize={13}
             fontWeight={'semibold'}

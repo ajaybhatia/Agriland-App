@@ -63,7 +63,9 @@ export type AuthStackParamList = {
     title: string;
   };
   MyCropsScreen: undefined;
-  TaskCalenderDetailScreen: undefined;
+  TaskCalenderDetailScreen: {
+    farmId: string;
+  };
   CropDetailScreen: undefined;
   SateLiteDemoScreen: undefined;
   SubscriptionBundleScreen: undefined;

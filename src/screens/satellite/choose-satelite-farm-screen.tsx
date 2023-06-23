@@ -3,6 +3,7 @@ import { Button, Text, View } from 'native-base';
 import React, { useCallback, useState } from 'react';
 
 import type { FarmResponse } from '@/apis/model';
+import { useSatelliteFarm } from '@/core/satellite-farm';
 import colors from '@/ui/theme/colors';
 
 import FarmerListCell from '../home/components/farmer-list-cell';
@@ -10,13 +11,15 @@ import FarmerListCell from '../home/components/farmer-list-cell';
 type Props = {};
 
 const ChooseSateliteFarmScreen = (props: Props) => {
-  const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>();
+  const setSelectedFarmState = useSatelliteFarm.use.setData();
+  const selectedFarm = useSatelliteFarm.use.selectedFarm();
+  const [isLoading, setLoading] = useState<boolean>(true);
   const nav = useNavigation();
   const onSelectFarm = useCallback(
     (item: FarmResponse) => {
-      setSelectedFarm(item);
+      setSelectedFarmState(item);
     },
-    [setSelectedFarm]
+    [setSelectedFarmState]
   );
   return (
     <View justifyContent={'center'} flex={1}>
@@ -28,17 +31,20 @@ const ChooseSateliteFarmScreen = (props: Props) => {
         fontWeight={'600'}
         fontStyle={'normal'}
       >
-        Choose the far for which you want to view satellite
+        Choose the farm for which you want to view satellite
       </Text>
       <FarmerListCell
         onSelectedFarm={onSelectFarm}
         selectedFarm={selectedFarm}
+        onLoading={setLoading}
       />
       <Button
         onPress={() => nav.navigate('SateliteDemoMapScreen')}
         backgroundColor={colors.button_color}
         borderRadius={8}
+        disabled={!selectedFarm}
         width={'80%'}
+        isLoading={isLoading}
         mt={'10'}
         fontWeight={'normal'}
         fontSize={20}

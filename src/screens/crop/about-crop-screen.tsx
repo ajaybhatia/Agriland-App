@@ -9,12 +9,17 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { FarmCropsDetailResponse } from '@/apis/model';
+import type { CalendarModel, FarmCropsDetailResponse } from '@/apis/model';
+import {
+  setRegisterCalendarActivityData,
+  useRegisterFarm,
+} from '@/core/register-farm';
 import BodyTitle from '@/ui/components/BodyTitle';
 import CalendarView from '@/ui/components/CalendarView';
+import ChooseCalendarActivityDropDown from '@/ui/components/ChooseCalendarActivityDropDown';
 import CounterInput from '@/ui/components/CounterInput';
 import Header from '@/ui/components/Header';
 import colors from '@/ui/theme/colors';
@@ -27,6 +32,8 @@ type Props = {
 };
 
 export default function AboutCropScreen({ cropRequest, onNext }: Props) {
+  const selectedCalendarActivity =
+    useRegisterFarm.use.selectedCalendarActivity();
   const [myCropRequest, setMyCropRequest] = useState<FarmCropsDetailResponse>(
     cropRequest
       ? cropRequest
@@ -66,6 +73,10 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
       return vx;
     });
   };
+
+  const onSelectedActivity = useCallback((item: CalendarModel) => {
+    setRegisterCalendarActivityData(item);
+  }, []);
 
   return (
     <View
@@ -116,6 +127,10 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
             }
           />
 
+          <ChooseCalendarActivityDropDown
+            onSelected={onSelectedActivity}
+            defaultSelected={selectedCalendarActivity}
+          />
           <Header
             title={'Type Of Irrigation'}
             fontWeight={'700'}

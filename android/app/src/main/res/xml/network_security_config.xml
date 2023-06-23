@@ -10,7 +10,9 @@
         <domain includeSubdomains="true">10.0.0.1</domain>
         <domain includeSubdomains="true">10.0.1.1</domain>
         <domain includeSubdomains="true">10.0.2.2</domain>
-        <domain includeSubdomains="true">http://95.111.231.114:88</domain>
+        <domain includeSubdomains="true">http://95.111.231.114:85</domain>
         <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">https://www.googleapis.com</domain>
+        <domain includeSubdomains="true">https://www.lib.utexas.edu</domain>
     </domain-config>
 </network-security-config>

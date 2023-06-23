@@ -17,7 +17,6 @@ type Props = {
 };
 
 const NoticationCell = ({ item, onViewPress }: Props) => {
-  console.log('NoticationCell===> ', item?.msgCreatedOn);
   return (
     <CardWithShadow
       borderColor={colors.BORDER_COLOR_DARK}

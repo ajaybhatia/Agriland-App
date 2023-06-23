@@ -261,7 +261,11 @@ const FarmMapSelectionCell = ({ item, selectedItem, onSelectFarm }: Props) => {
               />
               <Header
                 title={item?.crops
-                  .map((item) => item.crop?.name ?? '')
+                  .map((item) =>
+                    I18nManager.isRTL
+                      ? item.crop?.name?.ar ?? ''
+                      : item.crop?.name?.en ?? ''
+                  )
                   .join(', ')}
                 fontSize={12}
                 fontWeight={'400'}

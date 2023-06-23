@@ -1,7 +1,7 @@
 import { View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { I18nManager, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import type { CropResponse } from '@/apis/model';
@@ -126,7 +126,11 @@ const CropMapCell = ({ cropItem }: Props) => {
           bottom={0}
         >
           <Header
-            title={cropItem?.name ?? ''}
+            title={
+              I18nManager.isRTL
+                ? cropItem?.name?.ar ?? ''
+                : cropItem?.name?.en ?? ''
+            }
             mt={1}
             color={colors.TITLE_COLOR}
             fontSize={13}

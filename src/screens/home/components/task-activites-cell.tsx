@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
+import { Image as ImageRemote } from 'expo-image';
 import {
   Circle,
   FlatList,
   HStack,
-  Image,
   Pressable,
   Text,
   View,
@@ -12,6 +13,7 @@ import {
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
+import type { FarmerCropCalendarActivity } from '@/apis/model';
 import type { DataValues } from '@/ui/components/step-indicator/StepIndicator';
 import StepIndicator from '@/ui/components/step-indicator/StepIndicator';
 import {
@@ -41,39 +43,30 @@ const stepIndicatorStyles = {
   currentStepLabelColor: '#fe7013',
   labelSubSize: 13,
 };
-
-const dataArray: DataValues[] = [
-  {
-    title: 'Tomorrow',
-    subTitle: '17 March 2023',
-    body: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ',
-  },
-  {
-    title: 'Tomorrow',
-    subTitle: '17 March 2023',
-    body: 'Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. ',
-  },
-  {
-    title: 'Tomorrow',
-    subTitle: '17 March 2023',
-    body: 'Donec vitae sapien ut libero venenatis faucibus.',
-  },
-];
-const TaskActivitesCell = () => {
+type Props = {
+  dataArray: DataValues[];
+};
+const TaskActivitesCell = ({ dataArray }: Props) => {
   const navigation = useNavigation();
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const viewabilityConfig = React.useRef({
     itemVisiblePercentThreshold: 40,
   }).current;
 
-  const renderPage = (rowData: any) => {
+  const renderPage = ({
+    item: rowData,
+    index,
+  }: {
+    item: DataValues;
+    index: number;
+  }) => {
     return (
       <View mb={3}>
         <FlatList
           scrollEnabled={false}
           // eslint-disable-next-line react-native/no-inline-styles
           style={{ flexGrow: 1 }}
-          data={dataArray}
+          data={rowData.list}
           renderItem={renderListPage}
           keyExtractor={(item, index) => `${index}`}
           // onViewableItemsChanged={onViewableItemsChanged}
@@ -87,8 +80,13 @@ const TaskActivitesCell = () => {
     navigation.navigate('TaskDetailScreen');
   };
 
-  const renderListPage = (rowData: any) => {
-    const item = rowData.item;
+  const renderListPage = ({
+    item: rowData,
+    index,
+  }: {
+    item: FarmerCropCalendarActivity;
+    index: number;
+  }) => {
     return (
       <Pressable flex={1} mb={1} mr={5} onPress={onTaskdetailOpen}>
         <HStack
@@ -100,21 +98,45 @@ const TaskActivitesCell = () => {
           alignItems={'center'}
         >
           <VStack flex={0.3} justifyContent={'center'} alignItems={'center'}>
-            <Image
+            {/* <Image
               alt=""
               //borderRadius={10}
               overflow={'hidden'}
               h={'9'}
               w={'9'}
               source={require('@assets/app-logo.png')}
+            /> */}
+            <ImageRemote
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                height: 35,
+                width: 35,
+                marginVertical: 8,
+                borderRadius: 35 / 2,
+                borderWidth: 1,
+              }}
+              source={rowData?.imageUrl ?? 'https://'}
+              placeholder={require('@assets/app-logo.png')}
+              contentFit="cover"
+              transition={1000}
             />
           </VStack>
           <VStack flex={0.5} py={2}>
-            <Text fontWeight={'700'} fontSize={14} fontStyle={'normal'}>
-              Drench
+            <Text
+              numberOfLines={2}
+              fontWeight={'700'}
+              fontSize={14}
+              fontStyle={'normal'}
+            >
+              {rowData?.activityName?.en ?? ''}
             </Text>
-            <Text fontWeight={'100'} fontSize={11} fontStyle={'normal'}>
-              13:0:45 13:0:45 13:0:45 13:0:45 13:0:45
+            <Text
+              numberOfLines={2}
+              fontWeight={'100'}
+              fontSize={11}
+              fontStyle={'normal'}
+            >
+              {rowData?.activityDesc?.en ?? ''}
             </Text>
           </VStack>
           <VStack flex={0.2}>
@@ -146,41 +168,44 @@ const TaskActivitesCell = () => {
       setCurrentPage(viewableItems[visibleItemsCount - 1].index);
     }
   }, []);
-  return (
-    <View
-      style={styles.container}
-      //borderBottomWidth={0.5}
-      w={'100%'}
-      mt={3}
-      borderBottomColor={BORDER_COLOR}
-    >
-      <View style={styles.stepIndicator}>
-        <StepIndicator
-          customStyles={stepIndicatorStyles}
-          stepCount={dataArray.length}
-          direction="vertical"
-          currentPosition={0}
-          labels={dataArray.map((item) => {
-            const v: DataValues = {
-              title: item.title,
-              subTitle: item.subTitle,
-            };
-            return v;
-          })}
+  if (dataArray && dataArray.length > 0) {
+    return (
+      <View
+        style={styles.container}
+        //borderBottomWidth={0.5}
+        w={'100%'}
+        mt={3}
+        borderBottomColor={BORDER_COLOR}
+      >
+        <View style={styles.stepIndicator}>
+          <StepIndicator
+            customStyles={stepIndicatorStyles}
+            stepCount={dataArray.length}
+            direction="vertical"
+            currentPosition={0}
+            labels={dataArray.map((item) => {
+              const v: DataValues = {
+                title: dayjs(item.title).utc().format('D MMM YYYY'),
+                subTitle: dayjs(item.subTitle).utc().format('dddd'),
+              };
+              return v;
+            })}
+          />
+        </View>
+        <FlatList
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{ flexGrow: 1 }}
+          scrollEnabled={false}
+          data={dataArray}
+          renderItem={renderPage}
+          keyExtractor={(item, index) => `${index}`}
+          // onViewableItemsChanged={onViewableItemsChanged}
+          // viewabilityConfig={viewabilityConfig}
         />
       </View>
-      <FlatList
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{ flexGrow: 1 }}
-        scrollEnabled={false}
-        data={dataArray}
-        renderItem={renderPage}
-        keyExtractor={(item, index) => `${index}`}
-        // onViewableItemsChanged={onViewableItemsChanged}
-        // viewabilityConfig={viewabilityConfig}
-      />
-    </View>
-  );
+    );
+  }
+  return <View />;
 };
 
 export default TaskActivitesCell;

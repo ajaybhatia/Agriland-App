@@ -95,6 +95,8 @@ function ChooseFarmCropCategory({
     {
       // skip: moreInfo.skip,
       // take: moreInfo.take,
+      sortColumn: 'createdOn',
+      sortOrder: 'asc',
     },
     {
       query: {
@@ -292,7 +294,7 @@ function ChooseFarmCropCategory({
                 {item.imageUrl && item.imageUrl !== null ? (
                   <Image
                     style={{ height: 150 }}
-                    source={`http://95.111.231.114:88${item.imageUrl}`}
+                    source={`http://95.111.231.114:85${item.imageUrl}`}
                     placeholder={require('@assets/app-logo.png')}
                     contentFit="cover"
                     transition={1000}

@@ -10,6 +10,7 @@ export interface CultivationDetailRequest {
   id?: string | null;
   cropId?: string | null;
   farmId?: string | null;
+  calendarId?: string | null;
   area?: number | null;
   coordinates?: CoOrdinates[] | null;
   harvestDate?: string | null;
@@ -19,4 +20,5 @@ export interface CultivationDetailRequest {
   fieldId?: string | null;
   cropCode?: string | null;
   uid?: string | null;
+  hasCoordinatesModified?: boolean;
 }

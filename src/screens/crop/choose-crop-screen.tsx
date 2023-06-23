@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { FlatList, Icon, Pressable, View, VStack } from 'native-base';
 import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, I18nManager } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { useGetApiCropGetCropsByCategoryId } from '@/apis/endpoints/api';
@@ -98,7 +98,7 @@ function ChooseCropScreen({
                   >
                     <Image
                       style={{ flex: 1 }}
-                      source={`http://95.111.231.114:88${item.imageUrl}`}
+                      source={`http://95.111.231.114:85${item.imageUrl}`}
                       placeholder={require('@assets/app-logo.png')}
                       contentFit="cover"
                       transition={1000}
@@ -125,7 +125,11 @@ function ChooseCropScreen({
                   </View>
                   <BodyTitle
                     numberOfLines={1}
-                    title={item?.name ?? ''}
+                    title={
+                      I18nManager.isRTL
+                        ? item?.name?.ar ?? ''
+                        : item?.name?.en ?? ''
+                    }
                     fontSize={12}
                     fontWeight={300}
                   />

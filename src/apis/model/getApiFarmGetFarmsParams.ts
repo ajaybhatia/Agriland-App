@@ -9,4 +9,6 @@ export type GetApiFarmGetFarmsParams = {
 query?: string;
 skip?: number;
 take?: number;
+sortColumn?: string;
+sortOrder?: string;
 };

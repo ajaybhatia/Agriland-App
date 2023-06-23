@@ -8,5 +8,6 @@ import type { FieldCoordinatesRequestPoints } from './fieldCoordinatesRequestPoi
 
 export interface FieldCoordinatesRequest {
   uid?: string | null;
+  fieldId?: string | null;
   points?: FieldCoordinatesRequestPoints;
 }

@@ -10,6 +10,8 @@ import {
   View,
 } from 'react-native';
 
+import type { FarmerCropCalendarActivity } from '@/apis/model';
+
 import type { StepIndicatorProps } from './types';
 
 const STEP_STATUS = {
@@ -18,9 +20,24 @@ const STEP_STATUS = {
   UNFINISHED: 'unfinished',
 };
 
+export interface TaskActivityModel {
+  pendingActivities: FarmerCropCalendarActivity[];
+  calendarActivities: FarmerCropCalendarActivity[];
+}
+export interface ActivityName {
+  en: string;
+  ar: any;
+}
+
+export interface ActivityDesc {
+  en?: string;
+  ar?: string;
+}
+
 export type DataValues = {
   title: string;
   subTitle: string;
+  list: FarmerCropCalendarActivity[];
 };
 
 interface DefaultStepIndicatorStyles {
@@ -154,7 +171,7 @@ const StepIndicator = ({
       progressBarBackgroundStyle = {
         ...progressBarBackgroundStyle,
         right: (width - customStyles.separatorStrokeWidth) / 2,
-        top: 0, //height / (2 * stepCount),
+        top: height / (2 * stepCount),
         bottom: 0, //height / (2 * stepCount),
         width:
           customStyles.separatorStrokeUnfinishedWidth === 0
@@ -526,7 +543,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    //justifyContent: 'center',
+    justifyContent: 'center',
   },
   stepLabel: {
     fontSize: 12,
@@ -541,7 +558,7 @@ const styles = StyleSheet.create({
   stepLabelItem: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   stepEnterStyle: {
     backgroundColor: 'white',

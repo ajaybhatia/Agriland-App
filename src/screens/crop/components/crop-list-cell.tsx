@@ -3,7 +3,7 @@ import * as geolib from 'geolib';
 import { HStack, Text, View, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { I18nManager, StyleSheet } from 'react-native';
 import type { Location } from 'react-native-location';
 import MapView, { Polygon, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 
@@ -196,7 +196,11 @@ const CropListCell = ({ onNextStep, cropInfo }: Props) => {
         </View>
         <VStack px={5} py={3}>
           <Header
-            title={cropInfo?.crop?.name ?? ''}
+            title={
+              I18nManager.isRTL
+                ? cropInfo?.crop?.name?.ar ?? ''
+                : cropInfo?.crop?.name?.en ?? ''
+            }
             mt={1}
             color={colors.TITLE_COLOR}
             fontSize={13}
@@ -240,7 +244,9 @@ const CropListCell = ({ onNextStep, cropInfo }: Props) => {
                 Farm
               </Text>
               <Text fontFamily={'heading'} fontSize={13} fontWeight={'600'}>
-                {cropInfo?.farm?.name ?? ''}
+                {I18nManager.isRTL
+                  ? cropInfo?.farm?.name?.ar ?? ''
+                  : cropInfo?.farm?.name?.en ?? ''}
               </Text>
             </HStack>
           </HStack>

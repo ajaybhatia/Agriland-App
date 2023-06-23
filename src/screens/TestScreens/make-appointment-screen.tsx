@@ -38,6 +38,8 @@ const MakeAppointmentScreen = (props: Props) => {
     {
       // skip: moreFarmInfo.skip,
       // take: moreFarmInfo.take,
+      sortColumn: 'createdOn',
+      sortOrder: 'asc',
     },
     {
       query: {

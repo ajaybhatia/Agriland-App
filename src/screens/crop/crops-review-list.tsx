@@ -9,6 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { usePostApiCropCreateCultivationDetails } from '@/apis/endpoints/api';
+import { clearRegisterData, useRegisterFarm } from '@/core/register-farm';
 import CustomButton from '@/ui/components/CustomButton';
 import Header from '@/ui/components/Header';
 
@@ -36,7 +37,8 @@ const CropsReviewList = ({
   // add farm APi
 
   const addCropApi = usePostApiCropCreateCultivationDetails();
-
+  const selectedCalendarActivity =
+    useRegisterFarm.use.selectedCalendarActivity();
   function apiSubmitAddFarm(isAddNew: boolean) {
     addCropApi.mutate(
       {
@@ -55,6 +57,7 @@ const CropsReviewList = ({
             sowingDate: cropRequest?.cropArea?.sowingDate,
             quantity: cropRequest?.cropArea?.quantity,
             typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
+            calendarId: selectedCalendarActivity?.id,
           },
         ],
       },
@@ -65,6 +68,7 @@ const CropsReviewList = ({
               type: 'error',
               text1: 'successfully added',
             });
+            clearRegisterData();
             if (registerType === AddCropRegisterType.FROM_REGISTER) {
               if (isAddNew) {
                 onCropAddMore && onCropAddMore();

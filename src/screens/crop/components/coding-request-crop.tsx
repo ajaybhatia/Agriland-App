@@ -17,7 +17,7 @@ const CodingRequestCrop = ({ crop }: Props) => {
             style={{ flex: 1, height: 100 }}
             source={
               crop?.imageUrl
-                ? `http://95.111.231.114:88${crop.imageUrl}`
+                ? `http://95.111.231.114:85${crop.imageUrl}`
                 : 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U'
             }
             placeholder={require('@assets/app-logo.png')}

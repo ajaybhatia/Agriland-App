@@ -7,5 +7,6 @@
 
 export interface FarmCropsRequest {
   farmId?: string | null;
+  uid?: string | null;
   cropIds?: string[] | null;
 }

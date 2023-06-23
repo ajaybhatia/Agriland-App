@@ -12,7 +12,7 @@ export interface FarmResponse {
   id?: string;
   name?: LanguageName;
   landHoldingNumber?: string | null;
-  governorateFieldId?: string;
+  governorateId?: string;
   governorate?: LanguageName;
   irrigationTypeId?: string;
   irrigationType?: LanguageName;
@@ -20,6 +20,7 @@ export interface FarmResponse {
   city?: LanguageName;
   villageId?: string | null;
   village?: LanguageName;
+  farmerId?: string | null;
   address?: string | null;
   organization?: string | null;
   coordinates?: CoOrdinates[] | null;
