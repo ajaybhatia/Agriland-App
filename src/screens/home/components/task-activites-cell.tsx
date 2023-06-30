@@ -10,7 +10,7 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 
 import type { FarmerCropCalendarActivity } from '@/apis/model';
@@ -76,9 +76,11 @@ const TaskActivitesCell = ({ dataArray }: Props) => {
     );
   };
 
-  const onTaskdetailOpen = () => {
-    navigation.navigate('TaskDetailScreen');
-  };
+  const onTaskdetailOpen = useCallback((item: FarmerCropCalendarActivity) => {
+    navigation.navigate('TaskDetailScreen', {
+      detail: item,
+    });
+  }, []);
 
   const renderListPage = ({
     item: rowData,
@@ -88,7 +90,12 @@ const TaskActivitesCell = ({ dataArray }: Props) => {
     index: number;
   }) => {
     return (
-      <Pressable flex={1} mb={1} mr={5} onPress={onTaskdetailOpen}>
+      <Pressable
+        flex={1}
+        mb={1}
+        mr={5}
+        onPress={() => onTaskdetailOpen(rowData)}
+      >
         <HStack
           flex={1}
           bgColor={'white'}

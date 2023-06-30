@@ -6,6 +6,5 @@
  */
 
 export type DeleteApiSubscriptionDeletesubscriptionplanParams = {
-planId?: string;
-email?: string;
+id?: string;
 };

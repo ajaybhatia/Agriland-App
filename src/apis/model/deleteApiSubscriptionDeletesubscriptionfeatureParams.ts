@@ -6,6 +6,5 @@
  */
 
 export type DeleteApiSubscriptionDeletesubscriptionfeatureParams = {
-FeatureId?: string;
-email?: string;
+id?: string;
 };

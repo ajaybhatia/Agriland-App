@@ -6,6 +6,5 @@
  */
 
 export type DeleteApiSubscriptionDeletesubscriptionplanfeaturemapParams = {
-MapId?: string;
-email?: string;
+id?: string;
 };

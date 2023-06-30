@@ -14,8 +14,8 @@ import {
   usePostApiAccountCreateUserBasicDetails,
   usePutApiAccountExternaluserupdate,
 } from '@/apis/endpoints/api';
-import type { MobileAppUserBasicDetails } from '@/apis/model';
-import { useAuth, useSelectedLanguage } from '@/core';
+import type { FarmerDetails } from '@/apis/model';
+import { setUpdateUser, useSelectedLanguage } from '@/core';
 import type { Language } from '@/core/i18n/resources';
 import type { AuthStackParamList } from '@/navigation/types';
 import type { Option } from '@/ui';
@@ -25,7 +25,7 @@ import colors from '@/ui/theme/colors';
 
 interface Props {
   onNextSubmit?: () => void;
-  userInfo?: MobileAppUserBasicDetails;
+  userInfo?: FarmerDetails;
 }
 
 function AddUserInfo({ onNextSubmit, userInfo }: Props) {
@@ -33,7 +33,6 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
   const route = useRoute<RouteProp<AuthStackParamList, 'AddFarmScreen'>>();
   const addUserInfo = usePostApiAccountCreateUserBasicDetails();
   const updateUser = usePutApiAccountExternaluserupdate();
-  const setUserInfo = useAuth.use.setUserInfo();
   // Formik
   const {
     handleSubmit,
@@ -53,7 +52,7 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
       mobileNumber: route.params?.phoneNumber ?? userInfo?.mobileNumber ?? '',
     },
     onSubmit: () => {
-      apiSubmitInfo(values);
+      apiSubmitInfo();
     },
     validationSchema: yup.object({
       displayName: yup.string().trim().required(t('name-required')),
@@ -65,6 +64,7 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
           const emailRegex =
             /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
           let isValidEmail = emailRegex.test(value);
+
           if (!isValidEmail) {
             return false;
           }
@@ -77,7 +77,8 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
         .test('phone', t('valid-mobile-number'), function (value) {
           // const emailRegex = /\\(?\\d{3}\\)?[-\\/\\.\\s]?\\d{3}[-\\/\\.\\s]?/;
 
-          const phoneRegex = /^(\+91-|\+91|0)?\d{10}$/; // Change this regex based on requirement
+          const phoneRegex =
+            /^\+?\d{1,3}[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/; // /^(\+91-|\+91|0)?\d{10}$/; // Change this regex based on requirement
           let isValidPhone = phoneRegex.test(value);
           if (!isValidPhone) {
             return false;
@@ -100,7 +101,7 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
         {
           onSuccess(data) {
             if (data) {
-              setUserInfo(
+              setUpdateUser(
                 values.emailId,
                 values.mobileNumber,
                 values.displayName
@@ -130,7 +131,7 @@ function AddUserInfo({ onNextSubmit, userInfo }: Props) {
         {
           onSuccess(data) {
             if (data) {
-              setUserInfo(
+              setUpdateUser(
                 values.emailId,
                 values.mobileNumber,
                 values.displayName

@@ -9,4 +9,6 @@ export interface SubscriptionFeatureModel {
   id?: string;
   enTitle?: string | null;
   arTitle?: string | null;
+  serviceTypeId?: string | null;
+  isActive?: boolean;
 }

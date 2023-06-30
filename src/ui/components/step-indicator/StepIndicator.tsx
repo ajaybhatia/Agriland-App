@@ -1,7 +1,3 @@
-import { VStack } from 'native-base';
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import type { TextStyle, ViewStyle } from 'react-native';
 import {
   Animated,
   StyleSheet,
@@ -9,10 +5,16 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import type {
+  CalendarActivityResponse,
+  FarmerCropCalendarActivity,
+} from '@/apis/model';
+import type { TextStyle, ViewStyle } from 'react-native';
 
-import type { FarmerCropCalendarActivity } from '@/apis/model';
-
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
 import type { StepIndicatorProps } from './types';
+import { VStack } from 'native-base';
 
 const STEP_STATUS = {
   CURRENT: 'current',

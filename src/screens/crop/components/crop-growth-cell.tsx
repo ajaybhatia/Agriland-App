@@ -1,25 +1,27 @@
-import type { CropResponse, CultivationDetailResponse } from '@/apis/model';
+import { Image } from 'expo-image';
 import {
   HStack,
   Image as ImageBase,
   ScrollView,
   Text,
-  VStack,
   View,
+  VStack,
 } from 'native-base';
-
-import { I18nManager } from 'react-native';
-import { Image } from 'expo-image';
 import React from 'react';
+import { I18nManager } from 'react-native';
+
+import type { CultivationDetailResponse } from '@/apis/model';
 
 type Props = {
-  item: CropResponse & CultivationDetailResponse;
+  item: CultivationDetailResponse;
+  cultivationMonth?: number;
 };
 type CropItems = {
   date: string;
   image: string;
 };
 const CropGrowthCell = ({ item }: Props) => {
+  console.log('growth ==> ', item);
   const arrayItems: CropItems[] = [
     {
       date: '1st Month',
@@ -53,11 +55,9 @@ const CropGrowthCell = ({ item }: Props) => {
           <View w={10} h={10} rounded={'full'} overflow={'hidden'}>
             <Image
               style={{ flex: 1, height: 20 }}
-              source={
-                item?.imageUrl
-                  ? `http://95.111.231.114:88${item.imageUrl}`
-                  : 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U'
-              }
+              source={`http://95.111.231.114:85${
+                item?.cropDetails?.imageUrl ?? ''
+              }`}
               placeholder={require('@assets/app-logo.png')}
               contentFit="cover"
               transition={1000}
@@ -70,9 +70,9 @@ const CropGrowthCell = ({ item }: Props) => {
             fontStyle={'normal'}
             fontWeight={'500'}
           >
-            {!I18nManager.isRTL
-              ? item?.name?.en ?? item?.cropDetails?.name?.ar ?? ''
-              : item?.name?.ar ?? item?.cropDetails?.name?.en ?? ''}
+            {I18nManager.isRTL
+              ? item?.cropDetails?.name?.ar ?? ''
+              : item?.cropDetails?.name?.en ?? ''}
           </Text>
         </HStack>
         <ScrollView

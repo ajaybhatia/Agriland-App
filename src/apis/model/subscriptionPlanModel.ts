@@ -11,4 +11,5 @@ export interface SubscriptionPlanModel {
   enTitle?: string | null;
   arTitle?: string | null;
   pricePerMonth?: string | null;
+  isActive?: boolean;
 }

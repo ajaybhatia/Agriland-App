@@ -40,6 +40,32 @@ const CropsReviewList = ({
   const selectedCalendarActivity =
     useRegisterFarm.use.selectedCalendarActivity();
   function apiSubmitAddFarm(isAddNew: boolean) {
+    console.log('Crop add ==> ', [
+      {
+        cropId: cropRequest?.crop?.id,
+        farmId: cropRequest?.farm?.id,
+        area: cropRequest?.cropArea?.area ?? null,
+        coordinates: cropRequest?.userLocation?.map((v) => {
+          return {
+            lat: v.latitude,
+            lng: v.longitude,
+          };
+        }),
+        harvestDate: cropRequest?.cropArea?.harvestDate,
+        sowingDate: cropRequest?.cropArea?.sowingDate,
+        quantity: cropRequest?.cropArea?.quantity,
+        typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
+        calendarId: selectedCalendarActivity?.id,
+        // uid:
+        //   registerType === AddCropRegisterType.FROM_REGISTER
+        //     ? '0x61vkpvHEMkbPYiAnrNVQIFtqY2'
+        //     : undefined,
+        // hasCoordinatesModified:
+        //   registerType === AddCropRegisterType.FROM_REGISTER ? true : undefined,
+        uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
+        hasCoordinatesModified: true,
+      },
+    ]);
     addCropApi.mutate(
       {
         data: [
@@ -58,6 +84,14 @@ const CropsReviewList = ({
             quantity: cropRequest?.cropArea?.quantity,
             typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
             calendarId: selectedCalendarActivity?.id,
+            uid:
+              registerType === AddCropRegisterType.FROM_REGISTER
+                ? '0x61vkpvHEMkbPYiAnrNVQIFtqY2'
+                : undefined,
+            hasCoordinatesModified:
+              registerType === AddCropRegisterType.FROM_REGISTER
+                ? true
+                : undefined,
           },
         ],
       },

@@ -8,5 +8,7 @@ import type { AdBannerResponse } from './adBannerResponse';
 
 export interface AdBannerPaginatedResponse {
   totalCount?: number;
+  skip?: number | null;
+  take?: number | null;
   adBannerResponses?: AdBannerResponse[] | null;
 }

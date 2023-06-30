@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+import type { FarmerDetails } from '@/apis/model';
+
 import { createSelectors } from '../utils';
 import type { TokenType } from './utils';
 import { getToken, removeToken, setToken } from './utils';
@@ -8,6 +10,7 @@ import { removeUserInfo } from './utils';
 import { setUserInfo } from './utils';
 
 interface AuthState {
+  userInfos: FarmerDetails | undefined;
   token: TokenType | null;
   status: 'idle' | 'signOut' | 'signIn';
   emailId: string;
@@ -16,7 +19,8 @@ interface AuthState {
   signIn: (data: TokenType) => void;
   signOut: () => void;
   hydrate: () => void;
-  setUserInfo: (
+  setUserInfo: (userInfo: FarmerDetails) => void;
+  setUserInfos: (
     emailId: string,
     mobileNumber: string,
     displayName: string
@@ -24,6 +28,7 @@ interface AuthState {
 }
 
 const _useAuth = create<AuthState>((set, get) => ({
+  userInfos: undefined,
   status: 'idle',
   token: null,
   emailId: '',
@@ -44,7 +49,24 @@ const _useAuth = create<AuthState>((set, get) => ({
       displayName: '',
     });
   },
-  setUserInfo: (emailId: string, mobileNumber: string, displayName: string) => {
+  setUserInfo: (userInfos: FarmerDetails) => {
+    setUserInfo({
+      displayName: userInfos?.displayName ?? '',
+      emailId: userInfos?.emailId ?? '',
+      mobileNumber: userInfos?.mobileNumber ?? '',
+    });
+    set({
+      displayName: userInfos?.displayName ?? '',
+      emailId: userInfos?.emailId ?? '',
+      mobileNumber: userInfos?.mobileNumber ?? '',
+      userInfos: userInfos,
+    });
+  },
+  setUserInfos: (
+    emailId: string,
+    mobileNumber: string,
+    displayName: string
+  ) => {
     setUserInfo({
       displayName: displayName,
       emailId: emailId,
@@ -61,7 +83,7 @@ const _useAuth = create<AuthState>((set, get) => ({
       const userToken = getToken();
       const userInfo = getUserInfo();
       if (userInfo && userInfo?.displayName && userInfo?.displayName !== '') {
-        get().setUserInfo(
+        get().setUserInfos(
           userInfo.emailId,
           userInfo.mobileNumber,
           userInfo.displayName
@@ -82,8 +104,10 @@ export const useAuth = createSelectors(_useAuth);
 export const signOut = () => _useAuth.getState().signOut();
 export const signIn = (token: TokenType) => _useAuth.getState().signIn(token);
 export const hydrateAuth = () => _useAuth.getState().hydrate();
-export const setUserNameAuth = (
+export const setUserNameAuth = (userInfos: FarmerDetails) =>
+  _useAuth.getState().setUserInfo(userInfos);
+export const setUpdateUser = (
   emailId: string,
   mobileNumber: string,
   displayName: string
-) => _useAuth.getState().setUserInfo(emailId, mobileNumber, displayName);
+) => _useAuth.getState().setUserInfos(emailId, mobileNumber, displayName);

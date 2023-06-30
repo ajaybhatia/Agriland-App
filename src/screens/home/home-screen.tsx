@@ -22,10 +22,10 @@ import type {
   AdBannerResponse,
   CultivationDetailResponse,
   FarmCropCultivationResponse,
+  FarmerDetails,
   FarmResponse,
-  MobileAppUserBasicDetails,
 } from '@/apis/model';
-import { useAuth } from '@/core';
+import { setUserNameAuth } from '@/core';
 import { useWeather } from '@/core/weather';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import ListHeader from '@/ui/components/ListHeader';
@@ -48,7 +48,6 @@ function HomeScreen() {
 
   const nav = useNavigation();
   const putToken = usePutApiAccountUpdatefcmtoken();
-  const setUserInfo = useAuth.use.setUserInfo();
   const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>();
   const [selectedCrop, setSelectedCrop] = useState<
     CultivationDetailResponse | undefined
@@ -85,7 +84,8 @@ function HomeScreen() {
   // tasks
   const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
     {
-      farmid: selectedFarm?.id, //'0737bac5-b1a5-453b-a012-afa37fccb199', //
+      farmid: selectedFarm?.id ?? '', //'0737bac5-b1a5-453b-a012-afa37fccb199', //
+      cropid: selectedCrop?.cropDetails?.id ?? '',
       noOfDays: 7,
     },
     {
@@ -124,9 +124,9 @@ function HomeScreen() {
   // userInfo
   useGetApiAccountFetchUserBasicDetails({
     query: {
-      onSuccess(data: MobileAppUserBasicDetails) {
+      onSuccess(data: FarmerDetails) {
         if (data && data?.displayName && data?.emailId && data?.mobileNumber) {
-          setUserInfo(data.emailId, data.mobileNumber, data.displayName);
+          setUserNameAuth(data);
         }
       },
     },
@@ -361,8 +361,8 @@ function HomeScreen() {
                   }) => (
                     <CropHomeCell
                       item={item}
-                      // selectedItem={selectedCrop}
-                      // onSelect={onSelectCrop}
+                      selectedItem={selectedCrop}
+                      onSelect={onSelectCrop}
                       onNextScreen={onCropDetailScreen}
                     />
                   )}
@@ -444,7 +444,7 @@ function HomeScreen() {
                         <CardWithShadow>
                           <ImageBase
                             style={{ height: 150, flex: 1 }}
-                            source={`http://95.111.231.114:88${ads.imageUrl}`}
+                            source={`http://95.111.231.114:85${ads.imageUrl}`}
                             // source={ads.imageUrl}
                             placeholder={require('@assets/app-logo.png')}
                             contentFit="cover"

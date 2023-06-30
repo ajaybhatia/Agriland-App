@@ -9,4 +9,5 @@ import type { FarmerCropCalendarActivity } from './farmerCropCalendarActivity';
 export interface ActivityDetails {
   pendingActivities?: FarmerCropCalendarActivity[] | null;
   calendarActivities?: FarmerCropCalendarActivity[] | null;
+  cultivationMonths?: number;
 }

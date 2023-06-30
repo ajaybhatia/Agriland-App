@@ -5,7 +5,7 @@ import { Animated, I18nManager, StyleSheet } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 
 import { useGetApiFarmGetFarms } from '@/apis/endpoints/api';
-import type { FarmResponse } from '@/apis/model';
+import type { FarmResponse, FarmsPaginatedResponse } from '@/apis/model';
 import FarmAddCell from '@/screens/crop/components/farm-add-cell';
 import FarmMapSelectionCell from '@/screens/crop/components/farm-map-selection-cell';
 import colors from '@/ui/theme/colors';
@@ -46,18 +46,20 @@ const FarmerListCell = ({ selectedFarm, onSelectedFarm, onLoading }: Props) => {
       skip: moreFarmInfo.skip,
       take: moreFarmInfo.take,
       sortColumn: 'createdOn',
-      sortOrder: 'asc',
+      sortOrder: 'desc',
     },
     {
       query: {
-        onSuccess: (data: FarmResponse[]) => {
-          console.log('getFarms ====> ', data.length);
-          if (data.length > 0) {
+        onSuccess: (data: FarmsPaginatedResponse) => {
+          //console.log(data);
+          if (data && data.farms && data.farms.length > 0) {
             let isScroll = farms.length > 0 ? false : true;
-            setFarms(moreFarmInfo.skip <= 0 ? data : [...farms, ...data]);
+            setFarms(
+              moreFarmInfo.skip <= 0 ? data.farms : [...farms, ...data.farms]
+            );
 
-            if (selectedFarm === undefined && data.length > 0) {
-              onSelectedFarm && onSelectedFarm(data[0]);
+            if (selectedFarm === undefined && data.farms.length > 0) {
+              onSelectedFarm && onSelectedFarm(data.farms[0]);
             }
             if (isScroll && I18nManager.isRTL) {
               console.log('I18nManager===> ', I18nManager.isRTL);
@@ -114,12 +116,17 @@ const FarmerListCell = ({ selectedFarm, onSelectedFarm, onLoading }: Props) => {
           if (
             !getFarms.isLoading &&
             !getFarms.isFetching &&
-            moreFarmInfo.take <= farms.length
+            getFarms.data &&
+            getFarms.data.take &&
+            getFarms.data.skip &&
+            getFarms.data.totalCount &&
+            getFarms.data.take <= farms.length &&
+            getFarms.data.totalCount > farms.length
           ) {
             console.log('onEndReached Start');
             setMoreFarmInfo({
               take: moreFarmInfo.take,
-              skip: moreFarmInfo.skip + moreFarmInfo.take,
+              skip: getFarms.data.skip + moreFarmInfo.take,
             });
           }
         }}

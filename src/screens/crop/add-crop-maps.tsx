@@ -1,5 +1,5 @@
 import { Icon, IconButton, View, VStack } from 'native-base';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet } from 'react-native';
 import KeepAwake from 'react-native-keep-awake';
@@ -15,14 +15,15 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import { usePostApiFarmonautGetfieldareabyboundarypoints } from '@/apis/endpoints/api';
 import type {
   CoOrdinates,
   CropBasicResponse,
   CropCategoryResponse,
   FarmCropsDetailResponse,
   FarmResponse,
+  ResponseDTO,
 } from '@/apis/model';
-import { useRegisterFarm } from '@/core/register-farm';
 import CustomButton from '@/ui/components/CustomButton';
 import WidthAnimation, { AnimationSide } from '@/ui/components/WidthAnimation';
 
@@ -56,7 +57,7 @@ const AddCropMaps = ({
   onPreviousSubmit,
   registerType = AddCropRegisterType.FROM_REGISTER,
 }: Props) => {
-  const addedFarm = useRegisterFarm.use.selectedFarm();
+  //const addedFarm = useRegisterFarm.use.selectedFarm();
   enum AddCropState {
     MAP,
     CHOOSE_FARM_SELECT_CROP,
@@ -69,14 +70,89 @@ const AddCropMaps = ({
   let zoomLevel = 18;
   const mapRef = React.useRef<MapView>(null);
   const [userLocation, setUserLocation] = React.useState<Location[]>([]);
-
+  const checkArea = usePostApiFarmonautGetfieldareabyboundarypoints();
   const [cropState, setCropState] = React.useState<AddCropState>(
     AddCropState.CHOOSE_FARM_SELECT_CROP
   );
 
-  const [cropInfo, setCropInfo] = useState<CropRegisterType | undefined>({
-    farm: addedFarm,
-  });
+  const [cropInfo, setCropInfo] = useState<CropRegisterType | undefined>(); //{
+  //   farm: addedFarm,
+  // }
+
+  // find area of crop
+
+  const checkAreaOfCrop = useCallback(() => {
+    var point = {};
+    userLocation.map((x: Location, index: number) => {
+      if (index === 0) {
+        point = {
+          ...point,
+          ...{
+            [`a`]: {
+              longitude: `${x.longitude}`,
+              latitude: `${x.latitude}`,
+            },
+          },
+        };
+      } else {
+        point = {
+          ...point,
+          ...{
+            [`P_${index}`]: {
+              longitude: `${x.longitude}`,
+              latitude: `${x.latitude}`,
+            },
+          },
+        };
+      }
+
+      return {
+        v: x.latitude,
+      };
+    });
+    //onAddCoordinates
+    console.log('point ===> ', {
+      points: point,
+      uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
+    });
+    checkArea.mutate(
+      {
+        data: {
+          points: point,
+          uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
+        },
+      },
+      {
+        onSuccess(data: ResponseDTO) {
+          console.log('onSuccess 1 ===> ', data);
+          if (data && data != null && data >= 0.1235527) {
+            onAddCoordinates();
+          } else {
+            Alert.alert('Warning', 'Not sufficient for satellite service', [
+              {
+                text: 'Change Area',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              {
+                text: 'Continue',
+                onPress: () => {
+                  onAddCoordinates();
+                },
+              },
+            ]);
+          }
+        },
+        onError(error) {
+          console.log('checkArea ===> ', error);
+          Toast.show({
+            type: 'error',
+            text1: error.message,
+          });
+        },
+      }
+    );
+  }, [userLocation]);
 
   // request location permission
   function reQuestPermission(isCurrentLocation: boolean) {
@@ -540,7 +616,8 @@ const AddCropMaps = ({
             <View position={'absolute'} bottom={10} left={0} right={0}>
               <CustomButton
                 mt={5}
-                onPress={onAddCoordinates}
+                isLoading={checkArea.isLoading}
+                onPress={checkAreaOfCrop}
                 width={'55%'}
                 title={t('save-continue')}
               />

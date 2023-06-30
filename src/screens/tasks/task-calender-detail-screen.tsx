@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import {
   useGetApiCropGetcropactivitiesbyfarmid,
-  useGetApiCropGetCultivationDetailsByUserId,
+  useGetApiCropGetCultivationDetailsByFarmId,
 } from '@/apis/endpoints/api';
 import type {
   ActivityDetails,
@@ -36,32 +36,76 @@ const TaskCalenderDetailScreen = (props: Props) => {
   >();
   const route =
     useRoute<RouteProp<AuthStackParamList, 'TaskCalenderDetailScreen'>>();
+  const [crops, setCrops] = useState<CultivationDetailResponse[]>([]);
   const [currentDate, setCurrentSelected] = useState<dayjs.Dayjs>(
     dayjs(new Date()).startOf('days').utc(true)
   );
-  console.log('currentDate ==> ', currentDate);
+  const [moreInfo, setMoreInfo] = useState<{
+    take: number;
+    skip: number;
+  }>({
+    take: 10,
+    skip: 0,
+  });
+
   const [tasksCurrent, setCurrentTasks] = useState<DataValues[]>([]);
   const [tasksOld, setOldTasks] = useState<DataValues[]>([]);
   const [tasks, setTasks] = useState<DataValues[]>([]);
   // getCrops
-  const getCrops = useGetApiCropGetCultivationDetailsByUserId({
-    query: {
-      onSuccess: (data: FarmCropCultivationResponse) => {
-        if (
-          data &&
-          data?.cultivationDetails &&
-          data?.cultivationDetails.length > 0
-        ) {
-          setSelectedCrop(data?.cultivationDetails[0]);
-        }
-      },
-    },
-  });
+  // const getCrops = useGetApiCropGetCultivationDetailsByUserId(
+  //   {
+  //     skip: moreInfo.skip,
+  //     take: moreInfo.take,
+  //   },
+  //   {
+  //     query: {
+  //       onSuccess: (data: FarmCropModelPaginated) => {
+  //         console.log('getCrops ==> ', data);
+  //         if (data && data?.farmCrops && data?.farmCrops.length > 0) {
+  //           setCrops(data.farmCrops);
+  //           if (selectedCrop === undefined) {
+  //             setSelectedCrop(data?.farmCrops[0]);
+  //           }
+  //         }
+  //       },
+  //     },
+  //   }
+  // );
 
+  const getCrops = useGetApiCropGetCultivationDetailsByFarmId(
+    {
+      farmId: route?.params?.farmId ?? '',
+    },
+    {
+      query: {
+        onSuccess: (data: FarmCropCultivationResponse) => {
+          if (
+            data &&
+            data?.cultivationDetails &&
+            data?.cultivationDetails.length > 0
+          ) {
+            setCrops(data?.cultivationDetails);
+            if (selectedCrop === undefined) {
+              setSelectedCrop(data?.cultivationDetails[0]);
+            }
+          }
+        },
+        onError: (err) => {
+          console.log(
+            'useGetApiCropGetCultivationDetailsByFarmId ==> ',
+            err.message
+          );
+        },
+      },
+    }
+  );
   // tasks
+  console.log('getCalActivityTasks ==> ', route?.params?.farmId ?? '');
+
   const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
     {
       farmid: route?.params?.farmId ?? '', // '0737bac5-b1a5-453b-a012-afa37fccb199', //
+      cropid: selectedCrop?.cropDetails?.id ?? '',
       noOfDays: 7,
     },
     {
@@ -125,7 +169,6 @@ const TaskCalenderDetailScreen = (props: Props) => {
       },
     }
   );
-  console.log('getCalActivityTasks ==> ', getCalActivityTasks.isLoading);
   const calculateTaskAccordingToDate = (
     mainTempTask: DataValues[],
     mainTempPendingTask: DataValues[],
@@ -156,6 +199,13 @@ const TaskCalenderDetailScreen = (props: Props) => {
     [tasksCurrent, tasksOld]
   );
 
+  const onSelectCrop = useCallback(
+    (item: CultivationDetailResponse) => {
+      setSelectedCrop(item);
+    },
+    [setSelectedCrop]
+  );
+
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
@@ -164,11 +214,7 @@ const TaskCalenderDetailScreen = (props: Props) => {
         contentContainerStyle={{ paddingBottom: 100 }}
         initialScrollIndex={0}
         renderItem={({ item, index }: { item: number; index: number }) => {
-          if (
-            index === 0 &&
-            getCrops.data?.cultivationDetails &&
-            getCrops.data?.cultivationDetails.length > 0
-          ) {
+          if (index === 0 && crops.length > 0) {
             return (
               <VStack mt={2} height={120}>
                 <FlatList
@@ -177,7 +223,7 @@ const TaskCalenderDetailScreen = (props: Props) => {
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 20 }}
-                  data={getCrops.data?.cultivationDetails ?? []}
+                  data={crops}
                   renderItem={({
                     item,
                     index,
@@ -187,8 +233,8 @@ const TaskCalenderDetailScreen = (props: Props) => {
                   }) => (
                     <CropHomeCell
                       item={item}
-                      // selectedItem={selectedCrop}
-                      // onSelect={onSelectCrop}
+                      selectedItem={selectedCrop}
+                      onSelect={onSelectCrop}
                     />
                   )}
                 />
@@ -202,45 +248,57 @@ const TaskCalenderDetailScreen = (props: Props) => {
               />
             );
           } else if (index === 2) {
-            let dataCurrent = tasksCurrent.filter((x) =>
-              dayjs(new Date())
-                .utc()
-                .startOf('day')
-                .isSame(dayjs(x.title).utc().startOf('day'))
-            );
-            return (
-              <VStack mt={3} mx={5}>
-                <ListHeader
-                  title="Today Tasks"
-                  btnTitle="See All"
-                  isSeeAllShow={false}
-                  iconName="arrow-top-right-bold-box"
-                  as={MaterialCommunityIcons}
-                />
-                <FlatList
-                  keyExtractor={(item, index) => `${index}`}
-                  showsHorizontalScrollIndicator={false}
-                  showsVerticalScrollIndicator={false}
-                  data={dataCurrent.length > 0 ? dataCurrent[0].list : []}
-                  renderItem={({
-                    item: currentData,
-                    index,
-                  }: {
-                    item: FarmerCropCalendarActivity;
-                    index: number;
-                  }) => (
-                    <TodayTaskListCell
-                      isSelect={index === 0}
-                      item={currentData}
-                    />
-                  )}
-                />
-              </VStack>
-            );
-          } else if (index === 3) {
+            // let dataCurrent = tasksCurrent.filter((x) =>
+            //   dayjs(new Date())
+            //     .utc()
+            //     .startOf('day')
+            //     .isSame(dayjs(x.title).utc().startOf('day'))
+            // );
+            // let curentTaskList =
+            //   dataCurrent.length > 0 ? dataCurrent[0].list : [];
+            let curentTaskList = [];
+            if (curentTaskList.length > 0) {
+              return (
+                <VStack mt={3} mx={5}>
+                  <ListHeader
+                    title="Today Tasks"
+                    btnTitle="See All"
+                    isSeeAllShow={false}
+                    iconName="arrow-top-right-bold-box"
+                    as={MaterialCommunityIcons}
+                  />
+                  <FlatList
+                    keyExtractor={(item, index) => `${index}`}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    data={curentTaskList}
+                    renderItem={({
+                      item: currentData,
+                      index,
+                    }: {
+                      item: FarmerCropCalendarActivity;
+                      index: number;
+                    }) => (
+                      <TodayTaskListCell
+                        isSelect={index === 0}
+                        item={currentData}
+                      />
+                    )}
+                  />
+                </VStack>
+              );
+            } else {
+              return <View />;
+            }
+          } else if (index === 3 && selectedCrop) {
             return (
               <VStack my={5}>
-                <CropGrowthCell item={selectedCrop} />
+                <CropGrowthCell
+                  item={selectedCrop}
+                  cultivationMonth={
+                    getCalActivityTasks?.data?.cultivationMonths ?? 0
+                  }
+                />
               </VStack>
             );
           } else if (index === 4) {

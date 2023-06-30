@@ -21,4 +21,6 @@ export interface CultivationDetailRequest {
   cropCode?: string | null;
   uid?: string | null;
   hasCoordinatesModified?: boolean;
+  allowedArea?: number;
+  errorMessage?: string | null;
 }

@@ -4,12 +4,17 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { LanguageName } from './languageName';
 
 export interface SubscriptionPlanListModel {
   id?: string;
   pricePerYear?: string | null;
-  enTitle?: string | null;
-  arTitle?: string | null;
+  name?: LanguageName;
   pricePerMonth?: string | null;
-  createdOn?: string | null;
+  createdOn?: string;
+  updatedBy?: string | null;
+  createdBy?: string | null;
+  updatedOn?: string | null;
+  isActive?: boolean;
+  isDeleted?: boolean | null;
 }

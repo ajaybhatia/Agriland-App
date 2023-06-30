@@ -1,7 +1,11 @@
 import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import type { RouteProp as NRouteProp } from '@react-navigation/native';
 
-import type { MobileAppUserBasicDetails } from '@/apis/model';
+import type {
+  FarmerCropCalendarActivity,
+  MobileAppUserBasicDetails,
+} from '@/apis/model';
+import type { CardPayment } from '@/screens/payments/add-card-payment';
 
 export type RootStackParamList = AuthStackParamList; //  & FooStackParamList & BarStackParamList
 // very important to type check useNavigation hook
@@ -41,7 +45,9 @@ export type AuthStackParamList = {
   FarmDetailScreen: undefined;
   WeatherDetailScreen: undefined;
   NotificationsDetails: undefined;
-  TaskDetailScreen: undefined;
+  TaskDetailScreen: {
+    detail: FarmerCropCalendarActivity;
+  };
   WeatherSingleDetail: {
     title: string;
   };
@@ -69,9 +75,21 @@ export type AuthStackParamList = {
   CropDetailScreen: undefined;
   SateLiteDemoScreen: undefined;
   SubscriptionBundleScreen: undefined;
-  SateliteDetailSubscriptionScreen: undefined;
+  SateliteDetailSubscriptionScreen: {
+    amount: number;
+    planid: string;
+    packageType: string;
+  };
   ChooseSateliteFarmScreen: undefined;
   SateliteDemoMapScreen: undefined;
   SateliteMapScreen: undefined;
   TokenFirebaseScreen: undefined;
+  AddCardPayment: {
+    card?: CardPayment;
+    onAddCard: (card: CardPayment) => void;
+  };
+  SatelliteChooseCropByFarm: {
+    farmId: string;
+  };
+  SatelliteSelectedCropsList: undefined;
 };

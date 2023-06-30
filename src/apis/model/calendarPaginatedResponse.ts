@@ -8,5 +8,7 @@ import type { CalendarModel } from './calendarModel';
 
 export interface CalendarPaginatedResponse {
   totalCount?: number;
+  skip?: number | null;
+  take?: number | null;
   calendarResponse?: CalendarModel[] | null;
 }

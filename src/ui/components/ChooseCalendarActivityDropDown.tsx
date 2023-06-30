@@ -58,7 +58,7 @@ const ChooseCalendarActivityDropDown = ({
           title={
             I18nManager.isRTL
               ? selectedActivity?.calendarName?.ar ?? 'Choose Activity'
-              : selectedActivity?.calendarName?.ar ?? 'Choose Activity'
+              : selectedActivity?.calendarName?.en ?? 'Choose Activity'
           }
           fontSize={12}
           fontWeight={200}

@@ -8,5 +8,7 @@ import type { CropCategoryResponse } from './cropCategoryResponse';
 
 export interface CropCategoryPaginatedResponse {
   totalCount?: number;
+  skip?: number | null;
+  take?: number | null;
   cropCategoryResponses?: CropCategoryResponse[] | null;
 }

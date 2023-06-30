@@ -8,5 +8,6 @@ import type { CropBasicResponse } from './cropBasicResponse';
 
 export interface FarmCropsResponse {
   farmId?: string | null;
+  calendarId?: string | null;
   cropDetails?: CropBasicResponse[] | null;
 }

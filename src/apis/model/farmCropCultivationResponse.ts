@@ -8,8 +8,12 @@ import type { CoOrdinates } from './coOrdinates';
 import type { CultivationDetailResponse } from './cultivationDetailResponse';
 
 export interface FarmCropCultivationResponse {
-  id?: string;
+  totalCount?: number;
+  skip?: number;
+  take?: number;
+  id?: string | null;
   farmId?: string | null;
+  calendarId?: string | null;
   coordinates?: CoOrdinates[] | null;
   cultivationDetails?: CultivationDetailResponse[] | null;
 }

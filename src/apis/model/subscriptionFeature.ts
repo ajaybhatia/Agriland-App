@@ -4,6 +4,7 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { ServiceType } from './serviceType';
 
 export interface SubscriptionFeature {
   id?: string;
@@ -14,4 +15,6 @@ export interface SubscriptionFeature {
   isDeleted?: boolean | null;
   enTitle?: string | null;
   arTitle?: string | null;
+  serviceType?: ServiceType;
+  serviceTypeId?: string | null;
 }

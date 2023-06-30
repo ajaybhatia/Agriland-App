@@ -7,4 +7,6 @@
 
 export type GetApiCropGetCultivationDetailsByFarmIdParams = {
 farmId?: string;
+skip?: number;
+take?: number;
 };

@@ -41,7 +41,7 @@ const SateliteMapScreen = (props: Props) => {
     fieldAreaIndexImg.mutate(
       {
         data: {
-          fieldID: '1686736168414',
+          fieldID: selectedFarm.id,
           imageType: 'ndwi',
           sensedDay: sensedDay,
           uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
@@ -81,19 +81,20 @@ const SateliteMapScreen = (props: Props) => {
   // senseDayApi
   function getSenseDays() {
     if (selectedFarm && selectedFarm.id) {
-      console.log('getSenseDays ===> ', {
-        fieldID: '1686736168414', //selectedFarm.id,
-        uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
-      });
+      // console.log('getSenseDays ===> ', {
+      //   fieldID: selectedFarm.id,
+      //   uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
+      // });
       senseDays.mutate(
         {
           data: {
-            fieldID: '1686736168414', //selectedFarm.id,
+            fieldID: selectedFarm.id, //'1686736168414', //
             uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
           },
         },
         {
           onSuccess: (data: ActivityDays) => {
+            console.log('onSuccess===> ', data);
             if (data && data.days) {
               // let keys = Object.keys(JSON.parse(data.result));
               // if (keys.length > 0) {

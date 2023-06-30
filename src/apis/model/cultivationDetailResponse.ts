@@ -8,6 +8,7 @@ import type { CropBasicResponse } from './cropBasicResponse';
 import type { CoOrdinates } from './coOrdinates';
 
 export interface CultivationDetailResponse {
+  farmCropId?: string;
   cropDetails?: CropBasicResponse;
   area?: number | null;
   harvestDate?: string | null;
@@ -15,4 +16,6 @@ export interface CultivationDetailResponse {
   quantity?: number | null;
   typeOfIrrigation?: number | null;
   coordinates?: CoOrdinates[] | null;
+  alowedArea?: number | null;
+  fieldId?: string | null;
 }

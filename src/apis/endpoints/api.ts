@@ -42,7 +42,7 @@ import type {
   CostCalculationModel,
   PutApiAccountDeleteCostCalculationParams,
   UserBasicDetails,
-  ExternalAppUser,
+  FarmerDetails,
   PutApiAccountUpdatefcmtokenParams,
   UpdateExternalUserModel,
   PostApiAdBannerCreateUpdateAdBannerBody,
@@ -51,6 +51,8 @@ import type {
   AdBannerPaginatedResponse,
   GetApiAdBannerGetAdBannersParams,
   PutApiAdBannerDeleteAdBannerParams,
+  PostApiAdminSetuserpasswordParams,
+  GetApiAdminGetallusersParams,
   ArEnTranslation,
   GetApiArEnTranslationGetarentranslationbyidParams,
   DeleteApiArEnTranslationDeleteParams,
@@ -69,8 +71,8 @@ import type {
   CalendarActivityResponse,
   GetApiCommonGetcalendaractivitiesbycalenderidParams,
   PutApiCommonDeletecalendaractivityParams,
-  ActivityDetails,
-  GetApiCommonGetcalActivitesTestParams,
+  ServiceTypePaginatedResponse,
+  GetApiCommonGetServiceTypesParams,
   PostApiCropCreateUpdateCropCategoryBody,
   PostApiCropCreateUpdateCropBody,
   CultivationDetailRequest,
@@ -87,6 +89,8 @@ import type {
   GetApiCropGetCropsParams,
   FarmCropCultivationResponse,
   GetApiCropGetCultivationDetailsByFarmIdParams,
+  FarmCropModelPaginated,
+  GetApiCropGetCultivationDetailsByUserIdParams,
   FarmCropsResponse,
   GetApiCropGetCropsByFarmIdParams,
   DeleteApiCropDeleteCropParams,
@@ -95,14 +99,36 @@ import type {
   PhaseSubPhaseResponse,
   ActivityResponse,
   DeleteApiCropDeletePhaseActivityParams,
+  ActivityDetails,
   GetApiCropGetcropactivitiesbyfarmidParams,
   FarmRequest,
   FarmResponse,
   GetApiFarmGetFarmByIdParams,
+  FarmsPaginatedResponse,
   GetApiFarmGetFarmsParams,
   DeleteApiFarmDeleteFarmByIdParams,
   FarmExists,
+  PutApiFarmerAppUpdatefcmtokenParams,
+  GetApiFarmerAppGetcalendarsParams,
+  ViewNotificationPaginatedResponse,
+  GetApiFarmerAppGetallviewnotificationParams,
+  PostApiFarmerAppAddviewnotificationParams,
+  GetApiFarmerAppGetcropsbycategoryidParams,
+  GetApiFarmerAppGetcropcategoriesParams,
+  GetApiFarmerAppGetallcropsParams,
+  GetApiFarmerAppGetcultivationdetailsbyuseridParams,
+  GetApiFarmerAppGetcropactivitiesbycropidParams,
+  GetApiFarmerAppGetcultivationdetailsbyfarmIdParams,
+  GetApiFarmerAppGetallfarmsParams,
+  CalendarActivityStatusRequest,
+  ActivityDays,
+  PolygonDataRequest,
+  FarmImageCoordinates,
+  FieldIndexImageRequest,
   ResponseDTO,
+  FieldReportRequest,
+  UserPaymentInfoResponse,
+  UserPaymentInfo,
   Farm,
   FieldCoordinatesRequest,
   FieldCropRequest,
@@ -111,13 +137,8 @@ import type {
   UIDRequest,
   CropSolutionRequest,
   FieldAreaRequest,
-  FarmImageCoordinates,
-  FieldIndexImageRequest,
-  FieldReportRequest,
   FieldSatelliteImageRequest,
   PastWeatherDataRequest,
-  ActivityDays,
-  PolygonDataRequest,
   ForecastDataRequest,
   SensedDataRequest,
   HistoricalDataRequest,
@@ -135,7 +156,6 @@ import type {
   DeleteApiNotificationDeletenotificationParams,
   PushNotificationPaginatedResponse,
   GetApiNotificationGetallnotificationParams,
-  ViewNotificationPaginatedResponse,
   GetApiNotificationGetallviewnotificationParams,
   PostApiNotificationAddviewnotificationParams,
   SoilTypeRequest,
@@ -143,23 +163,23 @@ import type {
   SoilTypeResponse,
   GetApiSoilTypeGetSoilTypesParams,
   SubscriptionPlanModel,
-  SubscriptionPlanListModelPagedResults,
-  GetApiSubscriptionGetsubscriptionplanpageParams,
   SubscriptionPlan,
   PutApiSubscriptionGetsubscriptionplanbyidParams,
   DeleteApiSubscriptionDeletesubscriptionplanParams,
+  SubscriptionPlanPaginatedResponse,
+  GetApiSubscriptionGetSubscriptionPlansParams,
   SubscriptionFeatureModel,
-  SubscriptionFeatureListModelPagedResults,
-  GetApiSubscriptionGetsubscriptionfeaturepageParams,
+  SubscriptionFeatureResponse,
+  GetApiSubscriptionGetSubscriptionFeaturesParams,
   SubscriptionFeature,
   PutApiSubscriptionGetsubscriptionfeaturebyidParams,
   DeleteApiSubscriptionDeletesubscriptionfeatureParams,
   SubscriptionPlanFeatureMapModel,
-  SubscriptionPlanFeatureMapListModelPagedResults,
-  GetApiSubscriptionGetsubscriptionplanfeaturemappageParams,
-  SubscriptionPlanFeatureMap,
-  PutApiSubscriptionGetsubscriptionplanfeaturemapbyidParams,
   DeleteApiSubscriptionDeletesubscriptionplanfeaturemapParams,
+  SubscriptionPaginatedResponse,
+  GetApiSubscriptionGetSubscriptionsParams,
+  SubscriptionFeaturePaginatedResponse,
+  GetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdParams,
   RoleModel,
   RoleUpdateModel,
   IdentityRole,
@@ -1202,7 +1222,7 @@ export const getApiAccountFetchUserBasicDetails = (
     
  signal?: AbortSignal
 ) => {
-      return customInstance<ExternalAppUser>(
+      return customInstance<FarmerDetails>(
       {url: `/api/Account/fetchUserBasicDetails`, method: 'get', signal
     },
       );
@@ -1549,6 +1569,356 @@ export const getPutApiAdBannerDeleteAdBannerMutationOptions = <TError = ErrorTyp
       return useMutation(mutationOptions);
     }
     
+/**
+ * @summary Register
+ */
+export const postApiAdminCreateUser = (
+    registerModel: RegisterModel,
+ ) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/Admin/createUser`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: registerModel
+    },
+      );
+    }
+  
+
+
+export const getPostApiAdminCreateUserMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdminCreateUser>>, TError,{data: RegisterModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAdminCreateUser>>, TError,{data: RegisterModel}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAdminCreateUser>>, {data: RegisterModel}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiAdminCreateUser(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAdminCreateUserMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAdminCreateUser>>>
+    export type PostApiAdminCreateUserMutationBody = RegisterModel
+    export type PostApiAdminCreateUserMutationError = ErrorType<unknown>
+
+    export const usePostApiAdminCreateUser = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdminCreateUser>>, TError,{data: RegisterModel}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiAdminCreateUserMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Login
+ */
+export const postApiAdminLogin = (
+    loginModel: LoginModel,
+ ) => {
+      return customInstance<LoginReturnModel>(
+      {url: `/api/Admin/login`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: loginModel
+    },
+      );
+    }
+  
+
+
+export const getPostApiAdminLoginMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdminLogin>>, TError,{data: LoginModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAdminLogin>>, TError,{data: LoginModel}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAdminLogin>>, {data: LoginModel}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiAdminLogin(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAdminLoginMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAdminLogin>>>
+    export type PostApiAdminLoginMutationBody = LoginModel
+    export type PostApiAdminLoginMutationError = ErrorType<unknown>
+
+    export const usePostApiAdminLogin = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdminLogin>>, TError,{data: LoginModel}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiAdminLoginMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary setuserpassword
+ */
+export const postApiAdminSetuserpassword = (
+    params?: PostApiAdminSetuserpasswordParams,
+ ) => {
+      return customInstance<void>(
+      {url: `/api/Admin/setuserpassword`, method: 'post',
+        params
+    },
+      );
+    }
+  
+
+
+export const getPostApiAdminSetuserpasswordMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdminSetuserpassword>>, TError,{params?: PostApiAdminSetuserpasswordParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAdminSetuserpassword>>, TError,{params?: PostApiAdminSetuserpasswordParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAdminSetuserpassword>>, {params?: PostApiAdminSetuserpasswordParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  postApiAdminSetuserpassword(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAdminSetuserpasswordMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAdminSetuserpassword>>>
+    
+    export type PostApiAdminSetuserpasswordMutationError = ErrorType<unknown>
+
+    export const usePostApiAdminSetuserpassword = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAdminSetuserpassword>>, TError,{params?: PostApiAdminSetuserpasswordParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiAdminSetuserpasswordMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary GetUserDetails
+ */
+export const getApiAdminGetuserdetails = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<UserModel>(
+      {url: `/api/Admin/getuserdetails`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiAdminGetuserdetailsQueryKey = () => [`/api/Admin/getuserdetails`] as const;
+  
+
+    
+export const getGetApiAdminGetuserdetailsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAdminGetuserdetails>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetuserdetails>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetuserdetails>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAdminGetuserdetailsQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAdminGetuserdetails>>> = ({ signal }) => getApiAdminGetuserdetails(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiAdminGetuserdetailsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAdminGetuserdetails>>>
+export type GetApiAdminGetuserdetailsQueryError = ErrorType<unknown>
+
+export const useGetApiAdminGetuserdetails = <TData = Awaited<ReturnType<typeof getApiAdminGetuserdetails>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetuserdetails>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiAdminGetuserdetailsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary GetAllUsers
+ */
+export const getApiAdminGetallusers = (
+    params?: GetApiAdminGetallusersParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<UsersPaginatedResponse>(
+      {url: `/api/Admin/getallusers`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiAdminGetallusersQueryKey = (params?: GetApiAdminGetallusersParams,) => [`/api/Admin/getallusers`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiAdminGetallusersQueryOptions = <TData = Awaited<ReturnType<typeof getApiAdminGetallusers>>, TError = ErrorType<unknown>>(params?: GetApiAdminGetallusersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetallusers>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetallusers>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAdminGetallusersQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAdminGetallusers>>> = ({ signal }) => getApiAdminGetallusers(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiAdminGetallusersQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAdminGetallusers>>>
+export type GetApiAdminGetallusersQueryError = ErrorType<unknown>
+
+export const useGetApiAdminGetallusers = <TData = Awaited<ReturnType<typeof getApiAdminGetallusers>>, TError = ErrorType<unknown>>(
+ params?: GetApiAdminGetallusersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetallusers>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiAdminGetallusersQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary GetAllActiveUserDetails
+ */
+export const getApiAdminGetallactiveuserdetails = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<UserModel[]>(
+      {url: `/api/Admin/getallactiveuserdetails`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiAdminGetallactiveuserdetailsQueryKey = () => [`/api/Admin/getallactiveuserdetails`] as const;
+  
+
+    
+export const getGetApiAdminGetallactiveuserdetailsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAdminGetallactiveuserdetails>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetallactiveuserdetails>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetallactiveuserdetails>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAdminGetallactiveuserdetailsQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAdminGetallactiveuserdetails>>> = ({ signal }) => getApiAdminGetallactiveuserdetails(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiAdminGetallactiveuserdetailsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAdminGetallactiveuserdetails>>>
+export type GetApiAdminGetallactiveuserdetailsQueryError = ErrorType<unknown>
+
+export const useGetApiAdminGetallactiveuserdetails = <TData = Awaited<ReturnType<typeof getApiAdminGetallactiveuserdetails>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetallactiveuserdetails>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiAdminGetallactiveuserdetailsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary GetAllDeActiveUserDetails
+ */
+export const getApiAdminGetalldeactiveuserdetails = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<UserModel[]>(
+      {url: `/api/Admin/getalldeactiveuserdetails`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiAdminGetalldeactiveuserdetailsQueryKey = () => [`/api/Admin/getalldeactiveuserdetails`] as const;
+  
+
+    
+export const getGetApiAdminGetalldeactiveuserdetailsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAdminGetalldeactiveuserdetails>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetalldeactiveuserdetails>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetalldeactiveuserdetails>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAdminGetalldeactiveuserdetailsQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAdminGetalldeactiveuserdetails>>> = ({ signal }) => getApiAdminGetalldeactiveuserdetails(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiAdminGetalldeactiveuserdetailsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAdminGetalldeactiveuserdetails>>>
+export type GetApiAdminGetalldeactiveuserdetailsQueryError = ErrorType<unknown>
+
+export const useGetApiAdminGetalldeactiveuserdetails = <TData = Awaited<ReturnType<typeof getApiAdminGetalldeactiveuserdetails>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAdminGetalldeactiveuserdetails>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiAdminGetalldeactiveuserdetailsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
 /**
  * @summary GetAllApiKeys
  */
@@ -2280,45 +2650,45 @@ export const getPutApiCommonDeletecalendaractivityMutationOptions = <TError = Er
       return useMutation(mutationOptions);
     }
     
-export const getApiCommonGetcalActivitesTest = (
-    params?: GetApiCommonGetcalActivitesTestParams,
+export const getApiCommonGetServiceTypes = (
+    params?: GetApiCommonGetServiceTypesParams,
  signal?: AbortSignal
 ) => {
-      return customInstance<ActivityDetails>(
-      {url: `/api/Common/getcalActivitesTest`, method: 'get',
+      return customInstance<ServiceTypePaginatedResponse>(
+      {url: `/api/Common/getServiceTypes`, method: 'get',
         params, signal
     },
       );
     }
   
 
-export const getGetApiCommonGetcalActivitesTestQueryKey = (params?: GetApiCommonGetcalActivitesTestParams,) => [`/api/Common/getcalActivitesTest`, ...(params ? [params]: [])] as const;
+export const getGetApiCommonGetServiceTypesQueryKey = (params?: GetApiCommonGetServiceTypesParams,) => [`/api/Common/getServiceTypes`, ...(params ? [params]: [])] as const;
   
 
     
-export const getGetApiCommonGetcalActivitesTestQueryOptions = <TData = Awaited<ReturnType<typeof getApiCommonGetcalActivitesTest>>, TError = ErrorType<unknown>>(params?: GetApiCommonGetcalActivitesTestParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonGetcalActivitesTest>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getApiCommonGetcalActivitesTest>>, TError, TData> & { queryKey: QueryKey } => {
+export const getGetApiCommonGetServiceTypesQueryOptions = <TData = Awaited<ReturnType<typeof getApiCommonGetServiceTypes>>, TError = ErrorType<unknown>>(params?: GetApiCommonGetServiceTypesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonGetServiceTypes>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiCommonGetServiceTypes>>, TError, TData> & { queryKey: QueryKey } => {
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiCommonGetcalActivitesTestQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiCommonGetServiceTypesQueryKey(params);
 
   
   
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCommonGetcalActivitesTest>>> = ({ signal }) => getApiCommonGetcalActivitesTest(params, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCommonGetServiceTypes>>> = ({ signal }) => getApiCommonGetServiceTypes(params, signal);
     
       
       
    return  { queryKey, queryFn, ...queryOptions}}
 
-export type GetApiCommonGetcalActivitesTestQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCommonGetcalActivitesTest>>>
-export type GetApiCommonGetcalActivitesTestQueryError = ErrorType<unknown>
+export type GetApiCommonGetServiceTypesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCommonGetServiceTypes>>>
+export type GetApiCommonGetServiceTypesQueryError = ErrorType<unknown>
 
-export const useGetApiCommonGetcalActivitesTest = <TData = Awaited<ReturnType<typeof getApiCommonGetcalActivitesTest>>, TError = ErrorType<unknown>>(
- params?: GetApiCommonGetcalActivitesTestParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonGetcalActivitesTest>>, TError, TData>, }
+export const useGetApiCommonGetServiceTypes = <TData = Awaited<ReturnType<typeof getApiCommonGetServiceTypes>>, TError = ErrorType<unknown>>(
+ params?: GetApiCommonGetServiceTypesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCommonGetServiceTypes>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetApiCommonGetcalActivitesTestQueryOptions(params,options)
+  const queryOptions = getGetApiCommonGetServiceTypesQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -2861,29 +3231,30 @@ export const useGetApiCropGetCultivationDetailsByFarmId = <TData = Awaited<Retur
 
 
 export const getApiCropGetCultivationDetailsByUserId = (
-    
+    params?: GetApiCropGetCultivationDetailsByUserIdParams,
  signal?: AbortSignal
 ) => {
-      return customInstance<FarmCropCultivationResponse>(
-      {url: `/api/Crop/getCultivationDetailsByUserId`, method: 'get', signal
+      return customInstance<FarmCropModelPaginated>(
+      {url: `/api/Crop/getCultivationDetailsByUserId`, method: 'get',
+        params, signal
     },
       );
     }
   
 
-export const getGetApiCropGetCultivationDetailsByUserIdQueryKey = () => [`/api/Crop/getCultivationDetailsByUserId`] as const;
+export const getGetApiCropGetCultivationDetailsByUserIdQueryKey = (params?: GetApiCropGetCultivationDetailsByUserIdParams,) => [`/api/Crop/getCultivationDetailsByUserId`, ...(params ? [params]: [])] as const;
   
 
     
-export const getGetApiCropGetCultivationDetailsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError, TData>, }
+export const getGetApiCropGetCultivationDetailsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError = ErrorType<unknown>>(params?: GetApiCropGetCultivationDetailsByUserIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError, TData>, }
 ): UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError, TData> & { queryKey: QueryKey } => {
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiCropGetCultivationDetailsByUserIdQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiCropGetCultivationDetailsByUserIdQueryKey(params);
 
   
   
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>> = ({ signal }) => getApiCropGetCultivationDetailsByUserId(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>> = ({ signal }) => getApiCropGetCultivationDetailsByUserId(params, signal);
     
       
       
@@ -2893,11 +3264,11 @@ export type GetApiCropGetCultivationDetailsByUserIdQueryResult = NonNullable<Awa
 export type GetApiCropGetCultivationDetailsByUserIdQueryError = ErrorType<unknown>
 
 export const useGetApiCropGetCultivationDetailsByUserId = <TData = Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError, TData>, }
+ params?: GetApiCropGetCultivationDetailsByUserIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiCropGetCultivationDetailsByUserId>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetApiCropGetCultivationDetailsByUserIdQueryOptions(options)
+  const queryOptions = getGetApiCropGetCultivationDetailsByUserIdQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -3440,7 +3811,7 @@ export const getApiFarmGetFarms = (
     params?: GetApiFarmGetFarmsParams,
  signal?: AbortSignal
 ) => {
-      return customInstance<FarmResponse[]>(
+      return customInstance<FarmsPaginatedResponse>(
       {url: `/api/Farm/getFarms`, method: 'get',
         params, signal
     },
@@ -3580,6 +3951,1145 @@ export const useGetApiFarmIsFarmAdded = <TData = Awaited<ReturnType<typeof getAp
 }
 
 
+export const postApiFarmerAppRegisteruser = (
+    userBasicDetails: UserBasicDetails,
+ ) => {
+      return customInstance<boolean>(
+      {url: `/api/FarmerApp/registeruser`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: userBasicDetails
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppRegisteruserMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppRegisteruser>>, TError,{data: UserBasicDetails}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppRegisteruser>>, TError,{data: UserBasicDetails}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppRegisteruser>>, {data: UserBasicDetails}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppRegisteruser(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppRegisteruserMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppRegisteruser>>>
+    export type PostApiFarmerAppRegisteruserMutationBody = UserBasicDetails
+    export type PostApiFarmerAppRegisteruserMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppRegisteruser = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppRegisteruser>>, TError,{data: UserBasicDetails}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppRegisteruserMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary UpdateUser
+ */
+export const putApiFarmerAppUserupdate = (
+    updateExternalUserModel: UpdateExternalUserModel,
+ ) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/FarmerApp/userupdate`, method: 'put',
+      headers: {'Content-Type': 'application/json', },
+      data: updateExternalUserModel
+    },
+      );
+    }
+  
+
+
+export const getPutApiFarmerAppUserupdateMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiFarmerAppUserupdate>>, TError,{data: UpdateExternalUserModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiFarmerAppUserupdate>>, TError,{data: UpdateExternalUserModel}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiFarmerAppUserupdate>>, {data: UpdateExternalUserModel}> = (props) => {
+          const {data} = props ?? {};
+
+          return  putApiFarmerAppUserupdate(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiFarmerAppUserupdateMutationResult = NonNullable<Awaited<ReturnType<typeof putApiFarmerAppUserupdate>>>
+    export type PutApiFarmerAppUserupdateMutationBody = UpdateExternalUserModel
+    export type PutApiFarmerAppUserupdateMutationError = ErrorType<unknown>
+
+    export const usePutApiFarmerAppUserupdate = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiFarmerAppUserupdate>>, TError,{data: UpdateExternalUserModel}, TContext>, }
+) => {
+    
+      const mutationOptions = getPutApiFarmerAppUserupdateMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+export const getApiFarmerAppGetuserdetails = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<FarmerDetails>(
+      {url: `/api/FarmerApp/getuserdetails`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetuserdetailsQueryKey = () => [`/api/FarmerApp/getuserdetails`] as const;
+  
+
+    
+export const getGetApiFarmerAppGetuserdetailsQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetuserdetails>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetuserdetails>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetuserdetails>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetuserdetailsQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetuserdetails>>> = ({ signal }) => getApiFarmerAppGetuserdetails(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetuserdetailsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetuserdetails>>>
+export type GetApiFarmerAppGetuserdetailsQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetuserdetails = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetuserdetails>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetuserdetails>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetuserdetailsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary UpdateFcmToken
+ */
+export const putApiFarmerAppUpdatefcmtoken = (
+    params?: PutApiFarmerAppUpdatefcmtokenParams,
+ ) => {
+      return customInstance<void>(
+      {url: `/api/FarmerApp/updatefcmtoken`, method: 'put',
+        params
+    },
+      );
+    }
+  
+
+
+export const getPutApiFarmerAppUpdatefcmtokenMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiFarmerAppUpdatefcmtoken>>, TError,{params?: PutApiFarmerAppUpdatefcmtokenParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiFarmerAppUpdatefcmtoken>>, TError,{params?: PutApiFarmerAppUpdatefcmtokenParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiFarmerAppUpdatefcmtoken>>, {params?: PutApiFarmerAppUpdatefcmtokenParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  putApiFarmerAppUpdatefcmtoken(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiFarmerAppUpdatefcmtokenMutationResult = NonNullable<Awaited<ReturnType<typeof putApiFarmerAppUpdatefcmtoken>>>
+    
+    export type PutApiFarmerAppUpdatefcmtokenMutationError = ErrorType<unknown>
+
+    export const usePutApiFarmerAppUpdatefcmtoken = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiFarmerAppUpdatefcmtoken>>, TError,{params?: PutApiFarmerAppUpdatefcmtokenParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getPutApiFarmerAppUpdatefcmtokenMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary GetCalendars
+ */
+export const getApiFarmerAppGetcalendars = (
+    params?: GetApiFarmerAppGetcalendarsParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<CalendarPaginatedResponse>(
+      {url: `/api/FarmerApp/getcalendars`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetcalendarsQueryKey = (params?: GetApiFarmerAppGetcalendarsParams,) => [`/api/FarmerApp/getcalendars`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetcalendarsQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcalendars>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetcalendarsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcalendars>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcalendars>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetcalendarsQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetcalendars>>> = ({ signal }) => getApiFarmerAppGetcalendars(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetcalendarsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetcalendars>>>
+export type GetApiFarmerAppGetcalendarsQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetcalendars = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcalendars>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetcalendarsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcalendars>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetcalendarsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary getallunreadnotification
+ */
+export const getApiFarmerAppGetallunreadnotification = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<number>(
+      {url: `/api/FarmerApp/getallunreadnotification`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetallunreadnotificationQueryKey = () => [`/api/FarmerApp/getallunreadnotification`] as const;
+  
+
+    
+export const getGetApiFarmerAppGetallunreadnotificationQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetallunreadnotification>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallunreadnotification>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallunreadnotification>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetallunreadnotificationQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetallunreadnotification>>> = ({ signal }) => getApiFarmerAppGetallunreadnotification(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetallunreadnotificationQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetallunreadnotification>>>
+export type GetApiFarmerAppGetallunreadnotificationQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetallunreadnotification = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetallunreadnotification>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallunreadnotification>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetallunreadnotificationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary getallviewnotification
+ */
+export const getApiFarmerAppGetallviewnotification = (
+    params?: GetApiFarmerAppGetallviewnotificationParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<ViewNotificationPaginatedResponse>(
+      {url: `/api/FarmerApp/getallviewnotification`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetallviewnotificationQueryKey = (params?: GetApiFarmerAppGetallviewnotificationParams,) => [`/api/FarmerApp/getallviewnotification`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetallviewnotificationQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetallviewnotification>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetallviewnotificationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallviewnotification>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallviewnotification>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetallviewnotificationQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetallviewnotification>>> = ({ signal }) => getApiFarmerAppGetallviewnotification(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetallviewnotificationQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetallviewnotification>>>
+export type GetApiFarmerAppGetallviewnotificationQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetallviewnotification = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetallviewnotification>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetallviewnotificationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallviewnotification>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetallviewnotificationQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const postApiFarmerAppAddviewnotification = (
+    params?: PostApiFarmerAppAddviewnotificationParams,
+ ) => {
+      return customInstance<ApiResponse>(
+      {url: `/api/FarmerApp/addviewnotification`, method: 'post',
+        params
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppAddviewnotificationMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppAddviewnotification>>, TError,{params?: PostApiFarmerAppAddviewnotificationParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppAddviewnotification>>, TError,{params?: PostApiFarmerAppAddviewnotificationParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppAddviewnotification>>, {params?: PostApiFarmerAppAddviewnotificationParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  postApiFarmerAppAddviewnotification(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppAddviewnotificationMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppAddviewnotification>>>
+    
+    export type PostApiFarmerAppAddviewnotificationMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppAddviewnotification = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppAddviewnotification>>, TError,{params?: PostApiFarmerAppAddviewnotificationParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppAddviewnotificationMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary getcropsbycategoryid
+ */
+export const getApiFarmerAppGetcropsbycategoryid = (
+    params?: GetApiFarmerAppGetcropsbycategoryidParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<CropBasicResponse[]>(
+      {url: `/api/FarmerApp/getcropsbycategoryid`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetcropsbycategoryidQueryKey = (params?: GetApiFarmerAppGetcropsbycategoryidParams,) => [`/api/FarmerApp/getcropsbycategoryid`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetcropsbycategoryidQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcropsbycategoryid>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetcropsbycategoryidParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropsbycategoryid>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropsbycategoryid>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetcropsbycategoryidQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetcropsbycategoryid>>> = ({ signal }) => getApiFarmerAppGetcropsbycategoryid(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetcropsbycategoryidQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetcropsbycategoryid>>>
+export type GetApiFarmerAppGetcropsbycategoryidQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetcropsbycategoryid = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcropsbycategoryid>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetcropsbycategoryidParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropsbycategoryid>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetcropsbycategoryidQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary getcropcategories
+ */
+export const getApiFarmerAppGetcropcategories = (
+    params?: GetApiFarmerAppGetcropcategoriesParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<CropCategoryPaginatedResponse>(
+      {url: `/api/FarmerApp/getcropcategories`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetcropcategoriesQueryKey = (params?: GetApiFarmerAppGetcropcategoriesParams,) => [`/api/FarmerApp/getcropcategories`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetcropcategoriesQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcropcategories>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetcropcategoriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropcategories>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropcategories>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetcropcategoriesQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetcropcategories>>> = ({ signal }) => getApiFarmerAppGetcropcategories(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetcropcategoriesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetcropcategories>>>
+export type GetApiFarmerAppGetcropcategoriesQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetcropcategories = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcropcategories>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetcropcategoriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropcategories>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetcropcategoriesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary getallcrops
+ */
+export const getApiFarmerAppGetallcrops = (
+    params?: GetApiFarmerAppGetallcropsParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<CropPaginatedResponse>(
+      {url: `/api/FarmerApp/getallcrops`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetallcropsQueryKey = (params?: GetApiFarmerAppGetallcropsParams,) => [`/api/FarmerApp/getallcrops`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetallcropsQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetallcrops>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetallcropsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallcrops>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallcrops>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetallcropsQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetallcrops>>> = ({ signal }) => getApiFarmerAppGetallcrops(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetallcropsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetallcrops>>>
+export type GetApiFarmerAppGetallcropsQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetallcrops = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetallcrops>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetallcropsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallcrops>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetallcropsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary getcultivationdetailsbyuserid
+ */
+export const getApiFarmerAppGetcultivationdetailsbyuserid = (
+    params?: GetApiFarmerAppGetcultivationdetailsbyuseridParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<FarmCropCultivationResponse>(
+      {url: `/api/FarmerApp/getcultivationdetailsbyuserid`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetcultivationdetailsbyuseridQueryKey = (params?: GetApiFarmerAppGetcultivationdetailsbyuseridParams,) => [`/api/FarmerApp/getcultivationdetailsbyuserid`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetcultivationdetailsbyuseridQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyuserid>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetcultivationdetailsbyuseridParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyuserid>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyuserid>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetcultivationdetailsbyuseridQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyuserid>>> = ({ signal }) => getApiFarmerAppGetcultivationdetailsbyuserid(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetcultivationdetailsbyuseridQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyuserid>>>
+export type GetApiFarmerAppGetcultivationdetailsbyuseridQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetcultivationdetailsbyuserid = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyuserid>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetcultivationdetailsbyuseridParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyuserid>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetcultivationdetailsbyuseridQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const postApiFarmerAppCreatecultivationdetails = (
+    cultivationDetailRequest: CultivationDetailRequest[],
+ ) => {
+      return customInstance<boolean>(
+      {url: `/api/FarmerApp/createcultivationdetails`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: cultivationDetailRequest
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppCreatecultivationdetailsMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatecultivationdetails>>, TError,{data: CultivationDetailRequest[]}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatecultivationdetails>>, TError,{data: CultivationDetailRequest[]}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppCreatecultivationdetails>>, {data: CultivationDetailRequest[]}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppCreatecultivationdetails(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppCreatecultivationdetailsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppCreatecultivationdetails>>>
+    export type PostApiFarmerAppCreatecultivationdetailsMutationBody = CultivationDetailRequest[]
+    export type PostApiFarmerAppCreatecultivationdetailsMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppCreatecultivationdetails = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatecultivationdetails>>, TError,{data: CultivationDetailRequest[]}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppCreatecultivationdetailsMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary GetCropActivitiesByFarmId
+ */
+export const getApiFarmerAppGetcropactivitiesbycropid = (
+    params?: GetApiFarmerAppGetcropactivitiesbycropidParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<ActivityDetails>(
+      {url: `/api/FarmerApp/getcropactivitiesbycropid`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetcropactivitiesbycropidQueryKey = (params?: GetApiFarmerAppGetcropactivitiesbycropidParams,) => [`/api/FarmerApp/getcropactivitiesbycropid`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetcropactivitiesbycropidQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcropactivitiesbycropid>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetcropactivitiesbycropidParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropactivitiesbycropid>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropactivitiesbycropid>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetcropactivitiesbycropidQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetcropactivitiesbycropid>>> = ({ signal }) => getApiFarmerAppGetcropactivitiesbycropid(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetcropactivitiesbycropidQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetcropactivitiesbycropid>>>
+export type GetApiFarmerAppGetcropactivitiesbycropidQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetcropactivitiesbycropid = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcropactivitiesbycropid>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetcropactivitiesbycropidParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcropactivitiesbycropid>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetcropactivitiesbycropidQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+export const getApiFarmerAppGetcultivationdetailsbyfarmId = (
+    params?: GetApiFarmerAppGetcultivationdetailsbyfarmIdParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<FarmCropCultivationResponse>(
+      {url: `/api/FarmerApp/getcultivationdetailsbyfarmId`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetcultivationdetailsbyfarmIdQueryKey = (params?: GetApiFarmerAppGetcultivationdetailsbyfarmIdParams,) => [`/api/FarmerApp/getcultivationdetailsbyfarmId`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetcultivationdetailsbyfarmIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyfarmId>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetcultivationdetailsbyfarmIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyfarmId>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyfarmId>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetcultivationdetailsbyfarmIdQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyfarmId>>> = ({ signal }) => getApiFarmerAppGetcultivationdetailsbyfarmId(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetcultivationdetailsbyfarmIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyfarmId>>>
+export type GetApiFarmerAppGetcultivationdetailsbyfarmIdQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetcultivationdetailsbyfarmId = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyfarmId>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetcultivationdetailsbyfarmIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetcultivationdetailsbyfarmId>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetcultivationdetailsbyfarmIdQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary getallfarms
+ */
+export const getApiFarmerAppGetallfarms = (
+    params?: GetApiFarmerAppGetallfarmsParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<FarmsPaginatedResponse>(
+      {url: `/api/FarmerApp/getallfarms`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppGetallfarmsQueryKey = (params?: GetApiFarmerAppGetallfarmsParams,) => [`/api/FarmerApp/getallfarms`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiFarmerAppGetallfarmsQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetallfarms>>, TError = ErrorType<unknown>>(params?: GetApiFarmerAppGetallfarmsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallfarms>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallfarms>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppGetallfarmsQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppGetallfarms>>> = ({ signal }) => getApiFarmerAppGetallfarms(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppGetallfarmsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppGetallfarms>>>
+export type GetApiFarmerAppGetallfarmsQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppGetallfarms = <TData = Awaited<ReturnType<typeof getApiFarmerAppGetallfarms>>, TError = ErrorType<unknown>>(
+ params?: GetApiFarmerAppGetallfarmsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppGetallfarms>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppGetallfarmsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary createupdatefarm
+ */
+export const postApiFarmerAppCreateupdatefarm = (
+    farmRequest: FarmRequest,
+ ) => {
+      return customInstance<boolean>(
+      {url: `/api/FarmerApp/createupdatefarm`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: farmRequest
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppCreateupdatefarmMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreateupdatefarm>>, TError,{data: FarmRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreateupdatefarm>>, TError,{data: FarmRequest}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppCreateupdatefarm>>, {data: FarmRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppCreateupdatefarm(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppCreateupdatefarmMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppCreateupdatefarm>>>
+    export type PostApiFarmerAppCreateupdatefarmMutationBody = FarmRequest
+    export type PostApiFarmerAppCreateupdatefarmMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppCreateupdatefarm = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreateupdatefarm>>, TError,{data: FarmRequest}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppCreateupdatefarmMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiFarmerAppCreateactivitystatus = (
+    calendarActivityStatusRequest: CalendarActivityStatusRequest,
+ ) => {
+      return customInstance<CalendarActivityStatusRequest>(
+      {url: `/api/FarmerApp/createactivitystatus`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: calendarActivityStatusRequest
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppCreateactivitystatusMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreateactivitystatus>>, TError,{data: CalendarActivityStatusRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreateactivitystatus>>, TError,{data: CalendarActivityStatusRequest}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppCreateactivitystatus>>, {data: CalendarActivityStatusRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppCreateactivitystatus(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppCreateactivitystatusMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppCreateactivitystatus>>>
+    export type PostApiFarmerAppCreateactivitystatusMutationBody = CalendarActivityStatusRequest
+    export type PostApiFarmerAppCreateactivitystatusMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppCreateactivitystatus = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreateactivitystatus>>, TError,{data: CalendarActivityStatusRequest}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppCreateactivitystatusMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Return true or false based on farm count of the user
+ */
+export const getApiFarmerAppIsfarmexist = (
+    
+ signal?: AbortSignal
+) => {
+      return customInstance<FarmExists>(
+      {url: `/api/FarmerApp/isfarmexist`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiFarmerAppIsfarmexistQueryKey = () => [`/api/FarmerApp/isfarmexist`] as const;
+  
+
+    
+export const getGetApiFarmerAppIsfarmexistQueryOptions = <TData = Awaited<ReturnType<typeof getApiFarmerAppIsfarmexist>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppIsfarmexist>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppIsfarmexist>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiFarmerAppIsfarmexistQueryKey();
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiFarmerAppIsfarmexist>>> = ({ signal }) => getApiFarmerAppIsfarmexist(signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiFarmerAppIsfarmexistQueryResult = NonNullable<Awaited<ReturnType<typeof getApiFarmerAppIsfarmexist>>>
+export type GetApiFarmerAppIsfarmexistQueryError = ErrorType<unknown>
+
+export const useGetApiFarmerAppIsfarmexist = <TData = Awaited<ReturnType<typeof getApiFarmerAppIsfarmexist>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiFarmerAppIsfarmexist>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiFarmerAppIsfarmexistQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary getsenseddays
+ */
+export const postApiFarmerAppGetsenseddays = (
+    polygonDataRequest: PolygonDataRequest,
+ ) => {
+      return customInstance<ActivityDays>(
+      {url: `/api/FarmerApp/getsenseddays`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: polygonDataRequest
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppGetsenseddaysMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetsenseddays>>, TError,{data: PolygonDataRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetsenseddays>>, TError,{data: PolygonDataRequest}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppGetsenseddays>>, {data: PolygonDataRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppGetsenseddays(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppGetsenseddaysMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppGetsenseddays>>>
+    export type PostApiFarmerAppGetsenseddaysMutationBody = PolygonDataRequest
+    export type PostApiFarmerAppGetsenseddaysMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppGetsenseddays = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetsenseddays>>, TError,{data: PolygonDataRequest}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppGetsenseddaysMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary getfieldareaindeximage
+ */
+export const postApiFarmerAppGetfieldareaindeximage = (
+    fieldIndexImageRequest: FieldIndexImageRequest,
+ ) => {
+      return customInstance<FarmImageCoordinates>(
+      {url: `/api/FarmerApp/getfieldareaindeximage`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: fieldIndexImageRequest
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppGetfieldareaindeximageMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfieldareaindeximage>>, TError,{data: FieldIndexImageRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfieldareaindeximage>>, TError,{data: FieldIndexImageRequest}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppGetfieldareaindeximage>>, {data: FieldIndexImageRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppGetfieldareaindeximage(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppGetfieldareaindeximageMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppGetfieldareaindeximage>>>
+    export type PostApiFarmerAppGetfieldareaindeximageMutationBody = FieldIndexImageRequest
+    export type PostApiFarmerAppGetfieldareaindeximageMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppGetfieldareaindeximage = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfieldareaindeximage>>, TError,{data: FieldIndexImageRequest}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppGetfieldareaindeximageMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary getfieldreport
+ */
+export const postApiFarmerAppGetfieldreport = (
+    fieldReportRequest: FieldReportRequest,
+ ) => {
+      return customInstance<ResponseDTO>(
+      {url: `/api/FarmerApp/getfieldreport`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: fieldReportRequest
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppGetfieldreportMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfieldreport>>, TError,{data: FieldReportRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfieldreport>>, TError,{data: FieldReportRequest}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppGetfieldreport>>, {data: FieldReportRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppGetfieldreport(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppGetfieldreportMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppGetfieldreport>>>
+    export type PostApiFarmerAppGetfieldreportMutationBody = FieldReportRequest
+    export type PostApiFarmerAppGetfieldreportMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppGetfieldreport = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfieldreport>>, TError,{data: FieldReportRequest}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppGetfieldreportMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary createUsersubscription
+ */
+export const postApiFarmerAppCreatefarmersubscription = (
+    userPaymentInfo: UserPaymentInfo,
+ ) => {
+      return customInstance<UserPaymentInfoResponse>(
+      {url: `/api/FarmerApp/createfarmersubscription`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: userPaymentInfo
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppCreatefarmersubscriptionMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmersubscription>>, TError,{data: UserPaymentInfo}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmersubscription>>, TError,{data: UserPaymentInfo}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmersubscription>>, {data: UserPaymentInfo}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppCreatefarmersubscription(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppCreatefarmersubscriptionMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmersubscription>>>
+    export type PostApiFarmerAppCreatefarmersubscriptionMutationBody = UserPaymentInfo
+    export type PostApiFarmerAppCreatefarmersubscriptionMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppCreatefarmersubscription = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmersubscription>>, TError,{data: UserPaymentInfo}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppCreatefarmersubscriptionMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
 export const postApiFarmonautCreatefarm = (
     farm: Farm,
  ) => {
@@ -5767,57 +7277,6 @@ export const getPostApiSubscriptionCreateupdatesubscriptionplanMutationOptions =
     }
     
 /**
- * @summary GetSubscriptionPlanPage
- */
-export const getApiSubscriptionGetsubscriptionplanpage = (
-    params?: GetApiSubscriptionGetsubscriptionplanpageParams,
- signal?: AbortSignal
-) => {
-      return customInstance<SubscriptionPlanListModelPagedResults>(
-      {url: `/api/Subscription/getsubscriptionplanpage`, method: 'get',
-        params, signal
-    },
-      );
-    }
-  
-
-export const getGetApiSubscriptionGetsubscriptionplanpageQueryKey = (params?: GetApiSubscriptionGetsubscriptionplanpageParams,) => [`/api/Subscription/getsubscriptionplanpage`, ...(params ? [params]: [])] as const;
-  
-
-    
-export const getGetApiSubscriptionGetsubscriptionplanpageQueryOptions = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanpage>>, TError = ErrorType<unknown>>(params?: GetApiSubscriptionGetsubscriptionplanpageParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanpage>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanpage>>, TError, TData> & { queryKey: QueryKey } => {
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiSubscriptionGetsubscriptionplanpageQueryKey(params);
-
-  
-  
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanpage>>> = ({ signal }) => getApiSubscriptionGetsubscriptionplanpage(params, signal);
-    
-      
-      
-   return  { queryKey, queryFn, ...queryOptions}}
-
-export type GetApiSubscriptionGetsubscriptionplanpageQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanpage>>>
-export type GetApiSubscriptionGetsubscriptionplanpageQueryError = ErrorType<unknown>
-
-export const useGetApiSubscriptionGetsubscriptionplanpage = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanpage>>, TError = ErrorType<unknown>>(
- params?: GetApiSubscriptionGetsubscriptionplanpageParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanpage>>, TError, TData>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetApiSubscriptionGetsubscriptionplanpageQueryOptions(params,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-
-/**
  * @summary GetSubscriptionPlanById
  */
 export const putApiSubscriptionGetsubscriptionplanbyid = (
@@ -5872,7 +7331,7 @@ export const getPutApiSubscriptionGetsubscriptionplanbyidMutationOptions = <TErr
 export const deleteApiSubscriptionDeletesubscriptionplan = (
     params?: DeleteApiSubscriptionDeletesubscriptionplanParams,
  ) => {
-      return customInstance<ApiResponse>(
+      return customInstance<string>(
       {url: `/api/Subscription/deletesubscriptionplan`, method: 'delete',
         params
     },
@@ -5915,6 +7374,57 @@ export const getDeleteApiSubscriptionDeletesubscriptionplanMutationOptions = <TE
       return useMutation(mutationOptions);
     }
     
+/**
+ * @summary GetSubscriptionPlans
+ */
+export const getApiSubscriptionGetSubscriptionPlans = (
+    params?: GetApiSubscriptionGetSubscriptionPlansParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<SubscriptionPlanPaginatedResponse>(
+      {url: `/api/Subscription/getSubscriptionPlans`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiSubscriptionGetSubscriptionPlansQueryKey = (params?: GetApiSubscriptionGetSubscriptionPlansParams,) => [`/api/Subscription/getSubscriptionPlans`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiSubscriptionGetSubscriptionPlansQueryOptions = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionPlans>>, TError = ErrorType<unknown>>(params?: GetApiSubscriptionGetSubscriptionPlansParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionPlans>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionPlans>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSubscriptionGetSubscriptionPlansQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionPlans>>> = ({ signal }) => getApiSubscriptionGetSubscriptionPlans(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiSubscriptionGetSubscriptionPlansQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionPlans>>>
+export type GetApiSubscriptionGetSubscriptionPlansQueryError = ErrorType<unknown>
+
+export const useGetApiSubscriptionGetSubscriptionPlans = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionPlans>>, TError = ErrorType<unknown>>(
+ params?: GetApiSubscriptionGetSubscriptionPlansParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionPlans>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiSubscriptionGetSubscriptionPlansQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
 /**
  * @summary CreateUpdateSubscriptionFeature
  */
@@ -5966,47 +7476,47 @@ export const getPostApiSubscriptionCreateupdatesubscriptionfeatureMutationOption
     }
     
 /**
- * @summary GetSubscriptionFeaturePage
+ * @summary GetSubscriptionFeatures
  */
-export const getApiSubscriptionGetsubscriptionfeaturepage = (
-    params?: GetApiSubscriptionGetsubscriptionfeaturepageParams,
+export const getApiSubscriptionGetSubscriptionFeatures = (
+    params?: GetApiSubscriptionGetSubscriptionFeaturesParams,
  signal?: AbortSignal
 ) => {
-      return customInstance<SubscriptionFeatureListModelPagedResults>(
-      {url: `/api/Subscription/getsubscriptionfeaturepage`, method: 'get',
+      return customInstance<SubscriptionFeatureResponse>(
+      {url: `/api/Subscription/getSubscriptionFeatures`, method: 'get',
         params, signal
     },
       );
     }
   
 
-export const getGetApiSubscriptionGetsubscriptionfeaturepageQueryKey = (params?: GetApiSubscriptionGetsubscriptionfeaturepageParams,) => [`/api/Subscription/getsubscriptionfeaturepage`, ...(params ? [params]: [])] as const;
+export const getGetApiSubscriptionGetSubscriptionFeaturesQueryKey = (params?: GetApiSubscriptionGetSubscriptionFeaturesParams,) => [`/api/Subscription/getSubscriptionFeatures`, ...(params ? [params]: [])] as const;
   
 
     
-export const getGetApiSubscriptionGetsubscriptionfeaturepageQueryOptions = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionfeaturepage>>, TError = ErrorType<unknown>>(params?: GetApiSubscriptionGetsubscriptionfeaturepageParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionfeaturepage>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionfeaturepage>>, TError, TData> & { queryKey: QueryKey } => {
+export const getGetApiSubscriptionGetSubscriptionFeaturesQueryOptions = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeatures>>, TError = ErrorType<unknown>>(params?: GetApiSubscriptionGetSubscriptionFeaturesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeatures>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeatures>>, TError, TData> & { queryKey: QueryKey } => {
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiSubscriptionGetsubscriptionfeaturepageQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSubscriptionGetSubscriptionFeaturesQueryKey(params);
 
   
   
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionfeaturepage>>> = ({ signal }) => getApiSubscriptionGetsubscriptionfeaturepage(params, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeatures>>> = ({ signal }) => getApiSubscriptionGetSubscriptionFeatures(params, signal);
     
       
       
    return  { queryKey, queryFn, ...queryOptions}}
 
-export type GetApiSubscriptionGetsubscriptionfeaturepageQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionfeaturepage>>>
-export type GetApiSubscriptionGetsubscriptionfeaturepageQueryError = ErrorType<unknown>
+export type GetApiSubscriptionGetSubscriptionFeaturesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeatures>>>
+export type GetApiSubscriptionGetSubscriptionFeaturesQueryError = ErrorType<unknown>
 
-export const useGetApiSubscriptionGetsubscriptionfeaturepage = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionfeaturepage>>, TError = ErrorType<unknown>>(
- params?: GetApiSubscriptionGetsubscriptionfeaturepageParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionfeaturepage>>, TError, TData>, }
+export const useGetApiSubscriptionGetSubscriptionFeatures = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeatures>>, TError = ErrorType<unknown>>(
+ params?: GetApiSubscriptionGetSubscriptionFeaturesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeatures>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetApiSubscriptionGetsubscriptionfeaturepageQueryOptions(params,options)
+  const queryOptions = getGetApiSubscriptionGetSubscriptionFeaturesQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -6071,7 +7581,7 @@ export const getPutApiSubscriptionGetsubscriptionfeaturebyidMutationOptions = <T
 export const deleteApiSubscriptionDeletesubscriptionfeature = (
     params?: DeleteApiSubscriptionDeletesubscriptionfeatureParams,
  ) => {
-      return customInstance<ApiResponse>(
+      return customInstance<string>(
       {url: `/api/Subscription/deletesubscriptionfeature`, method: 'delete',
         params
     },
@@ -6117,11 +7627,11 @@ export const getDeleteApiSubscriptionDeletesubscriptionfeatureMutationOptions = 
 /**
  * @summary CreateUpdateSubscriptionPlanFeatureMap
  */
-export const postApiSubscriptionCreateppdatesubscriptionplanfeaturemap = (
+export const postApiSubscriptionCreateupdatesubscriptionplanfeaturemap = (
     subscriptionPlanFeatureMapModel: SubscriptionPlanFeatureMapModel,
  ) => {
       return customInstance<ApiResponse>(
-      {url: `/api/Subscription/createppdatesubscriptionplanfeaturemap`, method: 'post',
+      {url: `/api/Subscription/createupdatesubscriptionplanfeaturemap`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: subscriptionPlanFeatureMapModel
     },
@@ -6130,19 +7640,19 @@ export const postApiSubscriptionCreateppdatesubscriptionplanfeaturemap = (
   
 
 
-export const getPostApiSubscriptionCreateppdatesubscriptionplanfeaturemapMutationOptions = <TError = ErrorType<unknown>,
+export const getPostApiSubscriptionCreateupdatesubscriptionplanfeaturemapMutationOptions = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSubscriptionCreateppdatesubscriptionplanfeaturemap>>, TError,{data: SubscriptionPlanFeatureMapModel}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiSubscriptionCreateppdatesubscriptionplanfeaturemap>>, TError,{data: SubscriptionPlanFeatureMapModel}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSubscriptionCreateupdatesubscriptionplanfeaturemap>>, TError,{data: SubscriptionPlanFeatureMapModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSubscriptionCreateupdatesubscriptionplanfeaturemap>>, TError,{data: SubscriptionPlanFeatureMapModel}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSubscriptionCreateppdatesubscriptionplanfeaturemap>>, {data: SubscriptionPlanFeatureMapModel}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSubscriptionCreateupdatesubscriptionplanfeaturemap>>, {data: SubscriptionPlanFeatureMapModel}> = (props) => {
           const {data} = props ?? {};
 
-          return  postApiSubscriptionCreateppdatesubscriptionplanfeaturemap(data,)
+          return  postApiSubscriptionCreateupdatesubscriptionplanfeaturemap(data,)
         }
 
         
@@ -6150,116 +7660,16 @@ export const getPostApiSubscriptionCreateppdatesubscriptionplanfeaturemapMutatio
  
    return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiSubscriptionCreateppdatesubscriptionplanfeaturemapMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSubscriptionCreateppdatesubscriptionplanfeaturemap>>>
-    export type PostApiSubscriptionCreateppdatesubscriptionplanfeaturemapMutationBody = SubscriptionPlanFeatureMapModel
-    export type PostApiSubscriptionCreateppdatesubscriptionplanfeaturemapMutationError = ErrorType<unknown>
+    export type PostApiSubscriptionCreateupdatesubscriptionplanfeaturemapMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSubscriptionCreateupdatesubscriptionplanfeaturemap>>>
+    export type PostApiSubscriptionCreateupdatesubscriptionplanfeaturemapMutationBody = SubscriptionPlanFeatureMapModel
+    export type PostApiSubscriptionCreateupdatesubscriptionplanfeaturemapMutationError = ErrorType<unknown>
 
-    export const usePostApiSubscriptionCreateppdatesubscriptionplanfeaturemap = <TError = ErrorType<unknown>,
+    export const usePostApiSubscriptionCreateupdatesubscriptionplanfeaturemap = <TError = ErrorType<unknown>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSubscriptionCreateppdatesubscriptionplanfeaturemap>>, TError,{data: SubscriptionPlanFeatureMapModel}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSubscriptionCreateupdatesubscriptionplanfeaturemap>>, TError,{data: SubscriptionPlanFeatureMapModel}, TContext>, }
 ) => {
     
-      const mutationOptions = getPostApiSubscriptionCreateppdatesubscriptionplanfeaturemapMutationOptions(options);
-     
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary GetSubscriptionPlanFeatureMapPage
- */
-export const getApiSubscriptionGetsubscriptionplanfeaturemappage = (
-    params?: GetApiSubscriptionGetsubscriptionplanfeaturemappageParams,
- signal?: AbortSignal
-) => {
-      return customInstance<SubscriptionPlanFeatureMapListModelPagedResults>(
-      {url: `/api/Subscription/getsubscriptionplanfeaturemappage`, method: 'get',
-        params, signal
-    },
-      );
-    }
-  
-
-export const getGetApiSubscriptionGetsubscriptionplanfeaturemappageQueryKey = (params?: GetApiSubscriptionGetsubscriptionplanfeaturemappageParams,) => [`/api/Subscription/getsubscriptionplanfeaturemappage`, ...(params ? [params]: [])] as const;
-  
-
-    
-export const getGetApiSubscriptionGetsubscriptionplanfeaturemappageQueryOptions = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanfeaturemappage>>, TError = ErrorType<unknown>>(params?: GetApiSubscriptionGetsubscriptionplanfeaturemappageParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanfeaturemappage>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanfeaturemappage>>, TError, TData> & { queryKey: QueryKey } => {
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiSubscriptionGetsubscriptionplanfeaturemappageQueryKey(params);
-
-  
-  
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanfeaturemappage>>> = ({ signal }) => getApiSubscriptionGetsubscriptionplanfeaturemappage(params, signal);
-    
-      
-      
-   return  { queryKey, queryFn, ...queryOptions}}
-
-export type GetApiSubscriptionGetsubscriptionplanfeaturemappageQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanfeaturemappage>>>
-export type GetApiSubscriptionGetsubscriptionplanfeaturemappageQueryError = ErrorType<unknown>
-
-export const useGetApiSubscriptionGetsubscriptionplanfeaturemappage = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanfeaturemappage>>, TError = ErrorType<unknown>>(
- params?: GetApiSubscriptionGetsubscriptionplanfeaturemappageParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetsubscriptionplanfeaturemappage>>, TError, TData>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetApiSubscriptionGetsubscriptionplanfeaturemappageQueryOptions(params,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-
-/**
- * @summary GetSubscriptionPlanFeatureMapById
- */
-export const putApiSubscriptionGetsubscriptionplanfeaturemapbyid = (
-    params?: PutApiSubscriptionGetsubscriptionplanfeaturemapbyidParams,
- ) => {
-      return customInstance<SubscriptionPlanFeatureMap>(
-      {url: `/api/Subscription/getsubscriptionplanfeaturemapbyid`, method: 'put',
-        params
-    },
-      );
-    }
-  
-
-
-export const getPutApiSubscriptionGetsubscriptionplanfeaturemapbyidMutationOptions = <TError = ErrorType<unknown>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiSubscriptionGetsubscriptionplanfeaturemapbyid>>, TError,{params?: PutApiSubscriptionGetsubscriptionplanfeaturemapbyidParams}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof putApiSubscriptionGetsubscriptionplanfeaturemapbyid>>, TError,{params?: PutApiSubscriptionGetsubscriptionplanfeaturemapbyidParams}, TContext> => {
- const {mutation: mutationOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiSubscriptionGetsubscriptionplanfeaturemapbyid>>, {params?: PutApiSubscriptionGetsubscriptionplanfeaturemapbyidParams}> = (props) => {
-          const {params} = props ?? {};
-
-          return  putApiSubscriptionGetsubscriptionplanfeaturemapbyid(params,)
-        }
-
-        
-
- 
-   return  { mutationFn, ...mutationOptions }}
-
-    export type PutApiSubscriptionGetsubscriptionplanfeaturemapbyidMutationResult = NonNullable<Awaited<ReturnType<typeof putApiSubscriptionGetsubscriptionplanfeaturemapbyid>>>
-    
-    export type PutApiSubscriptionGetsubscriptionplanfeaturemapbyidMutationError = ErrorType<unknown>
-
-    export const usePutApiSubscriptionGetsubscriptionplanfeaturemapbyid = <TError = ErrorType<unknown>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiSubscriptionGetsubscriptionplanfeaturemapbyid>>, TError,{params?: PutApiSubscriptionGetsubscriptionplanfeaturemapbyidParams}, TContext>, }
-) => {
-    
-      const mutationOptions = getPutApiSubscriptionGetsubscriptionplanfeaturemapbyidMutationOptions(options);
+      const mutationOptions = getPostApiSubscriptionCreateupdatesubscriptionplanfeaturemapMutationOptions(options);
      
       return useMutation(mutationOptions);
     }
@@ -6313,6 +7723,108 @@ export const getDeleteApiSubscriptionDeletesubscriptionplanfeaturemapMutationOpt
       return useMutation(mutationOptions);
     }
     
+/**
+ * @summary GetSubscriptions
+ */
+export const getApiSubscriptionGetSubscriptions = (
+    params?: GetApiSubscriptionGetSubscriptionsParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<SubscriptionPaginatedResponse>(
+      {url: `/api/Subscription/getSubscriptions`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiSubscriptionGetSubscriptionsQueryKey = (params?: GetApiSubscriptionGetSubscriptionsParams,) => [`/api/Subscription/getSubscriptions`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiSubscriptionGetSubscriptionsQueryOptions = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptions>>, TError = ErrorType<unknown>>(params?: GetApiSubscriptionGetSubscriptionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptions>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptions>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSubscriptionGetSubscriptionsQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptions>>> = ({ signal }) => getApiSubscriptionGetSubscriptions(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiSubscriptionGetSubscriptionsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptions>>>
+export type GetApiSubscriptionGetSubscriptionsQueryError = ErrorType<unknown>
+
+export const useGetApiSubscriptionGetSubscriptions = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptions>>, TError = ErrorType<unknown>>(
+ params?: GetApiSubscriptionGetSubscriptionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptions>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiSubscriptionGetSubscriptionsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
+/**
+ * @summary GetSubscriptionFeaturesBySubscriptionId
+ */
+export const getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId = (
+    params?: GetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdParams,
+ signal?: AbortSignal
+) => {
+      return customInstance<SubscriptionFeaturePaginatedResponse>(
+      {url: `/api/Subscription/getSubscriptionFeaturesBySubscriptionId`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdQueryKey = (params?: GetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdParams,) => [`/api/Subscription/getSubscriptionFeaturesBySubscriptionId`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId>>, TError = ErrorType<unknown>>(params?: GetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId>>> = ({ signal }) => getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId>>>
+export type GetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdQueryError = ErrorType<unknown>
+
+export const useGetApiSubscriptionGetSubscriptionFeaturesBySubscriptionId = <TData = Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId>>, TError = ErrorType<unknown>>(
+ params?: GetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSubscriptionGetSubscriptionFeaturesBySubscriptionId>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiSubscriptionGetSubscriptionFeaturesBySubscriptionIdQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+
 /**
  * @summary CreateRole
  */

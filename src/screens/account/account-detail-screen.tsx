@@ -12,7 +12,7 @@ import AddUserInfo from '../user-info/add-user-info';
 const AccountDetailScreen = () => {
   const [isEdit, setEdit] = useState<boolean>(false);
   const getUserDetails = useGetApiAccountFetchUserBasicDetails();
-  console.log(getUserDetails.data);
+
   const onNextSubmit = useCallback(() => {
     Toast.show({
       type: 'error',

@@ -85,7 +85,7 @@ export const LoginForm = () => {
       enabled: isEnable,
       onSuccess: (data: FarmExists) => {
         setGoogleLoading(false);
-        if (data.isFarmAdded) {
+        if (!data.isFarmAdded) {
           navigation.dispatch(
             CommonActions.reset({
               index: 1,

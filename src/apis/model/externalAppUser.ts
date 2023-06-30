@@ -17,4 +17,5 @@ export interface ExternalAppUser {
   mobileNumber?: string | null;
   firebaseUserId?: string | null;
   fcmToken?: string | null;
+  signInProvider?: string | null;
 }

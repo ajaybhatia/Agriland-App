@@ -8,7 +8,7 @@ import type { LanguageName } from './languageName';
 
 export interface FarmerCropCalendarActivity {
   activityName?: LanguageName;
-  activityId?: string | null;
+  activityId?: string;
   activityDate?: string;
   activityDesc?: LanguageName;
   imageUrl?: number | null;

@@ -4,9 +4,12 @@ import React from 'react';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import colors from '@/ui/theme/colors';
 
-type Props = {};
+type Props = {
+  amount: string;
+  packageType: string;
+};
 
-const BundleSubscriptionDetailsCell = (props: Props) => {
+const BundleSubscriptionDetailsCell = ({ packageType, amount }: Props) => {
   return (
     <CardWithShadow>
       <VStack overflow={'hidden'}>
@@ -23,7 +26,7 @@ const BundleSubscriptionDetailsCell = (props: Props) => {
             fontWeight={'600'}
             fontStyle={'normal'}
           >
-            BundleSubscriptionDetailsCell
+            {packageType}
           </Text>
           <Text
             fontSize={12}
@@ -32,10 +35,10 @@ const BundleSubscriptionDetailsCell = (props: Props) => {
             fontStyle={'normal'}
             color={colors.TITLE_COLOR}
           >
-            200 EGP
+            {amount} EGP
           </Text>
         </HStack>
-        <Text
+        {/* <Text
           px={3}
           py={3}
           fontSize={11}
@@ -44,7 +47,7 @@ const BundleSubscriptionDetailsCell = (props: Props) => {
           fontStyle={'normal'}
         >
           BundleSubscriptionDetailsCell
-        </Text>
+        </Text> */}
       </VStack>
     </CardWithShadow>
   );

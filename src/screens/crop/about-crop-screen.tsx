@@ -11,6 +11,7 @@ import {
 } from 'native-base';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 
 import type { CalendarModel, FarmCropsDetailResponse } from '@/apis/model';
 import {
@@ -176,8 +177,18 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
           </Radio.Group>
 
           <Button
+            //disabled={!selectedCalendarActivity}
             backgroundColor={colors.button_color}
-            onPress={() => onNext && onNext(myCropRequest)}
+            onPress={() => {
+              if (selectedCalendarActivity) {
+                onNext && onNext(myCropRequest);
+              } else {
+                Toast.show({
+                  type: 'error',
+                  text1: 'Please Add Calendar ID',
+                });
+              }
+            }}
             borderRadius={8}
             width={'80%'}
             mt={30}

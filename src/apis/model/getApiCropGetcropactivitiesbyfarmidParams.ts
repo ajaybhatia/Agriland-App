@@ -7,5 +7,6 @@
 
 export type GetApiCropGetcropactivitiesbyfarmidParams = {
 farmid?: string;
+cropid?: string;
 noOfDays?: number;
 };

@@ -1,11 +1,10 @@
-import type { AxiosError, AxiosRequestConfig } from 'axios';
-
-import Axios from 'axios';
 import auth from '@react-native-firebase/auth';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
+import Axios from 'axios';
 
 export const AXIOS_INSTANCE = Axios.create({
   // baseURL: 'http://192.168.227.164:81', // Aswaaq VPN server
-  baseURL: 'http://95.111.231.114:88', // Our Server
+  baseURL: 'http://95.111.231.114:85', // Our Server
 });
 
 export const customInstance = async <T>(
@@ -16,7 +15,10 @@ export const customInstance = async <T>(
   const idToken = await currentUser?.getIdToken();
   console.log(currentUser?.uid, ' \n\n', idToken);
   if (currentUser) {
-    config.headers = { Authorization: `Bearer ${idToken}` };
+    config.headers = {
+      Authorization: `Bearer ${idToken}`,
+      'agri-subscription-key': 'A182020E-FC19-4F6F-A973-1F06A375756C',
+    };
   }
 
   const promise = AXIOS_INSTANCE({ ...config, cancelToken: source.token }).then(

@@ -10,4 +10,5 @@ export interface SubscriptionPlanFeatureMapModel {
   planId?: string | null;
   featureId?: string | null;
   featureValue?: string | null;
+  isActive?: boolean;
 }

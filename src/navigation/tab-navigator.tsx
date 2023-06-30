@@ -1,10 +1,15 @@
+import auth from '@react-native-firebase/auth';
+import type {
+  DrawerContentComponentProps,
+  DrawerHeaderProps,
+} from '@react-navigation/drawer';
 import {
-  Alert,
-  Animated,
-  I18nManager,
-  Keyboard,
-  StyleSheet,
-} from 'react-native';
+  createDrawerNavigator,
+  useDrawerStatus,
+} from '@react-navigation/drawer';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   Box,
   HStack,
@@ -14,62 +19,60 @@ import {
   Pressable,
   SectionList,
   Text,
-  VStack,
   View,
+  VStack,
 } from 'native-base';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import type {
-  DrawerContentComponentProps,
-  DrawerHeaderProps,
-} from '@react-navigation/drawer';
+import React from 'react';
 import {
-  createDrawerNavigator,
-  useDrawerStatus,
-} from '@react-navigation/drawer';
+  Alert,
+  Animated,
+  I18nManager,
+  Keyboard,
+  StyleSheet,
+} from 'react-native';
+import { Platform } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import { useAuth } from '@/core';
 import AccountDetailScreen from '@/screens/account/account-detail-screen';
-import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import AddOperationScreen from '@/screens/CenterScreens/add-operations-screen';
-import AppHeader from '@/ui/components/AppHeader';
-import type { AuthStackParamList } from './types';
-import ChooseSateliteFarmScreen from '@/screens/satellite/choose-satelite-farm-screen';
 import CropCodingScreen from '@/screens/crop/crop-coding-screen';
 import CropDetailScreen from '@/screens/crop/crop-detail-screen';
 import CropRegisterDetails from '@/screens/crop/crop-register-details';
 import CropRegistration from '@/screens/crop/crop-registration';
-import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
+import MyCropsScreen from '@/screens/crop/my-crops-screen';
+import STationBookedScreen from '@/screens/crop/station-booked-screen';
+import StationBookingScreen from '@/screens/crop/station-booking-screen';
 import DashboardScreen from '@/screens/dashboard/dashboard-screen';
-import DrawerOptions from '@/ui/components/DrawerOptions';
+import AddFarmHomeScreen from '@/screens/farm/add-farm-homescreen';
 import FarmDetailScreen from '@/screens/farm/farm-detail-screen';
 import HomeScreen from '@/screens/home/home-screen';
-import MakeAppointmentScreen from '@/screens/TestScreens/make-appointment-screen';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MyCropsScreen from '@/screens/crop/my-crops-screen';
-import type { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import TokenFirebaseScreen from '@/screens/login/token-firebase-screen';
 import NotificationsDetails from '@/screens/notifications-screens/notifications-details';
-import { Platform } from 'react-native';
-import React from 'react';
-import STationBookedScreen from '@/screens/crop/station-booked-screen';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import SateLiteDemoScreen from '@/screens/satellite/satelite-demo-screen';
+import AddCardPayment from '@/screens/payments/add-card-payment';
+import ChooseSateliteFarmScreen from '@/screens/satellite/choose-satelite-farm-screen';
 import SateliteDemoMapScreen from '@/screens/satellite/satelite-demo-map-screen';
+import SateLiteDemoScreen from '@/screens/satellite/satelite-demo-screen';
 import SateliteDetailSubscriptionScreen from '@/screens/satellite/satelite-detail-subscription-screen';
 import SateliteMapScreen from '@/screens/satellite/satelite-map-screen';
-import StationBookingScreen from '@/screens/crop/station-booking-screen';
+import SatelliteChooseCropByFarm from '@/screens/satellite/satellite-choose-crop-by-farm';
 import SubscriptionBundleScreen from '@/screens/satellite/subscription-bundle-screen';
 import TaskCalenderDetailScreen from '@/screens/tasks/task-calender-detail-screen';
 import TaskDetailScreen from '@/screens/tasks/tasks-detail-screen';
+import MakeAppointmentScreen from '@/screens/TestScreens/make-appointment-screen';
 import TestScreen from '@/screens/TestScreens/tests-screen';
-import TokenFirebaseScreen from '@/screens/login/token-firebase-screen';
-import { TouchableOpacity } from 'react-native';
 import WeatherChangesScreen from '@/screens/weather/weather-changes-screen';
 import WeatherDetailScreen from '@/screens/weather/weather-detail-screen';
 import WeatherSingleDetail from '@/screens/weather/weather-single-detail';
-import auth from '@react-native-firebase/auth';
+import AppHeader from '@/ui/components/AppHeader';
+import DrawerOptions from '@/ui/components/DrawerOptions';
 import colors from '@/ui/theme/colors';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useAuth } from '@/core';
+
+import type { AuthStackParamList } from './types';
 
 const Screen1 = () => {
   return <View style={styles.screen1} />;
@@ -849,7 +852,7 @@ export const TabNavigator = () => {
       <RootStack.Screen
         options={{
           headerShown: true,
-          title: 'Harvesting',
+          title: 'Detail',
           headerTitleStyle: {
             fontFamily: 'Poppins-Medium',
             fontSize: 16,
@@ -1345,6 +1348,56 @@ export const TabNavigator = () => {
         }}
         name="TokenFirebaseScreen"
         component={TokenFirebaseScreen}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Add Card',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="AddCardPayment"
+        component={AddCardPayment}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Crops',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="SatelliteChooseCropByFarm"
+        component={SatelliteChooseCropByFarm}
       />
     </RootStack.Navigator>
   );

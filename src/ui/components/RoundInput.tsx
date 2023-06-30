@@ -39,6 +39,7 @@ export default function RoundInput({
   keyboardType,
   onPressIn,
 }: Props) {
+  console.log('errors==>', errors, isInvalid);
   return (
     <View>
       {isDisabled ? (

@@ -8,6 +8,7 @@ import type { CropResponse } from './cropResponse';
 import type { CoOrdinates } from './coOrdinates';
 
 export interface FarmCropsDetailResponse {
+  farmCropId?: string;
   crop?: CropResponse;
   area?: number | null;
   sowingDate?: string | null;

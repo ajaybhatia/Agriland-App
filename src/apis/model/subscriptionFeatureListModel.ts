@@ -4,10 +4,16 @@
  * Farmer App API
  * OpenAPI spec version: v1
  */
+import type { LanguageName } from './languageName';
 
 export interface SubscriptionFeatureListModel {
   id?: string;
-  enTitle?: string | null;
-  arTitle?: string | null;
+  featureNames?: LanguageName;
+  serviceTypeId?: string | null;
   createdOn?: string;
+  updatedBy?: string | null;
+  createdBy?: string | null;
+  updatedOn?: string | null;
+  isActive?: boolean;
+  isDeleted?: boolean | null;
 }

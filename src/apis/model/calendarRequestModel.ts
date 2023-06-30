@@ -9,4 +9,5 @@ import type { LanguageName } from './languageName';
 export interface CalendarRequestModel {
   id?: string | null;
   calendarName?: LanguageName;
+  isActive?: boolean;
 }
