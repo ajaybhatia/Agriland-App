@@ -4,12 +4,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import BodyTitle from '@/ui/components/BodyTitle';
 
-type Props = {};
+type Props = {
+  onAddCrop?: () => void;
+};
 
-function CropRegisterCell({}: Props) {
+function CropRegisterCell({ onAddCrop }: Props) {
   return (
     <View w={100} h={135}>
       <Pressable
+        onPress={onAddCrop}
         overflow={'hidden'}
         flex={1}
         flexDirection={'column'}
@@ -46,7 +49,7 @@ function CropRegisterCell({}: Props) {
           </View>
           <BodyTitle
             numberOfLines={2}
-            title="Register a new crop"
+            title="Add Crop"
             fontSize={12}
             fontWeight={500}
           />

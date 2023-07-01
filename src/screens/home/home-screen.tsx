@@ -25,13 +25,14 @@ import type {
   FarmerDetails,
   FarmResponse,
 } from '@/apis/model';
-import { setUserNameAuth } from '@/core';
+import { setUserNameAuth, useAuth } from '@/core';
 import { useWeather } from '@/core/weather';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 import ListHeader from '@/ui/components/ListHeader';
 import type { DataValues } from '@/ui/components/step-indicator/StepIndicator';
 import colors from '@/ui/theme/colors';
 
+import CropRegisterCell from '../crop/components/crop-register-cell';
 import type { LocationAddress } from '../maps-views/model/location-address-model';
 import type { ForecastModel } from '../weather/models/weather-forecast-models';
 import CompleteProfileCell from './components/complete-profile-cell';
@@ -45,7 +46,7 @@ import WeatherCell from './components/weather-cell';
 function HomeScreen() {
   const setData = useWeather.use.setData();
   const clearWeatherData = useWeather.use.clearData();
-
+  const userInfoo = useAuth.use.userInfos();
   const nav = useNavigation();
   const putToken = usePutApiAccountUpdatefcmtoken();
   const [selectedFarm, setSelectedFarm] = useState<FarmResponse | undefined>();
@@ -222,7 +223,19 @@ function HomeScreen() {
   const onDropDownPress = useCallback(
     (title: string) => {
       if (title === 'Satellite Data') {
-        nav.navigate('SateLiteDemoScreen');
+        if (userInfoo && userInfoo.farmerPlans?.endDate) {
+          if (
+            dayjs().isAfter(dayjs(userInfoo.farmerPlans?.endDate).utc(true))
+          ) {
+            nav.navigate('SatelliteSelectedCropsList');
+            //  nav.navigate('SateLiteDemoScreen');
+          } else {
+            nav.navigate('SateLiteDemoScreen');
+          }
+        }
+        // first check subscription is active
+
+        //nav.navigate('SateLiteDemoScreen');
       } else if (title === 'Weather Changes') {
         clearWeatherData();
         if (weatherReport && currentAddress && selectedFarm) {
@@ -282,6 +295,8 @@ function HomeScreen() {
     },
     [setShowSheets]
   );
+
+  const onAddCrop = useCallback(() => nav.navigate('CropRegistration'), []);
 
   const onSeeWeatherDDetail = useCallback(() => {
     if (weatherReport && currentAddress && selectedFarm) {
@@ -352,6 +367,9 @@ function HomeScreen() {
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 20 }}
                   data={getCrops.data?.cultivationDetails ?? []}
+                  ListHeaderComponent={
+                    <CropRegisterCell onAddCrop={onAddCrop} />
+                  }
                   renderItem={({
                     item,
                     index,

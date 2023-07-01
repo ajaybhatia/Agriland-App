@@ -2,10 +2,10 @@ import { FlatList, View } from 'native-base';
 import React from 'react';
 import { I18nManager } from 'react-native';
 
-import type { CultivationDetailResponse } from '@/apis/model';
+import type { SelectedCropsListState } from '@/core/satellite-farm';
 import { useSatelliteFarm } from '@/core/satellite-farm';
 
-import SatelliteSelectedCropCell from './satellite-selected-crop-cell';
+import SatelliteFarHorizontal from './satellite-farm-horizontal';
 
 type Props = {};
 
@@ -28,8 +28,8 @@ const SatelliteSelectedCrops = (props: Props) => {
           flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
         }}
         data={cropsSelected}
-        renderItem={({ item: crop }: { item: CultivationDetailResponse }) => (
-          <SatelliteSelectedCropCell item={crop} />
+        renderItem={({ item: crop }: { item: SelectedCropsListState }) => (
+          <SatelliteFarHorizontal item={crop} />
         )}
       />
     </View>

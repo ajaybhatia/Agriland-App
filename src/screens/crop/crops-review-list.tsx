@@ -84,14 +84,14 @@ const CropsReviewList = ({
             quantity: cropRequest?.cropArea?.quantity,
             typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
             calendarId: selectedCalendarActivity?.id,
-            uid:
-              registerType === AddCropRegisterType.FROM_REGISTER
-                ? '0x61vkpvHEMkbPYiAnrNVQIFtqY2'
-                : undefined,
-            hasCoordinatesModified:
-              registerType === AddCropRegisterType.FROM_REGISTER
-                ? true
-                : undefined,
+            // uid:
+            //   registerType === AddCropRegisterType.FROM_REGISTER
+            //     ? '0x61vkpvHEMkbPYiAnrNVQIFtqY2'
+            //     : undefined,
+            // hasCoordinatesModified:
+            //   registerType === AddCropRegisterType.FROM_REGISTER
+            //     ? true
+            //     : undefined,
           },
         ],
       },

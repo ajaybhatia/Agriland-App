@@ -1,7 +1,7 @@
 import type { RouteProp } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button, FlatList, View } from 'native-base';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet } from 'react-native';
 
 import { useGetApiFarmerAppGetcultivationdetailsbyfarmId } from '@/apis/endpoints/api';
@@ -23,6 +23,9 @@ function SatelliteChooseCropByFarm() {
   const userInfoo = useAuth.use.userInfos();
   const [crops, setCrops] = useState<CultivationDetailResponse[]>([]);
   const cropsSelected = useSatelliteFarm.use.satelliteSelectedCrops();
+  const [newSelectedCrop, setNewSelectedCrop] = useState<
+    CultivationDetailResponse[]
+  >([]);
   const [moreInfo, setMoreInfo] = useState<{
     take: number;
     skip: number;
@@ -32,7 +35,16 @@ function SatelliteChooseCropByFarm() {
   });
   const route =
     useRoute<RouteProp<AuthStackParamList, 'SatelliteChooseCropByFarm'>>();
-
+  useEffect(() => {
+    if (route?.params?.farmId) {
+      const farmIndex = cropsSelected.findIndex(
+        (x) => x.farmid === route?.params?.farmId
+      );
+      if (farmIndex >= 0) {
+        setNewSelectedCrop(cropsSelected[farmIndex].crops);
+      }
+    }
+  }, []);
   const getCrops = useGetApiFarmerAppGetcultivationdetailsbyfarmId(
     {
       farmId: route?.params?.farmId ?? '',
@@ -66,19 +78,40 @@ function SatelliteChooseCropByFarm() {
 
   const onSelectCrop = useCallback(
     (item: CultivationDetailResponse) => {
+      var countOfCrops = 0;
+      let countOfCropsMap = cropsSelected.map((x) => {
+        countOfCrops = countOfCrops + x.crops.length;
+        return {
+          it: x.crops,
+        };
+      });
       if (
         userInfoo?.farmonautCropsAvailable &&
         userInfoo?.allowedArea &&
         item?.alowedArea
       ) {
         if (
-          userInfoo?.farmonautCropsAvailable >= cropsSelected.length &&
+          userInfoo?.farmonautCropsAvailable >= countOfCrops &&
           userInfoo?.allowedArea >= item?.alowedArea
         ) {
-          setSatelliteCropData(item);
+          setSatelliteCropData({
+            crops: item,
+            farmid: route?.params?.farmId ?? '',
+            farmname: route?.params?.farmName ?? '',
+          });
+          if (
+            newSelectedCrop.filter((x) => x.farmCropId === item.farmCropId)
+              .length > 0
+          ) {
+            setNewSelectedCrop(
+              newSelectedCrop.filter((x) => x.farmCropId !== item.farmCropId)
+            );
+          } else {
+            setNewSelectedCrop([...newSelectedCrop, item]);
+          }
         } else {
           alertExceedSelected(
-            userInfoo?.farmonautCropsAvailable < cropsSelected.length
+            userInfoo?.farmonautCropsAvailable < countOfCrops
               ? `you cannot select crops more than your plan.`
               : `You cannot select area ore than ${userInfoo?.allowedArea}`
           );
@@ -87,7 +120,14 @@ function SatelliteChooseCropByFarm() {
         alertExceedSelected(`you cannot select this crop.`);
       }
     },
-    [cropsSelected, userInfoo]
+    [
+      cropsSelected,
+      userInfoo?.farmonautCropsAvailable,
+      userInfoo?.allowedArea,
+      route?.params?.farmId,
+      route?.params?.farmName,
+      newSelectedCrop,
+    ]
   );
 
   function alertExceedSelected(error: string) {
@@ -127,8 +167,8 @@ function SatelliteChooseCropByFarm() {
             return (
               <SatelliteCropCell
                 isSelected={
-                  cropsSelected.filter(
-                    (x) => x?.cropDetails?.id === item?.cropDetails?.id
+                  newSelectedCrop.filter(
+                    (x) => x?.farmCropId === item?.farmCropId
                   ).length > 0
                 }
                 item={item}
@@ -163,7 +203,7 @@ function SatelliteChooseCropByFarm() {
           }}
         />
       </View>
-      {cropsSelected.length > 0 && (
+      {newSelectedCrop.length > 0 && (
         <Button
           backgroundColor={colors.button_color}
           onPress={onSave}

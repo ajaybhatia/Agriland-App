@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import {
   FlatList,
@@ -7,7 +8,7 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Animated,
@@ -36,11 +37,13 @@ import Header from '@/ui/components/Header';
 import colors from '@/ui/theme/colors';
 
 import type { CropRegisterType } from './add-crop-maps';
+import { AddCropRegisterType } from './add-crop-maps';
 import ChooseCropScreen from './choose-crop-screen';
 import FarmAddCell from './components/farm-add-cell';
 import FarmMapSelectionCell from './components/farm-map-selection-cell';
 
 type Props = {
+  registerType?: AddCropRegisterType;
   onPreviousSubmit?: () => void;
   onNextSubmit?: (
     farm: FarmResponse,
@@ -54,9 +57,10 @@ function ChooseFarmCropCategory({
   onPreviousSubmit,
   onNextSubmit,
   cropInfo,
+  registerType,
 }: Props) {
   const ref = useRef();
-
+  const nav = useNavigation();
   const scrollToIndex = (index: number) => {
     console.log('Scroll To ==> ', index);
     ref?.current?.scrollToIndex({
@@ -162,6 +166,14 @@ function ChooseFarmCropCategory({
     setSelectedFarm(farm);
   };
 
+  const addMoreFarm = useCallback(() => {
+    if (registerType === AddCropRegisterType.FROM_HOME) {
+      nav.navigate('AddFarmHomeScreen');
+    } else {
+      onPreviousSubmit && onPreviousSubmit();
+    }
+  }, [nav, registerType]);
+
   return (
     <View
       position={'absolute'}
@@ -193,9 +205,7 @@ function ChooseFarmCropCategory({
           showsVerticalScrollIndicator={false}
           data={farms}
           initialNumToRender={3}
-          ListHeaderComponent={
-            <FarmAddCell onPreviousSubmit={onPreviousSubmit} />
-          }
+          ListHeaderComponent={<FarmAddCell onPreviousSubmit={addMoreFarm} />}
           renderItem={({
             item,
             index,

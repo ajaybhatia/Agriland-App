@@ -1,5 +1,9 @@
 import type { RouteProp } from '@react-navigation/native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  StackActions,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { Button, FlatList, View, VStack } from 'native-base';
 import React, { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
@@ -8,7 +12,10 @@ import Toast from 'react-native-toast-message';
 import { usePostApiFarmerAppCreatefarmersubscription } from '@/apis/endpoints/api';
 import type { UserPaymentInfoResponse } from '@/apis/model';
 import client from '@/config/react-query/client';
-import type { AuthStackParamList } from '@/navigation/types';
+import {
+  AddSubscriptionMoreCrop,
+  type AuthStackParamList,
+} from '@/navigation/types';
 import ListHeader from '@/ui/components/ListHeader';
 
 import type { CardPayment } from '../payments/add-card-payment';
@@ -97,7 +104,10 @@ const SateliteDetailSubscriptionScreen = (props: Props) => {
         queryKey: ['/api/Account/fetchUserBasicDetails'],
       })
       .then((item) => {
-        nav.navigate('ChooseSateliteFarmScreen');
+        nav.dispatch(StackActions.pop(2));
+        nav.navigate('ChooseSateliteFarmScreen', {
+          screenFrom: AddSubscriptionMoreCrop.UNKNOWN,
+        });
       })
       .catch((e) => {
         Toast.show({

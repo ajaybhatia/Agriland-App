@@ -1,9 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
+import type { RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Icon, IconButton, View, VStack } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import MapView, { Marker, Overlay, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Overlay, PROVIDER_GOOGLE } from 'react-native-maps';
 import Share from 'react-native-share';
 import Toast from 'react-native-toast-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,17 +19,17 @@ import type {
   FarmImageCoordinates,
   ResponseDTO,
 } from '@/apis/model';
-import { useSatelliteFarm } from '@/core/satellite-farm';
+import type { AuthStackParamList } from '@/navigation/types';
 import AppLoader from '@/ui/components/AppLoader';
 import colors from '@/ui/theme/colors';
 
 type Props = {};
 
 const SateliteMapScreen = (props: Props) => {
+  const route = useRoute<RouteProp<AuthStackParamList, 'SateliteMapScreen'>>();
   const senseDays = usePostApiFarmonautGetsenseddays();
   const fieldAreaIndexImg = usePostApiFarmonautGetfieldareaindeximage();
   const findFieldPdf = usePostApiFarmonautGetfieldreport();
-  const selectedFarm = useSatelliteFarm.use.selectedFarm();
   let zoomLevel = 18;
   const mapRef = React.useRef<MapView>(null);
   const nav = useNavigation();
@@ -36,12 +37,12 @@ const SateliteMapScreen = (props: Props) => {
   const [fieldData, setFieldData] = useState<
     FarmImageCoordinates | undefined
   >();
-
+  console.log('getFarmInfo ===> ', route?.params?.fieldId ?? '');
   function getFarmInfo(sensedDay: string) {
     fieldAreaIndexImg.mutate(
       {
         data: {
-          fieldID: selectedFarm.id,
+          fieldID: route?.params?.fieldId ?? '',
           imageType: 'ndwi',
           sensedDay: sensedDay,
           uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
@@ -80,7 +81,7 @@ const SateliteMapScreen = (props: Props) => {
 
   // senseDayApi
   function getSenseDays() {
-    if (selectedFarm && selectedFarm.id) {
+    if (route?.params?.fieldId) {
       // console.log('getSenseDays ===> ', {
       //   fieldID: selectedFarm.id,
       //   uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
@@ -88,7 +89,7 @@ const SateliteMapScreen = (props: Props) => {
       senseDays.mutate(
         {
           data: {
-            fieldID: selectedFarm.id, //'1686736168414', //
+            fieldID: route?.params?.fieldId ?? '', //'1686736168414', //
             uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
           },
         },
@@ -170,7 +171,7 @@ const SateliteMapScreen = (props: Props) => {
     findFieldPdf.mutate(
       {
         data: {
-          fieldID: '1686736168414',
+          fieldID: route?.params?.fieldId ?? '',
           language: 'ar',
           reportFormat: 'ndwi',
           sensedDay: '20230610',
@@ -312,7 +313,7 @@ const SateliteMapScreen = (props: Props) => {
             />
           )}
 
-        {selectedFarm &&
+        {/* {selectedFarm &&
           selectedFarm.coordinates &&
           selectedFarm.coordinates.length > 0 && (
             <Marker
@@ -321,7 +322,7 @@ const SateliteMapScreen = (props: Props) => {
                 longitude: selectedFarm.coordinates[0]?.lng ?? 0.0,
               }}
             />
-          )}
+          )} */}
       </MapView>
       <VStack position={'absolute'} right={5} bottom={10}>
         <IconButton

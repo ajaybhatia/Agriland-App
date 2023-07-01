@@ -111,10 +111,7 @@ const AddCropMaps = ({
       };
     });
     //onAddCoordinates
-    console.log('point ===> ', {
-      points: point,
-      uid: '0x61vkpvHEMkbPYiAnrNVQIFtqY2',
-    });
+
     checkArea.mutate(
       {
         data: {
@@ -643,6 +640,7 @@ const AddCropMaps = ({
           cropInfo={cropInfo}
           onPreviousSubmit={onPreviousSubmit}
           onNextSubmit={onCropCategorySubmit}
+          registerType={registerType}
         />
       )}
 

@@ -26,6 +26,11 @@ export enum LoginType {
   OTP,
 }
 
+export enum AddSubscriptionMoreCrop {
+  BACK,
+  UNKNOWN,
+}
+
 export type AuthStackParamList = {
   Login: undefined;
   HomeScreen: undefined;
@@ -80,9 +85,13 @@ export type AuthStackParamList = {
     planid: string;
     packageType: string;
   };
-  ChooseSateliteFarmScreen: undefined;
+  ChooseSateliteFarmScreen: {
+    screenFrom: AddSubscriptionMoreCrop;
+  };
   SateliteDemoMapScreen: undefined;
-  SateliteMapScreen: undefined;
+  SateliteMapScreen: {
+    fieldId: string;
+  };
   TokenFirebaseScreen: undefined;
   AddCardPayment: {
     card?: CardPayment;
@@ -90,6 +99,7 @@ export type AuthStackParamList = {
   };
   SatelliteChooseCropByFarm: {
     farmId: string;
+    farmName: string;
   };
   SatelliteSelectedCropsList: undefined;
 };

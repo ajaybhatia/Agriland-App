@@ -104,15 +104,15 @@ const SubscriptionsCell = ({ titleColor = '#FFB399', item }: Props) => {
           </HStack>
 
           <Button
-            onPress={() =>
+            onPress={() => {
               nav.navigate('SateliteDetailSubscriptionScreen', {
                 amount: Number(item?.pricePerYear ?? '0'),
                 planid: item?.id ?? '',
                 packageType: I18nManager.isRTL
                   ? item?.planNames?.ar ?? ''
                   : item?.planNames?.en ?? '',
-              })
-            }
+              });
+            }}
             backgroundColor={titleColor}
             borderRadius={8}
             w={'1/2'}

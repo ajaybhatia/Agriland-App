@@ -23,13 +23,6 @@ const SubscriptionBundleScreen = (props: Props) => {
     take: 10,
     skip: 0,
   });
-  const colors: string[] = [
-    '#FF6633',
-    '#FFB399',
-    '#FF33FF',
-    '#FF4599',
-    '#00B3E6',
-  ];
 
   const getSubscriptions = useGetApiSubscriptionGetSubscriptions(
     {
@@ -73,27 +66,26 @@ const SubscriptionBundleScreen = (props: Props) => {
       },
     }
   );
+
   const ListFooter = useCallback(() => {
     //View to set in Footer
     return (
       <View style={styles.headerFooterStyle}>
-        {getSubscriptions.isLoading && (
-          <ActivityIndicator size="small" color="#00ff00" />
-        )}
+        {getSubscriptions.fetchStatus === 'fetching' &&
+          subscriptions.length > 0 && (
+            <ActivityIndicator size="small" color="#00ff00" />
+          )}
       </View>
     );
-  }, [getSubscriptions]);
-
-  console.log('getSubscriptions count ===> ', subscriptions.length);
+  }, [getSubscriptions, subscriptions]);
 
   return (
     <View flex={1}>
-      {!getSubscriptions.isLoading && subscriptions.length < 0 ? (
+      {getSubscriptions.fetchStatus !== 'fetching' &&
+      subscriptions.length <= 0 ? (
         <View flex={1} justifyContent={'center'} alignItems={'center'}>
           <Text>no subscription found</Text>
         </View>
-      ) : getSubscriptions.isLoading && subscriptions.length < 0 ? (
-        <AppLoader />
       ) : (
         <FlatList
           horizontal={false}
@@ -101,7 +93,7 @@ const SubscriptionBundleScreen = (props: Props) => {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={subscriptions}
-          initialNumToRender={4}
+          // estimatedItemSize={150}
           renderItem={({
             item,
             index,
@@ -123,10 +115,12 @@ const SubscriptionBundleScreen = (props: Props) => {
               getSubscriptions.data &&
               getSubscriptions.data.take !== undefined &&
               getSubscriptions.data.skip !== undefined &&
+              getSubscriptions.data.take !== null &&
+              getSubscriptions.data.skip !== null &&
               getSubscriptions.data.totalCount !== undefined
             ) {
               if (
-                !getSubscriptions.isLoading &&
+                getSubscriptions.fetchStatus !== 'fetching' &&
                 !getSubscriptions.isFetching &&
                 getSubscriptions.data.take <= subscriptions.length &&
                 getSubscriptions.data.totalCount > subscriptions.length
@@ -144,6 +138,9 @@ const SubscriptionBundleScreen = (props: Props) => {
           }}
         />
       )}
+
+      {getSubscriptions.fetchStatus === 'fetching' &&
+        subscriptions.length <= 0 && <AppLoader />}
     </View>
   );
 };

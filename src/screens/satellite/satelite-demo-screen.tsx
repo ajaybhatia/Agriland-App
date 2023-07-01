@@ -59,6 +59,7 @@ const SateLiteDemoScreen = (props: Props) => {
   }, [position]);
 
   const skipAction = React.useCallback(() => {
+    nav.goBack();
     nav.navigate('SubscriptionBundleScreen');
   }, [nav]);
 
@@ -86,8 +87,8 @@ const SateLiteDemoScreen = (props: Props) => {
         }) => (
           <View
             flex={1}
-            w={Dimensions.get('screen').width}
-            minH={Dimensions.get('screen').height}
+            w={Dimensions.get('window').width}
+            minH={Dimensions.get('window').height}
             // backgroundColor={item}
           >
             <Image

@@ -1,12 +1,12 @@
 import { View } from 'native-base';
 import React from 'react';
 
-import AddCropMaps from './add-crop-maps';
+import AddCropMaps, { AddCropRegisterType } from './add-crop-maps';
 
 const CropRegistration = () => {
   return (
     <View flex={1}>
-      <AddCropMaps />
+      <AddCropMaps registerType={AddCropRegisterType.FROM_HOME} />
     </View>
   );
 };

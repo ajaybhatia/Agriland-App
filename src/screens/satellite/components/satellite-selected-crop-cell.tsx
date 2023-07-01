@@ -11,12 +11,27 @@ import colors from '@/ui/theme/colors';
 
 type Props = {
   item?: CultivationDetailResponse;
+  farmid?: string;
+  farmName?: string;
+  isSmall?: boolean;
 };
 const width = Dimensions.get('screen').width;
-function SatelliteSelectedCropCell({ item }: Props) {
+function SatelliteSelectedCropCell({
+  item,
+  farmid,
+  farmName,
+  isSmall = false,
+}: Props) {
   const onDelete = useCallback(() => {
-    item && setSatelliteCropDelete(item);
-  }, [item]);
+    item &&
+      farmid &&
+      farmName &&
+      setSatelliteCropDelete({
+        crops: item,
+        farmid: farmid,
+        farmname: farmName,
+      });
+  }, [farmName, farmid, item]);
   return (
     <CardWithShadow
       mx={1}
@@ -24,9 +39,9 @@ function SatelliteSelectedCropCell({ item }: Props) {
     >
       <Pressable>
         <VStack pb={2}>
-          <View style={s.img}>
+          <View style={isSmall ? s.imgSmall : s.img}>
             <Image
-              style={s.img}
+              style={isSmall ? s.imgSmall : s.img}
               source={`http://95.111.231.114:85${
                 item?.cropDetails?.imageUrl ?? ''
               }`}
@@ -51,7 +66,13 @@ function SatelliteSelectedCropCell({ item }: Props) {
               />
             </Pressable>
           </View>
-          <Text px={5} textAlign={'center'}>
+          <Text
+            style={isSmall ? s.textSmall : s.text}
+            px={5}
+            fontSize={isSmall ? 11 : 12}
+            numberOfLines={1}
+            textAlign={'center'}
+          >
             {I18nManager.isRTL
               ? item?.cropDetails?.name?.ar ?? ''
               : item?.cropDetails?.name?.en ?? ''}
@@ -70,5 +91,17 @@ const s = StyleSheet.create({
     width: width / 2 - 30,
     //  borderRadius: (width / 2 - 20) / 2,
     overflow: 'hidden',
+  },
+  imgSmall: {
+    height: width / 4 - 30,
+    width: width / 4,
+    //  borderRadius: (width / 2 - 20) / 2,
+    overflow: 'hidden',
+  },
+  text: {
+    width: width / 2 - 30,
+  },
+  textSmall: {
+    width: width / 4,
   },
 });

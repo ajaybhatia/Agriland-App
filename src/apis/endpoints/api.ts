@@ -129,6 +129,9 @@ import type {
   FieldReportRequest,
   UserPaymentInfoResponse,
   UserPaymentInfo,
+  FarmonautCropsRequest,
+  FarmonautCropModelPaginated,
+  PostApiFarmerAppGetfarmonautcropsParams,
   Farm,
   FieldCoordinatesRequest,
   FieldCropRequest,
@@ -5086,6 +5089,106 @@ export const getPostApiFarmerAppCreatefarmersubscriptionMutationOptions = <TErro
 ) => {
     
       const mutationOptions = getPostApiFarmerAppCreatefarmersubscriptionMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary This method is used to add crops into satellite services
+ */
+export const postApiFarmerAppCreatefarmonautcrops = (
+    farmonautCropsRequest: FarmonautCropsRequest,
+ ) => {
+      return customInstance<boolean>(
+      {url: `/api/FarmerApp/createfarmonautcrops`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: farmonautCropsRequest
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppCreatefarmonautcropsMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmonautcrops>>, TError,{data: FarmonautCropsRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmonautcrops>>, TError,{data: FarmonautCropsRequest}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmonautcrops>>, {data: FarmonautCropsRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiFarmerAppCreatefarmonautcrops(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppCreatefarmonautcropsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmonautcrops>>>
+    export type PostApiFarmerAppCreatefarmonautcropsMutationBody = FarmonautCropsRequest
+    export type PostApiFarmerAppCreatefarmonautcropsMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppCreatefarmonautcrops = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppCreatefarmonautcrops>>, TError,{data: FarmonautCropsRequest}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppCreatefarmonautcropsMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary This method returns all the Farmonaut related crops
+based on userid
+ */
+export const postApiFarmerAppGetfarmonautcrops = (
+    params?: PostApiFarmerAppGetfarmonautcropsParams,
+ ) => {
+      return customInstance<FarmonautCropModelPaginated>(
+      {url: `/api/FarmerApp/getfarmonautcrops`, method: 'post',
+        params
+    },
+      );
+    }
+  
+
+
+export const getPostApiFarmerAppGetfarmonautcropsMutationOptions = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfarmonautcrops>>, TError,{params?: PostApiFarmerAppGetfarmonautcropsParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfarmonautcrops>>, TError,{params?: PostApiFarmerAppGetfarmonautcropsParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiFarmerAppGetfarmonautcrops>>, {params?: PostApiFarmerAppGetfarmonautcropsParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  postApiFarmerAppGetfarmonautcrops(params,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiFarmerAppGetfarmonautcropsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiFarmerAppGetfarmonautcrops>>>
+    
+    export type PostApiFarmerAppGetfarmonautcropsMutationError = ErrorType<unknown>
+
+    export const usePostApiFarmerAppGetfarmonautcrops = <TError = ErrorType<unknown>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiFarmerAppGetfarmonautcrops>>, TError,{params?: PostApiFarmerAppGetfarmonautcropsParams}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiFarmerAppGetfarmonautcropsMutationOptions(options);
      
       return useMutation(mutationOptions);
     }

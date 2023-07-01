@@ -60,6 +60,7 @@ import SateLiteDemoScreen from '@/screens/satellite/satelite-demo-screen';
 import SateliteDetailSubscriptionScreen from '@/screens/satellite/satelite-detail-subscription-screen';
 import SateliteMapScreen from '@/screens/satellite/satelite-map-screen';
 import SatelliteChooseCropByFarm from '@/screens/satellite/satellite-choose-crop-by-farm';
+import SatelliteSelectedCropsList from '@/screens/satellite/satellite-selected-crops-list';
 import SubscriptionBundleScreen from '@/screens/satellite/subscription-bundle-screen';
 import TaskCalenderDetailScreen from '@/screens/tasks/task-calender-detail-screen';
 import TaskDetailScreen from '@/screens/tasks/tasks-detail-screen';
@@ -1398,6 +1399,31 @@ export const TabNavigator = () => {
         }}
         name="SatelliteChooseCropByFarm"
         component={SatelliteChooseCropByFarm}
+      />
+      <RootStack.Screen
+        options={{
+          headerShown: true,
+          title: 'Subscribed Crops',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16,
+          },
+          // eslint-disable-next-line react/no-unstable-nested-components
+          header: (props: NativeStackHeaderProps) => (
+            <AppHeader
+              onBackPress={onBackPress}
+              title={props?.options?.title ?? ''}
+              iconName={'arrow-u-right-top'}
+            />
+          ),
+          overlayColor: 'rgba(0,0,0,0)',
+          drawerStyle: {
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+          },
+        }}
+        name="SatelliteSelectedCropsList"
+        component={SatelliteSelectedCropsList}
       />
     </RootStack.Navigator>
   );

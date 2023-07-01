@@ -69,8 +69,9 @@ const FarmerListVerticalCell = ({
     }
   );
   useEffect(() => {
-    onLoading && onLoading(getFarms.isLoading);
-  }, [getFarms.isLoading, onLoading]);
+    onLoading &&
+      onLoading(getFarms.isLoading || getFarms.fetchStatus === 'fetching');
+  }, [getFarms.fetchStatus, getFarms.isLoading, onLoading]);
 
   const ListFooter = useCallback(() => {
     //View to set in Footer
