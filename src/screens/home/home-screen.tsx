@@ -126,6 +126,8 @@ function HomeScreen() {
   useGetApiAccountFetchUserBasicDetails({
     query: {
       onSuccess(data: FarmerDetails) {
+        console.log('useGetApiAccountFetchUserBasicDetails ==> ', data);
+
         if (data && data?.displayName && data?.emailId && data?.mobileNumber) {
           setUserNameAuth(data);
         }
@@ -223,12 +225,16 @@ function HomeScreen() {
   const onDropDownPress = useCallback(
     (title: string) => {
       if (title === 'Satellite Data') {
-        if (userInfoo && userInfoo.farmerPlans?.endDate) {
-          if (
-            dayjs().isAfter(dayjs(userInfoo.farmerPlans?.endDate).utc(true))
-          ) {
-            nav.navigate('SatelliteSelectedCropsList');
-            //  nav.navigate('SateLiteDemoScreen');
+        if (userInfoo) {
+          if (userInfoo?.farmerPlans?.endDate) {
+            if (
+              dayjs().isAfter(dayjs(userInfoo.farmerPlans?.endDate).utc(true))
+            ) {
+              nav.navigate('SatelliteSelectedCropsList');
+              //  nav.navigate('SateLiteDemoScreen');
+            } else {
+              nav.navigate('SateLiteDemoScreen');
+            }
           } else {
             nav.navigate('SateLiteDemoScreen');
           }
@@ -257,7 +263,15 @@ function HomeScreen() {
         nav.navigate('TestScreen');
       }
     },
-    [nav]
+    [
+      clearWeatherData,
+      currentAddress,
+      nav,
+      selectedFarm,
+      setData,
+      userInfoo,
+      weatherReport,
+    ]
   );
 
   const onSelectFarm = useCallback(

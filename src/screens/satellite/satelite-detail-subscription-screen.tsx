@@ -100,7 +100,7 @@ const SateliteDetailSubscriptionScreen = (props: Props) => {
 
   const fetchProfileApi = () => {
     client
-      .invalidateQueries({
+      .refetchQueries({
         queryKey: ['/api/Account/fetchUserBasicDetails'],
       })
       .then((item) => {

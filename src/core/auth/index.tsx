@@ -50,6 +50,11 @@ const _useAuth = create<AuthState>((set, get) => ({
     });
   },
   setUserInfo: (userInfos: FarmerDetails) => {
+    console.log(
+      '\n\n useGetApiAccountFetchUserBasicDetails state ==> ',
+      userInfos
+    );
+    //Alert.alert('warning', `${JSON.stringify(userInfos)}`);
     setUserInfo({
       displayName: userInfos?.displayName ?? '',
       emailId: userInfos?.emailId ?? '',
