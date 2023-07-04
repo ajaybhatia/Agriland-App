@@ -1,11 +1,11 @@
-import { Image } from 'expo-image';
-import { Icon, Pressable, Text, View, VStack } from 'native-base';
-import React from 'react';
 import { Dimensions, I18nManager, StyleSheet } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Icon, Pressable, Text, VStack, View } from 'native-base';
 
-import type { FarmonautFarmCropModel } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
+import type { FarmonautFarmCropModel } from '@/apis/model';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Image } from 'expo-image';
+import React from 'react';
 
 type Props = {
   item?: FarmonautFarmCropModel;
@@ -21,7 +21,7 @@ function SatelliteSelectedCropsCell({ item, onSelect, isSelected }: Props) {
           <View style={s.img}>
             <Image
               style={s.img}
-              source={`http://95.111.231.114:85${
+              source={`http://95.111.231.114:88${
                 item?.cropModel?.imageUrl ?? ''
               }`}
               placeholder={require('@assets/app-logo.png')}

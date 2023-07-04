@@ -85,7 +85,7 @@ const WidthAnimation = ({
             /> */}
             <NImage
               style={{ height: 50, width: 50, borderRadius: 25 }}
-              source={`http://95.111.231.114:85${crop?.crop?.imageUrl}`}
+              source={`http://95.111.231.114:88${crop?.crop?.imageUrl}`}
               placeholder={require('@assets/app-logo.png')}
               contentFit="cover"
               transition={1000}
@@ -154,7 +154,7 @@ const WidthAnimation = ({
             />
             {/* <NImage
               style={{ height: 50, width: 50, borderRadius: 25 }}
-              source={`http://95.111.231.114:85${crop?.farm.}`}
+              source={`http://95.111.231.114:88${crop?.farm.}`}
               placeholder={require('@assets/app-logo.png')}
               contentFit="cover"
               transition={1000}

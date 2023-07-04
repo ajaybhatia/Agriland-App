@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Button, FlatList, View, VStack } from 'native-base';
 import React, { useCallback, useState } from 'react';
 
-import { useGetApiFarmGetFarms } from '@/apis/endpoints/api';
+import { useGetApiFarmerAppGetallfarms } from '@/apis/endpoints/api';
 import type { FarmResponse } from '@/apis/model';
 import ListHeader from '@/ui/components/ListHeader';
 import colors from '@/ui/theme/colors';
@@ -34,7 +34,7 @@ const MakeAppointmentScreen = (props: Props) => {
 
   const addNewFarm = useCallback(() => nav.navigate('AddFarmHomeScreen'), []);
 
-  const getFarms = useGetApiFarmGetFarms(
+  const getFarms = useGetApiFarmerAppGetallfarms(
     {
       // skip: moreFarmInfo.skip,
       // take: moreFarmInfo.take,

@@ -192,8 +192,8 @@ const TaskActivitesCell = ({ dataArray }: Props) => {
             currentPosition={0}
             labels={dataArray.map((item) => {
               const v: DataValues = {
-                title: dayjs(item.title).utc().format('D MMM YYYY'),
-                subTitle: dayjs(item.subTitle).utc().format('dddd'),
+                title: dayjs(item.title).format('D MMM YYYY'),
+                subTitle: dayjs(item.subTitle).format('dddd'),
               };
               return v;
             })}

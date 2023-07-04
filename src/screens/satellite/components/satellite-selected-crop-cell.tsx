@@ -1,13 +1,13 @@
-import { Image } from 'expo-image';
-import { Icon, Pressable, Text, View, VStack } from 'native-base';
-import React, { useCallback } from 'react';
 import { Dimensions, I18nManager, StyleSheet } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Icon, Pressable, Text, VStack, View } from 'native-base';
+import React, { useCallback } from 'react';
 
-import type { CultivationDetailResponse } from '@/apis/model';
-import { setSatelliteCropDelete } from '@/core/satellite-farm';
 import CardWithShadow from '@/ui/components/CardWithShadow';
+import type { CultivationDetailResponse } from '@/apis/model';
+import { Image } from 'expo-image';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '@/ui/theme/colors';
+import { setSatelliteCropDelete } from '@/core/satellite-farm';
 
 type Props = {
   item?: CultivationDetailResponse;
@@ -42,7 +42,7 @@ function SatelliteSelectedCropCell({
           <View style={isSmall ? s.imgSmall : s.img}>
             <Image
               style={isSmall ? s.imgSmall : s.img}
-              source={`http://95.111.231.114:85${
+              source={`http://95.111.231.114:88${
                 item?.cropDetails?.imageUrl ?? ''
               }`}
               placeholder={require('@assets/app-logo.png')}

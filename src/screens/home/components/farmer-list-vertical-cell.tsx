@@ -3,7 +3,7 @@ import { FlatList, View, VStack } from 'native-base';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
-import { useGetApiFarmGetFarms } from '@/apis/endpoints/api';
+import { useGetApiFarmerAppGetallfarms } from '@/apis/endpoints/api';
 import type { FarmResponse, FarmsPaginatedResponse } from '@/apis/model';
 import FarmAddVerticalCell from '@/screens/crop/components/farm-add-vertical-cell';
 import FarmMapSelectionVerticalCell from '@/screens/crop/components/farm-map-selection-vertical-cell';
@@ -37,7 +37,7 @@ const FarmerListVerticalCell = ({
 
   // getFarms
 
-  const getFarms = useGetApiFarmGetFarms(
+  const getFarms = useGetApiFarmerAppGetallfarms(
     {
       skip: moreFarmInfo.skip,
       take: moreFarmInfo.take,

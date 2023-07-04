@@ -83,7 +83,7 @@ const CropsReviewList = ({
             sowingDate: cropRequest?.cropArea?.sowingDate,
             quantity: cropRequest?.cropArea?.quantity,
             typeOfIrrigation: cropRequest?.cropArea?.typeOfIrrigation,
-            calendarId: selectedCalendarActivity?.id,
+            // calendarId: selectedCalendarActivity?.id,
             // uid:
             //   registerType === AddCropRegisterType.FROM_REGISTER
             //     ? '0x61vkpvHEMkbPYiAnrNVQIFtqY2'

@@ -11,7 +11,6 @@ import {
 } from 'native-base';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Toast from 'react-native-toast-message';
 
 import type { CalendarModel, FarmCropsDetailResponse } from '@/apis/model';
 import {
@@ -20,7 +19,6 @@ import {
 } from '@/core/register-farm';
 import BodyTitle from '@/ui/components/BodyTitle';
 import CalendarView from '@/ui/components/CalendarView';
-import ChooseCalendarActivityDropDown from '@/ui/components/ChooseCalendarActivityDropDown';
 import CounterInput from '@/ui/components/CounterInput';
 import Header from '@/ui/components/Header';
 import colors from '@/ui/theme/colors';
@@ -128,10 +126,10 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
             }
           />
 
-          <ChooseCalendarActivityDropDown
+          {/* <ChooseCalendarActivityDropDown
             onSelected={onSelectedActivity}
             defaultSelected={selectedCalendarActivity}
-          />
+          /> */}
           <Header
             title={'Type Of Irrigation'}
             fontWeight={'700'}
@@ -180,14 +178,15 @@ export default function AboutCropScreen({ cropRequest, onNext }: Props) {
             //disabled={!selectedCalendarActivity}
             backgroundColor={colors.button_color}
             onPress={() => {
-              if (selectedCalendarActivity) {
-                onNext && onNext(myCropRequest);
-              } else {
-                Toast.show({
-                  type: 'error',
-                  text1: 'Please Add Calendar ID',
-                });
-              }
+              onNext && onNext(myCropRequest);
+              // if (selectedCalendarActivity) {
+              //   onNext && onNext(myCropRequest);
+              // } else {
+              //   Toast.show({
+              //     type: 'error',
+              //     text1: 'Please Add Calendar ID',
+              //   });
+              // }
             }}
             borderRadius={8}
             width={'80%'}

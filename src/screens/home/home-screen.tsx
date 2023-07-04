@@ -1,47 +1,46 @@
-import messaging from '@react-native-firebase/messaging';
-import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-import dayjs from 'dayjs';
-import { Image as ImageBase } from 'expo-image';
-import { FlatList, View, VStack } from 'native-base';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Dimensions, I18nManager } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-import {
-  useGetApiAccountFetchUserBasicDetails,
-  useGetApiCropGetcropactivitiesbyfarmid,
-  useGetApiCropGetCultivationDetailsByFarmId,
-  useGetApiNotificationGetallunreadnotification,
-  usePutApiAccountUpdatefcmtoken,
-} from '@/apis/endpoints/api';
-import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
 import type {
   ActivityDetails,
   AdBannerResponse,
   CultivationDetailResponse,
   FarmCropCultivationResponse,
-  FarmerDetails,
   FarmResponse,
+  FarmerDetails,
 } from '@/apis/model';
+import { Dimensions, I18nManager } from 'react-native';
+import { FlatList, VStack, View } from 'native-base';
+import React, { useCallback, useEffect, useState } from 'react';
 import { setUserNameAuth, useAuth } from '@/core';
-import { useWeather } from '@/core/weather';
-import CardWithShadow from '@/ui/components/CardWithShadow';
-import ListHeader from '@/ui/components/ListHeader';
-import type { DataValues } from '@/ui/components/step-indicator/StepIndicator';
-import colors from '@/ui/theme/colors';
+import {
+  useGetApiAccountFetchUserBasicDetails,
+  useGetApiCropGetCultivationDetailsByFarmId,
+  useGetApiCropGetcropactivitiesbyfarmid,
+  useGetApiNotificationGetallunreadnotification,
+  usePutApiAccountUpdatefcmtoken,
+} from '@/apis/endpoints/api';
 
-import CropRegisterCell from '../crop/components/crop-register-cell';
-import type { LocationAddress } from '../maps-views/model/location-address-model';
-import type { ForecastModel } from '../weather/models/weather-forecast-models';
+import CardWithShadow from '@/ui/components/CardWithShadow';
 import CompleteProfileCell from './components/complete-profile-cell';
 import CropHomeCell from './components/crops-home-cell';
+import CropRegisterCell from '../crop/components/crop-register-cell';
+import type { DataValues } from '@/ui/components/step-indicator/StepIndicator';
 import type { DropDownCellType } from './components/dropdown-item-cell';
 import DropDownIteCell from './components/dropdown-item-cell';
 import FarmerListCell from './components/farmer-list-cell';
+import type { ForecastModel } from '../weather/models/weather-forecast-models';
+import { Image as ImageBase } from 'expo-image';
+import ListHeader from '@/ui/components/ListHeader';
+import type { LocationAddress } from '../maps-views/model/location-address-model';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TaskActivitesCell from './components/task-activites-cell';
 import WeatherCell from './components/weather-cell';
+import axios from 'axios';
+import colors from '@/ui/theme/colors';
+import dayjs from 'dayjs';
+import messaging from '@react-native-firebase/messaging';
+import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
+import { useNavigation } from '@react-navigation/native';
+import { useWeather } from '@/core/weather';
 
 function HomeScreen() {
   const setData = useWeather.use.setData();
@@ -367,11 +366,7 @@ function HomeScreen() {
                 />
               </VStack>
             );
-          } else if (
-            index === 2 &&
-            getCrops.data?.cultivationDetails &&
-            getCrops.data?.cultivationDetails.length > 0
-          ) {
+          } else if (index === 2) {
             return (
               <VStack mt={2} height={120}>
                 <FlatList
@@ -476,7 +471,7 @@ function HomeScreen() {
                         <CardWithShadow>
                           <ImageBase
                             style={{ height: 150, flex: 1 }}
-                            source={`http://95.111.231.114:85${ads.imageUrl}`}
+                            source={`http://95.111.231.114:88${ads.imageUrl}`}
                             // source={ads.imageUrl}
                             placeholder={require('@assets/app-logo.png')}
                             contentFit="cover"

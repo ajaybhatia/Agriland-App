@@ -1,11 +1,11 @@
-import { Image } from 'expo-image';
-import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
-import React from 'react';
 import { Dimensions, I18nManager, StyleSheet } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { HStack, Icon, Pressable, Text, VStack, View } from 'native-base';
 
-import type { CultivationDetailResponse } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
+import type { CultivationDetailResponse } from '@/apis/model';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Image } from 'expo-image';
+import React from 'react';
 
 type Props = {
   item?: CultivationDetailResponse;
@@ -21,7 +21,7 @@ function SatelliteCropCell({ item, onSelect, isSelected }: Props) {
           <View style={s.img}>
             <Image
               style={s.img}
-              source={`http://95.111.231.114:85${
+              source={`http://95.111.231.114:88${
                 item?.cropDetails?.imageUrl ?? ''
               }`}
               placeholder={require('@assets/app-logo.png')}

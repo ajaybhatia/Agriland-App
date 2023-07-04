@@ -52,7 +52,7 @@ function CropHomeCell({ onSelect, onNextScreen, selectedItem, item }: Props) {
                 borderRadius: 75 / 2,
                 overflow: 'hidden',
               }}
-              source={`http://95.111.231.114:85${
+              source={`http://95.111.231.114:88${
                 item?.cropModel?.imageUrl ?? item?.cropDetails?.imageUrl ?? ''
               }`}
               placeholder={require('@assets/app-logo.png')}
@@ -61,10 +61,10 @@ function CropHomeCell({ onSelect, onNextScreen, selectedItem, item }: Props) {
             />
             {((onSelect &&
               selectedItem &&
-              selectedItem?.cropDetails?.id === item?.cropDetails?.id) ||
+              selectedItem?.farmCropId === item?.farmCropId) ||
               (onSelect &&
                 selectedItem &&
-                selectedItem?.cropId === item?.cropId)) && (
+                selectedItem?.farmCropId === item?.farmCropId)) && (
               <View
                 position={'absolute'}
                 left={0}

@@ -4,7 +4,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, I18nManager, StyleSheet } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 
-import { useGetApiFarmGetFarms } from '@/apis/endpoints/api';
+import { useGetApiFarmerAppGetallfarms } from '@/apis/endpoints/api';
 import type { FarmResponse, FarmsPaginatedResponse } from '@/apis/model';
 import FarmAddCell from '@/screens/crop/components/farm-add-cell';
 import FarmMapSelectionCell from '@/screens/crop/components/farm-map-selection-cell';
@@ -41,7 +41,7 @@ const FarmerListCell = ({ selectedFarm, onSelectedFarm, onLoading }: Props) => {
 
   // getFarms
 
-  const getFarms = useGetApiFarmGetFarms(
+  const getFarms = useGetApiFarmerAppGetallfarms(
     {
       skip: moreFarmInfo.skip,
       take: moreFarmInfo.take,

@@ -22,7 +22,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
   useGetApiCropGetCropCategories,
-  useGetApiFarmGetFarms,
+  useGetApiFarmerAppGetallfarms,
 } from '@/apis/endpoints/api';
 import type {
   CropBasicResponse,
@@ -96,7 +96,7 @@ function ChooseFarmCropCategory({
   );
   // Apis
 
-  const getFarms = useGetApiFarmGetFarms(
+  const getFarms = useGetApiFarmerAppGetallfarms(
     {
       skip: moreInfo.skip,
       take: moreInfo.take,
@@ -313,7 +313,7 @@ function ChooseFarmCropCategory({
                 {item.imageUrl && item.imageUrl !== null ? (
                   <Image
                     style={{ height: 150 }}
-                    source={`http://95.111.231.114:85${item.imageUrl}`}
+                    source={`http://95.111.231.114:88${item.imageUrl}`}
                     placeholder={require('@assets/app-logo.png')}
                     contentFit="cover"
                     transition={1000}

@@ -1,16 +1,16 @@
-import { Image } from 'expo-image';
 import {
   HStack,
   Image as ImageBase,
   ScrollView,
   Text,
-  View,
   VStack,
+  View,
 } from 'native-base';
-import React from 'react';
-import { I18nManager } from 'react-native';
 
 import type { CultivationDetailResponse } from '@/apis/model';
+import { I18nManager } from 'react-native';
+import { Image } from 'expo-image';
+import React from 'react';
 
 type Props = {
   item: CultivationDetailResponse;
@@ -55,7 +55,7 @@ const CropGrowthCell = ({ item }: Props) => {
           <View w={10} h={10} rounded={'full'} overflow={'hidden'}>
             <Image
               style={{ flex: 1, height: 20 }}
-              source={`http://95.111.231.114:85${
+              source={`http://95.111.231.114:88${
                 item?.cropDetails?.imageUrl ?? ''
               }`}
               placeholder={require('@assets/app-logo.png')}

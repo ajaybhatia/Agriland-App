@@ -6,7 +6,7 @@ import { Animated, StyleSheet } from 'react-native';
 import { ExpandingDot } from 'react-native-animated-pagination-dots';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useGetApiFarmGetFarms } from '@/apis/endpoints/api';
+import { useGetApiFarmerAppGetallfarms } from '@/apis/endpoints/api';
 import type { FarmResponse } from '@/apis/model';
 import BodyTitle from '@/ui/components/BodyTitle';
 import ListHeader from '@/ui/components/ListHeader';
@@ -37,7 +37,7 @@ function FarmDetailScreen() {
 
   // get Farm APis
 
-  const getFarms = useGetApiFarmGetFarms(
+  const getFarms = useGetApiFarmerAppGetallfarms(
     {
       // skip: moreFarmInfo.skip,
       // take: moreFarmInfo.take,

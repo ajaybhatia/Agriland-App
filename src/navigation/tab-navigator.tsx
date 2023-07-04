@@ -688,13 +688,13 @@ const BottomTab = () => {
       <CurvedBottomBar.Screen
         name="title2"
         position="LEFT"
-        component={() => <Screen2 />}
-        //component={DashboardRootStackView}
+        //component={() => <Screen2 />}
+        component={DashboardRootStackView}
       />
       <CurvedBottomBar.Screen
         name="title4"
-        // component={MyCropRootStackView}
-        component={() => <Screen1 />}
+        component={MyCropRootStackView}
+        // component={() => <Screen1 />}
         position="RIGHT"
       />
       <CurvedBottomBar.Screen
@@ -704,8 +704,8 @@ const BottomTab = () => {
       />
       <CurvedBottomBar.Screen
         name="title3"
-        component={() => <Screen1 />}
-        //component={CenterRootStackView}
+        // component={() => <Screen1 />}
+        component={CenterRootStackView}
         position="CENTER"
       />
     </CurvedBottomBar.Navigator>
