@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import dayjs from 'dayjs';
 import { Image as ImageRemote } from 'expo-image';
 import {
   Circle,
@@ -14,6 +13,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 
 import type { FarmerCropCalendarActivity } from '@/apis/model';
+import { parseDate } from '@/core';
 import type { DataValues } from '@/ui/components/step-indicator/StepIndicator';
 import StepIndicator from '@/ui/components/step-indicator/StepIndicator';
 import {
@@ -160,7 +160,7 @@ const TaskActivitesCell = ({ dataArray }: Props) => {
                           name={'check'}
                           size={12.1}
                           color={'white'}
-                        /> 
+                        />
                       )}*/}
             </Circle>
           </VStack>
@@ -192,8 +192,8 @@ const TaskActivitesCell = ({ dataArray }: Props) => {
             currentPosition={0}
             labels={dataArray.map((item) => {
               const v: DataValues = {
-                title: dayjs(item.title).format('D MMM YYYY'),
-                subTitle: dayjs(item.subTitle).format('dddd'),
+                title: parseDate(item.title), //dayjs(item.title).format('D MMM YYYY'),
+                subTitle: '', //dayjs(item.subTitle).format('dddd'),
               };
               return v;
             })}
