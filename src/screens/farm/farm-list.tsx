@@ -15,7 +15,10 @@ import Toast from 'react-native-toast-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { usePostApiFarmCreateUpdateFarm } from '@/apis/endpoints/api';
+import {
+  getGetApiFarmerAppGetallfarmsQueryKey,
+  usePostApiFarmCreateUpdateFarm,
+} from '@/apis/endpoints/api';
 import type { FarmRequest } from '@/apis/model';
 import client from '@/config/react-query/client';
 import { useRegisterFarm } from '@/core/register-farm';
@@ -77,9 +80,9 @@ const FarmList = ({
               } else {
                 client
                   .invalidateQueries({
-                    queryKey: ['/api/Farm/getFarms'],
+                    queryKey: getGetApiFarmerAppGetallfarmsQueryKey(),
                   })
-                  .then((item) => {
+                  .then(() => {
                     nav.goBack();
                   })
                   .catch((e) => {
