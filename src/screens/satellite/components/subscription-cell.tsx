@@ -3,16 +3,24 @@ import { Button, HStack, Text, View, VStack } from 'native-base';
 import React, { memo } from 'react';
 import { I18nManager } from 'react-native';
 
-import type { SubscriptionFeatureList, SubscriptionModel } from '@/apis/model';
+import { useGetApiSubscriptionGetSubscriptionFeaturesBySubscriptionId } from '@/apis/endpoints/api';
+import type { SubscriptionPlanListModel } from '@/apis/model';
 import CardWithShadow from '@/ui/components/CardWithShadow';
 
 type Props = {
   titleColor?: string;
-  item: SubscriptionModel;
+  item: SubscriptionPlanListModel;
 };
 
 const SubscriptionsCell = ({ titleColor = '#FFB399', item }: Props) => {
   const nav = useNavigation();
+
+  const { data } = useGetApiSubscriptionGetSubscriptionFeaturesBySubscriptionId(
+    {
+      Id: item?.id ?? '',
+    }
+  );
+
   return (
     <View mt={5}>
       <CardWithShadow
@@ -32,9 +40,7 @@ const SubscriptionsCell = ({ titleColor = '#FFB399', item }: Props) => {
               px={5}
               py={2}
             >
-              {I18nManager.isRTL
-                ? item?.planNames?.ar ?? ''
-                : item?.planNames?.en ?? ''}
+              {I18nManager.isRTL ? item?.name?.ar ?? '' : item?.name?.en ?? ''}
             </Text>
           </View>
 
@@ -68,39 +74,35 @@ const SubscriptionsCell = ({ titleColor = '#FFB399', item }: Props) => {
             i, the owner of the far, also
           </Text> */}
           <HStack alignItems={'center'} w={'96%'} mt={3} flexWrap={'wrap'}>
-            {item &&
-              item.subscriptionFeatureListModels &&
-              item.subscriptionFeatureListModels.map(
-                (v: SubscriptionFeatureList, index: number) => {
-                  return (
-                    <HStack
-                      alignItems={'center'}
-                      key={`${index}`}
-                      w={'48%'}
-                      pl={(index + 1) % 2 === 0 ? 2 : 0}
-                      my={1}
-                    >
-                      <View
-                        h={2}
-                        w={2}
-                        borderRadius={'full'}
-                        bgColor={titleColor}
-                      />
-                      <Text
-                        ml={2}
-                        fontSize={11}
-                        fontFamily={'body'}
-                        fontWeight={'200'}
-                        fontStyle={'normal'}
-                      >
-                        {I18nManager.isRTL
-                          ? v?.featureNames?.ar ?? ''
-                          : v?.featureNames?.en ?? ''}
-                      </Text>
-                    </HStack>
-                  );
-                }
-              )}
+            {data?.subscriptionFeatureResponse?.map((v, index: number) => {
+              return (
+                <HStack
+                  alignItems={'center'}
+                  key={`${index}`}
+                  w={'48%'}
+                  pl={(index + 1) % 2 === 0 ? 2 : 0}
+                  my={1}
+                >
+                  <View
+                    h={2}
+                    w={2}
+                    borderRadius={'full'}
+                    bgColor={titleColor}
+                  />
+                  <Text
+                    ml={2}
+                    fontSize={11}
+                    fontFamily={'body'}
+                    fontWeight={'200'}
+                    fontStyle={'normal'}
+                  >
+                    {I18nManager.isRTL
+                      ? v?.featureNames?.ar ?? ''
+                      : v?.featureNames?.en ?? ''}
+                  </Text>
+                </HStack>
+              );
+            })}
           </HStack>
 
           <Button
@@ -109,8 +111,8 @@ const SubscriptionsCell = ({ titleColor = '#FFB399', item }: Props) => {
                 amount: Number(item?.pricePerYear ?? '0'),
                 planid: item?.id ?? '',
                 packageType: I18nManager.isRTL
-                  ? item?.planNames?.ar ?? ''
-                  : item?.planNames?.en ?? '',
+                  ? item?.name?.ar ?? ''
+                  : item?.name?.en ?? '',
               });
             }}
             backgroundColor={titleColor}

@@ -3,18 +3,17 @@ import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-import { useGetApiSubscriptionGetSubscriptions } from '@/apis/endpoints/api';
+import { useGetApiSubscriptionGetSubscriptionPlans } from '@/apis/endpoints/api';
 import type {
   SubscriptionModel,
-  SubscriptionPaginatedResponse,
+  SubscriptionPlanListModel,
+  SubscriptionPlanPaginatedResponse,
 } from '@/apis/model';
 import AppLoader from '@/ui/components/AppLoader';
 
 import SubscriptionsCell from './components/subscription-cell';
 
-type Props = {};
-
-const SubscriptionBundleScreen = (props: Props) => {
+const SubscriptionBundleScreen = () => {
   const [subscriptions, setSubscriptions] = useState<SubscriptionModel[]>([]);
   const [moreInfo, setMoreInfo] = useState<{
     take: number;
@@ -24,7 +23,7 @@ const SubscriptionBundleScreen = (props: Props) => {
     skip: 0,
   });
 
-  const getSubscriptions = useGetApiSubscriptionGetSubscriptions(
+  const getSubscriptions = useGetApiSubscriptionGetSubscriptionPlans(
     {
       skip: moreInfo.skip,
       take: moreInfo.take,
@@ -33,12 +32,12 @@ const SubscriptionBundleScreen = (props: Props) => {
     },
     {
       query: {
-        onSuccess: (data: SubscriptionPaginatedResponse) => {
+        onSuccess: (data: SubscriptionPlanPaginatedResponse) => {
           console.log('getSubscriptions=> ', data.skip);
           if (
             data &&
-            data.subscriptionResponse &&
-            data.subscriptionResponse?.length > 0
+            data.subscriptionPlanResponse &&
+            data.subscriptionPlanResponse?.length > 0
           ) {
             console.log(
               'getSubscriptions=> ',
@@ -46,8 +45,8 @@ const SubscriptionBundleScreen = (props: Props) => {
             );
             setSubscriptions(
               data.skip && data.skip > 0
-                ? [...subscriptions, ...data.subscriptionResponse]
-                : data.subscriptionResponse
+                ? [...subscriptions, ...data.subscriptionPlanResponse]
+                : data.subscriptionPlanResponse
             );
           } else {
             Toast.show({
@@ -94,13 +93,7 @@ const SubscriptionBundleScreen = (props: Props) => {
           showsVerticalScrollIndicator={false}
           data={subscriptions}
           // estimatedItemSize={150}
-          renderItem={({
-            item,
-            index,
-          }: {
-            item: SubscriptionModel;
-            index: number;
-          }) => (
+          renderItem={({ item }: { item: SubscriptionPlanListModel }) => (
             <SubscriptionsCell
               // titleColor={
               //   colors[Math.floor(Math.random() * (colors.length - 1)) + 1]
