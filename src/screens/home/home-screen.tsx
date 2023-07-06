@@ -79,7 +79,8 @@ function HomeScreen() {
     };
 
     getToken();
-  }, [putToken]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // tasks
   // const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
@@ -281,7 +282,8 @@ function HomeScreen() {
         );
       }
     },
-    [onWeatherForecast]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setSelectedFarm]
   );
 
   // const farmCell = useCallback(() => {
@@ -291,7 +293,7 @@ function HomeScreen() {
   //       selectedFarm={selectedFarm}
   //     />
   //   );
-  // }, [onSelectFarm, selectedFarm]);
+  // }, []);
 
   const onSelectCrop = useCallback(
     (item: CultivationDetailResponse) => {

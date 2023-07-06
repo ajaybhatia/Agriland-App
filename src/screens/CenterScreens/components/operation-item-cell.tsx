@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import { HStack, Icon, Pressable, Text, View, VStack } from 'native-base';
 import React from 'react';
@@ -25,11 +24,13 @@ const OperationItemCell = ({
   onSecondOption,
   onThirdOption,
 }: Props) => {
-  const nav = useNavigation();
+  // const nav = useNavigation();
+
   return (
     <VStack mx={3} mt={2}>
       <View borderRadius={5} overflow={'hidden'}>
         <Image
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{ flex: 1, height: 100 }}
           source={
             btns?.image ??
@@ -56,11 +57,12 @@ const OperationItemCell = ({
             fontFamily={'body'}
             fontStyle={'normal'}
           >
-            {btns.title ?? 'Harinder'}
+            {btns.title ?? ''}
           </Text>
         </View>
       </View>
-      <HStack justifyContent={'space-between'} alignItems={'center'} my={2}>
+
+      <HStack justifyContent={'center'} alignItems={'center'} my={2}>
         <Pressable
           flex={0.48}
           backgroundColor={'white'}
@@ -70,7 +72,7 @@ const OperationItemCell = ({
           alignItems={'center'}
           onPress={onFirstOption}
         >
-          <HStack justifyContent={'space-between'} alignItems={'center'}>
+          <HStack justifyContent={'center'} alignItems={'center'}>
             <Text
               color={'black'}
               fontSize={12}
@@ -82,9 +84,10 @@ const OperationItemCell = ({
             </Text>
             <Icon
               as={MaterialIcons}
-              name={btns?.btn1Icon ?? 'sort'}
+              name={btns?.btn1Icon}
               size={'md'}
               color={'#000'}
+              ml={2}
             />
           </HStack>
         </Pressable>
@@ -98,7 +101,7 @@ const OperationItemCell = ({
           py={2}
           alignItems={'center'}
         >
-          <HStack justifyContent={'space-between'} alignItems={'center'}>
+          <HStack justifyContent={'center'} alignItems={'center'}>
             <Text
               color={'black'}
               fontSize={12}
@@ -113,6 +116,7 @@ const OperationItemCell = ({
               name={btns?.btn2Icon ?? 'sort'}
               size={'md'}
               color={'#000'}
+              ml={2}
             />
           </HStack>
         </Pressable>
@@ -129,14 +133,13 @@ const OperationItemCell = ({
         justifyContent={'center'}
         alignItems={'center'}
       >
-        <HStack justifyContent={'space-between'} alignItems={'center'}>
+        <HStack justifyContent={'center'} alignItems={'center'}>
           <Text
             color={'black'}
             fontSize={12}
             fontWeight={'500'}
             fontFamily={'body'}
             fontStyle={'normal'}
-            mr={3}
           >
             {btns.btn3}
           </Text>
@@ -145,6 +148,7 @@ const OperationItemCell = ({
             name={btns?.btn3Icon ?? 'sort'}
             size={'md'}
             color={'#000'}
+            ml={2}
           />
         </HStack>
       </Pressable>
