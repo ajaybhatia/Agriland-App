@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -11,14 +12,12 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {
   useGetApiAccountFetchUserBasicDetails,
-  useGetApiCropGetcropactivitiesbyfarmid,
   useGetApiCropGetCultivationDetailsByFarmId,
   useGetApiNotificationGetallunreadnotification,
   usePutApiAccountUpdatefcmtoken,
 } from '@/apis/endpoints/api';
 import { useGetApiAdBannerGetAdBanners } from '@/apis/endpoints/api';
 import type {
-  ActivityDetails,
   AdBannerResponse,
   CultivationDetailResponse,
   FarmCropCultivationResponse,
@@ -59,7 +58,7 @@ function HomeScreen() {
   const [currentAddress, setCurrentAddress] = useState<
     LocationAddress | undefined
   >();
-  const [tasks, setTasks] = useState<DataValues[]>([]);
+  const [tasks] = useState<DataValues[]>([]);
   const [isShowSheets, setShowSheets] = useState<{
     isShow: boolean;
     index: number;
@@ -80,47 +79,47 @@ function HomeScreen() {
     };
 
     getToken();
-  }, []);
+  }, [putToken]);
 
   // tasks
-  const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
-    {
-      farmid: selectedFarm?.id ?? '', //'0737bac5-b1a5-453b-a012-afa37fccb199', //
-      cropid: selectedCrop?.cropDetails?.id ?? '',
-      noOfDays: 7,
-    },
-    {
-      query: {
-        enabled: selectedFarm !== undefined,
-        onSuccess(data: ActivityDetails) {
-          if (data && data.calendarActivities) {
-            var mainTempTask: DataValues[] = [];
-            let mainTask: DataValues[] = data.calendarActivities.map((x) => {
-              let obj: DataValues = {
-                title: x?.activityDate ?? '',
-                subTitle: x?.activityDate ?? '',
-                list: [x],
-              };
-              let index = mainTempTask.findIndex((y) =>
-                dayjs(y.title)
-                  .startOf('day')
-                  .isSame(dayjs(x.activityDate).startOf('day'))
-              );
-              if (index >= 0) {
-                let itemList = mainTempTask[index].list;
-                mainTempTask[index].list = [...itemList, x];
-              } else {
-                mainTempTask = [...mainTempTask, obj];
-              }
-              return obj;
-            });
+  // const getCalActivityTasks = useGetApiCropGetcropactivitiesbyfarmid(
+  //   {
+  //     farmid: selectedFarm?.id ?? '', //'0737bac5-b1a5-453b-a012-afa37fccb199', //
+  //     cropid: selectedCrop?.cropDetails?.id ?? '',
+  //     noOfDays: 7,
+  //   },
+  //   {
+  //     query: {
+  //       enabled: selectedFarm !== undefined,
+  //       onSuccess(data: ActivityDetails) {
+  //         if (data && data.calendarActivities) {
+  //           var mainTempTask: DataValues[] = [];
+  //           let mainTask: DataValues[] = data.calendarActivities.map((x) => {
+  //             let obj: DataValues = {
+  //               title: x?.activityDate ?? '',
+  //               subTitle: x?.activityDate ?? '',
+  //               list: [x],
+  //             };
+  //             let index = mainTempTask.findIndex((y) =>
+  //               dayjs(y.title)
+  //                 .startOf('day')
+  //                 .isSame(dayjs(x.activityDate).startOf('day'))
+  //             );
+  //             if (index >= 0) {
+  //               let itemList = mainTempTask[index].list;
+  //               mainTempTask[index].list = [...itemList, x];
+  //             } else {
+  //               mainTempTask = [...mainTempTask, obj];
+  //             }
+  //             return obj;
+  //           });
 
-            setTasks(mainTempTask);
-          }
-        },
-      },
-    }
-  );
+  //           setTasks(mainTempTask);
+  //         }
+  //       },
+  //     },
+  //   }
+  // );
 
   // userInfo
   useGetApiAccountFetchUserBasicDetails({
@@ -169,7 +168,7 @@ function HomeScreen() {
   const getUnreadNotifications =
     useGetApiNotificationGetallunreadnotification();
 
-  const onWeatherForecast = (lat: number, lng: number) => {
+  const onWeatherForecast = useCallback((lat: number, lng: number) => {
     axios
       .get(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,rain,weathercode,windspeed_10m,uv_index,is_day,temperature_1000hPa,temperature_700hPa,relativehumidity_1000hPa,relativehumidity_700hPa,cloudcover_1000hPa,cloudcover_700hPa,windspeed_1000hPa,winddirection_1000hPa&daily=weathercode,rain_sum,precipitation_probability_max,windspeed_10m_max&current_weather=true&timezone=auto`
@@ -186,7 +185,7 @@ function HomeScreen() {
       .catch((e) => {
         console.log('Not found Error ===> ', e);
       });
-  };
+  }, []);
 
   const findLocation = (lat: number, lng: number) => {
     axios
@@ -227,9 +226,7 @@ function HomeScreen() {
       if (title === 'Satellite Data') {
         if (userInfoo) {
           if (userInfoo?.farmerPlans?.endDate) {
-            if (
-              dayjs().isAfter(dayjs(userInfoo.farmerPlans?.endDate).utc(true))
-            ) {
+            if (dayjs().isBefore(dayjs(userInfoo.farmerPlans?.endDate))) {
               nav.navigate('SatelliteSelectedCropsList');
               //  nav.navigate('SateLiteDemoScreen');
             } else {
@@ -284,17 +281,17 @@ function HomeScreen() {
         );
       }
     },
-    [setSelectedFarm]
+    [onWeatherForecast]
   );
 
-  const farmCell = useCallback(() => {
-    return (
-      <FarmerListCell
-        onSelectedFarm={onSelectFarm}
-        selectedFarm={selectedFarm}
-      />
-    );
-  }, []);
+  // const farmCell = useCallback(() => {
+  //   return (
+  //     <FarmerListCell
+  //       onSelectedFarm={onSelectFarm}
+  //       selectedFarm={selectedFarm}
+  //     />
+  //   );
+  // }, [onSelectFarm, selectedFarm]);
 
   const onSelectCrop = useCallback(
     (item: CultivationDetailResponse) => {
@@ -310,7 +307,7 @@ function HomeScreen() {
     [setShowSheets]
   );
 
-  const onAddCrop = useCallback(() => nav.navigate('CropRegistration'), []);
+  const onAddCrop = useCallback(() => nav.navigate('CropRegistration'), [nav]);
 
   const onSeeWeatherDDetail = useCallback(() => {
     if (weatherReport && currentAddress && selectedFarm) {
@@ -332,7 +329,7 @@ function HomeScreen() {
         keyExtractor={(item, index) => `${index}`}
         contentContainerStyle={{ paddingBottom: 100 }}
         initialScrollIndex={0}
-        renderItem={({ item, index }: { item: number; index: number }) => {
+        renderItem={({ index }: { item?: number; index: number }) => {
           if (index === 0) {
             return (
               <FarmerListCell
@@ -372,7 +369,9 @@ function HomeScreen() {
               <VStack mt={2} height={120}>
                 <FlatList
                   horizontal
-                  keyExtractor={(item, index) => `${index}`}
+                  keyExtractor={(item, vIndex) =>
+                    item.fieldId?.toString() + ':' + vIndex.toString()
+                  }
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -381,14 +380,13 @@ function HomeScreen() {
                     <CropRegisterCell onAddCrop={onAddCrop} />
                   }
                   renderItem={({
-                    item,
-                    index,
+                    item: crop,
                   }: {
                     item: CultivationDetailResponse;
-                    index: number;
+                    index?: number;
                   }) => (
                     <CropHomeCell
-                      item={item}
+                      item={crop}
                       selectedItem={selectedCrop}
                       onSelect={onSelectCrop}
                       onNextScreen={onCropDetailScreen}

@@ -1,6 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
 import { FlatList, View } from 'native-base';
 import React, { useCallback } from 'react';
+
+import { useAuth } from '@/core';
 
 import type { OperationItem } from './components/operation-item-cell';
 import OperationItemCell from './components/operation-item-cell';
@@ -36,25 +39,47 @@ const AddOperationScreen = () => {
     },
   ];
   const nav = useNavigation();
+  const userInfo = useAuth.use.userInfos();
 
-  const cropRegister = useCallback(() => nav.navigate('CropRegistration'), []);
+  const cropRegister = useCallback(
+    () => nav.navigate('CropRegistration'),
+    [nav]
+  );
   const onStationBooking = useCallback(
     () => nav.navigate('StationBookingScreen'),
-    []
+    [nav]
   );
-  const onCropTest = useCallback(() => nav.navigate('TestScreen'), []);
+  const onCropTest = useCallback(() => nav.navigate('TestScreen'), [nav]);
   const onWeatherPress = useCallback(
     () => nav.navigate('WeatherDetailScreen'),
-    []
+    [nav]
   );
-  const onSatelLite = useCallback(() => nav.navigate('SateLiteDemoScreen'), []);
-  const onSocialMedia = useCallback(() => nav.navigate('CropRegistration'), []);
+  const onSatelLite = useCallback(() => {
+    if (userInfo) {
+      if (userInfo?.farmerPlans?.endDate) {
+        if (dayjs().isBefore(dayjs(userInfo.farmerPlans?.endDate))) {
+          nav.navigate('SatelliteSelectedCropsList');
+          //  nav.navigate('SateLiteDemoScreen');
+        } else {
+          nav.navigate('SateLiteDemoScreen');
+        }
+      } else {
+        nav.navigate('SateLiteDemoScreen');
+      }
+    }
+  }, [nav, userInfo]);
+
+  const onSocialMedia = useCallback(
+    () => nav.navigate('CropRegistration'),
+    [nav]
+  );
 
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
         data={array}
         keyExtractor={(item, index) => `${index}`}
+        // eslint-disable-next-line react-native/no-inline-styles
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({
           item,
@@ -74,16 +99,16 @@ const AddOperationScreen = () => {
             );
           } else if (index === 1) {
             return <OperationItemCell btns={item} />;
-          } else if (index === 2) {
-            return (
-              <OperationItemCell
-                btns={item}
-                onFirstOption={onWeatherPress}
-                onSecondOption={onSatelLite}
-                onThirdOption={onSocialMedia}
-              />
-            );
           }
+
+          return (
+            <OperationItemCell
+              btns={item}
+              onFirstOption={onWeatherPress}
+              onSecondOption={onSatelLite}
+              onThirdOption={onSocialMedia}
+            />
+          );
         }}
       />
     </View>
